@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include header.html %}
+
+    {% if page.meta.pygments %}
+      <link href="{{ site.baseurl }}/css/pygments.css" rel="stylesheet">
+    {% endif %}
+
+    {% if page.meta.canonical %}
+      <link rel="canonical" href="{{ site.url }}/{{ page.meta.canonical }}">
+    {% endif %}
+  </head>
+
+  <body>
+    {% include navbar.html %}
+
+    <div class="container">
+      {{ content }}
+    </div>
+
+    {% include footer.html %}
+  </body>
+</html>

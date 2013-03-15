@@ -1,0 +1,7 @@
+title: "typelevel.scala"
+
+safe: true
+url: http://typelevel.org
+markdown: redcarpet
+
+exclude: ["README.md"]
