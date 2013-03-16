@@ -34,8 +34,3 @@ meta:
     <p><a class="btn" href="{{ site.baseurl }}/projects/spire">Learn more &raquo;</a></p>
   </div>
 </div>
-
-<hr>
-<div class="footer">
-  <p>&copy; Lars Hupel 2013</p>
-</div>

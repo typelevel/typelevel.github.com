@@ -1,5 +1,6 @@
 title: "typelevel.scala"
 
+auto: true
 safe: true
 url: http://typelevel.org
 markdown: redcarpet
