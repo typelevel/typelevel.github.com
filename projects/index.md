@@ -24,6 +24,18 @@ Projects
     <td><a class="btn" href="https://github.com/non/spire">{% include octocat.html %}</a></td>
     <td><a href="{{ site.baseurl }}/projects/spire">spire</a></td>
   </tr>
+  <tr>
+    <td><a class="btn" href="https://github.com/typelevel/scalaz-contrib">{% include octocat.html %}</a></td>
+    <td>scalaz-contrib</td>
+  </tr>
+  <tr>
+    <td><a class="btn" href="https://github.com/typelevel/scalaz-specs2">{% include octocat.html %}</a></td>
+    <td>scalaz-specs2</td>
+  </tr>
+  <tr>
+    <td><a class="btn" href="https://github.com/typelevel/shapeless-contrib">{% include octocat.html %}</a></td>
+    <td>shapeless-contrib</td>
+  </tr>
 </table>
 
 ## SBT configuration
