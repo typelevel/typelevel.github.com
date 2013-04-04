@@ -75,3 +75,25 @@ h2 {
 td {
   padding: 5px 5px 5px 5px;
 }
+
+/* blog posts */
+
+.author-box {
+  background-color: #fafafa;
+  border: 1px solid rgba(0,0,0,.1);
+  margin-top: 30px;
+  padding: 5px 5px 5px 5px;
+  float: right;
+  display: inline-block;
+  clear: both;
+}
+
+.author-image {
+  float: left;
+  margin-right: 8px;
+}
+
+.follow-buttons {
+  margin-top: 5px;
+  display: block;
+}

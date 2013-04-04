@@ -1,0 +1,17 @@
+---
+layout: page
+---
+
+{{ content }}
+
+{% if page.meta.author %}
+  <span class="author-box">
+    <span class="author-image">{% include author_image.html %}</span>
+    Posted on {{ page.date | date: "%b %d, %Y" }} by {% include author.html %}<br>
+    <span class="follow-buttons">{% include author_box.html %}</span>
+  </span>
+{% else %}
+  <span class="author-box">
+    Posted on {{ page.date | date: "%b %d, %Y" }}
+  </span>
+{% endif %}

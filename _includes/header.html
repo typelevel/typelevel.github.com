@@ -8,6 +8,10 @@
 
 <link href="{{ site.baseurl }}/favicon.ico" rel="icon" type="image/x-icon">
 
+{% if page.meta.nav == 'blog' %}
+  <link href="{{ site.baseurl }}/blog/feed.rss" rel="alternate" type="application/rss+xml" title="The typelevel.scala Blog">
+{% endif %}
+
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
   <script src="{{ site.baseurl }}/js/html5shiv.js"></script>
