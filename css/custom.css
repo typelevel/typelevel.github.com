@@ -97,3 +97,7 @@ td {
   margin-top: 5px;
   display: block;
 }
+
+.disqus-container {
+  padding-top: 20px;
+}
