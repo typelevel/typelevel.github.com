@@ -1,10 +1,10 @@
 title: "typelevel.scala"
 
-auto: true
 safe: true
-url: http://typelevel.org
+baseurl: http://typelevel.org
 markdown: redcarpet
 
 permalink: /blog/:year/:month/:day/:title.html
+relative_permalinks: false
 
 exclude: ["README.md"]
