@@ -13,7 +13,7 @@ Blog
 <ul class="post-list">
 {% for page in site.posts %}
   <li>
-    <a href="{{ page.url }}">{{ page.title }}</a>
+    <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
     {% if page.meta.author %}
       by {% include author.html %}
     {% endif %}
