@@ -40,12 +40,14 @@ gem install jekyll
 gem install redcarpet
 ```
 
-There's also an official [installation guide](https://github.com/mojombo/jekyll/wiki/Install). Keep in mind that this site uses `redcarpet` (instead of `maruku` or `rdiscount`).
+As of this writing, `jekyll` version `1.0.2` and `redcarpet` version `2.2.2` are required.
 
-Everything set up? Great. Now you just have to tell Jekyll to generate the site:
+There's also an official [installation guide](http://jekyllrb.com/docs/installation/). Additionally to `jekyll`, don't forget to install `redcarpet`. 
+
+Everything set up? Great. Now you just have to tell Jekyll to generate the site (the empty quotation at the end is important):
 
 ```bash
-jekyll --server --auto
+jekyll serve --watch --baseurl ''
 ```
 
 This will start a local web server on port 4000 where you can browse the site and which re-generates the site if you change the source files.
