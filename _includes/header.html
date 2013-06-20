@@ -16,3 +16,16 @@
 <!--[if lt IE 9]>
   <script src="{{ site.baseurl }}/js/html5shiv.js"></script>
 <![endif]-->
+
+{% if page.meta.mathjax %}
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]}
+    });
+  </script>
+  <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+{% endif %}
+
+{% if page.meta.pygments %}
+  <link href="{{ site.baseurl }}/css/pygments.css" rel="stylesheet">
+{% endif %}

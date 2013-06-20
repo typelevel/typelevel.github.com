@@ -3,10 +3,6 @@
   <head>
     {% include header.html %}
 
-    {% if page.meta.pygments %}
-      <link href="{{ site.baseurl }}/css/pygments.css" rel="stylesheet">
-    {% endif %}
-
     {% if page.meta.canonical %}
       <link rel="canonical" href="{{ site.baseurl }}/{{ page.meta.canonical }}">
     {% endif %}
