@@ -16,4 +16,7 @@ layout: page
   </span>
 {% endif %}
 
-{% include disqus.txt %}
+{% if site.local %}
+{% else %}
+  {% include disqus.txt %}
+{% endif %}
