@@ -9,10 +9,11 @@ layout: empty
 		<link>{{ site.baseurl }}</link>
 		{% for post in site.posts limit:20 %}
 			<item>
-				<title>{{ post.title }}</title>
+				<title>{{ post.title | xml_escape }}</title>
 				<description>{{ post.content | xml_escape }}</description>
-				<published>{{ post.date }}</published>
+				<pubDate>{{ post.date }}</pubDate>
 				<link>{{ site.baseurl }}{{ post.url }}</link>
+				<guid isPermaLink="true">{{ site.baseurl }}{{ post.url }}</guid>
 			</item>
 		{% endfor %}
 	</channel>
