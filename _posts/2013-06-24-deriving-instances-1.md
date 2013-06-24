@@ -32,21 +32,34 @@ def +(that: Vector3D): Vector3D =
   Vector3D(this.x + that.x, this.y + that.y, this.z + that.z)
 ```
 
+If you are writing some code involving three-dimensional vectors, chances are that you also have to deal with two-dimensional ones:
+
+```scala
+case class Vector2D(x: Int, y: Int) {
+  def +(that: Vector2D): Vector2D =
+    Vector2D(this.x + that.x, this.y + that.y)
+}
+```
+
+Observe that the hand-written implementation of `+` is quite repetitive.
+We want to avoid that sort of boilerplate code as much as possible.
+
 In this post, we will introduce an abstraction over the *addition* operation, namely *semigroups*,
 and introduce a macro-based facility which allows you to get the implementation of `+` for free.
 In the end, the only thing you will have to write is this:
 
 ```scala
-implicit val vectorSemigroup = TypeClass[Semigroup, Vector3D]
+implicit val vector2DSemigroup = TypeClass[Semigroup, Vector2D]
+implicit val vector3DSemigroup = TypeClass[Semigroup, Vector3D]
 ```
 
-Or, if you are brave, just
+That is still a little bit of boilerplate, right? How about:
 
 ```scala
 import Semigroup.auto._
 ```
 
-and get `Semigroup` instances for *all* of your data types – with zero boilerplate!
+This will give you `Semigroup` instances for *all* of your data types – with zero boilerplate!
 
 But first, let us introduce all the related concepts properly.
 
@@ -247,7 +260,7 @@ I am serious.
 We use type classes to abstract over types.
 `Semigroup` abstracts over types which offer some sort of addition functionality.
 
-However, type classes are itself just types in Scala.
+However, type classes are themselves just types in Scala.
 Thus, we can use type classes to abstract over type classes.
 We are defining a type class which abstracts over type classes whose instances can be combined to form larger instances.
 
@@ -267,12 +280,12 @@ If we put this implementation into the companion object of `Semigroup`, it will 
 ### Wrapping it up
 
 How can this actually be used?
-The work can be roughly divided into three groups of people:
+The work can be roughly divided between three roles:
 
 1. The macro author, who has to implement all the nitty-gritty details of the derivation process.
 
    That is already done and implemented in _shapeless_.
-   The upcoming 2.0.0 release will contain all the necessary bits and pieces, but unfortunately requires at least Scala 2.10.2 (it will not work for 2.10.1 or earlier).
+   The upcoming 2.0.0 release will contain all the necessary bits and pieces, but requires at least Scala 2.10.2 (it will not work for 2.10.1 or earlier).
    If you are brave, try the latest snapshot version which is available on Sonatype.
 2. The library author, who defines type classes, fundamental instances thereof, and of course the necessary `TypeClass` instances.
 
@@ -286,9 +299,12 @@ The work can be roughly divided into three groups of people:
 
    ```scala
    implicit val myInstance = TypeClass[Semigroup, Vector3D]
+   // or
+   import Semigroup.auto._
    ```
 
    somewhere into your scope, and you are done!
+
 
 ### What's next?
 
@@ -297,3 +313,8 @@ The next article in this series will:
 * explore implementation details of the macro, and off-loading some work to the compiler
 * introduce another operation on type class instances beyond products
 * provide more examples
+
+
+<div class="updated">
+  <strong>Edit:</strong> This post has been updated to expand the motivating example and change the wording a little.
+</div>
