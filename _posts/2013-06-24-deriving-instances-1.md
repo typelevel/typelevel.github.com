@@ -305,6 +305,11 @@ The work can be roughly divided between three roles:
 
    somewhere into your scope, and you are done!
 
+   Providing "explicit" implicit declarations for each type class instance provides the tightest control over your implicit scope and ensures you only have the instances that you want.
+   Importing `auto` reduces the boilerplate to the absolute minimum, which is often desirable, but might result in more instances being materialized than you expect.
+   Which to choose is partly a matter of taste and partly a function of the size and complexity of the scopes you are importing in to:
+   large or complex scopes might favour explicit declarations; tighter, simpler scopes might favour `auto`.
+
 
 ### What's next?
 
@@ -316,5 +321,5 @@ The next article in this series will:
 
 
 <div class="updated">
-  <strong>Edit:</strong> This post has been updated to expand the motivating example and change the wording a little.
+  <strong>Edit:</strong> This post has been updated to expand the motivating example and change the wording a little. Thanks to Miles Sabin for his suggestions.
 </div>
