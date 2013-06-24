@@ -16,9 +16,46 @@ First, we will explore the underlying abstractions and how we can possibly get r
 Second, we will dive into the details, e.g. how the macro is implemented.
 Third, we will see how we can verify that our newly-generated instances are actually obeying the laws of the corresponding type class.
 
+## Motivating example
+
+Assume that you have a `case class` representing vectors in three-dimensional space:
+
+```scala
+case class Vector3D(x: Int, y: Int, z: Int)
+```
+
+Now you want to implement addition on this class.
+Currently, you have to do that manually:
+
+```scala
+def +(that: Vector3D): Vector3D =
+  Vector3D(this.x + that.x, this.y + that.y, this.z + that.z)
+```
+
+In this post, we will introduce an abstraction over the *addition* operation, namely *semigroups*,
+and introduce a macro-based facility which allows you to get the implementation of `+` for free.
+In the end, the only thing you will have to write is this:
+
+```scala
+implicit val vectorSemigroup = TypeClass[Semigroup, Vector3D]
+```
+
+Or, if you are brave, just
+
+```scala
+import Semigroup.auto._
+```
+
+and get `Semigroup` instances for *all* of your data types – with zero boilerplate!
+
+But first, let us introduce all the related concepts properly.
+
 ## Part 1: Abstracting all the things
 
-<div class="side-note">If you are already familiar with type classes in general and algebraic structures in particular, you can safely skip this and the next section. Keep in mind though that we are dealing with classes for types of kind $*$ only. Type classes for $* \rightarrow *$ are different and not yet supported.</div>
+<div class="side-note">
+  If you are already familiar with type classes in general and algebraic structures in particular, you can safely skip this and the next section.
+  Keep in mind though that we are dealing with classes for types of kind $*$ only. Type classes for $* \rightarrow *$ are different and not supported.
+</div>
 
 Type classes are an incredibly useful abstraction mechanism, originally introduced in Haskell.
 If you have been using some of the {% include typelevel.html %} libraries already, you probably now how type classes and their instances are represented in Scala: as traits and implicits.
@@ -27,7 +64,7 @@ In the following section, we will get started with an example type class from ab
 ### Group theory
 
 Group theory is a very important field of research in mathematics and has a very broad range of applications, especially in computer science.
-One of the most fundamental structures is a *semigroup*, which consists of a set of elements equipped with one operations (often called *append*, *mplus*, or similarly; in textbooks you will often find $\circ$ or $\oplus$).
+One of the most fundamental structures is a *semigroup*, which consists of a set of elements equipped with one operation (often called *append*, *mplus*, or similarly; in textbooks you will often find $\circ$ or $\oplus$).
 Additionally, the operation has to obey the *law of associativity*, meaning that for any three values $s\_1, s\_2,$ and $s\_3$, it does not matter if you append $s\_1$ and $s\_2$ first and then append $s\_3$, or append $s\_2$ and $s\_3$ first and then append $s\_1$ and the result of that.
 In other words, the precise order in which the steps of a larger operation are executed does not matter.
 A good analogy here is when flattening a list:
@@ -69,7 +106,7 @@ In other words, we just use the built-in addition function.
 ### Composing instances
 
 Now suppose you are working with three-dimensional images.
-Most likely, you will encounter a data structure for vectors (or points):
+Most likely, you will encounter a data structure for vectors (or points), which we recall from above:
 
 ```scala
 case class Vector3D(x: Int, y: Int, z: Int)
@@ -111,7 +148,11 @@ However, there are still two problems here:
 
 Let us address these problems now. The following sections assume familiarity with `HList`s, as implemented in *shapeless*.
 
-<div class="side-note">If you are not familiar with <code>HList</code>s yet, watch Miles Sabin's <a href="http://www.youtube.com/watch?v=GDbNxL8bqkY">talk about <em>shapeless</em></a> at the Northeast Scala Symposium 2012. There's also a <a href="http://apocalisp.wordpress.com/2010/06/08/type-level-programming-in-scala/">blog series</a> exploring type-level programming in general by Mark Harrah.</div>
+<div class="side-note">
+  If you are not familiar with <code>HList</code>s yet,
+  watch Miles Sabin's <a href="http://www.youtube.com/watch?v=GDbNxL8bqkY">talk about <em>shapeless</em></a> at the Northeast Scala Symposium 2012.
+  There's also a <a href="http://apocalisp.wordpress.com/2010/06/08/type-level-programming-in-scala/">blog series</a> exploring type-level programming in general by Mark Harrah.
+</div>
 
 Now, we want to generate an instance for `Vector3D` and countless other data types.
 That means that we cannot just special-case for every possible data type, but we have to abstract over them.
@@ -231,7 +272,7 @@ The work can be roughly divided into three groups of people:
 1. The macro author, who has to implement all the nitty-gritty details of the derivation process.
 
    That is already done and implemented in _shapeless_.
-   The upcoming 2.0.0 release will contain all the necessary bits and pieces, but unfortunately requires at least Scala 2.10.2 (it will not work for 2.10.1).
+   The upcoming 2.0.0 release will contain all the necessary bits and pieces, but unfortunately requires at least Scala 2.10.2 (it will not work for 2.10.1 or earlier).
    If you are brave, try the latest snapshot version which is available on Sonatype.
 2. The library author, who defines type classes, fundamental instances thereof, and of course the necessary `TypeClass` instances.
 
@@ -255,4 +296,4 @@ The next article in this series will:
 
 * explore implementation details of the macro, and off-loading some work to the compiler
 * introduce another operation on type class instances beyond products
-* show more practical code & examples
+* provide more examples
