@@ -71,7 +71,7 @@ But first, let us introduce all the related concepts properly.
 </div>
 
 Type classes are an incredibly useful abstraction mechanism, originally introduced in Haskell.
-If you have been using some of the {% include typelevel.html %} libraries already, you probably now how type classes and their instances are represented in Scala: as traits and implicits.
+If you have been using some of the {% include typelevel.html %} libraries already, you probably know how type classes and their instances are represented in Scala: as traits and implicits.
 In the following section, we will get started with an example type class from abstract algebra, which is implemented in *spire*.
 
 ### Group theory
@@ -269,7 +269,7 @@ So, without further ado:
 ```scala
 trait TypeClass[C[_]] {
   def nil: C[HNil]
-  def cons[H, T <: HNil](H: C[H], T: C[T]): C[H :: T]
+  def cons[H, T <: HList](H: C[H], T: C[T]): C[H :: T]
   def subst[A, B](to: A => B, from: A => B, instance: C[B]): C[A]
 }
 ```
