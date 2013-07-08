@@ -28,8 +28,8 @@ def add[A](x: A, y: A): A = x + y
 Of course, this won't compile since `A` has no method `+`. What we are really
 saying is that we want `A` to be some type that *behaves like a number*. The
 usual OO way to achieve this is by creating an interface that defines our
-desired behaviour. This is less than ideal, but if we went this route, our
-`add` function may look like this:
+desired behaviour. This is less than ideal, but if we were to go this route,
+our `add` function might look like this:
 
 ```scala
 trait Addable[A] { self: A =>
