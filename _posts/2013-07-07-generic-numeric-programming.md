@@ -5,6 +5,7 @@ title: An Intro to Generic Numeric Programming with Spire
 meta:
   nav: blog
   author: tixxit
+  pygments: true
 ---
 
 An Intro to Generic Numeric Programming with Spire
@@ -51,29 +52,33 @@ of the scope of this post, but they let us express that the type `A` must have
 some desired behaviour, without inheritence. Using the type class pattern, we
 could write something like this:
 
-    trait Addable[A] {
-      // Both arguments must be provided. Addable works with the type A, but
-      // does not extend it.
-      def plus(x: A, y: A): A
-    }
+```scala
+trait Addable[A] {
+  // Both arguments must be provided. Addable works with the type A, but
+  // does not extend it.
+  def plus(x: A, y: A): A
+}
 
-    // This class adds the + operator to any type A that is Addable,
-    // by delegating to that Addable's `plus` method.
-    implicit class AddableOps[A](lhs: A)(implicit ev: Addable[A]) {
-      def +(rhs: A): A = ev.plus(lhs, rhs)
-    }
+// This class adds the + operator to any type A that is Addable,
+// by delegating to that Addable's `plus` method.
+implicit class AddableOps[A](lhs: A)(implicit ev: Addable[A]) {
+  def +(rhs: A): A = ev.plus(lhs, rhs)
+}
 
-    // We use a context bound to require that A has an Addable instance.
-    def add[A: Addable](x: A, y: A): A = x + y
+// We use a context bound to require that A has an Addable instance.
+def add[A: Addable](x: A, y: A): A = x + y
+```
 
 We can then easily add implementations for any numeric type, regardless if we
 control it or not, or even if it is a primitive type:
 
-    implicit object IntIsAddable extends Addable[Int] {
-      def plus(x: Int, y: Int): Int = x + y
-    }
+```scala
+implicit object IntIsAddable extends Addable[Int] {
+  def plus(x: Int, y: Int): Int = x + y
+}
 
-    add(5, 4)
+add(5, 4)
+```
 
 This is, more or less, the approach Spire takes.
 
@@ -106,18 +111,22 @@ strives to make generic numeric code look more or less like what you'd write
 for a direct implementation. So, let's let you compare; first up, the direct
 implementation:
 
-    def euclidGcd(x: Int, y: Int): Int =
-      if (y == 0) x
-      else euclidGcd(y, x % y)
+```scala
+def euclidGcd(x: Int, y: Int): Int =
+  if (y == 0) x
+  else euclidGcd(y, x % y)
+```
 
 With Spire, we can use the `spire.math.Integral` type class to rewrite this as:
 
-    import spire.math.Integral
-    import spire.implicits._
+```scala
+import spire.math.Integral
+import spire.implicits._
 
-    def euclidGcd[A: Integral](x: A, y: A): A =
-      if (y == 0) x
-      else euclidGcd(y, x % y)
+def euclidGcd[A: Integral](x: A, y: A): A =
+  if (y == 0) x
+  else euclidGcd(y, x % y)
+```
 
 The 2 methods are almost identical, save the `Integral` context bound.
 `Integral` gives us many methods we expect integers to have, like addition,
@@ -127,15 +136,19 @@ Because Spire provides default implicit instances of `Integral` for all of the
 integral types that come in the Scala standard library, we can immediately use
 `euclidGcd` to find the GCD of many integer types:
 
-    euclidGcd(42, 96)
-    euclidGcd(42L, 96L)
-    euclidGcd(BigInt(42), BigInt(96))
+```scala
+euclidGcd(42, 96)
+euclidGcd(42L, 96L)
+euclidGcd(BigInt(42), BigInt(96))
+```
 
 This is much better than writing 5 different versions of the same algorithm!
 With Spire, you can actually do away with `euclidGcd` altogether, as `gcd`
 comes with `Integral` anyways:
 
-    spire.math.gcd(BigInt(1), BigInt(2))
+```scala
+spire.math.gcd(BigInt(1), BigInt(2))
+```
 
 ### Performance vs Precision
 
@@ -218,10 +231,12 @@ integer division. Spire differentiates between *integer division* and *exact
 division*. You perform integer division with `x /~ y`. To see it in action,
 let's use an overly complicated function to negate an integer:
 
-    import spire.math._
-    import spire.implicits._
+```scala
+import spire.math._
+import spire.implicits._
 
-    def negate[A: Integral](x: A) = -(x * (x /~ 42) + x % 42)
+def negate[A: Integral](x: A) = -(x * (x /~ 42) + x % 42)
+```
 
 Instances of `Integral` exist for `Byte`, `Short`, `Int`, `Long` and `BigInt`.
 
@@ -231,7 +246,9 @@ that have "exact" division. "Exact" is in quotes, since `Double` or
 them a pass. `Fractional` also provides `x.sqrt` and `x nroot k` for taking the
 roots of a number.
 
-    def distance[A: Fractional](x: A, y: A): A = (x ** 2 + y ** 2).sqrt
+```scala
+def distance[A: Fractional](x: A, y: A): A = (x ** 2 + y ** 2).sqrt
+```
 
 Note that `Fractional[A] <: Integral[A]`, so anything you can do with
 `Integral`, you can do with `Fractional[A]` too. Here, we can use `distance`
@@ -316,18 +333,22 @@ algebra in Scala](http://www.youtube.com/watch?v=xO9AoZNSOH4).
 As an example of using the algebra package, `spire.math.Integral` is simply
 defined as:
 
-    import spire.algebra.{ EuclideanRing, IsReal }
+```scala
+import spire.algebra.{ EuclideanRing, IsReal }
 
-    trait Integral[A] extends EuclideanRing[A]
-                         with IsReal[A] // Includes Order[A] with Signed[A].
-			 with ConvertableFrom[A]
-			 with ConvertableTo[A]
+trait Integral[A] extends EuclideanRing[A]
+                     with IsReal[A] // Includes Order[A] with Signed[A].
+                     with ConvertableFrom[A]
+                     with ConvertableTo[A]
+```
 
 Whereas `spire.math.Fractional` is just:
 
-    import spire.algebra.{ Field, NRoot }
+```scala
+import spire.algebra.{ Field, NRoot }
 
-    trait Fractional[A] extends Integral[A] with Field[A] with NRoot[A]
+trait Fractional[A] extends Integral[A] with Field[A] with NRoot[A]
+```
 
 ### Many New Number Types
 
@@ -366,4 +387,4 @@ There is some basic information on getting up-and-running with Spire in SBT on
 [Spire's project page](https://github.com/non/spire). If you have any further
 questions, comments, suggestions, criticism or witticisms you can say what you
 want to say on the [Spire mailing list](https://groups.google.com/forum/#!forum/spire-math)
-or on IRC on Freenode in #spire-math.
+or on IRC on Freenode in `#spire-math`.
