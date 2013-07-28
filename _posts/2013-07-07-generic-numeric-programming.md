@@ -235,7 +235,7 @@ let's use an overly complicated function to negate an integer:
 import spire.math._
 import spire.implicits._
 
-def negate[A: Integral](x: A) = -(x * (x /~ 42) + x % 42)
+def negate[A: Integral](x: A) = -(42 * (x /~ 42) + x % 42)
 ```
 
 Instances of `Integral` exist for `Byte`, `Short`, `Int`, `Long` and `BigInt`.
