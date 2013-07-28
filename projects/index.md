@@ -46,6 +46,6 @@ If you want to use the latest releases of our libraries, just put these lines in
 libraryDependencies ++= Seq(
   "org.scalaz"     %% "scalaz-core" % "7.0.2",
   "com.chuusai"    %% "shapeless"   % "1.2.4",
-  "org.spire-math" %% "spire"       % "0.4.0"
+  "org.spire-math" %% "spire"       % "0.5.0"
 )
 ```
