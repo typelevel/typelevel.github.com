@@ -270,7 +270,7 @@ So, without further ado:
 trait TypeClass[C[_]] {
   def nil: C[HNil]
   def cons[H, T <: HList](H: C[H], T: C[T]): C[H :: T]
-  def subst[A, B](to: A => B, from: A => B, instance: C[B]): C[A]
+  def subst[A, B](to: A => B, from: B => A, instance: C[B]): C[A]
 }
 ```
 
