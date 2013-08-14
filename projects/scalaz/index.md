@@ -22,9 +22,9 @@ This page describes the new and upcoming release of Scalaz 7. For more informati
 ```scala
 scala> import scalaz._
 
-scala> import std.option._, import std.list._ // functions and type class instances for Option and List
+scala> import std.option._, std.list._ // functions and type class instances for Option and List
 
-scala> Apply[Option].map2(some(1), some(2))((a, b) => a + b)
+scala> Apply[Option].apply2(some(1), some(2))((a, b) => a + b)
 res0: Option[Int] = Some(3)
 
 scala> Traverse[List].traverse(List(1, 2, 3))(i => some(i))
