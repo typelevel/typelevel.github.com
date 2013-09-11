@@ -290,9 +290,10 @@ Credits
 -------
 
 [Jason Zaugg](https://twitter.com/retronym) implemented Scalaz
-`Unapply`, based on ideas from
-[Miles Sabin](https://twitter.com/milessabin) and
-[Paul Phillips](https://github.com/paulp).
+`Unapply`, based on
+[ideas](https://issues.scala-lang.org/browse/SI-2712?focusedCommentId=55239&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-55239)
+from [Miles Sabin](https://twitter.com/milessabin) and
+[Paul Chiusano](https://github.com/pchiusano).
 
 Leibnizian equality was implemented for Scalaz by
 [Edward Kmett](https://github.com/ekmett).
