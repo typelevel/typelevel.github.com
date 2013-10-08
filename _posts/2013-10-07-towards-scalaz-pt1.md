@@ -29,7 +29,7 @@ which is simple enough.
 def sum(l: List[Int]): Int = l.reduce(_ + _)
 ```
 
-And this works (kind of, it fails on empty `List`s but well get to that).
+And this works (kind of, it fails on empty `List`s but we'll get to that).
 But what if we want to sum a `List[Double]`?
 
 ```scala
