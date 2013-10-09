@@ -156,7 +156,7 @@ object AdderWithZero {
   implicit def numericHasAdderZero[A](implicit A: Numeric[A]): AdderWithZero[A] =
     new AdderWithZero[A] {
       def add(x: A, y: A): A = A.plus(x, y)
-      der zero: A = A.zero
+      def zero: A = A.zero
     }
 
   implicit val stringHasAdder: Adder[String] =
@@ -183,7 +183,7 @@ sly and clever, but an actual thing! They are called `Semigroup` and
 algebra is a field dedicated to studying algebraic structures as opposed
 to just numbers as we may be used to. The field looks into what properties
 and operations various structures have in common, such as integers and
-matrices. For instance, wee can add two integers, as well as two matrices of the same size.
+matrices. For instance, we can add two integers, as well as two matrices of the same size.
 This is analogous to how we noticed the `add` worked on not only `Numeric`
 but `String` and `List[A]` as well! This is the kind of generecity we're looking for.
 
