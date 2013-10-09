@@ -13,7 +13,7 @@ Projects
 
 <table style="font-weight: bold;">
   <tr>
-    <td><a class="btn" href="https://github.com/scalaz/scalaz/tree/scalaz-seven">{% include octocat.html %}</a></td>
+    <td><a class="btn" href="https://github.com/scalaz/scalaz">{% include octocat.html %}</a></td>
     <td><a href="{{ site.baseurl }}/projects/scalaz">scalaz</a></td>
   </tr>
   <tr>
