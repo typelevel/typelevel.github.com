@@ -8,7 +8,7 @@ meta:
   pygments: true
 ---
 
-# Towards Scalaz - Part 1
+# Towards Scalaz - Part 1: Learning to Add
 A lot of people see Scalaz as a hard fringe, ivory tower,
 not suited for real-world applications library, which is
 unfortunate. The goal of this blog post series is to introduce
@@ -74,22 +74,22 @@ So what do we want? We want a type class that only requires instances
 to be able to "add" two `A`s to get another `A`.
 
 ```scala
-trait Adder[A] {
+trait Addable[A] {
   def add(x: A, y: A): A
 }
 ```
 
-And let's define an instance of `Adder` for all `Numeric` types and `String`.
+And let's define an instance of `Addable` for all `Numeric` types and `String`.
 
 ```scala
-object Adder {
-  implicit def numericHasAdder[A](implicit A: Numeric[A]): Adder[A] =
-    new Adder[A] {
+object Addable {
+  implicit def numericHasAddable[A](implicit A: Numeric[A]): Addable[A] =
+    new Addable[A] {
       def add(x: A, y: A): A = A.plus(x, y)
     }
 
-  implicit val stringHasAdder: Adder[String] =
-    new Adder[String] {
+  implicit val stringHasAddable: Addable[String] =
+    new Addable[String] {
       def add(x: String, y: String): String = x + y
     }
 }
@@ -98,13 +98,13 @@ object Adder {
 And heres our shiny new generic summer function!
 
 ```scala
-def sumGeneric[A](l: List[A])(implicit A: Adder[A]): A =
+def sumGeneric[A](l: List[A])(implicit A: Addable[A]): A =
   l.reduce(A.add)
 ```
 
 And now this works for `Int`, `Double`, `String`, and many more.
 
-A good exercise at this point is to define an `Adder` instance for `List[A]`.
+A good exercise at this point is to define an `Addable` instance for `List[A]`.
 
 ## Making an Exception
 What happens when we pass in an empty `List` to our summer function though?
@@ -125,42 +125,42 @@ def sum(l: List[Int]): Int = l.foldLeft(0)(_ + _)
 
 What happens now when we pass an empty `List` into the sum function? We get 0,
 not an exception! Note that before all we gave the program was a binary
-operation (what `Adder` defines), where now we give a binary option *and* a
+operation (what `Addable` defines), where now we give a binary option *and* a
 "zero" or starting value (the 0). As it stands, we cannot write this with
-`Adder` since it has no "zero".
+`Addable` since it has no "zero".
 
-It may be tempting to just add a `zero` method to `Adder`, but then we may run
+It may be tempting to just add a `zero` method to `Addable`, but then we may run
 into the same issues we had with `Numeric` later on - we dont *always* need
 a "zero", sometimes a binary operation is good enough. So instead, let's create
-an `AdderWithZero` type class.
+an `AddableWithZero` type class.
 
 ```scala
-trait AdderWithZero[A] extends Adder[A] {
+trait AddableWithZero[A] extends Addable[A] {
   def zero: A
 }
 ```
 
 Note that while you dont see the `add` method in here, the fact
-it `extends Adder` without implementing the `add` method propagates the need to
-implement that method, so programmers who want to create an `AdderWithZero[A]` instance
+it `extends Addable` without implementing the `add` method propagates the need to
+implement that method, so programmers who want to create an `AddableWithZero[A]` instance
 need to implement both.
 
-Programmers can now write functions that depend only on `Adder`, or perhaps if they
-need a bit more power use `AdderWithZero`. Types that have `AdderWithZero` instances
-also have `Adder` instances automatically due to subtyping.
+Programmers can now write functions that depend only on `Addable`, or perhaps if they
+need a bit more power use `AddableWithZero`. Types that have `AddableWithZero` instances
+also have `Addable` instances automatically due to subtyping.
 
-Lets move our `Adder` instances to the `AdderWithZero` object.
+Lets move our `Addable` instances to the `AddableWithZero` object.
 
 ```scala
-object AdderWithZero {
-  implicit def numericHasAdderZero[A](implicit A: Numeric[A]): AdderWithZero[A] =
-    new AdderWithZero[A] {
+object AddableWithZero {
+  implicit def numericHasAddableZero[A](implicit A: Numeric[A]): AddableWithZero[A] =
+    new AddableWithZero[A] {
       def add(x: A, y: A): A = A.plus(x, y)
       def zero: A = A.zero
     }
 
-  implicit val stringHasAdder: Adder[String] =
-    new Adder[String] {
+  implicit val stringHasAddableWithZero: AddableWithZero[String] =
+    new AddableWithZero[String] {
       def add(x: String, y: String): String = x + y
       der zero: String = ""
     }
@@ -170,14 +170,14 @@ object AdderWithZero {
 And finally, our shiny new generic sum function!
 
 ```scala
-def sumGeneric[A](l: List[A])(implicit A: AdderWithZero[A]): A =
+def sumGeneric[A](l: List[A])(implicit A: AddableWithZero[A]): A =
   l.foldLeft(A.zero)(A.add)
 ```
 
 Hurrah!
 
 ## Plot Twist
-It turns out that our `Adder` and `AdderWithZero` isnt just us being
+It turns out that our `Addable` and `AddableWithZero` type classes isn't just us being
 sly and clever, but an actual thing! They are called `Semigroup` and
 `Monoid` (respectively), taken from the wonderful field of abstract algebra. Abstract
 algebra is a field dedicated to studying algebraic structures as opposed
@@ -239,6 +239,11 @@ For instance, `Int` has a `Monoid` on `(+, 0)` as well as on `(*, 1)`. Convince 
 This raises the question of how we get both `+` and `*` `Monoid`s for `Int` without
 making `scalac` freak out about ambiguous implicit values. The answer to this is tagged
 types, again a topic for another day.
+
+If you are interested in learning more about numeric programming, check out
+Typelevel's [Spire](https://github.com/non/spire) 
+library, as well as the accompanying Typelevel
+[blog post](http://typelevel.org/blog/2013/07/07/generic-numeric-programming.html).
 
 ### IRC
 If you have any questions/comments/concerns, feel free to hop onto the IRC channel on
