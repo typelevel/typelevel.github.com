@@ -20,9 +20,10 @@ extra work that happens on a per-operation basis (like boxing or
 object allocation) will cause generic code to be slower than its
 direct equivalent.
 
-Efficient, generic numeric programming is Spire's raison d'être. The
-following post explains how we use macros to remove unnecessary object
-instantiations at compile-time, and how you can too.
+Efficient, generic numeric programming is Spire's raison d'être. We
+have developed a set of Ops macros to avoid unnecessary object
+instantiations at compile-time. This post explains how, and
+illustrates how you can use these macros in your code!
 
 How implicit operators on type classes usually work
 ---------------------------------------------------
@@ -227,17 +228,16 @@ The fine print
 
 Of course, there's always some fine-print.
 
-In this case, the implicit class *must* use the same parameter names
-as above. The constructor parameter to `SizedOps` *must* be called
-`lhs` and the method parameter (if any) *must* be called `rhs`. Also,
-unary operators (methods that take no parameters, like `size`) *must*
-have parenthesis.
+In this case, the implicit class **must** use the same parameter names
+as above. The constructor parameter to `SizedOps` **must** be called
+`lhs` and the method parameter (if any) **must** be called
+`rhs`. Also, unary operators (methods that take no parameters, like
+`size`) **must** have parenthesis.
 
-You might wonder how the Ops macros would handle classes with multiple
-constructor parameters, or multiple method parameters. Right now, they
-don't. We haven't needed to support these kinds of exotic classes, but
-it should be easy to extend Spire's Ops macros to support other shapes
-as well.
+How the macros handle classes with multiple constructor parameters, or
+multiple method parameters? They don't. We haven't needed to support
+these kinds of exotic classes, but it would probably be easy to extend
+Spire's Ops macros to support other shapes as well.
 
 If you fail to follow these rules, or if your class has the wrong
 shape, your code will fail to compile. So don't worry. If your code
@@ -302,9 +302,12 @@ as well. While we expect that many projects will benefit from the Ops
 macros, they were designed specifically for Spire so it's possible
 that your project will discover problems, or need new features.
 
-If you do end up using these macros, let us know how they work for
-you. If you have problems, please open an issue, and if you have bug
-fixes (or new features) feel free to open a pull request!
+If you do end up using these macros,
+[let us know how](https://groups.google.com/forum/#!forum/spire-math)
+they work for you. If you have problems, please open an
+[issue](https://github.com/non/spire/issues), and if you have bug
+fixes (or new features) feel free to open a
+[pull request](https://github.com/non/spire/pulls)!
 
 Conclusion
 ----------
