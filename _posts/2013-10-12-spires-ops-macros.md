@@ -15,9 +15,9 @@ What are Spire's Ops macros?
 ----------------------------
 
 Spire's type classes abstract over very basic operators like `+` and
-`*`.  These operations are normally very fast. This means that
-anything extra that happens on a per-operation basis (like boxing or
-object allocation) will cause generic code to be much slower than its
+`*`.  These operations are normally very fast. This means that any
+extra work that happens on a per-operation basis (like boxing or
+object allocation) will cause generic code to be slower than its
 direct equivalent.
 
 Efficient, generic numeric programming is Spire's raison d'être. The
@@ -61,7 +61,7 @@ Notice that we instantiate an `ev.Ops` instance for every call to
 normally quite fast it will add up when done many (e.g. millions) of
 times.
 
-It's possible to work around this:
+It is possible to work around this:
 
 ```scala
 def bar[A](x: A, y: A)(implicit ev: Ordering[A]): A =
@@ -87,8 +87,8 @@ At this point, it looks like we can either write clean, readable code
 Most programmers will just choose one or the other (probably the
 former) and go on with their lives.
 
-However, since this issue affects Spire deeply, it's worth spending a
-bit more time seeing what can be done.
+However, since this issue affects Spire deeply, we spent a bit more
+time looking at this problem to see what could be done.
 
 Having our cake and eating it too
 ---------------------------------
@@ -107,15 +107,15 @@ def fast[A](x: A, y: A)(implicit ev: Ring[A]): A =
   ev.times(ev.plus(x, y), z)
 ```
 
-As we can see, `niceAfter` and `fast` are actually pretty similar. If we
-wanted to transform `niceAfter` into `fast`, we'd just have to:
+As we can see, `niceAfter` and `fast` are actually quite similar. If
+we wanted to transform `niceAfter` into `fast`, we'd just have to:
 
 1. Figure out the appropriate name for symbolic operators. In this
    example, `+` becomes `plus` and `*` becomes `times`.
 
 2. Rewrite the object instantiation and method call, calling the
    method on `ev` instead and passing `x` and `y` as arguments. In
-   this example, `new Ops(x)(ev).foo(y)` would become `ev.foo(x, y)`.
+   this example, `new Ops(x)(ev).foo(y)` becomes `ev.foo(x, y)`.
 
 In a nutshell, this transformation is what Spire's Ops macros do.
 
@@ -128,6 +128,10 @@ To use Spire's Ops macros, you'll need to depend on the `spire-macros`
 package. If you use SBT, you can do this by adding the following line
 to `build.sbt`:
 
+```scala
+libraryDependencies += "org.spire-math" %% "spire-macros" % "0.6.1"
+```
+
 You will also need to enable macros at the declaration site of your
 ops classes:
 
@@ -138,11 +142,10 @@ import scala.language.experimental.macros
 Let's see an example
 --------------------
 
-Here's `Sized`, a simple type class to illustrate how to use the
-macros. The type class abstracts over the notion of having a size. We
-consider a size of zero to be "empty". Type class instances are
-provided for `Char`, `Map`, and `List`. Of course, users could provide
-their own instances as well.
+Consider `Sized`, a type class that abstracts over the notion of
+having a size. Type class instances are provided for `Char`, `Map`,
+and `List`. Of course, users could provide their own instances as
+well.
 
 Here's the code:
 
@@ -230,11 +233,11 @@ and the method parameter (if any) must be called `rhs`. Also, unary
 operators (methods that take no parameters, like `size`) must have
 parenthesis.
 
-You might wonder how the Ops macros would handle multiple constructor
-parameters, or multiple method parameters. Right now, they don't. We
-haven't needed to support these kinds of exotic classes, but in
-principle it would be easy to extend Spire's Ops macros to support
-other shapes as well.
+You might wonder how the Ops macros would handle classes with multiple
+constructor parameters, or multiple method parameters. Right now, they
+don't. We haven't needed to support these kinds of exotic classes, but
+it should be easy to extend Spire's Ops macros to support other shapes
+as well.
 
 If you fail to follow these rules, or if your class has the wrong
 shape, your code will fail to compile. So don't worry. If your code
@@ -275,46 +278,45 @@ from symbols to names. However, your project may want to use different names
 (or different symbols). What then?
 
 For now, you are out of luck. In Spire 0.7.0, we plan to make it
-possible to construct your own `Ops` object with your own
-mapping. This will make it easier for other libraries that make heavy
-use of implicit symbolic operators (e.g. Scalaz) to use these macros
-as well.
+possible to use your own mapping. This should make it easier for other
+libraries that make heavy use of implicit symbolic operators
+(e.g. Scalaz) to use these macros as well.
 
 Other considerations
 --------------------
 
-One thing you might wonder is how this feature interacts with
-specialization. Macros happen at compile-time before the
+You might wonder how the Ops macros interact with
+specialization. Fortunately, macros are expanded before the
 specialization phase. This means you don't need to worry about it! If
-your type class is specialized, and if you invoke the implicit from a
-specialized (or non-generic) context, the result will also be
-specialized.
+your type class is specialized, and you invoke the implicit from a
+specialized (or non-generic) context, the result will be a specialized
+call.
 
-(Of course, using Scala's specialization is tricky, and deserving of
-its own blog post. The good news is that type classes are some of the
+(Of course, using Scala's specialization is tricky, and deserves its
+own blog post. The good news is that type classes are some of the
 easiest structures to specialize correctly in Scala.)
 
 Evaluating the macros at compile-time also means that if there are
 problems with the macro, you'll find out about those at compile-time
 as well. While we expect that many projects will benefit from the Ops
-macros, they were designed specifically for Spire so its possible that
-your project will discover problems, or need new features.
+macros, they were designed specifically for Spire so it's possible
+that your project will discover problems, or need new features.
 
-If you do end up using these macros, please let us know how they
-work. If you have problems, please open an issue, and if you have bug
+If you do end up using these macros, let us know how they work for
+you. If you have problems, please open an issue, and if you have bug
 fixes (or new features) feel free to open a pull request!
 
 Conclusion
 ----------
 
-We are used to thinking about abstractions as coming with a cost. This
-means we often end up doing mental accounting: Is it worth making this
-generic? Can I afford this syntactic sugar? What will the runtime
-impact of this code be?  These concerns condition us to expect that
-code can either be beautiful or fast, but not both.
+We are used to thinking about abstractions having a cost. So we often
+end up doing mental accounting: "Is it worth making this generic? Can
+I afford this syntactic sugar? What will the runtime impact of this
+code be?" These condition us to expect that code can either be
+beautiful or fast, but not both.
 
 By removing the cost of implicit object instantiation, Spire's Ops
-macros help raise the abstraction ceiling, without compromising
-performance. Our goal is to close the gap between direct and generic
-performance in Scala, and to encourage the widest possible use of
-generic types and type classes in Scala.
+macros raise the abstraction ceiling. They allow us to make free use
+of type classes without compromising performance. Our goal is to close
+the gap between direct and generic performance, and to encourage the
+widest possible use of generic types and type classes in Scala.
