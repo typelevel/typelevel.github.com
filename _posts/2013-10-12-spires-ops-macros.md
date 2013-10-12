@@ -143,9 +143,9 @@ Let's see an example
 --------------------
 
 Consider `Sized`, a type class that abstracts over the notion of
-having a size. Type class instances are provided for `Char`, `Map`,
-and `List`. Of course, users could provide their own instances as
-well.
+having a size. Type class instances for `Char`, `Map`, and `List` are
+provided in the companion object. Of course, users can also provide
+their own instances.
 
 Here's the code:
 
@@ -228,10 +228,10 @@ The fine print
 Of course, there's always some fine-print.
 
 In this case, the implicit class *must* use the same parameter names
-as above. The constructor parameter to `SizedOps` must be called `lhs`
-and the method parameter (if any) must be called `rhs`. Also, unary
-operators (methods that take no parameters, like `size`) must have
-parenthesis.
+as above. The constructor parameter to `SizedOps` *must* be called
+`lhs` and the method parameter (if any) *must* be called `rhs`. Also,
+unary operators (methods that take no parameters, like `size`) *must*
+have parenthesis.
 
 You might wonder how the Ops macros would handle classes with multiple
 constructor parameters, or multiple method parameters. Right now, they
