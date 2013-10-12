@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to use Spire's Ops macros in your own projet
+title: How to use Spire's Ops macros in your own project
 
 meta:
   nav: blog
@@ -8,8 +8,8 @@ meta:
   pygments: true
 ---
 
-What are Spire's Ops macros?
-============================
+How to use Spire's Ops macros in your own project
+=================================================
 
 What are Spire's Ops macros?
 ----------------------------
@@ -240,7 +240,7 @@ If you fail to follow these rules, or if your class has the wrong
 shape, your code will fail to compile. So don't worry. If your code
 compiles, it means you got it right!
 
-Symbolic Names
+Symbolic names
 --------------
 
 The previous example illustrates rewriting method calls to avoid
