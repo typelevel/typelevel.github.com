@@ -22,15 +22,18 @@ direct equivalent.
 
 Efficient, generic numeric programming is Spire's raison d'être. The
 following post explains how we use macros to remove unnecessary object
-instantiations at compile-time.
+instantiations at compile-time, and how you can too.
 
 How implicit operators on type classes usually work
 ---------------------------------------------------
 
 When using type classes in Scala, we rely on implicit conversions to
-"add" operators to an otherwise generic type. In this example, `foo1`
-is the code that the programmer writes, and `foo4` is the code after
-implicits are resolved.
+"add" operators to an otherwise generic type.
+
+In this example, `A` is the generic type, `Ordering` is the type
+class, and `>` is the implicit operator. `foo1` is the code that the
+programmer writes, and `foo4` is a translation of that code after
+implicits are resolved, and syntactic sugar is expanded.
 
 ```scala
 import scala.math.Ordering
@@ -107,28 +110,26 @@ def fast[A](x: A, y: A)(implicit ev: Ring[A]): A =
 As we can see, `niceAfter` and `fast` are actually pretty similar. If we
 wanted to transform `niceAfter` into `fast`, we'd just have to:
 
-1. Figure out the appropriate name for symbolic operators.
-   In this example, `+` becomes `plus` and `*` becomes `times`.
+1. Figure out the appropriate name for symbolic operators. In this
+   example, `+` becomes `plus` and `*` becomes `times`.
 
-2. Rewrite the object instantiation and method call, calling the method on
-   `ev` instead and passing `x` and `y` as arguments. For example,
-   `new Ops(x)(ev).foo(y)` would become `ev.foo(x, y)`.
+2. Rewrite the object instantiation and method call, calling the
+   method on `ev` instead and passing `x` and `y` as arguments. In
+   this example, `new Ops(x)(ev).foo(y)` would become `ev.foo(x, y)`.
 
 In a nutshell, this transformation is what Spire's Ops macros do.
 
 Using the Ops macros
 --------------------
 
+Your project must use Scala 2.10+ to be able to use macros.
+
 To use Spire's Ops macros, you'll need to depend on the `spire-macros`
 package. If you use SBT, you can do this by adding the following line
 to `build.sbt`:
 
-```
-libraryDependencies += "org.spire-math" %% "spire-macros" % "0.6.1"
-```
-
-You must be using Scala 2.10 or newer to use macros, and you will also
-need to enable macros at the declaration site of your ops classes:
+You will also need to enable macros at the declaration site of your
+ops classes:
 
 ```scala
 import scala.language.experimental.macros
@@ -218,29 +219,35 @@ def totalSize[A: Sized](as: Seq[A]): Int =
 
 Not bad, eh?
 
-Of course, there's always some fine-print. In this case, the implicit
-class *must* use the same parameter names as above. The constructor
-parameter to `SizedOps` must be called `lhs` and the method parameter
-(if any) must be called `rhs`. Also, unary operators (methods that
-take no parameters, like `size`) must have parenthesis.
+The fine print
+--------------
 
-You might wonder how you can have multiple constructor parameters, or
-multiple method parameters. Right now, you can't. We haven't needed to
-support these kinds of exotic ops classes, but in principle it would
-be easy to extend Spire's Ops macros to support other shapes as well.
+Of course, there's always some fine-print.
+
+In this case, the implicit class *must* use the same parameter names
+as above. The constructor parameter to `SizedOps` must be called `lhs`
+and the method parameter (if any) must be called `rhs`. Also, unary
+operators (methods that take no parameters, like `size`) must have
+parenthesis.
+
+You might wonder how the Ops macros would handle multiple constructor
+parameters, or multiple method parameters. Right now, they don't. We
+haven't needed to support these kinds of exotic classes, but in
+principle it would be easy to extend Spire's Ops macros to support
+other shapes as well.
 
 If you fail to follow these rules, or if your class has the wrong
-shape, your code will fail to compile. So don't worry, if your code
-compiles it means you got it right!
+shape, your code will fail to compile. So don't worry. If your code
+compiles, it means you got it right!
 
 Symbolic Names
 --------------
 
 The previous example illustrates rewriting method calls to avoid
-allocations (#2) but what about mapping symbolic operators to method
-names (#1)?
+allocations, but what about mapping symbolic operators to method
+names?
 
-These work like you'd expect as well:
+Here's an example showing the mapping from `*` to `times`:
 
 ```scala
 trait CanMultiply[A] {
@@ -250,6 +257,14 @@ trait CanMultiply[A] {
 object Implicits {
   implicit class MultiplyOps[A: CanMultiply](lhs: A) {
     def *(rhs: A): A = macro Ops.binop[A, A]
+  }
+}
+
+object Example {
+  import Implicits._
+
+  def gak[A: CanMultiply](a: A, as: List[A]): A =
+    as.foldLeft(a)(_ * _)
   }
 }
 ```
