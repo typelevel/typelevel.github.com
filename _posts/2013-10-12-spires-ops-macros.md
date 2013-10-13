@@ -4,7 +4,7 @@ title: How to use Spire's Ops macros in your own project
 
 meta:
   nav: blog
-  author: d_m
+  author: non
   pygments: true
 ---
 
