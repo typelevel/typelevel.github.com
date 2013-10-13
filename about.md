@@ -10,3 +10,6 @@ About us
 ========
 
 Soon!
+
+
+{% include license.html %}

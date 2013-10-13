@@ -134,3 +134,19 @@ iframe.author-gh {
 .disqus-container {
   padding-top: 20px;
 }
+
+.license-footer {
+  padding-top: 20px;
+  display: table;
+}
+
+.license-footer .cc-logo {
+  padding-right: 8px;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.license-footer .cc-text {
+  vertical-align: middle;
+  display: table-cell;
+}

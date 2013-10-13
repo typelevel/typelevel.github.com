@@ -307,8 +307,3 @@ detail, inspiring me to tell more people about the whole thing at the
 conference, and then, much later, write it down here.
 
 *This article was tested with Scala 2.10.2 & Scalaz 7.0.3.*
-
-[![Creative Commons License](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/deed.en_US)  
-Copyright © 2013 Stephen Compall  
-This work is licensed under a
-[Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/deed.en_US).
