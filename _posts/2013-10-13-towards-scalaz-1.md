@@ -162,9 +162,9 @@ object AddableWithZero {
     }
 
   implicit val stringIsAddableZero: AddableWithZero[String] =
-    new Addable[String] {
+    new AddableWithZero[String] {
       def plus(x: String, y: String): String = x + y
-      der zero: String = ""
+      def zero: String = ""
     }
 }
 ```
