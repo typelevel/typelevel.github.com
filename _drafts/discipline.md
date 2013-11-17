@@ -17,7 +17,7 @@ Simultaneously, the [Scalacheck](http://www.scalacheck.org/) bindings were refac
 Requirements
 ------------
 
-The main goal was to make it easy to check that instances of Spire's type classes adhere the set of algebraic laws of the respective type classes.
+The main goal was to make it easy to check that instances of Spire's type classes adhere to the set of algebraic laws of the respective type classes.
 [Scalaz](https://github.com/scalaz/scalaz) also has such an infrastructure, so why not take that one?
 The problem is that in Spire, the hierarchy of type classes is a little bit more complex:
 
@@ -35,6 +35,7 @@ trait Semiring[A] extends AdditiveMonoid[A] with MultiplicativeSemigroup[A] {
 
 without clashes between the additive and multiplicative binary operations.
 Also, a semiring can now be quite naturally treated as an additive monoid and a multiplicative semigroup (but not as a generic semigroup, which would be ambiguous).
+(One could consider this the *third* hierarchy of algebraic type classes in spire.)
 
 When checking laws, we do not want to repeat the same laws over and over again.
 Hence, we need some way to express that certain type classes share laws with others which are not necessarily in the same type hierarchy.
