@@ -44,7 +44,7 @@ If you want to use the latest releases of our libraries, just put these lines in
 
 ```scala
 libraryDependencies ++= Seq(
-  "org.scalaz"     %% "scalaz-core" % "7.0.4",
+  "org.scalaz"     %% "scalaz-core" % "7.0.5",
   "com.chuusai"    %% "shapeless"   % "1.2.4",
   "org.spire-math" %% "spire"       % "0.6.1"
 )
