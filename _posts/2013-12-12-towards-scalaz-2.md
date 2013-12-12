@@ -162,7 +162,7 @@ that is a `Monoid`, and reduce over that instead.
 
 So. Given something, say a `List[A]`, we want to *Map* each element of the list to
 an element of a type that has a `Monoid` instance, and then we want to *Reduce* the
-list down to a single value. All together now... MapReduce!
+list down to a single value. What is this? All together now.. MapReduce!
 
 Unfortunately, Hadoop MapReduce by itself does not give you anything like a `List`.
 Fortunately, our good friends at [NICTA](http://www.nicta.com.au/) have developed
@@ -171,7 +171,10 @@ which abstracts over Hadoop MapReduce by providing a `List`-like interface, call
 `DList` (distributed list). Users treat the `DList` very similarly to how they would
 a regular Scala `List`, and perform operations on it that get compiled down into
 MapReduce jobs. Such operations include not only the familiar (and expected) `map`
-and `reduce` combinators, but also our friends `foldMap` and `fold`.
+and `reduce` combinators, but also our friends `foldMap` and `fold`. While `DList`'s
+do not have a proper `Foldable` instance due to the difficulty of implementing `foldRight`
+for the MapReduce, I find it to be a great example of the power of abstractions and
+generecity abstract algebra and Scalaz provides to us as programmers.
 
 ## Further Reading
 
