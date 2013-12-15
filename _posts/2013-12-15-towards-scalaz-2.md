@@ -21,7 +21,7 @@ As a prerequisite, I assume knowledge of type classes as they
 are implemented and used in Scala, higher kinded types,
 and sum types (e.g. `Option/Some/None`, `Either/Left/Right`).
 
-For a tutorial/review on higher kinds, I recommend the following resources:
+For a tutorial/review on (higher) kinds, I recommend the following resources:
 
 * [Scala: Types of a higher kind](http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/)
 * [Generics of a Higher Kind](http://adriaanm.github.io/files/higher.pdf)
@@ -29,8 +29,8 @@ For a tutorial/review on higher kinds, I recommend the following resources:
 
 ## Part 2: Summations of a Higher Kind
 
-[Last time](http://typelevel.org/blog/2013/10/13/towards-scalaz-1.html) we
-left off after writing our own generic `sum` function:
+[Last time]({% post_url 2013-10-13-towards-scalaz-1 %}) we left off after
+writing our own generic `sum` function:
 
 ```scala
 import scalaz.Monoid
@@ -39,7 +39,7 @@ def sumGeneric[A](l: List[A])(implicit A: Monoid[A]): A =
   l.foldLeft(A.zero)((x, y) => A.append(x, y))
 ```
 
-.. which allowed us to sum a list not only of numeric types like
+This allowed us to sum a list not only of numeric types like
 `Int`, but also others that could be added and had a "zero" such as
 `String` via string concatenation and the empty string, as well as
 `List[A]` via list concatenation and the empty list.
@@ -63,9 +63,9 @@ a type class, and aptly name it `Foldable`.
 
 ```scala
 trait Foldable[F[_]] {
-  // Instead of requiring the contents to be Monoid's, let's 
+  // Instead of requiring the contents to be monoidal, let's 
   // make it flexible by allowing a fold as long as we can convert
-  // the contents to a type that has a Monoid.
+  // the contents to a type that has a `Monoid`.
   def foldMap[A, B](fa: F[A])(f: A => B)(implicit B: Monoid[B]): B
 }
 ```
@@ -93,9 +93,10 @@ object Foldable {
   implicit val treeIsFoldable: Foldable[Tree] {
     def foldMap[A, B](fa: Tree[A])(f: A => B)(implicit B: Monoid[B]): B =
       fa match {
-        case Leaf() => B.zero
+        case Leaf() =>
+          B.zero
         case Node(value, left, right) => 
-            B.append(value, B.append(foldMap(left)(f), foldMap(right)(f)))
+          B.append(value, B.append(foldMap(left)(f), foldMap(right)(f)))
       }
   }
 }
@@ -104,8 +105,6 @@ object Foldable {
 and finally, our new summing function:
 
 ```scala
-import scalaz.Monoid
-
 def sumGeneric[F[_], A](fa: F[A])(implicit F: Foldable[F], A: Monoid[A]): A =
   fa.foldMap(identity)
 ```
@@ -147,22 +146,22 @@ In recent days, the word "Hadoop" has become synonymous with "big data." The Map
 system made popular by [Google](http://research.google.com/archive/mapreduce.html)
 has made it's way into several companies looking to glean information from their data.
 
-Why am I mentioning this in a Typelevel blog post? Well, think about the reduce phase -
+Why am I mentioning this in a {% include typelevel.html %} blog post? Well, think about the reduce phase – 
 what is really happening? For a particular key, we're given a list of values emitted
 for that key, and we want to reduce those values into a single value. Sound familiar?
-Sounds a bit like `fold` doesn't it? Note that not all reductions in MapReduce have to follow
+Sounds a bit like `fold`, doesn't it? Note that not all reductions in MapReduce have to follow
 monoid laws, but a surprising amount do as demonstrated by Twitter's
 [Algebird](https://github.com/twitter/algebird) project.
 
 Going back to `fold`, recall that in order to just `fold` we need to have something
 `Foldable` that contains something that already has a `Monoid` instance. A more general
 approach, as taken by `scalaz.Foldable`, is to also provide a `foldMap` function which
-let's us also pass in a function *map*ping each element of the `Foldable` to something
+lets us also pass in a function *map*ping each element of the `Foldable` to something
 that is a `Monoid`, and reduce over that instead.
 
 So. Given something, say a `List[A]`, we want to *Map* each element of the list to
 an element of a type that has a `Monoid` instance, and then we want to *Reduce* the
-list down to a single value. What is this? All together now.. MapReduce!
+list down to a single value. What is this? All together now: MapReduce!
 
 Unfortunately, Hadoop MapReduce by itself does not give you anything like a `List`.
 Fortunately, our good friends at [NICTA](http://www.nicta.com.au/) have developed
@@ -174,7 +173,7 @@ MapReduce jobs. Such operations include not only the familiar (and expected) `ma
 and `reduce` combinators, but also our friends `foldMap` and `fold`. While `DList`'s
 do not have a proper `Foldable` instance due to the difficulty of implementing `foldRight`
 for the MapReduce, I find it to be a great example of the power of abstractions and
-generecity abstract algebra and Scalaz provides to us as programmers.
+genericity abstract algebra and Scalaz provides to us as programmers.
 
 ## Further Reading
 
