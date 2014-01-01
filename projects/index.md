@@ -40,12 +40,12 @@ Projects
 
 ## SBT configuration
 
-If you want to use the latest releases of our libraries, just put these lines into your `build.sbt` file.
+If you want to use the latest stable releases of our libraries, just put these lines into your `build.sbt` file.
 
 ```scala
 libraryDependencies ++= Seq(
   "org.scalaz"     %% "scalaz-core" % "7.0.5",
   "com.chuusai"    %% "shapeless"   % "1.2.4",
-  "org.spire-math" %% "spire"       % "0.6.1"
+  "org.spire-math" %% "spire"       % "0.7.2"
 )
 ```
