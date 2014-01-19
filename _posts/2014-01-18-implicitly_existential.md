@@ -5,6 +5,7 @@ title: When implicitly isn't specific enough
 meta:
   nav: blog
   author: S11001001
+  pygments: true
 ---
 
 When `implicitly` isn't specific enough
