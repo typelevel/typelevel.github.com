@@ -15,14 +15,14 @@ When working with implicit-encoded dependent function types, such as
 like to acquire instances of those functions to see what types get
 calculated for them.
 
-For example, `++` on Shapeless hlists is driven by `Prepend`:
+For example, `++` on Shapeless `HList`s is driven by `Prepend`:
 
 ```scala
 def ++[S <: HList](suffix : S)(implicit prepend : Prepend[L, S])
   : prepend.Out = prepend(l, suffix)
 ```
 
-So given some hlists, we can expect to be able to combine them in a
+So given some `HList`s, we can expect to be able to combine them in a
 couple ways.  First, by using the syntax function above, and then by
 acquiring a value of `prepend`'s type directly and invoking it, just
 as in the body of the above function.
@@ -82,7 +82,7 @@ scala> res5._1
                    ^
 ```
 
-Uh, huh?  Let's try adding the hlists we got from `ohipohi` before.
+Uh, huh?  Let's try adding the `HList`s we got from `ohipohi` before.
 
 ```scala
 cala> res3 ++ res3
