@@ -96,7 +96,7 @@ object Foldable {
         case Leaf() =>
           B.zero
         case Node(value, left, right) => 
-          B.append(value, B.append(foldMap(left)(f), foldMap(right)(f)))
+          B.append(f(value), B.append(foldMap(left)(f), foldMap(right)(f)))
       }
   }
 }
