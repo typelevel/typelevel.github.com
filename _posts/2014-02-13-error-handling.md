@@ -182,13 +182,14 @@ object Wonky {
 }
 
 /* Somewhere else.. */
-val w = Wonky.validate(x, y)
+val w = Wonky.validate("foo", "bar") // -\/(MustHaveLengthFive("foo"))
 ```
 
-The fact that the string must be length 5 can be checked separate from it being palindromic. For
-instance, say we pass in the string `"foo"`. Clearly this is neither length 5, nor palindromic.
-However, based on the implementation above, we would only get back -\/(MustHaveLengthFive) -
-we get no information regarding it not being palindromic.
+The fact that one string must be length 5 can be checked and reported separately from the other 
+being palindromic. Note that in the above example `"foo"` does not satisfy the length 5 requirement,
+and `"bar"` does not satisfy the palindromic requirement, yet only `"foo"`'s error is reported
+due to how `\/` works. What if we want to report any and all errors that could be reported
+("foo" is not length 5 and "bar" is not palindromic)?
 
 If we want to validate several properties at once, and return any and all validation errors,
 we can turn to `scalaz.Validation`. The modified function would look something like:
@@ -224,7 +225,7 @@ Wonky.validate("monad", "bar")
 Wonky.validate("monad", "radar")
 ```
 
-Awesome! However, there is one cavear - we cannot in good conscience use
+Awesome! However, there is one caveat - we cannot in good conscience use
 `scalaz.Validation` in a for-comprehension. Why? Because there is no valid
 monad for it. Validation's accumulative nature works via it's applicative
 instance, but due to how the instance works, there is no consistent monad
