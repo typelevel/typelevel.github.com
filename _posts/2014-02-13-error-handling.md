@@ -196,8 +196,8 @@ we can turn to `scalaz.Validation`. The modified function would look something l
 
 ```scala
 sealed abstract class WonkyError
-case object MustHaveLengthFive(s: String) extends WonkyError
-case object MustBePalindromic(s: String) extends WonkyError
+case class MustHaveLengthFive(s: String) extends WonkyError
+case class MustBePalindromic(s: String) extends WonkyError
 
 final class Wonky private(five: String, palindrome: String)
 
@@ -210,7 +210,7 @@ object Wonky {
     if (p != p.reverse) MustBePalindromic(p).failNel
     else p.success
 
-  def validate(five: String, palindrome: String): ValidationNel[WonkyError, String] =
+  def validate(five: String, palindrome: String): ValidationNel[WonkyError, Wonky] =
     (checkFive(five) |@| checkPalindrome(palindrome)) { (f, p) => new Wonky(f, p) }
 }
 
@@ -230,7 +230,7 @@ Awesome! However, there is one caveat - we cannot in good conscience use
 monad for it. Validation's accumulative nature works via it's applicative
 instance, but due to how the instance works, there is no consistent monad
 (every monad is an applicative, where monadic bind is consistent with
-applicative apply). However, you can use the `\/#disjunction` function to
+applicative apply). However, you can use the `Validation#disjunction` function to
 convert it to a `scalaz.\/`, which can then be used in a for comprehension.
 
 One more thing to note - in the above code snippet I used
