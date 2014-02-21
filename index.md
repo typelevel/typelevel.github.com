@@ -36,7 +36,7 @@ meta:
   <div class="span4">
     <h2>scodec</h2>
     <p><span class="tagline">Binary serialization.</span> scodec is a combinator library for working with binary data. It focuses on contract-first and pure functional encoding and decoding of binary data and provides integration into scalaz and shapeless.</p>
-    <p><a class="btn" href="{{ site.baseurl }}/projects/shapeless">Learn more &raquo;</a></p>
+    <p><a class="btn" href="{{ site.baseurl }}/projects/scodec">Learn more &raquo;</a></p>
   </div>
   <div class="span4">
     <h2>shapeless</h2>
