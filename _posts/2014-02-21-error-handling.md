@@ -1,20 +1,24 @@
 ---
 layout: post
-title: How do I error handle thee? Let me count the ways.
+title: How do I error handle thee? Let me count the ways
 meta:
   nav: blog
   author: adelbertc
   pygments: true
 ---
 
+# How do I error handle thee?
+
 Scala has several ways to deal with error handling, and often times people
 get confused as to when to use what. This post hopes to address that.
 
-# Let me count the ways
-## Option
+_Let me count the ways._
+
+## `Option`
+
 People coming to Scala from Java-like languages are often told `Option` is
 a replacement for `null` or exception throwing. Say we have a function that
-create some sort of interval, but only allows intervals where the lower bound
+creates some sort of interval, but only allows intervals where the lower bound
 comes first.
 
 ```scala
@@ -31,14 +35,14 @@ the lower bound is smaller than the upper bound (otherwise an exception would ha
 been thrown).
 
 However, throwing exceptions breaks our ability to reason about a function/program.
-Control is handed off to the call site, and we hope the call site catches it - if not,
+Control is handed off to the call site, and we hope the call site catches it – if not,
 it propagates further up until at some point something catches it, or our program
 crashes. We'd like something a bit cleaner than that.
 
-Enter `Option` - given our `Interval` constructor, construction may or may not succeed.
+Enter `Option` – given our `Interval` constructor, construction may or may not succeed.
 Put another way, after we enter the constructor, we may or may not have a valid
-`Interval`. `Option` is a type that represents a value that may or may not be there -
-it can either be `Some` or `None`. Let's use what's called a smart constructor.
+`Interval`. `Option` is a type that represents a value that may or may not be there;
+it can either be `Some` or `None`. Let's use what's called a _smart constructor_.
 
 ```scala
 final class Interval private(val low: Int, val high: Int)
@@ -57,11 +61,12 @@ parameters, and returns an `Option[Interval]` that may or may not contain our co
 `Interval`. Our function does not arbitrarily kick control back to the call site due
 to an exception and we can reason about it much more easily.
 
-## Either and scalaz.\\/
-So `Option` gives us `Some` or `None`, which is all we need if there is only one thing
+## `Either` and `scalaz.\/`
+
+So, `Option` gives us `Some` or `None`, which is all we need if there is only one thing
 that could go wrong. For instance, the standard library's `Map[K, V]` has a function `get`
-that given a key of type `K`, returns `Option[V]` - clearly if the key exists, the associated
-value is returned (wrapped in a `Some`) - if the key does not exist it returns a `None`.
+that given a key of type `K`, returns `Option[V]` – clearly if the key exists, the associated
+value is returned (wrapped in a `Some`). If the key does not exist, it returns a `None`.
 
 But sometimes one of several things can go wrong. Let's say we have some wonky type that
 wants a string that is exactly of length 5 and another string that is a palindrome.
@@ -104,20 +109,20 @@ for {
 ```
 
 In the case of `Option`, if any of `foo/bar/baz/quux` returns a `None`, that `None` simply
-gets thread through the rest of the computation - no `try/catch` statements marching off
+gets threaded through the rest of the computation – no `try/catch` statements marching off
 the right side of the screen!
 
-For-comprehensions in Scala require the type we're working with to have `flatMap`, and
-`map`. `flatMap`, along with "pure" and some laws, are the requisite functions needed
-to form a monad - `map` can be defined in terms of `flatMap` and "pure". 
-With `scala.util.Either` however, we don't have those - we have
-to use an explicit conversion via `Either#Right` and `Either#Left` which defeats the purpose
+For comprehensions in Scala require the type we're working with to have `flatMap` and
+`map`. `flatMap`, along with `pure` and some laws, are the requisite functions needed
+to form a monad – `map` can be defined in terms of `flatMap` and `pure`.
+With `scala.util.Either` however, we don't have those – we have
+to use an explicit conversion via `Either#Right` and `Either#Left`
 (it's the equivalent of somehow asserting that your value is there (`Right`) or not (`Left`),
-defeating the purpose of `Either` - a similar argument can be made with `Option` and `Option#get`).
+defeating the purpose of `Either` – a similar argument can be made with `Option` and `Option#get`).
 
 Thankfully, we have an alternative in the [Scalaz](http://typelevel.org/) library via
-`scalaz.\/` (I just pronounce this "either" - some say disjoint union or just "or") that is a right-biased
-version of `scala.util.Either` - that is, calling `\/#map` map's over the value if it's in
+`scalaz.\/` (I just pronounce this "either" – some say disjoint union or just "or"), a right-biased
+version of `scala.util.Either` – that is, calling `\/#map` maps over the value if it's in
 a "right" (`scalaz.\/-`), otherwise if it's "left" (`scalaz.-\/`) it just threads it through
 without touching it, much like how `Option` behaves. We can therefore alter the earlier function:
 
@@ -139,12 +144,16 @@ object Wonky {
 val w = Wonky.validate(x, y)
 ```
 
-## Try
+## `Try`
+
 As of Scala 2.10, we have `scala.util.Try` which is essentially an either, with the left type
-fixed as `Throwable`. There are two problems (that I can think of at this moment) with this -
-(1) We want to avoid exceptions where we can (2) It violates the monad laws. A big factor in
-our ability to deal with all these error handling types nicely is using their monadic properties
-in for-comprehensions.
+fixed as `Throwable`. There are two problems (that I can think of at this moment) with this:
+
+1. We want to avoid exceptions where we can.
+2. It violates the monad laws.
+
+A big factor in our ability to deal with all these error handling types nicely
+is using their monadic properties in for comprehensions.
 
 For an explanation of the monad laws, there is a nice post
 [here](http://eed3si9n.com/learning-scalaz/Monad+laws.html) describing them (using Scala). `Try`
@@ -163,7 +172,8 @@ certainly may be convenient to be able to wrap an arbitrarily code block with th
 and let it catch any exception that may be thrown, we still recommend using an algebraic data type
 describing the errors and using `YourErrorType \/ YourReturnType`.
 
-## scalaz.Validation
+## `scalaz.Validation`
+
 Going back to our previous example with validating wonky strings, we see an improvement that
 could be made.
 
@@ -185,11 +195,11 @@ object Wonky {
 val w = Wonky.validate("foo", "bar") // -\/(MustHaveLengthFive("foo"))
 ```
 
-The fact that one string must be length 5 can be checked and reported separately from the other 
-being palindromic. Note that in the above example `"foo"` does not satisfy the length 5 requirement,
+The fact that one string must have a length of 5 can be checked and reported separately from the other 
+being palindromic. Note that in the above example `"foo"` does not satisfy the length requirement,
 and `"bar"` does not satisfy the palindromic requirement, yet only `"foo"`'s error is reported
 due to how `\/` works. What if we want to report any and all errors that could be reported
-("foo" is not length 5 and "bar" is not palindromic)?
+("foo" does not have a length of 5 and "bar" is not palindromic)?
 
 If we want to validate several properties at once, and return any and all validation errors,
 we can turn to `scalaz.Validation`. The modified function would look something like:
@@ -225,19 +235,19 @@ Wonky.validate("monad", "bar")
 Wonky.validate("monad", "radar")
 ```
 
-Awesome! However, there is one caveat - we cannot in good conscience use
-`scalaz.Validation` in a for-comprehension. Why? Because there is no valid
-monad for it. Validation's accumulative nature works via it's applicative
+Awesome! However, there is one caveat – we cannot in good conscience use
+`scalaz.Validation` in a for comprehension. Why? Because there is no valid
+monad for it. `Validation`'s accumulative nature works via its `Applicative`
 instance, but due to how the instance works, there is no consistent monad
-(every monad is an applicative, where monadic bind is consistent with
+(every monad is an applicative functor, where monadic bind is consistent with
 applicative apply). However, you can use the `Validation#disjunction` function to
 convert it to a `scalaz.\/`, which can then be used in a for comprehension.
 
-One more thing to note - in the above code snippet I used
-`ValidationNel`, which is actually just a type alias.
-`ValidationNel[E, A]` is simply an alias for 
-`Validation[NonEmptyList[E], A]` - the actual `Validation` will take
-anything on the left side that is a `Semigroup` - `ValidationNel` is
+One more thing to note: in the above code snippet I used
+`ValidationNel`, which is just a type alias.
+`ValidationNel[E, A]` stands for for 
+`Validation[NonEmptyList[E], A]` – the actual `Validation` will take
+anything on the left side that is a `Semigroup` –, and `ValidationNel` is
 provided as a convenience as often times you may want a non-empty
 list of errors describing the various errors that happened in a function.
 However, you can do several interesting things with other semigroups.
