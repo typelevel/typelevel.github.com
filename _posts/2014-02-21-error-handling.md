@@ -128,8 +128,8 @@ without touching it, much like how `Option` behaves. We can therefore alter the 
 
 ```scala
 sealed abstract class WonkyError
-case object MustHaveLengthFive(s: String) extends WonkyError
-case object MustBePalindromic(s: String) extends WonkyError
+case class MustHaveLengthFive(s: String) extends WonkyError
+case class MustBePalindromic(s: String) extends WonkyError
 
 final class Wonky private(five: String, palindrome: String)
 
@@ -179,8 +179,8 @@ could be made.
 
 ```scala
 sealed abstract class WonkyError
-case object MustHaveLengthFive(s: String) extends WonkyError
-case object MustBePalindromic(s: String) extends WonkyError
+case class MustHaveLengthFive(s: String) extends WonkyError
+case class MustBePalindromic(s: String) extends WonkyError
 
 final class Wonky private(five: String, palindrome: String)
 
@@ -247,7 +247,7 @@ One more thing to note: in the above code snippet I used
 `ValidationNel`, which is just a type alias.
 `ValidationNel[E, A]` stands for for 
 `Validation[NonEmptyList[E], A]` – the actual `Validation` will take
-anything on the left side that is a `Semigroup` –, and `ValidationNel` is
+anything on the left side that is a `Semigroup`, and `ValidationNel` is
 provided as a convenience as often times you may want a non-empty
 list of errors describing the various errors that happened in a function.
 However, you can do several interesting things with other semigroups.
