@@ -134,7 +134,10 @@ case object GimmeI extends Gimme[Int]
 
 In pattern matching, given a `Gimme[A]` over unknown `A`, matching
 GimmeI successfully recovers the type equality `A ~ Int`; therefore,
-`Liskov`-lifting is unsound for `Gimme`.
+`Liskov`-lifting is unsound for `Gimme`.  We can reason about this
+type equality as a value member of `GimmeI` of type
+`[Leibniz](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/#scalaz.Leibniz)[⊥, ⊤, A, Int]`,
+which places `A` in a representationally invariant position.
 
 Some other GADTs invalidate covariance. For example:
 
