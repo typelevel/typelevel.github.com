@@ -50,7 +50,8 @@ without a cast. However, it can only be called with Scala-covariant
 
 By definition, applying an `A <~< B` to a value of type `A` should
 yield a value of type `B`, but must also do nothing but return the
-value. Nevertheless, for functorial values that are *parametrically
+value; in other words, it is an *operational identity*. Despite the
+limitation of `liftCo`, for functorial values that are *parametrically
 sound*, even for Scala-invariant `F`, it is operationally sound to
 lift `Liskov`, though impossible to implement without exploiting Scala
 soundness holes:
