@@ -74,8 +74,8 @@ key test is whether `A` appears in the primitive contravariant
 position: as the parameter to a function.
 
 For example, an `IList` of "hi" and "there" has exactly the same
-representation whether you instantiated the `IList` with String or
-with Any. So that is a good first test. If a class changes its
+representation whether you instantiated the `IList` with `String` or
+with `Any`. So that is a good first test. If a class changes its
 construction behavior based on manifest type information, or its basic
 data construction functions violate
 [the rules of parametricity](http://failex.blogspot.com/2013/06/fake-theorems-for-free.html),
@@ -88,10 +88,11 @@ in that way. For example, if your `F[A]` contains an `IList[A]` in its
 representation, you may rely on `IList`'s parametrically sound
 covariance when considering `F`'s.
 
-Any `var`, or var-like thing such as an `Array`, places its parameter
-in an invariant position, because it features a getter (return type)
-and setter (parameter type). So its presence in the data model
-invalidates `Liskov` lifting if the type parameter appears within it.
+Any `var`, or `var`-like thing such as an `Array`, places its
+parameter in an invariant position, because it features a getter
+(return type) and setter (parameter type). So its presence in the data
+model invalidates `Liskov` lifting if the type parameter appears
+within it.
 
 Obviously, runtime evidence of a type parameter's value eliminates the
 possibility of lifting `Liskov` over that parameter.
