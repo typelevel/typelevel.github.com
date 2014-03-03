@@ -59,7 +59,8 @@ soundness holes:
 def liftCvf[F[_]: Functor](a: A <~< B): F[A] <~< F[B]
 ```
 
-For example, this is sound for `scalaz.IList`.
+For example,
+[this is sound for `scalaz.IList`](https://github.com/scalaz/scalaz/blob/v7.1.0-M5/core/src/main/scala/scalaz/IList.scala#L434-L437).
 
 Parametrically sound covariance
 -------------------------------
