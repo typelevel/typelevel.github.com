@@ -42,6 +42,7 @@ positions, like so:
 
 ```scala
 def liftCo[F[+_], A, B](a: A <~< B): F[A] <~< F[B]
+def liftCt[F[-_], A, B](a: A <~< B): F[B] <~< F[A]
 ```
 
 As `Liskov` is, soundly, Scala-variant, this can be implemented
@@ -63,15 +64,49 @@ def liftCvf[F[_]: Functor](a: A <~< B): F[A] <~< F[B]
 For example,
 [this is sound for `scalaz.IList`](https://github.com/scalaz/scalaz/blob/v7.1.0-M5/core/src/main/scala/scalaz/IList.scala#L434-L437).
 
+But `IList[Int]` isn't a subtype of `IList[Any]`!
+-------------------------------------------------
+
+Sure, as far as Scala is concerned.  But `Liskov` is all about making
+claims that can't directly be proven due to the language's
+limitations.  Haskell allows you to constrain functions with type
+equalities, which is very important when working with type families;
+Scala doesn't, so we get
+[`Leibniz`](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/#scalaz.Leibniz)
+instead.
+
+A type is a set of values.  Where *Y* is a supertype of *X*, every
+value in *X* is in *Y*.  Since `IList[String]("hi", "there")` has the
+same representation as `IList[Any]("hi", "there")`, they are the same
+value; as this is true for *all* `IList[String]`s, but the opposite is
+not true, `IList[Any]` is a `IList[String]` supertype, regardless of
+what Scala knows.
+
+So doing a casting `Liskov` lift, like that into `IList`, is
+essentially “admitted” in a proof system sense.  You are saying, “I
+can't prove that this subtype relationship holds, but it does, so
+assume it.”
+
+**To decide whether an admitted `A <~< B` is sound**: suppose that the
+compiler admits that subtyping relationship.  Can it then draw
+incorrect conclusions, about the sets of values, derived from that
+assumption?  This is the cardinal rule.
+
+By extension, **to decide whether an `F` permits Liskov lifting**:
+does the above rule pass given `F[A] <~< F[B]` *for all* `A`, `B`
+where `B` is a supertype of `A`?
+
 Parametrically sound covariance
 -------------------------------
 
 Because a `Liskov` must be an operational identity, it is essential
 that, given any value of `F[A]`, for all supertypes `B` of `A`, the
-representation of `F[B]` must be identical. You can determine this by
+representation of `F[B]` must be identical.  You can determine this by
 analyzing the subclasses of `F` as an algebraic data type, where the
-key test is whether `A` appears in the primitive contravariant
-position: as the parameter to a function.
+key test is to ensure that `A` *never* appears in the primitive
+contravariant position: as the parameter to a function.  This test is
+not quite enough to prove that `Liskov` lifting is sound, but it gets
+us most of the way.
 
 For example, an `IList` of "hi" and "there" has exactly the same
 representation whether you instantiated the `IList` with `String` or
@@ -124,8 +159,11 @@ GADTs
 -----
 
 Some features of Scala resist simple ADT analysis, so must be given
-their due. A “recoverable phantom” implies a type relationship that
-forbids `Liskov`-lifting, for example:
+their due.  Despite their sound covariance considering only the
+representational rules in the previous section, they still break the
+cardinal rule by allowing the compiler to make invalid assumptions
+about the sets of values.  A “recoverable phantom” implies a type
+relationship that forbids `Liskov`-lifting, for example:
 
 ```scala
 sealed trait Gimme[A]
@@ -133,11 +171,14 @@ case object GimmeI extends Gimme[Int]
 ```
 
 In pattern matching, given a `Gimme[A]` over unknown `A`, matching
-GimmeI successfully recovers the type equality `A ~ Int`; therefore,
-`Liskov`-lifting is unsound for `Gimme`.  We can reason about this
-type equality as a value member of `GimmeI` of type
-[`Leibniz[⊥, ⊤, A, Int]`](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/#scalaz.Leibniz),
-which places `A` in a representationally invariant position.
+`GimmeI` successfully recovers the type equality `A ~ Int`; therefore,
+`Liskov`-lifting is unsound for `Gimme`.  For example, lifting
+`Int <~< Any`, applying to `GimmeI`, and matching, gives us
+`Any ~ Int`, which is nonsense.
+
+We can reason about this type equality as a value member of `GimmeI`
+of type `Leibniz[⊥, ⊤, A, Int]`, which places `A` in a
+representationally invariant position.
 
 Some other GADTs invalidate covariance. For example:
 
@@ -157,9 +198,10 @@ sealed trait AM[A]
 case class FAM[A, B](fa: AM[A], f: A => B) extends AM[B]
 ```
 
-Matching `AM[A]` to `FAM[_,_]` reveals nothing, and the covariance of
-`B` is sound in `FAM` considered alone, so `Liskov`s can be lifted
-into `AM`.
+Matching `AM[A]` to `FAM[_,_]` reveals nothing about `A`; its use of
+GADTs only introduces a new existential unrelated to `A`.  Considering
+only `B`, as the `A` parameter is called in `FAM`, its covariance is
+sound in `FAM`, so `Liskov`s can be lifted into `AM`.
 
 Contravariance
 --------------
@@ -191,6 +233,35 @@ soundly contravariant position, making `A` contravariant.  Meanwhile,
 ```scala
 final case class IOf2[A](f: IOf[IOf[A]])
 ```
+
+Some surprises
+--------------
+
+Despite the unsoundness of `Liskov`-lifting into `Gimme` earlier, it
+may seem surprising that Scala allows:
+
+```
+sealed trait GimmeC[+A]
+case object GimmeCI extends Gimme[Int]
+```
+
+Moreover, this isn't a bug; it's perfectly sound.  That is because,
+while matching `GimmeI` causes Scala to infer `A ~ Int`, it won't do
+that for `GimmeCI`!  Scala can soundly determine that `A ⊇ Int` when
+it matches `GimmeCI`, but I do not think it even goes so far as to do
+that as of this writing.  We can't blame Scala for this difference;
+Scala has declared up front that its type system encodes what it
+believes, and is *our* responsibility to follow the cardinal rule of
+not violating its assumptions if we lift `Liskov` into `Gimme`.
+
+As stated earlier, `Liskov` cannot be lifted into
+`collection.immutable.Set`; `TreeSet` exists to trivially demonstrate
+the problem, but even if `TreeSet` was not there, we would not be able
+to honestly do it because `c.i.Set` is open to new subclasses that
+could perform similar violations.  However, despite lacking a
+`Functor`, `scalaz.ISet` *does* allow `Liskov`-lifting.  Well, once
+you convert your `ISet[Int]` to `ISet[Any]`, you can't do many
+operations on it, but that's neither here nor there.
 
 Should this function exist?
 ---------------------------
