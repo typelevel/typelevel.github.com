@@ -240,7 +240,7 @@ Some surprises
 Despite the unsoundness of `Liskov`-lifting into `Gimme` earlier, it
 may seem surprising that Scala allows:
 
-```
+```scala
 sealed trait GimmeC[+A]
 case object GimmeCI extends Gimme[Int]
 ```
