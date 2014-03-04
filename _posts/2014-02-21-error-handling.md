@@ -116,9 +116,11 @@ For comprehensions in Scala require the type we're working with to have `flatMap
 `map`. `flatMap`, along with `pure` and some laws, are the requisite functions needed
 to form a monad – `map` can be defined in terms of `flatMap` and `pure`.
 With `scala.util.Either` however, we don't have those – we have
-to use an explicit conversion via `Either#Right` and `Either#Left`
-(it's the equivalent of somehow asserting that your value is there (`Right`) or not (`Left`),
-defeating the purpose of `Either` – a similar argument can be made with `Option` and `Option#get`).
+to use an explicit conversion via `Either#right` or `Either#left` to get a
+`RightProjection` or `LeftProjection` (respectively), which specifies in what direction we bias
+the `map` and `flatMap` calls. The convention however, is that the right side is the "correct"
+(or "right", if you will) side and the left represents the failure case, but it is tedious to
+continously call `Either#right` on values of type `Either` to achieve this.
 
 Thankfully, we have an alternative in the [Scalaz](http://typelevel.org/) library via
 `scalaz.\/` (I just pronounce this "either" – some say disjoint union or just "or"), a right-biased
@@ -143,6 +145,8 @@ object Wonky {
 /* Somewhere else.. */
 val w = Wonky.validate(x, y)
 ```
+
+`scalaz.\/` also has several useful methods not found on `Either`.
 
 ## `Try`
 
