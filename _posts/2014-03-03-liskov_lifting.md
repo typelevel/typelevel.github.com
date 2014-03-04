@@ -259,9 +259,10 @@ As stated earlier, `Liskov` cannot be lifted into
 the problem, but even if `TreeSet` was not there, we would not be able
 to honestly do it because `c.i.Set` is open to new subclasses that
 could perform similar violations.  However, despite lacking a
-`Functor`, `scalaz.ISet` *does* allow `Liskov`-lifting.  Well, once
-you convert your `ISet[Int]` to `ISet[Any]`, you can't do many
-operations on it, but that's neither here nor there.
+`Functor`, `scalaz.ISet` *does* allow `Liskov`-lifting.
+[Do the ADT analysis yourself, if you like.](https://github.com/scalaz/scalaz/blob/ac8c4684ef89f1b950e71237819d78f573e552ea/core/src/main/scala/scalaz/ISet.scala#L552-L561)
+Well, so, once you convert your `ISet[Int]` to `ISet[Any]`, you can't
+do many operations on it, but that's neither here nor there.
 
 Should this function exist?
 ---------------------------
