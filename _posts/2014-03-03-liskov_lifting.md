@@ -15,8 +15,7 @@ Scalaz avoids
 [variance in the sense of the Scala type parameter annotation](http://docs.scala-lang.org/tutorials/tour/variances.html),
 with its associated higher-kind implications, except where it has
 historically featured variance; even here, variance is vanishing as
-Scala compiler changes
-[crush it out of safe implementability](https://github.com/scalaz/scalaz/pull/630).
+[unsoundness in its released implementations is discovered](https://github.com/scalaz/scalaz/pull/630).
 
 There is a deeply related concept in Scalaz's typeclasses, though:
 *covariant and contravariant
@@ -26,7 +25,7 @@ is traditional shorthand for covariant functor, whereas
 represents contravariant functors.
 
 These concepts are related, but neither subsumes the other. A
-`Functor` instance does not require its parameter being
+`Functor` instance does not require its parameter to be
 Scala-covariant. A type can be Scala-covariant over a parameter
 without having a legal `Functor` instance.
 
@@ -78,9 +77,9 @@ instead.
 A type is a set of values.  Where *Y* is a supertype of *X*, every
 value in *X* is in *Y*.  Since `IList[String]("hi", "there")` has the
 same representation as `IList[Any]("hi", "there")`, they are the same
-value; as this is true for *all* `IList[String]`s, but the opposite is
-not true, `IList[Any]` is a `IList[String]` supertype, regardless of
-what Scala knows.
+value.  This is true for *all* `IList[String]`s, but the opposite is
+not true; therefore, `IList[Any]` is an `IList[String]` supertype,
+regardless of what Scala knows.
 
 So doing a casting `Liskov` lift, like that into `IList`, is
 essentially “admitted” in a proof system sense.  You are saying, “I
@@ -108,7 +107,7 @@ contravariant position: as the parameter to a function.  This test is
 not quite enough to prove that `Liskov` lifting is sound, but it gets
 us most of the way.
 
-For example, an `IList` of "hi" and "there" has exactly the same
+For example, an `IList` of `"hi"` and `"there"` has exactly the same
 representation whether you instantiated the `IList` with `String` or
 with `Any`. So that is a good first test. If a class changes its
 construction behavior based on manifest type information, or its basic
@@ -116,12 +115,12 @@ data construction functions violate
 [the rules of parametricity](http://failex.blogspot.com/2013/06/fake-theorems-for-free.html),
 that is a good sign that the data type cannot follow these rules.
 
-This data type analysis is recursive: a data type is variant in a
-parametrically sound way over a parameter if all appearances of that
-parameter in elements of your data type are also parametrically sound
-in that way. For example, if your `F[A]` contains an `IList[A]` in its
-representation, you may rely on `IList`'s parametrically sound
-covariance when considering `F`'s.
+This data type analysis is recursive: a data type being variant in a
+parametrically sound way over a parameter requires that all
+appearances of that parameter in elements of your data type are also
+parametrically sound in that way. For example, if your `F[A]` contains
+an `IList[A]` in its representation, you may rely on `IList`'s
+parametrically sound covariance when considering `F`'s.
 
 Any `var`, or `var`-like thing such as an `Array`, places its
 parameter in an invariant position, because it features a getter
@@ -158,12 +157,13 @@ final case class VA[A, B](xs: Set[A], ys: IList[B])
 GADTs
 -----
 
-Some features of Scala resist simple ADT analysis, so must be given
-their due.  Despite their sound covariance considering only the
-representational rules in the previous section, they still break the
-cardinal rule by allowing the compiler to make invalid assumptions
-about the sets of values.  A “recoverable phantom” implies a type
-relationship that forbids `Liskov`-lifting, for example:
+Some features of Scala resist simple ADT analysis, so must be
+considered separately from the above.  Despite their sound covariance
+considering only the representational rules in the previous section,
+they still break the cardinal rule by allowing the compiler to make
+invalid assumptions about the sets of values.  A “recoverable phantom”
+implies a type relationship that forbids `Liskov`-lifting, for
+example:
 
 ```scala
 sealed trait Gimme[A]
