@@ -15,6 +15,10 @@ Projects
 
 <table style="font-weight: bold;">
   <tr>
+    <td><a class="btn" href="https://github.com/argonaut-io/argonaut">{% include octocat.html %}</a></td>
+    <td><a href="http://argonaut.io">Argonaut</a></td>
+  </tr>
+  <tr>
     <td><a class="btn" href="https://github.com/rickynils/scalacheck">{% include octocat.html %}</a></td>
     <td><a href="http://scalacheck.org">ScalaCheck</a></td>
   </tr>
