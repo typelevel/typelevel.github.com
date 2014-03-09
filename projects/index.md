@@ -48,12 +48,16 @@ Projects
   </tr>
 </table>
 
-<h3 id="sec-helpers">Helpers</h3>
+<h3 id="sec-helpers">Helpers & Compiler plugins (experimental)</h3>
 
 <table style="font-weight: bold;">
   <tr>
     <td><a class="btn" href="https://github.com/typelevel/discipline">{% include octocat.html %}</a></td>
     <td>discipline</td>
+  </tr>
+  <tr>
+    <td><a class="btn" href="https://github.com/non/kind-projector">{% include octocat.html %}</a></td>
+    <td>kind-projector</td>
   </tr>
   <tr>
     <td><a class="btn" href="https://github.com/typelevel/scalaz-contrib">{% include octocat.html %}</a></td>
@@ -70,6 +74,10 @@ Projects
   <tr>
     <td><a class="btn" href="https://github.com/typelevel/spire-contrib">{% include octocat.html %}</a></td>
     <td>spire-contrib</td>
+  </tr>
+  <tr>
+    <td><a class="btn" href="https://github.com/puffnfresh/wartremover">{% include octocat.html %}</a></td>
+    <td>wartremover</td>
   </tr>
 </table>
 
