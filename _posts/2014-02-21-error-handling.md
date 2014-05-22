@@ -171,8 +171,9 @@ foo(1) // exception is thrown
 Try(1).flatMap(foo) // scala.util.Failure
 ```
 
-This can cause unexpected behavior when used, perhaps in a monad/for comprehension. While it
-certainly may be convenient to be able to wrap an arbitrarily code block with the `Try` constructor
+This can cause unexpected behavior when used, perhaps in a monad/for comprehension. Furthermore,
+`Try` encourages the use of `Throwable`s which breaks control flow and parametricity.
+While it certainly may be convenient to be able to wrap an arbitrarily code block with the `Try` constructor
 and let it catch any exception that may be thrown, we still recommend using an algebraic data type
 describing the errors and using `YourErrorType \/ YourReturnType`.
 
