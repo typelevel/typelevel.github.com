@@ -51,7 +51,7 @@ demonstrate why not having `Functor[ISet]` available has no
 fundamental, practical consequences.
 
 Coyoneda
-[can defined in Scala](http://blog.higher-order.com/blog/2013/11/01/free-and-yoneda/)
+[can be defined in Scala](http://blog.higher-order.com/blog/2013/11/01/free-and-yoneda/)
 like so:
 
 ```scala
