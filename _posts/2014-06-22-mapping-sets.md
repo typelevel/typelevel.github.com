@@ -25,7 +25,7 @@ benchmarks also showing some nice performance improvements. I highly
 recommend using `ISet` whenever you can!
 
 Now we can see the problem more clearly; the type of `map` on `ISet`
-is too restictive to be used inside of a `Functor` because of the
+is too restrictive to be used inside of a `Functor` because of the
 `scalaz.Order` constraint:
 
 ```scala
@@ -139,4 +139,4 @@ any other type-constructor which would otherwise require a
 [restricted `Functor`](http://okmij.org/ftp/Haskell/types.html#restricted-datatypes). I
 hope this has demonstrated that `Functor[Set]` not existing has no
 practical consequences, other than scalac not being as good at
-type-infernece.
+type-inference.
