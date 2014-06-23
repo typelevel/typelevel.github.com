@@ -127,6 +127,7 @@ output type, but we can use the `map` method directly on `ISet`. We
 can use that function by running the Coyoneda like so:
 
 ```scala
+// Converts ISetF back to an ISet, using ISet#map with the Order constraint
 val s = t.fi.map(t.k).insert(h)
 ```
 
