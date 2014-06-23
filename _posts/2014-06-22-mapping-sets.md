@@ -65,7 +65,7 @@ trait Coyoneda[F[_], A] {
 There are just three parts to it:
 
 1. `I` - an existential type
-2. `f` - a mapping from `I` to `A`
+2. `k` - a mapping from `I` to `A`
 3. `fi` - a value of `F[I]`
 
 We can create a couple of functions to help with constructing a
