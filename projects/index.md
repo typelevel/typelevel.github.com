@@ -23,6 +23,13 @@ Projects
   </tr>
   <tr>
     <td>
+      <a class="btn" href="https://github.com/julien-truffaut/Monocle">{% include octocat.html %}</a>
+      <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.julien-truffaut%22">{% include maven.html %}</a>
+    </td>
+    <td><a href="https://github.com/julien-truffaut/Monocle">Monocle</a></td>
+  </tr>
+  <tr>
+    <td>
       <a class="btn" href="https://github.com/rickynils/scalacheck">{% include octocat.html %}</a>
       <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.scalacheck%22">{% include maven.html %}</a>
     </td>
@@ -40,7 +47,7 @@ Projects
       <a class="btn" href="https://github.com/scalaz/scalaz-stream">{% include octocat.html %}</a>
       <a class="btn" href="https://bintray.com/pchiusano/maven/scalaz-stream/view">{% include bintray.html %}</a>
     </td>
-    <td><a href="{{ site.baseurl }}/projects/scalaz">scalaz-stream</a></td>
+    <td><a href="https://github.com/scalaz/scalaz-stream">scalaz-stream</a></td>
   </tr>
   <tr>
     <td>
