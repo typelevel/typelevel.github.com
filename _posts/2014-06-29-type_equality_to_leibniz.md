@@ -12,7 +12,7 @@ A function from type equality to `Leibniz`
 ==========================================
 
 The Scala standard library provides evidence of two types being equal
-at the data level: a value of type `(A =:= B)` witnesses that `A` and
+at the data level: a value of type `(A =:= B)` witnesses that `A` and
 `B` are the same type. Accordingly, it provides an implicit conversion
 from `A` to `B`. So you can write `Int`-summing functions on your
 generic foldable types.
@@ -39,104 +39,136 @@ That doesn't make sense, though. Type equality is symmetric: Scala
 knows it goes both ways, so why is this finicky?
 
 Additionally, we apply the conversion for each Int. It is a logical
-implication that, if A is B, then List[A] must be List[B] as well. But
-we can't get that cheap, single conversion without a cast.
+implication that, if `A` is `B`, then `List[A]` must be `List[B]` as
+well. But we can't get that cheap, single conversion without a cast.
 
 Substitution
 ------------
 
-Scalaz instead provides Leibniz, a more perfect type equality. A
+Scalaz instead provides `Leibniz`, a more perfect type equality. A
 simplified version follows, which we will use for the remainder.
 
+```scala
 sealed abstract class Leib[A, B] {
   def subst[F[_]](fa: F[A]): F[B]
 }
+```
 
-This reads "Leib[A, B] can replace A with B in **any** type
+This reads "`Leib[A, B]` can replace `A` with `B` in **any** type
 function". That "any" is pretty important: it gives us both the
 theorem that we want, and a tremendous consequent power that gives us
 most of what we can get in Scala from value-level type equality, by
-choosing the right F.
+choosing the right `F` type parameter to `subst`.
 
 What could it be?
 -----------------
 
 Following the Scalazzi rules, where no null, type testing or casting,
-or AnyRef-defined functions are permitted, what might go in the body
-of that function? Even if you know what A is, as a Leib implementer,
-it's hidden behind the unknown F. Even if you know that B is a
-supertype of A, you don't know that F is covariant, by scalac or
-otherwise.
+or `AnyRef`-defined functions are permitted, what might go in the body
+of that function? Even if you know what `A` is, as a `Leib`
+implementer, it's hidden behind the unknown `F`. Even if you know that
+`B` is a supertype of `A`, you don't know that `F` is covariant, by
+scalac or otherwise.  Even if you know that `A` is `Int` and `B` is
+`Double`, what are you going to do with that information?
 
-So there's only one thing it could be, because you **do** have an F of
-*something*.
+So there's only one thing this `Leib` could be, because you **do**
+have an `F` of *something*.
 
+```scala
 implicit def refl[A]: Leib[A, A] = new Leib[A, A] {
   override def subst[F[_]](fa: F[A]): F[A] = fa
 }
+```
 
-Every type is equal to itself. Every well-formed Leib instance starts
-out this way.
+Every type is equal to itself. Every well-formed `Leib` instance
+starts out this way, in this function.
 
 Recovery
 --------
 
 So, it's great that *we* know the implication of the subst method's
-generality. But that's not good enough; we had that with =:=
+generality. But that's not good enough; we had that with `=:=`
 already. We want to write well-typed operations that represent all the
-implications of the Leib type equality as *new* Leibs representing
+implications of the `Leib` type equality as *new* `Leib`s representing
 *those* type equalities.
 
 First, let's solve the original problem, using infix type application
-to show the similarity to =:=:
+to show the similarity to `=:=`:
 
+```scala
 def sum(implicit ev: A Leib Int): Int =
   ev.subst[List](xs).foldLeft(0)(_ + _)
+```
 
 There is no more implicit conversion, the result of subst is the same
-object as the argument, and [List] would be inferred, but I have
+object as the argument, and `[List]` would be inferred, but I have
 merely specified it for clarity in this example.
 
-This doesn't compose, though. What if, having substed Int into that
-List type, I now want to subst List[A] for List[Int] in some type
-function? Specifically, what about a Leib that represents that type
-equality? To handle that, we can subst into Leib itself!
+This doesn't compose, though. What if, having `subst`ed `Int` into
+that `List` type, I now want to `subst` `List[A]` for `List[Int]` in
+some type function? Specifically, what about a `Leib` that represents
+that type equality? To handle that, we can `subst` into `Leib` itself!
 
+```scala
 def lift[F[_], A, B](ab: A Leib B): F[A] Leib F[B] =
-  ab.subst[Lambda[x => (F[A] Leib F[x])]](Leib.refl[F[A]])
+  ab.subst[F[A] Leib F[?]](Leib.refl[F[A]])
+```
 
-Again, the final [F[A]] could be inferred.
+Again, the final `[F[A]]` could be inferred.
 
-As an exercise, define the symm and compose operations, which
-represent that Leib is symmetric and transitive as well. Hints: the
-symm body is the same except for the type parameters given, and
-compose doesn't use refl.
+As an exercise, define the `symm` and `compose` operations, which
+represent that `Leib` is symmetric and transitive as well. Hints: the
+`symm` body is the same except for the type parameters given, and
+`compose` doesn't use `refl`.
 
+```scala
 def symm[A, B](ab: A Leib B): B Leib A
 def compose[A, B, C](ab: A Leib B, bc: B Leib C): A Leib C
+```
 
 Leib power
 ----------
 
-In Scalaz, Leibniz is already defined, and used in a few
+In Scalaz, `Leibniz` is already defined, and used in a few
 places. Though their subst definitions are completely incompatible at
 the scalac level, they have a weird equivalence due to the awesome
-power of subst.
+power of `subst`.
 
+```scala
 import scalaz.Leibniz, Leibniz.===
 
 def toScalaz[A, B](ab: A Leib B): A === B =
-  ab.subst[Lambda[x => (A === x)]](Leibniz.refl)
+  ab.subst[A === ?](Leibniz.refl)
 
 def toLeib[A, B](ab: A === B): A Leib B =
-  ab.subst[Lambda[x => (A Leib x)]](Leib.refl)
+  ab.subst[A Leib ?](Leib.refl)
+```
 
-And so it would be with any pair of Leibniz representations with such
-subst methods that you might define. Unfortunately, =:= cannot
-participate in this universe of isomorphisms; it lacks the subst
-method that serves as the Leibniz certificate of authenticity. You can
-get a =:= from a Leibniz, but not vice versa.
+And so it would be with any pair of `Leibniz` representations with such
+`subst` methods that you might define. Unfortunately, `=:=` cannot
+participate in this universe of isomorphisms; it lacks the `subst`
+method that serves as the `Leibniz` certificate of authenticity. You can
+get a `=:=` from a `Leibniz`, but not vice versa.
 
 Why would you want that weak sauce anyway?
 
-*This article was tested with Scala 2.11.1 & Scalaz 7.0.6.*
+Looking up
+----------
+
+These are just the basics.  Above:
+
+* The weakness of Scala's own `=:=`,
+* the sole primitive `Leibniz` operator `subst`,
+* how to logically derive other type equalities,
+* the isomorphism between each `Leibniz` representation and all
+  others.
+
+In the next part, we'll look at:
+
+* Why it matters that `subst` always executes to use a type equality,
+* the Haskell implementation,
+* higher-kinded type equalities and their `Leibniz`es,
+* simulating GADTs with `Leibniz` members of data constructors.
+
+*This article was tested with Scala 2.11.1, Scalaz 7.0.6, and Kind
+Projector 0.5.2.*
