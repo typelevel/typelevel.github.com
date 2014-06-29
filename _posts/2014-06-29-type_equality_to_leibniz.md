@@ -96,7 +96,7 @@ First, let's solve the original problem, using infix type application
 to show the similarity to `=:=`:
 
 ```scala
-def sum(implicit ev: A Leib Int): Int =
+def sum2(implicit ev: A Leib Int): Int =
   ev.subst[List](xs).foldLeft(0)(_ + _)
 ```
 
@@ -111,7 +111,7 @@ that type equality? To handle that, we can `subst` into `Leib` itself!
 
 ```scala
 def lift[F[_], A, B](ab: A Leib B): F[A] Leib F[B] =
-  ab.subst[F[A] Leib F[?]](Leib.refl[F[A]])
+  ab.subst[Lambda[X => (F[A] Leib F[X])]](Leib.refl[F[A]])
 ```
 
 Again, the final `[F[A]]` could be inferred.
