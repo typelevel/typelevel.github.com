@@ -119,8 +119,8 @@ some type function? Specifically, what about a `Leib` that represents
 that type equality? To handle that, we can `subst` into `Leib` itself!
 
 ```scala
-def lift[F[_], A, B](ab: A Leib B): F[A] Leib F[B] =
-  ab.subst[Lambda[X => (F[A] Leib F[X])]](Leib.refl[F[A]])
+def lift[F[_], A, B](ab: Leib[A, B]): Leib[F[A], F[B]] =
+  ab.subst[Lambda[X => Leib[F[A], F[X]]]](Leib.refl[F[A]])
 ```
 
 Again, the final `[F[A]]` could be inferred.
@@ -131,8 +131,8 @@ represent that `Leib` is symmetric and transitive as well. Hints: the
 `compose` doesn't use `refl`.
 
 ```scala
-def symm[A, B](ab: A Leib B): B Leib A
-def compose[A, B, C](ab: A Leib B, bc: B Leib C): A Leib C
+def symm[A, B](ab: Leib[A, B]): Leib[B, A]
+def compose[A, B, C](ab: Leib[A, B], bc: Leib[B, C]): Leib[A, C]
 ```
 
 Leib power
