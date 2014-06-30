@@ -138,10 +138,11 @@ def compose[A, B, C](ab: A Leib B, bc: B Leib C): A Leib C
 Leib power
 ----------
 
-In Scalaz, `Leibniz` is already defined, and used in a few
-places. Though their `subst` definitions are completely incompatible
-at the scalac level, they have a weird equivalence due to the awesome
-power of `subst`.
+In Scalaz, [`Leibniz` is already
+defined](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/scalaz/Leibniz.html),
+and used in a few places. Though their `subst` definitions are
+completely incompatible at the scalac level, they have a weird
+equivalence due to the awesome power of `subst`.
 
 ```scala
 import scalaz.Leibniz, Leibniz.===
