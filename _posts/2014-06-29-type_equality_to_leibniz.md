@@ -33,12 +33,21 @@ Fragility
 That's not really what we want, though. In particular, flipping `A`
 and `Int` in the `ev` type declaration will break it:
 
-TYPE ERROR
+```
+….scala:5: overloaded method value + with alternatives:
+  (x: Int)Int <and>
+  (x: Char)Int <and>
+  (x: Short)Int <and>
+  (x: Byte)Int
+ cannot be applied to (A)
+    xs.foldLeft(0)(_ + _)
+                     ^
+```
 
 That doesn't make sense, though. Type equality is symmetric: Scala
 knows it goes both ways, so why is this finicky?
 
-Additionally, we apply the conversion for each Int. It is a logical
+Additionally, we apply the conversion for each `Int`. It is a logical
 implication that, if `A` is `B`, then `List[A]` must be `List[B]` as
 well. But we can't get that cheap, single conversion without a cast.
 
@@ -54,8 +63,8 @@ sealed abstract class Leib[A, B] {
 }
 ```
 
-This reads "`Leib[A, B]` can replace `A` with `B` in **any** type
-function". That "any" is pretty important: it gives us both the
+This reads “`Leib[A, B]` can replace `A` with `B` in **any** type
+function”. That “any” is pretty important: it gives us both the
 theorem that we want, and a tremendous consequent power that gives us
 most of what we can get in Scala from value-level type equality, by
 choosing the right `F` type parameter to `subst`.
@@ -86,7 +95,7 @@ starts out this way, in this function.
 Recovery
 --------
 
-So, it's great that *we* know the implication of the subst method's
+So, it's great that *we* know the implication of the `subst` method's
 generality. But that's not good enough; we had that with `=:=`
 already. We want to write well-typed operations that represent all the
 implications of the `Leib` type equality as *new* `Leib`s representing
@@ -100,7 +109,7 @@ def sum2(implicit ev: A Leib Int): Int =
   ev.subst[List](xs).foldLeft(0)(_ + _)
 ```
 
-There is no more implicit conversion, the result of subst is the same
+There is no more implicit conversion, the result of `subst` is the same
 object as the argument, and `[List]` would be inferred, but I have
 merely specified it for clarity in this example.
 
@@ -130,8 +139,8 @@ Leib power
 ----------
 
 In Scalaz, `Leibniz` is already defined, and used in a few
-places. Though their subst definitions are completely incompatible at
-the scalac level, they have a weird equivalence due to the awesome
+places. Though their `subst` definitions are completely incompatible
+at the scalac level, they have a weird equivalence due to the awesome
 power of `subst`.
 
 ```scala
