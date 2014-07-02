@@ -12,10 +12,11 @@ A function from type equality to `Leibniz`
 ==========================================
 
 The Scala standard library provides evidence of two types being equal
-at the data level: a value of type `(A =:= B)` witnesses that `A` and
-`B` are the same type. Accordingly, it provides an implicit conversion
-from `A` to `B`. So you can write `Int`-summing functions on your
-generic foldable types.
+at the data level: a value of type
+[`(A =:= B)`](http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html)
+witnesses that `A` and `B` are the same type. Accordingly, it provides
+an implicit conversion from `A` to `B`. So you can write `Int`-summing
+functions on your generic foldable types.
 
 ```scala
 final case class XList[A](xs: List[A]) {
@@ -54,8 +55,10 @@ well. But we can't get that cheap, single conversion without a cast.
 Substitution
 ------------
 
-Scalaz instead provides `Leibniz`, a more perfect type equality. A
-simplified version follows, which we will use for the remainder.
+Scalaz instead provides
+[`Leibniz`](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/scalaz/Leibniz.html),
+a more perfect type equality. A simplified version follows, which we
+will use for the remainder.
 
 ```scala
 sealed abstract class Leib[A, B] {
@@ -72,13 +75,14 @@ choosing the right `F` type parameter to `subst`.
 What could it be?
 -----------------
 
-Following the Scalazzi rules, where no null, type testing or casting,
-or `AnyRef`-defined functions are permitted, what might go in the body
-of that function? Even if you know what `A` is, as a `Leib`
+Following the Scalazzi rules, where no `null`, type testing or
+casting, or `AnyRef`-defined functions are permitted, what might go in
+the body of that function? Even if you know what `A` is, as a `Leib`
 implementer, it's hidden behind the unknown `F`. Even if you know that
-`B` is a supertype of `A`, you don't know that `F` is covariant, by
-scalac or otherwise.  Even if you know that `A` is `Int` and `B` is
-`Double`, what are you going to do with that information?
+`B` is a supertype of `A`, you don't know that `F` is covariant,
+[by scalac or otherwise]({% post_url 2014-03-09-liskov_lifting %}).
+Even if you know that `A` is `Int` and `B` is `Double`, what are you
+going to do with that information?
 
 So there's only one thing this `Leib` could be, because you **do**
 have an `F` of *something*.
@@ -138,11 +142,11 @@ def compose[A, B, C](ab: Leib[A, B], bc: Leib[B, C]): Leib[A, C]
 Leib power
 ----------
 
-In Scalaz, [`Leibniz` is already
-defined](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/scalaz/Leibniz.html),
-and used in a few places. Though their `subst` definitions are
-completely incompatible at the scalac level, they have a weird
-equivalence due to the awesome power of `subst`.
+In Scalaz, `Leibniz` is already defined, and
+[used in a few places](https://github.com/scalaz/scalaz/blob/v7.0.6/core/src/main/scala/scalaz/syntax/TraverseSyntax.scala#L22-L26).
+Though their `subst` definitions are completely incompatible at the
+scalac level, they have a weird equivalence due to the awesome power
+of `subst`.
 
 ```scala
 import scalaz.Leibniz, Leibniz.===
@@ -178,6 +182,9 @@ In the next part, we'll look at:
 * Why it matters that `subst` always executes to use a type equality,
 * the Haskell implementation,
 * higher-kinded type equalities and their `Leibniz`es,
+* why
+  [the `=:=` singleton trick](https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L399-L402)
+  is unsafe,
 * simulating GADTs with `Leibniz` members of data constructors.
 
 *This article was tested with Scala 2.11.1, Scalaz 7.0.6, and Kind
