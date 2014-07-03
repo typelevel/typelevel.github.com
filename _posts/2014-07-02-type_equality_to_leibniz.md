@@ -158,6 +158,9 @@ def toLeib[A, B](ab: A === B): A Leib B =
   ab.subst[A Leib ?](Leib.refl)
 ```
 
+…where `?` is to type-lambdas as `_` is to Scala lambdas, thanks to
+[the Kind Projector plugin](https://github.com/non/kind-projector#kind-projector).
+
 And so it would be with any pair of `Leibniz` representations with such
 `subst` methods that you might define. Unfortunately, `=:=` cannot
 participate in this universe of isomorphisms; it lacks the `subst`
