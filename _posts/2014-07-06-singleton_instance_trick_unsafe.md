@@ -196,7 +196,7 @@ Unsafety
 --------
 
 To which you might protest, “there’s only one value of any singleton
-type!”.  Well, yes.  And here’s where our seemingly innocent
+type!”  Well, yes.  And here’s where our seemingly innocent
 optimization turns nasty.  If you'll recall, it depends upon treating
 a value with multiple types via an unsafe cast.
 
