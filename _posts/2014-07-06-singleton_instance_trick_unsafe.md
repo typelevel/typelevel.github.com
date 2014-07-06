@@ -57,7 +57,7 @@ object =:= {
 Unless you are using
 [the Scalazzi safe Scala subset](https://dl.dropbox.com/u/7810909/media/doc/parametricity.pdf),
 which forbids referentially nontransparent and nonparametric
-operations, this is unsafe.
+operations, *these tricks are unsafe*.
 
 Types are erased
 ----------------
@@ -182,11 +182,13 @@ is that **any** value of type `x.type` is also an `A`!
 So if we could prove that something else had the singleton type
 `x.type`, we would also prove that it shared all of `x`’s types!  We
 can do that with a singleton type pattern, which is implemented
-(soundly in 2.11) with a reference comparison.
+(soundly in 2.11) with a reference comparison.  Scala lets us use
+*some* of the resulting implications.
 
 ```scala
-def maybeeq[A, B](x: Some[A], y: Some[B]): A = y match {
-  case _: x.type => implicitly[A =:= B]; ???
+final case class InvBox[A](b: A)
+def maybeeq[A, B](x: InvBox[A], y: InvBox[B]): A = y match {
+  case _: x.type => y.b
 }
 ```
 
@@ -195,7 +197,8 @@ Unsafety
 
 To which you might protest, “there’s only one value of any singleton
 type!”.  Well, yes.  And here’s where our seemingly innocent
-optimization turns nasty.
+optimization turns nasty.  If you'll recall, it depends upon treating
+a value with multiple types via an unsafe cast.
 
 ```scala
 def unsafeCoerce[A, B]: A => B = {
