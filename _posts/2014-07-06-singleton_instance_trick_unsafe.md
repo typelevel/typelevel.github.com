@@ -224,8 +224,8 @@ res1: Some[Int] = Some(hi)
 
 In our invariant `Box` example we decided that, as it was impossible
 to change the type parameter without an unsafe cast, we could use that
-knowledge in the consequent types. In `unsafeCoerce`, where ? represents
-the value before the match keyword:
+knowledge in the consequent types. In `unsafeCoerce`, where `?`
+represents the value before the match keyword:
 
 ```scala
 ?.type <: a.type <: (A =:= A)
@@ -286,7 +286,8 @@ The implication being
 Nothing ~ A
 ```
 
-Scalaz uses the optimization under consideration in `scalaz.IList`.
+Scalaz
+[uses the optimization under consideration in `scalaz.IList`](https://github.com/scalaz/scalaz/blob/v7.0.6/core/src/main/scala/scalaz/IList.scala#L436-L437).
 So would generalized `Functor`-based `Liskov`-lifting, as discussed at
 the end of [“When can Liskov be lifted?”]({% post_url
 2014-03-09-liskov_lifting %}), were it to be implemented.  However,
