@@ -34,14 +34,16 @@ Here is the optimization, which is very similar to
 2014-03-09-liskov_lifting %})): a “safe” cast of the invariant type
 parameter can be made, because all operations on the casted result
 remain sound.
-[Here it is for Set](https://github.com/scala/scala/blob/9fc098dd0dcf1825ec55501716b4f2a0a6d197ae/src/library/scala/collection/immutable/HashSet.scala#L170):
+[Here it is for Set](https://github.com/scala/scala/blob/9fc098dd0dcf1825ec55501716b4f2a0a6d197ae/src/library/scala/collection/immutable/HashSet.scala#L170),
+an example of the “fake covariance” trick:
 
 ```scala
 override def toSet[B >: A]: Set[B] = this.asInstanceOf[Set[B]]
 ```
 
 And
-[here it is for `=:=`](https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L399-L402).
+[here it is for `=:=`](https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L399-L402),
+an example of the “singleton instance” trick.
 
 ```scala
 private[this] final val singleton_=:= = new =:=[Any,Any] {
