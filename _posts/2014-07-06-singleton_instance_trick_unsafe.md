@@ -305,3 +305,5 @@ including standard library code where some well-meaning contributor
 might add such a harmless-seeming avoidance of memory allocation
 without your knowledge.  Purity pays, and often in very nonobvious
 ways.
+
+*This article was tested with Scala 2.11.1.*
