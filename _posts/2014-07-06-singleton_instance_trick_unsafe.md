@@ -238,7 +238,7 @@ represents the value before the match keyword:
 A ~ B
 ```
 
-In unsafeCoerce2,
+In `unsafeCoerce2`,
 
 ```scala
 ?.type <: b.type <: Set[B]
