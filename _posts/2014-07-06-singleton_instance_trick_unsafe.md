@@ -16,9 +16,8 @@ The singleton instance trick is unsafe
 Sometimes, Scala programmers notice a nice optimization they can use
 in the case of a class that has an invariant type parameter, but in
 which that type parameter
-[appears in variant or phantom position in the actual data involved]({%
-post_url 2014-03-09-liskov_lifting
-%}). [`=:=`](http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html)
+[appears in variant or phantom position in the actual data involved]({% post_url 2014-03-09-liskov_lifting %}).
+[`=:=`](http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html)
 is an
 [example of the phantom case](https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L398).
 
@@ -30,8 +29,8 @@ sealed abstract class =:=[From, To] extends (From => To) with Serializable
 is an example of the covariant case.
 
 Here is the optimization, which is very similar to
-[the `Liskov`-lifting previously discussed](({% post_url
-2014-03-09-liskov_lifting %})): a “safe” cast of the invariant type
+[the `Liskov`-lifting previously discussed]({% post_url 2014-03-09-liskov_lifting %}):
+a “safe” cast of the invariant type
 parameter can be made, because all operations on the casted result
 remain sound.
 [Here it is for Set](https://github.com/scala/scala/blob/9fc098dd0dcf1825ec55501716b4f2a0a6d197ae/src/library/scala/collection/immutable/HashSet.scala#L170),
@@ -294,10 +293,9 @@ Nothing ~ A
 Scalaz
 [uses the optimization under consideration in `scalaz.IList`](https://github.com/scalaz/scalaz/blob/v7.0.6/core/src/main/scala/scalaz/IList.scala#L436-L437).
 So would generalized `Functor`-based `Liskov`-lifting, as discussed at
-the end of [“When can Liskov be lifted?”]({% post_url
-2014-03-09-liskov_lifting %}), were it to be implemented.  However,
-these cases do not fit the bill for exploitation from Scalazzi-safe
-code.
+the end of [“When can Liskov be lifted?”]({% post_url 2014-03-09-liskov_lifting %}),
+were it to be implemented.  However, these cases do not fit the bill
+for exploitation from Scalazzi-safe code.
 
 On the other hand, the singleton type pattern approach may be used in
 *all* cases where the optimization may be invoked by a caller,
