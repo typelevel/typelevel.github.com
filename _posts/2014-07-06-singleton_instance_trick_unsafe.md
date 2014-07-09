@@ -125,7 +125,7 @@ b.type <: SBox <: Box[String]
 b.type <: Box[A]
 ```
 
-In addition, **`A` is invariant**, so after going up to `Box[Int]`,
+In addition, **<code>A</code> is invariant**, so after going up to `Box[Int]`,
 `b` couldn’t have widened that type parameter, or changed it in any
 way, without an unsafe cast.  Additionally, our supertype tree cannot
 contain `Box` twice with different parameters.  So we have proved that `A`
