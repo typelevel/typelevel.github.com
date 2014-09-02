@@ -18,9 +18,9 @@ As the Scala community has matured, a number of different strands of development
 
 * The Typesafe Scala compiler is focused on stability and compatibility with Java.
 * The LAMP/EPFL Dotty compiler is focused on providing a practical implementation of the DOT calculus.
-* The Scala.js compiler is focused on targeting Javascript as a backend language.
+* The Scala.js compiler is focused on targeting JavaScript as a backend platform.
 * The Scala Virtualized compiler is focused on language virtualization and staging.
-* The planned Scala.Meta (formerly Macro Paradise) compiler is focused on metaprogramming.
+* The Scala.Meta system aims to provide portable metaprogramming facilities across a variety of Scala compilers.
 * There are several research and private variants of the Scala compiler in development and use by a variety of academic and commercial organizations.
 * The IDEs provide their own Scala variants which more or less accurately approximate Typesafe Scala.
 
@@ -48,7 +48,7 @@ We anticipate a number of objections to this initiative,
      
 * That we don't have the resources or the expertise to pull this off.
  
-    We disagree -- the community around the Typelevel projects contains many of the most able Scala programmers on the planet. Between us we have a deep understanding of Scala's type system and other semantics (both as specified and as implemented), of compiler construction in general and of Typesafe Scala compiler internals in particular. We are intimately familiar with the Scala toolchain, which many of have been using at scale for years in our day jobs. We are also intimately familiar with the issues that we seek to address -- they are ones we face daily. 
+    We disagree -- the community around the Typelevel projects contains many of the most able Scala programmers on the planet. Between us we have a deep understanding of Scala's type system and other semantics (both as specified and as implemented), of compiler construction in general and of Typesafe Scala compiler internals in particular. We are intimately familiar with the Scala toolchain, which many of us have been using at scale for years in our day jobs. We are also intimately familiar with the issues that we seek to address -- they are ones we face daily. 
     
     We also have the existence proof of the other Scala compiler variants. The number of full-time-equivalent people working on these projects is really very small -- we believe that in practice this can be matched or exceeded by an open, inclusive and enthusiastic open source project.
  
@@ -62,7 +62,7 @@ We anticipate a number of objections to this initiative,
  
      It's certainly true that restricting ourselves to only changes which are merge compatible with the Typesafe Scala compiler puts fairly strict limits on what we can do. Many highly desirable changes fall well beyond, and some people want to explore those possibilities.
 
-    We think that this is completely reasonable, and we don't think it's an either/or -- a merge compatible Typelevel compiler meets many of our immediate needs, but we want to enable people to push further just as is being done by Scala.Meta, Scala Virtualized and Dotty.
+    We think that this is completely reasonable, and we don't think the two are mutually exclusive -- a merge compatible Typelevel compiler meets many of our immediate needs, but we want to enable people to push further just as is being done by Scala.Meta, Scala Virtualized and Dotty.
 
     We believe that the same infrastructure (community builds, MiMa) that will help the merge-compatible Typelevel compiler stay close to the Typesafe compiler will also be of great assistance to people who want to experiment with more radical changes. At a minimum, community build infrastructure will enable people to work with not just a bare compiler with but a core set of compatible libraries as well. We believe that such infrastructure would also benefit Scala Virtualized, Scala.Meta and Dotty.
  
