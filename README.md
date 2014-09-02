@@ -27,20 +27,23 @@ Preview changes locally
 This site is built using Jekyll. To preview your changes, you have to install the following things first:
 
 * Ruby
+* node.js
 * Python 2 and Pygments
 
   _Note:_ Make sure that `/usr/bin/python` is Python 2 and not Python 3, otherwise you might get weird errors.
 
-Once you've done that, you need to install `jekyll` and `redcarpet`. Find out if your package manager provides them, and if not, install them via `gem`:
+Apparently the `coffee-script` gem requires node.js (we don't even use CoffeeScript).
+Sorry about that.
+
+Once you've done that, you need to install `jekyll`. Find out if your package manager provides it, and if not, install it via `gem`:
 
 ```bash
 # don't forget to add the directory where Gem binaries are installed to your `$PATH`
-# on my machine, that's `$HOME/.gem/ruby/2.0.0/bin`
+# on my machine, that's `$HOME/.gem/ruby/2.1.0/bin`
 gem install jekyll
-gem install redcarpet
 ```
 
-As of this writing, `jekyll` version `1.0.2` and `redcarpet` version `2.2.2` are required.
+As of this writing, `jekyll` version `2.2.0` and `redcarpet` version `3.1.2` are required.
 
 There's also an official [installation guide](http://jekyllrb.com/docs/installation/). Additionally to `jekyll`, don't forget to install `redcarpet`. 
 
@@ -51,3 +54,5 @@ jekyll serve --watch --baseurl ''
 ```
 
 This will start a local web server on port 4000 where you can browse the site and which re-generates the site if you change the source files.
+
+_Note:_ The `build.sh` script sets up a Python 2.7 `virtualenv` and starts `jekyll` under the assumption that `jekyll` and Pygments are installed as specified above.
