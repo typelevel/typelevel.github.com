@@ -3,7 +3,7 @@ set -e
 
 mk_pyenv()
 {
-  [ -e .pyenv ] && (echo ".pyenv already exists, exiting"; exit)
+  [ -e .pyenv ] && echo ".pyenv already exists, exiting" && return
 
   echo "Creating new .pyenv ..."
   mkdir .pyenv
