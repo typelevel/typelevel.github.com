@@ -83,3 +83,10 @@ meta:
     <p><a class="btn" href="{{ site.baseurl }}/projects/#helpers">Learn more &raquo;</a></p>
   </div>
 </div>
+<div class="row-fluid">
+  <div class="span4">
+    <h2>Scala</h2>
+    <p><span class="tagline">Our fork of the Scala compiler.</span> We wish to work with all stakeholders in the Scala ecosystem to safeguard the interests of the entire Scala community.</p>
+    <p><a class="btn" href="{{ site.baseurl }}/blog/2014/09/02/typelevel-scala.html">Learn more &raquo;</a></p>
+  </div>
+</div>

@@ -16,6 +16,15 @@ Projects
 <table style="font-weight: bold;">
   <tr>
     <td>
+      <a class="btn" href="https://github.com/typelevel/scala">{% include octocat.html %}</a>
+      <!-- Once we have something published:
+      <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.typelevel.scala%22">{% include maven.html %}</a>
+      -->
+    </td>
+    <td><a href="{{ site.baseurl }}/projects/scala">Scala</a></td>
+  </tr>
+  <tr>
+    <td>
       <a class="btn" href="https://github.com/argonaut-io/argonaut">{% include octocat.html %}</a>
       <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.argonaut%22">{% include maven.html %}</a>
     </td>
