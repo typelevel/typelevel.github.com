@@ -226,4 +226,119 @@ Note that the Haskell type system understands that when `hoge`’s first
 argument’s data constructor is `X`, the type variables `a` and `b`
 must be the same type, and therefore by implication the argument of
 type `f a c` must also be of type `f b c`.  This is what we’re trying
-to get Scala to do.
+to get Scala to understand.
+
+```scala
+def hoge1[F[_, _], A, B, C](foo: Foo[A, B], bar: F[A, C]): F[B, C] =
+  foo match {
+    case X() => bar
+  }
+```
+
+This transliteration of the above Haskell `hoge` function fails to
+compile, as Kenji notes, with the following:
+
+```scala
+…/LeibnizArticle.scala:39: type mismatch;
+ found   : bar.type (with underlying type F[A,C])
+ required: F[B,C]
+      case X() => bar
+                  ^
+```
+
+The overridden `cata` method
+----------------------------
+
+Kenji introduces a `cata` method on `Foo` to constrain use of the
+`Leibniz.force` hack, while still providing external code with usable
+`Leibniz` evidence that can be lifted to implement `hoge`.  However,
+by implementing the method in a slightly different way, we can use
+`refl` instead.
+
+```scala
+sealed abstract class Foo[A, B] {
+  def cata[Z](x: (A Leib B) => Z, y: (A, B) => Z): Z
+}
+
+final case class X[A]() extends Foo[A, A] {
+  def cata[Z](x: (A Leib A) => Z, y: (A, A) => Z) =
+    x(Leib.refl)
+}
+
+final case class Y[A, B](a: A, b: B) extends Foo[A, B] {
+  def cata[Z](x: (A Leib B) => Z, y: (A, B) => Z) =
+    y(a, b)
+}
+```
+
+Now we can replace the pattern match (and all other such pattern
+matches) with an equivalent `cata` invocation.
+
+```scala
+def hoge2[F[_, _], A, B, C](foo: Foo[A, B], bar: F[A, C]): F[B, C] =
+  foo.cata(x => x.subst[F[?, C]](bar),
+           (_, _) => sys error "nonexhaustive")
+```
+
+So why can we get away with `Leib.refl`, whereas the function version
+Kenji presents cannot?  Compare the `cata` signature in `Foo` versus
+`X`:
+
+```scala
+  def cata[Z](x: (A Leib B) => Z, y: (A, B) => Z): Z
+  def cata[Z](x: (A Leib A) => Z, y: (A, A) => Z): Z
+```
+
+We supplied `A` for both the `A` and `B` type parameters in our
+`extends` clause, so that substitution also applies in all methods
+from `Foo` that we’re implementing, including `cata`.  At that point
+it’s obvious to the compiler that `refl` implements the requested
+`Leib`.
+
+The `Leib` member
+-----------------
+
+What if we don’t want to write or maintain an overriding-style `cata`?
+After all, that’s an n² commitment.  Instead, we can incorporate a
+`Leib` value in the GADT.  First, let’s see what the equivalent
+Haskell is, without the `GADTs` extension:
+
+```haskell
+data Foo a b = X (Leib a b) | Y a b
+
+hoge :: Foo a b -> f a c -> f b c
+hoge (X leib) bar = runDual . subst leib . Dual $ bar
+```
+
+We needed `RankNTypes` to implement `Leib`, of course, but perhaps
+that’s acceptable.  It’s useful in
+[Ermine](https://github.com/ermine-language), which supports rank-N
+types but not GADTs as of this writing.
+
+The above is simple enough to port to Scala, though.
+
+```scala
+sealed abstract class Foo[A, B]
+final case class X[A, B](leib: Leib[A, B]) extends Foo[A, B]
+final case class Y[A, B](a: A, b: B) extends Foo[A, B]
+
+def hoge3[F[_, _], A, B, C](foo: Foo[A, B], bar: F[A, C]): F[B, C] =
+  foo match {
+    case X(leib) => leib.subst[F[?, C]](bar)
+  }
+```
+
+It feels a little weird that `X` now must retain `Foo`’s
+type-system-level separation of the two type parameters.  But this
+style may more naturally integrate in your ADTs, and it is much closer
+to the original non-working `hoge1` implementation.
+
+You can play games with this definition to make it easier to supply
+the wholly mechanical `leib` argument to `X`, e.g. adding it as an
+`implicit val` in the second parameter list so it can be imported and
+implicitly supplied on `X` construction.  The basic technique is
+exactly the same as above, though.
+
+*This article was tested with Scala 2.11.2,
+[Kind Projector](https://github.com/non/kind-projector) 0.5.2, and
+[GHC](http://www.haskell.org/platform/) 7.8.3.*
