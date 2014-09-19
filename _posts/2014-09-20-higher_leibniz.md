@@ -145,7 +145,7 @@ lift?
 
 ```scala
 def lift[F[_[_], _], A[_] , B[_]](ab: LeibF[A, B]): LeibF[F[A, ?], F[B, ?]] =
-  ab.subst[Lambda[x => LeibF[F[A, ?], F[x, ?]]]](LeibF.refl[F[A, ?]])
+  ab.subst[Lambda[x[_] => LeibF[F[A, ?], F[x, ?]]]](LeibF.refl[F[A, ?]])
 ```
 
 Despite that we are positively buried in type lambdas (yet moderated
@@ -294,6 +294,9 @@ We supplied `A` for both the `A` and `B` type parameters in our
 from `Foo` that we’re implementing, including `cata`.  At that point
 it’s obvious to the compiler that `refl` implements the requested
 `Leib`.
+
+Incidentally, a similar style of substitution underlies the definition
+of `refl`.
 
 The `Leib` member
 -----------------
