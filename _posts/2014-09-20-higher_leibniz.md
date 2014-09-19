@@ -319,7 +319,7 @@ hoge (X leib) bar = runDual . subst leib . Dual $ bar
 
 We needed `RankNTypes` to implement `Leib`, of course, but perhaps
 that’s acceptable.  It’s useful in
-[Ermine](https://github.com/ermine-language), which supports rank-N
+[Ermine](https://ermine-language.github.io/), which supports rank-N
 types but not GADTs as of this writing.
 
 The above is simple enough to port to Scala, though.
