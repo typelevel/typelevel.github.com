@@ -161,6 +161,10 @@ def symm[A[_], B[_]](ab: LeibF[A, B]): LeibF[B, A]
 def compose[A[_], B[_], C[_]](ab: LeibF[A, B], bc: LeibF[B, C]): Leib[A, C]
 ```
 
+You can write a `Leibniz` and associated combinators for types of
+*any* kind; the principles and implementation techniques outlined
+above for types of kind `*->*` apply to all kinds.
+
 Whence `PolyKinds`?
 -------------------
 
@@ -336,11 +340,26 @@ type-system-level separation of the two type parameters.  But this
 style may more naturally integrate in your ADTs, and it is much closer
 to the original non-working `hoge1` implementation.
 
+It also feels a little weird that you have to waste a slot carting
+around this evidence of type equality.  As demonstrated in section
+“It’s really there” above, though, *it matters that the instance
+exists*.
+
 You can play games with this definition to make it easier to supply
 the wholly mechanical `leib` argument to `X`, e.g. adding it as an
 `implicit val` in the second parameter list so it can be imported and
 implicitly supplied on `X` construction.  The basic technique is
 exactly the same as above, though.
+
+`Leibniz` mastery
+-----------------
+
+This time we talked about
+
+* Why it matters that `subst` always executes to use a type equality,
+* the Haskell implementation,
+* higher-kinded type equalities and their `Leibniz`es,
+* simulating GADTs with `Leibniz` members of data constructors.
 
 *This article was tested with Scala 2.11.2,
 [Kind Projector](https://github.com/non/kind-projector) 0.5.2, and
