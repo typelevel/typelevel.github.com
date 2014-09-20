@@ -180,7 +180,8 @@ These are just the basics.  Above:
 * the isomorphism between each `Leibniz` representation and all
   others.
 
-In the next part, we'll look at:
+[In the next part]({% post_url 2014-09-20-higher_leibniz %}), we'll
+look at:
 
 * Why it matters that `subst` always executes to use a type equality,
 * the Haskell implementation,
