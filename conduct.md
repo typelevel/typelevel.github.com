@@ -27,4 +27,4 @@ We expect participants to follow these rules at all community venues (including 
 For any questions or with any concerns at all, please contact any member of community staff.
 
 
-_This CoC was adapted from [haskellnow.org](haskellnow.org), which is inspired from [Geek Feminism](http://geekfeminism.wikia.com/wiki/Event_Guidelines)._
+_This CoC was adapted from [haskellnow.org](http://www.haskellnow.org), which is inspired from [Geek Feminism](http://geekfeminism.wikia.com/wiki/Event_Guidelines)._
