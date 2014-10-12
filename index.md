@@ -24,7 +24,7 @@ meta:
   <div class="span4">
     <h2>discipline</h2>
     <p><span class="tagline">Flexible law checking.</span> Originally intended for internal use in spire, this library helps libraries declaring type classes to precisely state the laws which instances need to satisfy, and takes care of not checking derived laws multiple times.</p>
-    <p><a class="btn" href="{{ site.baseurl }}/projects/#helpers">Learn more &raquo;</a></p>
+    <p><a class="btn" href="https://github.com/typelevel/discipline">Learn more &raquo;</a></p>
   </div>
   <div class="span4">
     <h2>Monocle</h2>
