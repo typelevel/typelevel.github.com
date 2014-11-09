@@ -34,14 +34,20 @@ def revmaybe[T](xs: List[T]): List[T] = {
 }
 ```
 
-Which violates the free theorem of `revmaybe`’s type `revmaybe(xs map
-f) = revmaybe(xs) map f`, as follows.
+Which violates the
+[free theorem](http://failex.blogspot.com/2013/06/fake-theorems-for-free.html)
+of `revmaybe`’s type `revmaybe(xs map f) = revmaybe(xs) map f`, as
+follows.
 
 ```scala
 val xs = List(1, 2, 3)
 def f(i:Int) = Some(i)
-revmaybe(xs map f)
-revmaybe(xs) map f
+
+scala> revmaybe(xs map f)
+res2: List[Some[Int]] = List(Some(1), Some(2), Some(3))
+
+scala> revmaybe(xs) map f
+res3: List[Some[Int]] = List(Some(3), Some(2), Some(1))
 ```
 
 ADTs are OK to go
