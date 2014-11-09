@@ -27,7 +27,8 @@ With the "no type tests" rule, we forbid writing functions like this:
 
 ```scala
 def revmaybe[T](xs: List[T]): List[T] = {
-  val allInts = xs.forall{case _:Int => true; case _ => false}
+  val allInts = xs.forall{case _:Int => true
+                          case _ => false}
   if (allInts) xs.reverse else xs
 }
 ```
@@ -71,40 +72,46 @@ def eval[T](ex: Expr[T]): T = ex match {
 ADTs use type tests
 -------------------
 
-Let's look at the compiled code of the `headOption` body.
+Let's look at the compiled code of the `eval` body, specifically, the
+`case` line.
 
-TODO disassembled
-
-So, before calling the `unapply` that will presumably check whether
-`::` matches, scalac casts its argument to `::`.  Why does it do that?
-Let's check out the signature of `::.unapply`:
-
-```scala
-def unapply ... TODO
+```nasm
+         2: aload_2       
+         3: instanceof    #60                 // class adts/AddExpr
+         6: ifeq          39
+         9: aload_2       
+        10: checkcast     #60                 // class adts/AddExpr
+        13: astore_3      
+        14: aload_3       
+        15: invokevirtual #63                 // Method adts/AddExpr.x:()I
+        18: istore        4
+        20: aload_3       
+        21: invokevirtual #66                 // Method adts/AddExpr.y:()I
+        24: istore        5
+        26: iload         4
+        28: iload         5
+        30: iadd          
 ```
 
-Theoretically, it doesn't need to do anything at all.  Let's
-disassemble that `unapply`.
-
-TODO disassembled ::.unapply
-
-In other words, the `unapply` call will always return a `Some`.  The
-only actual check is inserted by scalac as part of compiling the
-pattern match expression, and it is a type test, supposedly verboten
-under Scalazzi rules.
-
-We can repeat this exercise for `Expr` and `eval`.
-
-TODO eval disassembled
+So, instead of calling `unapply` to presumably check whether `AddExpr`
+matches, scalac checks and casts its argument to `AddExpr`.  Why does
+it do that?  Let's see if we could use `AddExpr.unapply` instead.
 
 ```scala
-def unapply ... TODO
+scala> AddExpr.unapply _
+res4: adts.AddExpr => Option[(Int, Int)] = <function1>
 ```
 
-TODO AddExpr.unapply disassembled
+In other words, the `unapply` call can't tell you whether an `Expr` is
+an `AddExpr`; it can't be called with arbitrary `Expr`.
 
-Once again, we've exhorted Scala users to avoid type tests, but then
-turn around and say that type tests are OK!  What's going on?
+The only actual check here is inserted by scalac as part of compiling
+the pattern match expression, and it is a type test, supposedly
+verboten under Scalazzi rules.  `headOption`, too, is implemented with
+type tests and casts, not `unapply` calls.
+
+We've exhorted Scala users to avoid type tests, but then turn around
+and say that type tests are OK!  What's going on?
 
 An equivalent form
 ------------------
@@ -122,7 +129,7 @@ sealed abstract class Maybe[T] {
 
 final case class MNothing[T]() extends Maybe[T] {
   override def fold[Z](nothing: => Z, just: T => Z): Z =
-    none
+    nothing
 }
 
 final case class Just[T](get: T) extends Maybe[T] {
@@ -159,7 +166,7 @@ arguments.  Here's that last fold:
 
 ```scala
 selector.fold(nothing = "default case",
-            just = x => justcase(x))
+              just = x => justcase(x))
 ```
 
 GADT folds
@@ -186,7 +193,8 @@ that can:
 
 ```scala
 final case class AddExpr2(x: Int, y: Int) extends Expr2[Int] {
-  override def fold[Z](add: (Int, Int, Int === Int) => Z,
+  override
+  def fold[Z](add: (Int, Int, Int === Int) => Z,
               concat: (String, String, String === Int) => Z): Z =
     add(x, y, refl)
 }
@@ -218,23 +226,28 @@ If only Java had higher kinds, you could go the rest of the way and
 actually implement GADTs.
 
 Moving on, let's see another case for `Expr2`, and finally to tie it
-all together, `eval`.
+all together, `eval2` with some extra constant data in for good
+measure.
 
 ```scala
 final case class ConcatExpr2(x: String, y: String) extends Expr2[String] {
-  override def fold[Z](add: (Int, Int, Int === String) => Z,
+  override
+  def fold[Z](add: (Int, Int, Int === String) => Z,
               concat: (String, String, String === String) => Z): Z =
     concat(x, y, refl)
 }
 
 def eval2[T](ex: Expr2[T]): T =
-  ex.fold((x, y, intIsT) => intIsT(x + y),
-        (x, y, strIsT) => strIsT(x + y))
+  ex.fold((x, y, intIsT) => intIsT(1 + x + y),
+          (x, y, strIsT) => strIsT("one" + x + y))
 ```
 
 Using the `Leibniz` proof is, unfortunately, more involved than
-producing it in the fold implementations.  See my previous posts, "A
-function from type equality to Leibniz" and "Higher Leibniz", for many
+producing it in the fold implementations.  See my previous posts,
+["A function from type equality to Leibniz"]({% post_url 2014-07-02-type_equality_to_leibniz %})
+and
+["Higher Leibniz"]({% post_url 2014-09-20-higher_leibniz %}),
+for many
 details on applying `Leibniz` proof to make type transformations.
 
 While the pattern matching `eval` didn't have to explicitly apply type
