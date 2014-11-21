@@ -333,7 +333,7 @@ require us to prove that the selector is of the ADT root type we
 happened to define; that’s an arbitrary point as far as Scala’s
 subtyping system is concerned.  All that is required is that the
 static type of `selector` be a supertype of each of `MNothing[_]` and
-`Maybe[_]`, which `T` is, not being known to be more refined than
+`Just[_]`, which `T` is, not being known to be more refined than
 `Any`.
 
 The test works here, though!  What is ambiguous to scalac is a bright
