@@ -158,7 +158,7 @@ part for `LeibF`, by only changing type parameters and switching any
 
 ```scala
 def symm[A[_], B[_]](ab: LeibF[A, B]): LeibF[B, A]
-def compose[A[_], B[_], C[_]](ab: LeibF[A, B], bc: LeibF[B, C]): Leib[A, C]
+def compose[A[_], B[_], C[_]](ab: LeibF[A, B], bc: LeibF[B, C]): LeibF[A, C]
 ```
 
 You can write a `Leibniz` and associated combinators for types of
