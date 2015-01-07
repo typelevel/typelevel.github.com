@@ -17,9 +17,9 @@ meta:
 
 <div class="row-fluid">
   <div class="span4">
-    <h2>Argonaut</h2>
-    <p><span class="tagline">Purely functional JSON.</span> Argonaut is a JSON library for Scala, providing a rich library for parsing, printing and manipulation as well as convenient codecs for translation to and from scala data types.</p>
-    <p><a class="btn" href="http://argonaut.io">Learn more &raquo;</a></p>
+    <h2>Scala</h2>
+    <p><span class="tagline">Our fork of the Scala compiler.</span> We wish to work with all stakeholders in the Scala ecosystem to safeguard the interests of the entire Scala community.</p>
+    <p><a class="btn" href="{{ site.baseurl }}/blog/2014/09/02/typelevel-scala.html">Learn more &raquo;</a></p>
   </div>
   <div class="span4">
     <h2>discipline</h2>
@@ -67,11 +67,6 @@ meta:
   </div>
 </div>
 <div class="row-fluid">
-  <div class="span4">
-    <h2>Scala</h2>
-    <p><span class="tagline">Our fork of the Scala compiler.</span> We wish to work with all stakeholders in the Scala ecosystem to safeguard the interests of the entire Scala community.</p>
-    <p><a class="btn" href="{{ site.baseurl }}/blog/2014/09/02/typelevel-scala.html">Learn more &raquo;</a></p>
-  </div>
   <div class="span4">
     <h2>Plugins for scalac</h2>
     <p><span class="tagline">Extending the compiler.</span> We provide some experimental compiler plugins to scrap some more boilerplate and help you adhere to certain coding standards.</p>
