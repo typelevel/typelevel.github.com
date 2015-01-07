@@ -119,13 +119,6 @@ Projects
     </td>
     <td>spire-contrib</td>
   </tr>
-  <tr>
-    <td>
-      <a class="btn" href="https://github.com/puffnfresh/wartremover">{% include octocat.html %}</a>
-      <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.brianmckenna%22%20wartremover">{% include maven.html %}</a>
-    </td>
-    <td>wartremover</td>
-  </tr>
 </table>
 
 ### Orphaned projects
