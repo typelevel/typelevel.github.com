@@ -46,20 +46,6 @@ Projects
   </tr>
   <tr>
     <td>
-      <a class="btn" href="https://github.com/scalaz/scalaz">{% include octocat.html %}</a>
-      <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.scalaz%22">{% include maven.html %}</a>
-    </td>
-    <td><a href="{{ site.baseurl }}/projects/scalaz">scalaz</a></td>
-  </tr>
-  <tr>
-    <td>
-      <a class="btn" href="https://github.com/scalaz/scalaz-stream">{% include octocat.html %}</a>
-      <a class="btn" href="https://bintray.com/pchiusano/maven/scalaz-stream/view">{% include bintray.html %}</a>
-    </td>
-    <td><a href="https://github.com/scalaz/scalaz-stream">scalaz-stream</a></td>
-  </tr>
-  <tr>
-    <td>
       <a class="btn" href="https://github.com/scodec/scodec">{% include octocat.html %}</a>
       <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.typelevel%22%20scodec">{% include maven.html %}</a>
     </td>
