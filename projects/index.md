@@ -25,13 +25,6 @@ Projects
   </tr>
   <tr>
     <td>
-      <a class="btn" href="https://github.com/argonaut-io/argonaut">{% include octocat.html %}</a>
-      <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.argonaut%22">{% include maven.html %}</a>
-    </td>
-    <td><a href="http://argonaut.io">Argonaut</a></td>
-  </tr>
-  <tr>
-    <td>
       <a class="btn" href="https://github.com/julien-truffaut/Monocle">{% include octocat.html %}</a>
       <a class="btn" href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.julien-truffaut%22">{% include maven.html %}</a>
     </td>
