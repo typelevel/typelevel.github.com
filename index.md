@@ -36,7 +36,7 @@ meta:
   <div class="span4">
     <h2>shapeless</h2>
     <p><span class="tagline">Generic programming.</span> Shapeless is an generic programming library. Starting with implementations of <em>Scrap your boilerplate</em> and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes.</p>
-    <p><a class="btn" href="{{ site.baseurl }}/projects/shapeless">Learn more &raquo;</a></p>
+    <p><a class="btn" href="https://github.com/milessabin/shapeless">Learn more &raquo;</a></p>
   </div>
   <div class="span4">
     <h2>specs2</h2>
@@ -46,7 +46,7 @@ meta:
   <div class="span4">
     <h2>spire</h2>
     <p><span class="tagline">Numeric abstractions.</span> Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to allow developers to write efficient numeric code without having to »bake in« particular numeric representations.</p>
-    <p><a class="btn" href="{{ site.baseurl }}/projects/spire">Learn more &raquo;</a></p>
+    <p><a class="btn" href="https://github.com/non/spire">Learn more &raquo;</a></p>
   </div>
 </div>
 <div class="row-fluid">
