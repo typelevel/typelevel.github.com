@@ -63,7 +63,7 @@ a type class, and aptly name it `Foldable`.
 
 ```scala
 trait Foldable[F[_]] {
-  // Instead of requiring the contents to be monoidal, let's 
+  // Instead of requiring the contents to be monoidal, let's
   // make it flexible by allowing a fold as long as we can convert
   // the contents to a type that has a `Monoid`.
   def foldMap[A, B](fa: F[A])(f: A => B)(implicit B: Monoid[B]): B
@@ -85,20 +85,22 @@ and our instances:
 
 ```scala
 object Foldable {
-  implicit val listIsFoldable: Foldable[List] {
-    def foldMap[A, B](fa: List[A])(f: A => B)(implicit B: Monoid[B]): B =
-      fa.foldLeft(B.zero)((acc, elem) => B.append(acc, f(elem)))
-  }
+  implicit val listIsFoldable: Foldable[List] =
+    new Foldable[List] {
+      def foldMap[A, B](fa: List[A])(f: A => B)(implicit B: Monoid[B]): B =
+        fa.foldLeft(B.zero)((acc, elem) => B.append(acc, f(elem)))
+    }
 
-  implicit val treeIsFoldable: Foldable[Tree] {
-    def foldMap[A, B](fa: Tree[A])(f: A => B)(implicit B: Monoid[B]): B =
-      fa match {
-        case Leaf() =>
-          B.zero
-        case Node(value, left, right) => 
-          B.append(f(value), B.append(foldMap(left)(f), foldMap(right)(f)))
-      }
-  }
+  implicit val treeIsFoldable: Foldable[Tree] =
+    new Foldable[Tree] {
+      def foldMap[A, B](fa: Tree[A])(f: A => B)(implicit B: Monoid[B]): B =
+        fa match {
+          case Leaf() =>
+            B.zero
+          case Node(value, left, right) =>
+            B.append(f(value), B.append(foldMap(left)(f), foldMap(right)(f)))
+        }
+    }
 }
 ```
 
@@ -113,13 +115,13 @@ def sumGeneric[F[_], A](fa: F[A])(implicit F: Foldable[F], A: Monoid[A]): A =
 As with last time, Scalaz defines the `Foldable` type class for us. However,
 to really be "foldable", not only should you define `foldMap`, but `foldRight`
 as well. Some of you may be wondering why `foldRight` and not `foldLeft`, or both?
-The reasons for this decision are that 
+The reasons for this decision are that
 
 * `foldLeft` can be defined in terms of `foldRight` (a fun exercise is to try this for yourself)
 * `foldLeft` fails on infinite lists (think `Stream` in Scala)
 
 That being said, Scalaz defines instances of `Foldable` for many of the standard
-Scala types (`List`, `Vector`, `Stream`, `Option`), as well as it's own (`Tree`, `EphemeralStream`).
+Scala types (`List`, `Vector`, `Stream`, `Option`), as well as its own (`Tree`, `EphemeralStream`).
 The methods available on the type class not only include `foldMap` and `foldRight` which
 are required to be implemented, but several derived ones as well including `fold` (`foldMap` with
 `identity`), `foldLeft`, `toList/IndexedSeq/Stream`, among others.
@@ -135,10 +137,10 @@ def sumGeneric[F[_], A](fa: F[A])(implicit F: Foldable[F], A: Monoid[A]): A =
 ```
 
 Note that the implementation of the function is rather plain, but that's a good thing!
-This shows the level of generecity type classes, folds,  and Scalaz is capable of. If you ever
+This shows the level of genericity type classes, folds,  and Scalaz is capable of. If you ever
 find yourself needing to fold something down, look at the methods available on
 `scalaz.Foldable`. By simply adding an instance of `Foldable` to your `F[_]` by implementing
-the two methods above, you get "for free" a bunch of 
+the two methods above, you get "for free" a bunch of
 [derived ones](http://docs.typelevel.org/api/scalaz/stable/7.0.4/doc/#scalaz.Foldable)!
 
 ### An Aside: Taming the Elephant
@@ -146,7 +148,7 @@ In recent days, the word "Hadoop" has become synonymous with "big data." The Map
 system made popular by [Google](http://research.google.com/archive/mapreduce.html)
 has made it's way into several companies looking to glean information from their data.
 
-Why am I mentioning this in a {% include typelevel.html %} blog post? Well, think about the reduce phase – 
+Why am I mentioning this in a {% include typelevel.html %} blog post? Well, think about the reduce phase –
 what is really happening? For a particular key, we're given a list of values emitted
 for that key, and we want to reduce those values into a single value. Sound familiar?
 Sounds a bit like `fold`, doesn't it? Note that not all reductions in MapReduce have to follow
