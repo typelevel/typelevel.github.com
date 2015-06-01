@@ -125,11 +125,12 @@ b.type <: SBox <: Box[String]
 b.type <: Box[A]
 ```
 
-In addition, **<code>A</code> is invariant**, so after going up to `Box[Int]`,
-`b` couldn’t have widened that type parameter, or changed it in any
-way, without an unsafe cast.  Additionally, our supertype tree cannot
-contain `Box` twice with different parameters.  So we have proved that `A`
-is `String`, because we proved that `Box[A]` is `Box[String]`.
+In addition, **<code>A</code> is invariant**, so after going up to
+`Box[String]`, `b` couldn’t have widened that type parameter, or
+changed it in any way, without an unsafe cast.  Additionally, our
+supertype tree cannot contain `Box` twice with different parameters.
+So we have proved that `A` is `String`, because we proved that
+`Box[A]` is `Box[String]`.
 
 This is very useful when defining
 [GADTs](http://www.haskell.org/haskellwiki/GADTs_for_dummies).
