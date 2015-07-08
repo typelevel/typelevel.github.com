@@ -208,12 +208,14 @@ that we can translate back to our informal model.
 
 My guess is that type parameters are much better understood than type
 members, but that existentials via type members are better understood
-than existentials introduced by `_` or `forSome`.  By knowing about
-equivalences and being able to discover more, you have a powerful tool
-for understanding unfamiliar aspects of Scala: just translate the
-problem back to what you know, and think about what it means there,
-because the conclusion will still hold when you translate it back.
-(Category theorists, eat your hearts out.)
+than existentials introduced by `_` or `forSome`, though I’d wager
+that neither form of existential is particularly well understood.
+
+By knowing about equivalences and being able to discover more, you
+have a powerful tool for understanding unfamiliar aspects of Scala:
+just translate the problem back to what you know, and think about what
+it means there, because the conclusion will still hold when you
+translate it back.  (Category theorists, eat your hearts out.)
 
 In this vein, we will next generalize the above rule about existential
 methods, discovering a simple tool for determining whether two method
