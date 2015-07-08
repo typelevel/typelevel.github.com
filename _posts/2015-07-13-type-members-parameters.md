@@ -48,7 +48,7 @@ let's see it.
 ```scala
 sealed abstract class PList[T]
 final case class PNil[T]() extends PList[T]
-final case class PCons[T](head: T, tail: PList[T])
+final case class PCons[T](head: T, tail: PList[T]) extends PList[T]
 
 sealed abstract class MList {self =>
   type T
