@@ -11,8 +11,8 @@ meta:
 Type members are [almost] type parameters
 =========================================
 
-*This is the first of a series of articles on "Type Parameters and Type
-Members".*
+*This is the first of a series of articles on “Type Parameters and Type
+Members”.*
 
 Type members like `Member`
 
@@ -34,19 +34,19 @@ rule of thumb: **if you intend to use a parameter existentially in
 most cases, changing it to a member is probably better; a parameter is
 more convenient and harder to screw up in most circumstances**.
 
-We will discuss what on earth that means, among other things.  More
-broadly, though, in this series of articles on *Type Parameters and
-Type Members*, I want to tackle a variety of Scala types that look
-very different, but are really talking about the same thing, or
-almost.
+Here, and in later posts, we will discuss what on earth that means,
+among other things.  More broadly, though, in this series of articles
+on *Type Parameters and Type Members*, I want to tackle a variety of
+Scala types that look very different, but are really talking about the
+same thing, or almost.
 
 Two lists, all alike
 --------------------
 
-To illustrate, let's see two versions of the functional list.  It's
+To illustrate, let’s see two versions of the functional list.  It’s
 typically not used existentially, so the usual choice of parameter
-over member fits our rule of thumb above.  It's instructive anyway, so
-let's see it.
+over member fits our rule of thumb above.  It’s instructive anyway, so
+let’s see it.
 
 ```scala
 sealed abstract class PList[T]
@@ -67,9 +67,9 @@ sealed abstract class MCons extends MList {self =>
 }
 ```
 
-We're not quite done; we're missing a way to *make* `MNil`s and
+We’re not quite done; we’re missing a way to *make* `MNil`s and
 `MCons`es, which `PNil` and `PCons` have already provided for
-themselves, by virtue of being `case class`es.  But it's already
+themselves, by virtue of being `case class`es.  But it’s already
 pretty clear that a type parameter is a more straightforward way to
 define this data type.
 
@@ -91,15 +91,15 @@ def MCons[T0](hd: T0, tl: MList {type T = T0})
   }
 ```
 
-Why all the {type T = ...}?
----------------------------
+Why all the `{type T = ...}`?
+-----------------------------
 
-After all, isn't the virtue of type members that we don't have to pass
+After all, isn’t the virtue of type members that we don’t have to pass
 the type around everywhere?
 
-Let's see what happens with that theory.  Suppose we remove only one
+Let’s see what happens with that theory.  Suppose we remove only one
 of the *refinement*s above, as these `{...}` rainclouds at the type
-level are called.  Let's remove the one in `val tail`, so `class
+level are called.  Let’s remove the one in `val tail`, so `class
 MCons` looks like this:
 
 ```scala
@@ -164,7 +164,7 @@ def plength[T](xs: PList[T]): Int =
 ```
 
 By the conversion rules above, though, we should be able to write an
-existential equivalent of `mlength`, and indeed we can:
+existential equivalent of `mlength` for `PList`, and indeed we can:
 
 ```scala
 def plength2(xs: PList[_]): Int =
@@ -174,7 +174,7 @@ def plength2(xs: PList[_]): Int =
   }
 ```
 
-There's another simple rule we can follow when determining whether we
+There’s another simple rule we can follow when determining whether we
 can rewrite in an existential manner.
 
 1. When a type parameter appears only in one argument, and
@@ -219,7 +219,7 @@ In this vein, we will next generalize the above rule about existential
 methods, discovering a simple tool for determining whether two method
 types *in general* are equivalent, and so that things you know about
 one easily carry over to the other.  We will also explore methods that
-*cannot* be written in the existential style, at least under Scala's
+*cannot* be written in the existential style, at least under Scala’s
 restrictions.
 
 *This article was tested with Scala 2.11.7.*
