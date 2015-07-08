@@ -54,10 +54,13 @@ sealed abstract class MList {self =>
   type T
   def uncons: Option[MCons {type T = self.T}]
 }
-sealed abstract class MNil extends MList
+sealed abstract class MNil extends MList {
+  def uncons = None
+}
 sealed abstract class MCons extends MList {self =>
   val head: T
   val tail: MList {type T = self.T}
+  def uncons = Some(self)
 }
 ```
 
