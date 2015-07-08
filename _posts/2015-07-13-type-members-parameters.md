@@ -95,8 +95,9 @@ After all, isn't the virtue of type members that we don't have to pass
 the type around everywhere?
 
 Let's see what happens with that theory.  Suppose we remove only one
-of the refinements above, the one in `val tail`, so `class MCons`
-looks like this:
+of the *refinement*s above, as these `{...}` rainclouds at the type
+level are called.  Let's remove the one in `val tail`, so `class
+MCons` looks like this:
 
 ```scala
 sealed abstract class MCons extends MList {self =>
