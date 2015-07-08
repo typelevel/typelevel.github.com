@@ -11,6 +11,9 @@ meta:
 Type members are [almost] type parameters
 =========================================
 
+*This is the first of a series of articles on "Type Parameters and Type
+Members".*
+
 Type members like `Member`
 
 ```scala
@@ -218,3 +221,5 @@ types *in general* are equivalent, and so that things you know about
 one easily carry over to the other.  We will also explore methods that
 *cannot* be written in the existential style, at least under Scala's
 restrictions.
+
+*This article was tested with Scala 2.11.7.*
