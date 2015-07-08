@@ -30,9 +30,9 @@ class Blah2[Param]
 
 have more similarities than differences.  The choice of which to use
 for a given situation is usually a matter of convenience.  In brief, a
-rule of thumb: **if you intend to use a parameter existentially in
-most cases, changing it to a member is probably better; a parameter is
-more convenient and harder to screw up in most circumstances**.
+rule of thumb: **a type parameter is usually more convenient and
+harder to screw up, but if you intend to use it existentially in most
+cases, changing it to a member is probably better**.
 
 Here, and in later posts, we will discuss what on earth that means,
 among other things.  More broadly, though, in this series of articles
