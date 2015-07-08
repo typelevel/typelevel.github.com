@@ -237,6 +237,7 @@ equivalences and being able to discover more, you have a powerful tool
 for understanding unfamiliar aspects of Scala: just translate the
 problem back to what you know, and think about what it means there,
 because the conclusion will still hold when you translate it back.
+(Category theorists, eat your hearts out.)
 
 In this vein, we will next generalize the above rule about existential
 methods, discovering a simple tool for determining whether two method
