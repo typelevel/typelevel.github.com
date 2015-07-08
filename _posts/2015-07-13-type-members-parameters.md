@@ -132,17 +132,17 @@ scala> res3.map(_ - res2)
 
 When we took the refinement off of `tail`, we eliminated any evidence
 about what its `type T` might be.  We only know that it must be *some
-type*.
+type*.  That’s what *existential* means.
 
 **In terms of type parameters, `MList` is like `PList[_]`, and `MList
-{type T = Int}` is like `PList[Int]`.** For the former, we say that
-the member, or parameter, is *existential*.
+{type T = Int}` is like `PList[Int]`.**  For the former, we say that
+the member, or parameter, is existential.
 
 When is existential OK?
 -----------------------
 
-Despite this limitation, there are functions that can be written on
-the existential version.  Here's the simplest:
+Despite the limitation implied by the error above, there are functions
+that can be written on the existential version.  Here’s the simplest:
 
 ```scala
 def mlength(xs: MList): Int =
