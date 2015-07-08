@@ -186,43 +186,8 @@ compiles, so it must be right.
 
 This hints at what is usually, though not always, an advantage for
 type parameters: you have to ask for an existential, rather than
-silently getting one just because you forgot a refinement.  The
-mistake of `mdropFirst2`'s signature, to fail to relate the output
-type to the input type strongly enough, is an easy one to make when
-it's the default behavior.
-
-There is another mistake that type members open you up to. I have been
-using the very odd type parameter -- and member -- name `T`.  Java
-developers will find this choice very ordinary, but the name of choice
-in Scala is `A`.  So suppose I attempted to correct `mdropFirst2`'s
-type as follows:
-
-```scala
-def mdropFirst3[T0](xs: MList {type A = T0}) =
-  TODO copy definition
-```
-
-This method compiles, but I cannot invoke it!
-
-```scala
-> mdropFirst3(MNil[Int]())
-TODO error
-
-> mdropFirst3(MCons(42, MNil()))
-TODO error
-```
-
-That's because `MList {type A = T0}` is a perfectly reasonable
-intersection type: values of this type have *both* the type `MList` in
-their supertype tree somewhere, *and* a type member named `A`, which
-is bound to `T0`.  That `MList` has no such type member is irrelevant
-to the intersection and refinement of types in Scala.  This type means
-"an instance of the trait `MList`, with a type member named `A` set to
-`T0`".  This type member `A` could come from another trait mixed with
-`MList` or an inline subclass.  Whether such a thing is impossible to
-instantiate -- due to `sealed`, `final`, or anything else -- is also
-irrelevant; types with no values are meaningful and useful in both
-Java and Scala.
+silently getting one just because you forgot a refinement.  We will
+discuss what happens when you forget one in a later post.
 
 Equivalence as a learning tool
 ------------------------------
