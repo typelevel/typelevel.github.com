@@ -47,7 +47,7 @@ let's see it.
 
 ```scala
 sealed abstract class PList[T]
-final case class PNil[T]() extends Plist[T]
+final case class PNil[T]() extends PList[T]
 final case class PCons[T](head: T, tail: PList[T])
 
 sealed abstract class MList {self =>
@@ -211,7 +211,7 @@ is bound to `T0`.  That `MList` has no such type member is irrelevant
 to the intersection and refinement of types in Scala.  This type means
 "an instance of the trait `MList`, with a type member named `A` set to
 `T0`".  This type member `A` could come from another trait mixed with
-`Mlist` or an inline subclass.  Whether such a thing is impossible to
+`MList` or an inline subclass.  Whether such a thing is impossible to
 instantiate -- due to `sealed`, `final`, or anything else -- is also
 irrelevant; types with no values are meaningful and useful in both
 Java and Scala.
