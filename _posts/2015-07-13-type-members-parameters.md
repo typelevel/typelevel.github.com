@@ -215,4 +215,6 @@ because the conclusion will still hold when you translate it back.
 In this vein, we will next generalize the above rule about existential
 methods, discovering a simple tool for determining whether two method
 types *in general* are equivalent, and so that things you know about
-one easily carry over to the other.
+one easily carry over to the other.  We will also explore methods that
+*cannot* be written in the existential style, at least under Scala's
+restrictions.
