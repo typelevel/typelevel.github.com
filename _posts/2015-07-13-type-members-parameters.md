@@ -60,7 +60,7 @@ sealed abstract class MNil extends MList {
 sealed abstract class MCons extends MList {self =>
   val head: T
   val tail: MList {type T = self.T}
-  def uncons = Some(self)
+  def uncons = Some(self: MCons {type T = self.T})
 }
 ```
 
@@ -109,14 +109,22 @@ sealed abstract class MCons extends MList {self =>
 Now let us put a couple members into the list, and add them together.
 
 ```scala
-> val nums = MCons(2, MCons(3, MNil()))
-TODO
+scala> val nums = MCons(2, MCons(3, MNil())): MCons{type T = Int}
+nums: tmtp.MCons{type T = Int} = tmtp.MList$$anon$2@3c649f69
 
-> nums.head
-TODO
+scala> nums.head
+res1: nums.T = 2
 
-> nums.tail.uncons.map(_.head)
-TODO ERROR
+scala> res1 + res1
+res2: Int = 4
+
+scala> nums.tail.uncons.map(_.head)
+res3: Option[nums.tail.T] = Some(3)
+
+scala> res3.map(_ - res2)
+<console>:21: error: value - is not a member of nums.tail.T
+       res3.map(_ - res2)
+                  ^
 ```
 
 When we took the refinement off of `tail`, we eliminated any evidence
