@@ -156,10 +156,10 @@ For the type parameter equivalent, the parameter on the argument is
 usually carried out or *lifted* to the function, like so:
 
 ```scala
-def plength[T](xs: PList[T]): Int =
+def plengthT[T](xs: PList[T]): Int =
   xs match {
     case PNil() => 0
-    case PCons(_, t) => 1 + plength(t)
+    case PCons(_, t) => 1 + plengthT(t)
   }
 ```
 
@@ -167,10 +167,10 @@ By the conversion rules above, though, we should be able to write an
 existential equivalent of `mlength` for `PList`, and indeed we can:
 
 ```scala
-def plength2(xs: PList[_]): Int =
+def plengthE(xs: PList[_]): Int =
   xs match {
     case PNil() => 0
-    case PCons(_, t) => 1 + plength2(t)
+    case PCons(_, t) => 1 + plengthE(t)
   }
 ```
 
@@ -184,8 +184,8 @@ we should always, ideally, be able to write the function in an
 existential manner.
 
 You can demonstrate this to yourself by having the parameterized
-variant (e.g. `plength`) call the existential variant, and, voilà, it
-compiles, so it must be right.
+variant (e.g. `plengthT`) call the existential variant
+(e.g. `plengthE`), and, voilà, it compiles, so it must be right.
 
 This hints at what is usually, though not always, an advantage for
 type parameters: you have to ask for an existential, rather than
