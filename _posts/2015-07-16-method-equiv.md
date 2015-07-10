@@ -200,8 +200,10 @@ Method likeness and subtyping, all alike
 ----------------------------------------
 
 If you know what the symbol `<:` means in Scala, or perhaps you’ve
-read SLS §3.5 “Relations between types” (TODO link), you might think,
-“gosh, method equivalence and generality looks awfully familiar.”
+read
+[SLS §3.5 “Relations between types”](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#relations-between-types),
+you might think, “gosh, method equivalence and generality looks
+awfully familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods m1 and m2
@@ -215,7 +217,7 @@ m3 to implement itself, obviously we can snap the pointer and have m1
 call m3 directly.  Likewise, every method type is equivalent to
 itself: reflexivity.  Likewise, if a method m1 is strictly more
 general than m2, obviously m2 cannot be strictly more general than m1:
-antisymmetricity.  And we even copy the relationship between = and <:
+antisymmetricity.  And we even copy the relationship between ≡ and <:
 themselves: just as t1 ≡ t2 implies t1 <: t2, so r ≡ₘ q implies r <:ₘ
 q.
 
@@ -227,7 +229,7 @@ yourself, if that’s what you want.
 
 I do confess to one oddity in my terminology: **the method that has
 more specific type is *the more general method*.** I hope the example
-of `mdropFirstT` <:m `mdropFirstE` justifies my choice.  `mdropFirstT`
+of `mdropFirstT` <:ₘ `mdropFirstE` justifies my choice.  `mdropFirstT`
 is more specific, and rejects more implementations, such as the one
 that returns a list with `42` in it above.  Thus, it has fewer
 implementations, in the same way that more specific types have fewer
