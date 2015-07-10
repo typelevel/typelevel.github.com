@@ -14,9 +14,9 @@ When are two methods alike?
 We just saw two method types that, though different, are effectively
 the same: those of `plengthT` and `plengthE`.  We have rules for
 deciding when an existential parameter can be lifted into a method
-type parameter --- or a method type parameter lowered to an
-existential --- but there are other pairs of method types we'll
-explore that are the same, or very close.  So let's talk about how we
+type parameter—or a method type parameter lowered to an
+existential—but there are other pairs of method types we'll explore
+that are the same, or very close.  So let's talk about how we
 determine this equivalence.
 
 A method *r* is more general than or as general as *q* if *q* may be
@@ -33,12 +33,11 @@ doing nothing else.  We write this as *q* ≡ₘ *r*.  Likewise, if *m* <:ₘ
 *q* and *q* !<:ₘ *m*, that is, *q* can be written by calling *m*, but
 not vice versa, then *m* is *strictly more general* than *q*.
 
-What the concrete method --- the one actually doing stuff, not
-invoking the other one --- does is irrelevant, for the purposes of
-this test, because this is about types.  That matters because
-sometimes, in Scala, as in Java, the body will compile in one of the
-methods, but not the other.  Let's see an example, that doesn't
-compile.
+What the concrete method—the one actually doing stuff, not invoking
+the other one—does is irrelevant, for the purposes of this test,
+because this is about types.  That matters because sometimes, in
+Scala, as in Java, the body will compile in one of the methods, but
+not the other.  Let's see an example, that doesn't compile.
 
 ```scala
 import scala.collection.mutable.ArrayBuffer
