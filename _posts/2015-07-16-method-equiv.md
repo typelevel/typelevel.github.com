@@ -44,9 +44,16 @@ import scala.collection.mutable.ArrayBuffer
 
 def copyToZero(xs: ArrayBuffer[_]): Unit =
   xs += xs(0)
+
+TmTp2.scala:9: type mismatch;
+ found   : (some other)_$1(in value xs)
+ required: _$1(in value xs)
+    xs += xs(0)
+            ^
 ```
 
-Likewise, the Java version has a similar problem.
+Likewise, the Java version has a similar problem, though the error
+message doesn’t give as good a hint as to what’s going on..
 
 ```java
 import java.util.List;
@@ -54,6 +61,10 @@ import java.util.List;
 void copyToZero(final List<?> xs) {
     xs.add(xs.get(0));
 }
+
+TmTp2.java:11:  error: no suitable method found for add(CAP#1)
+        xs.add(xs.get(0));
+          ^
 ```
 
 Luckily, in both Java and Scala, we have an *equivalent* method type,
@@ -74,13 +85,11 @@ private def copyToZeroP[T](xs: ArrayBuffer[T]): Unit =
 Similarly, in Java,
 
 ```java
-import java.util.List;
-
 void copyToZeroE(final List<?> xs) {
     copyToZeroP(xs);
 }
 
-void <T> copyToZeroP(final List<T> xs) {
+<T> void copyToZeroP(final List<T> xs) {
     final T zv = xs.get(0);
     xs.add(zv);
 }
@@ -107,9 +116,14 @@ crushing the inferred type of `zv` to `Any`.
 ```scala
 def copyToZeroE(xs: ArrayBuffer[_]): Unit = {
   val zv = xs(0)
-  // TODO error
   xs += zv
 }
+
+TmTp2.scala:19: type mismatch;
+ found   : zv.type (with underlying type Any)
+ required: _$1
+    xs += zv
+          ^
 ```
 
 When we call the type parameterized variant to implement the
@@ -159,9 +173,9 @@ def mdropFirstE(xs: MList): MList =
 ```
 
 It certainly looks nicer.  However, while `mdropFirstE` can be
-implemented by calling `mdropFirstT`, the opposite is not true;
-`mdropFirstT` <m `mdropFirstE`, or, `mdropFirstT` is *strictly more
-general*.
+implemented by calling `mdropFirstT`, by passing the type parameter
+`xs.T`, the opposite is not true; `mdropFirstT` <ₘ `mdropFirstE`, or,
+`mdropFirstT` is *strictly more general*.
 
 In this case, the reason is that `mdropFirstE` fails to relate the
 argument’s `T` to the result’s `T`; you could implement `mdropFirstE`
@@ -169,7 +183,7 @@ like follows:
 
 ```scala
 def mdropFirstE[T0](xs: MList): MList =
-  MCons(42, MNil())
+  MCons[Int](42, MNil())
 ```
 
 The stronger type of `mdropFirstT` forbids such shenanigans.  However,
@@ -241,12 +255,18 @@ Just `t`.
 
 Specifically, you can’t return `null`:
 
-TODO error
+```scala
+TmTp2.scala:36: type mismatch;
+ found   : Null(null)
+ required: T
+  def goshWhatIsThis[T](t: T): T = null
+                                   ^
+```
 
 Well now, let’s convert this type to Java:
 
 ```java
-public <T> T holdOnNow(T t) {
+public static <T> T holdOnNow(T t) {
     return null;
 }
 ```
@@ -257,16 +277,20 @@ the type says we can’t return `null`!
 
 The problem is that Java adds an implicit upper bound, because it
 assumes generic type parameters can only have class types chosen for
-them; in Scala terms, `[T <: Object]`.  If we write that into the Java
-code explicitly, Scala gives us the correct error.
+them; in Scala terms, `[T <: AnyRef]`.  If we encode this constraint
+in Scala, Scala gives us the correct error.
 
-```java
-public <T extends Object> T holdOnNow(T t) {
-    return null;
-}
+```scala
+def holdOnNow[T <: AnyRef](t: T): T = TmTp2.holdOnNow(t)
+
+def goshWhatIsThis[T](t: T): T = holdOnNow(t)
+
+TmTp2.scala:38: type mismatch;
+ found   : T(in method goshWhatIsThis)
+ required: T(in method holdOnNow)
+  def goshWhatIsThis[T](t: T): T = holdOnNow(t)
+                                             ^
 ```
-
-TODO error
 
 This is forgivable on Scala’s part, because it’d be annoying to add
 `<: AnyRef` to your generic methods just because you called some Java
