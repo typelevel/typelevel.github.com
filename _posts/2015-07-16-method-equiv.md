@@ -15,8 +15,8 @@ We just saw two method types that, though different, are effectively
 the same: those of `plengthT` and `plengthE`.  We have rules for
 deciding when an existential parameter can be lifted into a method
 type parameter—or a method type parameter lowered to an
-existential—but there are other pairs of method types we'll explore
-that are the same, or very close.  So let's talk about how we
+existential—but there are other pairs of method types we’ll explore
+that are the same, or very close.  So let’s talk about how we
 determine this equivalence.
 
 A method *r* is more general than or as general as *q* if *q* may be
@@ -37,7 +37,7 @@ What the concrete method—the one actually doing stuff, not invoking
 the other one—does is irrelevant, for the purposes of this test,
 because this is about types.  That matters because sometimes, in
 Scala, as in Java, the body will compile in one of the methods, but
-not the other.  Let's see an example, that doesn't compile.
+not the other.  Let’s see an example, that doesn’t compile.
 
 ```scala
 import scala.collection.mutable.ArrayBuffer
@@ -86,11 +86,11 @@ void <T> copyToZeroP(final List<T> xs) {
 }
 ```
 
-The last gives a hint as to what's going on: in `copyToZeroP`'s body,
+The last gives a hint as to what’s going on: in `copyToZeroP`’s body,
 the list element type has a name; we can use the name to create
 variables, and the compiler can rely on the name as well.  The
-compiler shouldn't care about whether the name can be written, but
-that one of the above compiles and the other doesn't is telling.  In
+compiler shouldn’t care about whether the name can be written, but
+that one of the above compiles and the other doesn’t is telling.  In
 both cases, we are just helping the compiler along by using the
 equivalent method type; both `scalac` and `javac` manage to infer that
 the type `T` should be the (otherwise unspeakable) existential.
@@ -98,10 +98,10 @@ the type `T` should be the (otherwise unspeakable) existential.
 When are two methods less alike?
 --------------------------------
 
-Now, let's examine another pair of methods, and apply our test to
+Now, let’s examine another pair of methods, and apply our test to
 them.
 
-Let's say we want to write the equivalent of this method for `MList`.
+Let’s say we want to write the equivalent of this method for `MList`.
 
 ```scala
 def pdropFirst[T](xs: PList[T]): PList[T] =
@@ -139,7 +139,7 @@ implemented by calling `mdropFirstT`, the opposite is not true;
 general*.
 
 In this case, the reason is that `mdropFirstE` fails to relate the
-argument's `T` to the result's `T`; you could implement `mdropFirstE`
+argument’s `T` to the result’s `T`; you could implement `mdropFirstE`
 like follows:
 
 ```scala
@@ -148,23 +148,23 @@ def mdropFirstE[T0](xs: MList): MList =
 ```
 
 The stronger type of `mdropFirstT` forbids such shenanigans.  However,
-I can tell you that largely because I'm already comfortable with
-existentials; how could you figure that out if you're just starting
-out with these tools?  You don't have to; the beauty of the
+I can tell you that largely because I’m already comfortable with
+existentials; how could you figure that out if you’re just starting
+out with these tools?  You don’t have to; the beauty of the
 equivalence test is that you can apply it mechanically.  **Knowing
 nothing about the mechanics of the parameterization and existentialism
 of the types involved, you can work out with the equivalence test**
-that `mdropFirstT` <m `mdropFirstE`, and so you can't get away with
+that `mdropFirstT` <m `mdropFirstE`, and so you can’t get away with
 simply dropping the refinements.
 
 Method likeness and subtyping, all alike
 ----------------------------------------
 
-If you know what the symbol `<:` means in Scala, or perhaps you've
+If you know what the symbol `<:` means in Scala, or perhaps you’ve
 read SLS §3.5 "Relations between types" (TODO link), you might think,
 "gosh, method equivalence and generality looks awfully familiar."
 
-Indeed, the thing we're talking about is very much like subtyping and
+Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods m1 and m2
 also pass our method equivalence test, and every pair of methods m3
 and m4 where m3 <: m4 passes our m4-calls-m3 test.  So m1 ≡ m2 implies
@@ -180,11 +180,11 @@ antisymmetricity.  And we even copy the relationship between = and <:
 themselves: just as t1 ≡ t2 implies t1 <: t2, so r ≡ₘ q implies r <:ₘ
 q.
 
-Scala doesn't understand the notion of method equivalence we've
-defined above, though.  So you can't, say, implement an abstract
+Scala doesn’t understand the notion of method equivalence we’ve
+defined above, though.  So you can’t, say, implement an abstract
 method in a subclass using an equivalent form, at least directly; you
 have to `override` the Scala way, and call the alternative form
-yourself, if that's what you want.
+yourself, if that’s what you want.
 
 I do confess to one oddity in my terminology: **the method that has
 more specific type is *the more general method*.** I hope the example
@@ -196,11 +196,11 @@ values inhabiting them.  But it can be used in more circumstances, so
 it is "more general".  The generality in terms of when a method can be
 used is directly proportional to the specificity of its type.
 
-Java's edge of insanity
+Java’s edge of insanity
 -----------------------
 
-Now we have enough power to demonstrate that Scala's integration with
-Java generics is faulty.  Or, more likely, that Java's generics are
+Now we have enough power to demonstrate that Scala’s integration with
+Java generics is faulty.  Or, more likely, that Java’s generics are
 faulty.
 
 Consider this method type, in Scala:
@@ -211,14 +211,14 @@ def goshWhatIsThis[T](t: T): T
 
 This is a pretty specific method type; there are not too many
 implementations.  Of course you can always perform a side effect; we
-don't track that in Scala's type system.  But what can it return?
+don’t track that in Scala’s type system.  But what can it return?
 Just `t`.
 
-Specifically, you can't return `null`:
+Specifically, you can’t return `null`:
 
 TODO error
 
-Well now, let's convert this type to Java:
+Well now, let’s convert this type to Java:
 
 ```java
 public <T> T holdOnNow(T t) {
@@ -227,8 +227,8 @@ public <T> T holdOnNow(T t) {
 ```
 
 We got away with that!  And, indeed, we can call `holdOnNow` to
-implement `goshWhatIsThis`, and vice versa; they're *equivalent*.  But
-the type says we can't return `null`!
+implement `goshWhatIsThis`, and vice versa; they’re *equivalent*.  But
+the type says we can’t return `null`!
 
 The problem is that Java adds an implicit upper bound, because it
 assumes generic type parameters can only have class types chosen for
@@ -243,8 +243,8 @@ public <T extends Object> T holdOnNow(T t) {
 
 TODO error
 
-This is forgivable on Scala's part, because it'd be annoying to add
+This is forgivable on Scala’s part, because it’d be annoying to add
 `<: AnyRef` to your generic methods just because you called some Java
-code and it's probably going to work out fine.  I blame `null`, and
-while I'm at it, I blame `Object` having any methods at all, too.
-We'd be better off without these bad features.
+code and it’s probably going to work out fine.  I blame `null`, and
+while I’m at it, I blame `Object` having any methods at all, too.
+We’d be better off without these bad features.
