@@ -64,7 +64,7 @@ We can apply this to put the method implementation somewhere it will
 compile.
 
 ```scala
-def copyToZeroT(xs: ArrayBuffer[_]): Unit =
+def copyToZeroE(xs: ArrayBuffer[_]): Unit =
   copyToZeroP(xs)
 
 private def copyToZeroP[T](xs: ArrayBuffer[T]): Unit =
@@ -76,7 +76,7 @@ Similarly, in Java,
 ```java
 import java.util.List;
 
-void copyToZeroT(final List<?> xs) {
+void copyToZeroE(final List<?> xs) {
     copyToZeroP(xs);
 }
 
@@ -90,10 +90,35 @@ The last gives a hint as to what’s going on: in `copyToZeroP`’s body,
 the list element type has a name; we can use the name to create
 variables, and the compiler can rely on the name as well.  The
 compiler shouldn’t care about whether the name can be written, but
-that one of the above compiles and the other doesn’t is telling.  In
-both cases, we are just helping the compiler along by using the
-equivalent method type; both `scalac` and `javac` manage to infer that
-the type `T` should be the (otherwise unspeakable) existential.
+that one of the above compiles and the other doesn’t is telling.
+
+If you were to define a variable to hold the result of getting the
+first element in the list in either version of `copyToZeroE`, how
+would you do that?  In Java, the reason this doesn’t work is
+straightforward: you would have to declare the variable of type
+`Object`, but that type isn’t specific enough to allow the variable to
+be used as an argument to `xs.add`.
+
+Scala’s type inferred variables don’t help here; Scala considers the
+existential type to be scoped to `xs`, and makes the definition of
+`zv` independent of `xs` by breaking the type relationship, and
+crushing the inferred type of `zv` to `Any`.
+
+```scala
+def copyToZeroE(xs: ArrayBuffer[_]): Unit = {
+  val zv = xs(0)
+  // TODO error
+  xs += zv
+}
+```
+
+When we call the type parameterized variant to implement the
+existential variant, with the real implementation residing in the
+former, we are just helping the compiler along by using the equivalent
+method type; in that, simpler case, both `scalac` and `javac` manage
+to infer that the type `T` should be the (otherwise unspeakable)
+existential.  **Method equivalence and generality make it possible to
+write methods, safely, that could not be written directly.**
 
 When are two methods less alike?
 --------------------------------
