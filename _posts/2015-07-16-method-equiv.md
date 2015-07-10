@@ -23,7 +23,7 @@ A method *r* is more general than or as general as *q* if *q* may be
 implemented by only making a call to *r*, passing along the arguments.
 By more general, we mean *r* can be invoked in all the situations that
 *q* can be invoked in, and more besides.  Let us call the result of
-this test *r* <:ₘ *q*, where <:ₘ is pronounced "party duck"; if the test
+this test *r* <:ₘ *q*, where <:ₘ is pronounced “party duck”; if the test
 of *q* making a call to *m* fails, then *r* !<:ₘ *q*.
 
 If *q* <:ₘ *r* and *r* <:ₘ *q*, then the two method types are
@@ -161,8 +161,8 @@ Method likeness and subtyping, all alike
 ----------------------------------------
 
 If you know what the symbol `<:` means in Scala, or perhaps you’ve
-read SLS §3.5 "Relations between types" (TODO link), you might think,
-"gosh, method equivalence and generality looks awfully familiar."
+read SLS §3.5 “Relations between types” (TODO link), you might think,
+“gosh, method equivalence and generality looks awfully familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods m1 and m2
@@ -193,7 +193,7 @@ is more specific, and rejects more implementations, such as the one
 that returns a list with `42` in it above.  Thus, it has fewer
 implementations, in the same way that more specific types have fewer
 values inhabiting them.  But it can be used in more circumstances, so
-it is "more general".  The generality in terms of when a method can be
+it is “more general”.  The generality in terms of when a method can be
 used is directly proportional to the specificity of its type.
 
 Java’s edge of insanity
