@@ -199,7 +199,7 @@ out with these tools?  You don’t have to; the beauty of the
 equivalence test is that you can apply it mechanically.  **Knowing
 nothing about the mechanics of the parameterization and existentialism
 of the types involved, you can work out with the equivalence test**
-that `mdropFirstT` <m `mdropFirstE`, and so you can’t get away with
+that `mdropFirstT` <ₘ `mdropFirstE`, and so you can’t get away with
 simply dropping the refinements.
 
 Method likeness and subtyping, all alike
