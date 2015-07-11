@@ -30,13 +30,13 @@ class Blah2[Param]
 
 have more similarities than differences.  The choice of which to use
 for a given situation is usually a matter of convenience.  In brief, a
-rule of thumb: **a type parameter is usually more convenient and
-harder to screw up, but if you intend to use it existentially in most
+rule of thumb: **a type parameter is usually more convenient and
+harder to screw up, but if you intend to use it existentially in most
 cases, changing it to a member is probably better**.
 
 Here, and in later posts, we will discuss what on earth that means,
-among other things.  In this series of articles on *Type Parameters
-and Type Members*, I want to tackle a variety of Scala types that look
+among other things.  In this series of articles on *Type Parameters
+and Type Members*, I want to tackle a variety of Scala types that look
 very different, but are really talking about the same thing, or
 almost.
 
@@ -44,7 +44,7 @@ Two lists, all alike
 --------------------
 
 To illustrate, let’s see two versions of
-[the functional list](http://www.artima.com/pins1ed/working-with-lists.html).
+[the functional list](http://www.artima.com/pins1ed/working-with-lists.html).
 Typically, it isn’t used existentially, so the usual choice of
 parameter over member fits our rule of thumb above.  It’s instructive
 anyway, so let’s see it.
@@ -69,10 +69,10 @@ sealed abstract class MCons extends MList {self =>
 ```
 
 We’re not quite done; we’re missing a way to *make* `MNil`s and
-`MCons`es, which `PNil` and `PCons` have already provided for
-themselves, by virtue of being `case class`es.  But it’s already
+`MCons`es, which `PNil` and `PCons` have already provided
+for themselves, by virtue of being `case class`es.  But it’s already
 pretty clear that *a type parameter is a more straightforward way to
-define this particular data type*.
+define this particular data type*.
 
 The instance creation takes just a bit more scaffolding for our
 examples:
@@ -133,7 +133,7 @@ scala> res3.map(_ - res2)
 ```
 
 When we took the refinement off of `tail`, we eliminated any evidence
-about what its `type T` might be.  We only know that *it must be some
+about what its `type T` might be.  We only know that *it must be some
 type*.  That’s what *existential* means.
 
 **In terms of type parameters, `MList` is like `PList[_]`, and `MList
@@ -144,7 +144,7 @@ When is existential OK?
 -----------------------
 
 Despite the limitation implied by the error above, there *are* useful
-functions that can be written on the existential version.  Here’s one
+functions that can be written on the existential version.  Here’s one
 of the simplest:
 
 ```scala
@@ -155,7 +155,7 @@ def mlength(xs: MList): Int =
   }
 ```
 
-For the type parameter equivalent, the parameter on the argument is
+For the type parameter equivalent, the parameter on the argument is
 usually carried out or *lifted* to the function, like so:
 
 ```scala
@@ -167,7 +167,7 @@ def plengthT[T](xs: PList[T]): Int =
 ```
 
 By the conversion rules above, though, we should be able to write an
-existential equivalent of `mlength` for `PList`, and indeed we can:
+existential equivalent of `mlength` for `PList`, and indeed we can:
 
 ```scala
 def plengthE(xs: PList[_]): Int =
@@ -178,13 +178,13 @@ def plengthE(xs: PList[_]): Int =
 ```
 
 There’s another simple rule we can follow when determining whether we
-can rewrite in an existential manner.
+can rewrite in an existential manner.
 
 1. When a type parameter appears only in one argument, and
 2. appears nowhere in the result type,
 
 we should always, ideally, be able to write the function in an
-existential manner.  (We will discuss why it’s only “ideally” in the
+existential manner.  (We will discuss why it’s only “ideally” in the
 next article.)
 
 You can demonstrate this to yourself by having the parameterized
@@ -202,30 +202,30 @@ Equivalence as a learning tool
 Scala is large enough that very few understand all of it.  Moreover,
 there are many aspects of it that are poorly understood in general.
 
-So why focus on how different features are similar?  When we
+So why focus on how different features are similar?  When we
 understand one area of Scala well, but another one poorly, we can form
 sensible ideas about the latter by drawing analogies with the former.
 This is how we solve problems with computers in general: we create an
-informal model in our heads, which we translate to a mathematical
-statement that a program can interpret, and it gives back a result
-that we can translate back to our informal model.
+informal model in our heads, which we translate to a
+mathematical statement that a program can interpret, and it gives back
+a result that we can translate back to our informal model.
 
 My guess is that type parameters are much better understood than type
-members, but that existentials via type members are better understood
-than existentials introduced by `_` or `forSome`, though I’d wager
+members, but that existentials via type members are better understood
+than existentials introduced by `_` or `forSome`, though I’d wager
 that neither form of existential is particularly well understood.
 
 By knowing about equivalences and being able to discover more, you
 have a powerful tool for understanding unfamiliar aspects of Scala:
 just translate the problem back to what you know and think about what
 it means there, because the conclusion will still hold when you
-translate it forward.  (Category theorists, eat your hearts out.)
+translate it forward.  (Category theorists, eat your hearts out.)
 
 In this vein, we will next generalize the above rule about existential
-methods, discovering a simple tool for determining whether two method
-types *in general* are equivalent, whereby things you know about one
-easily carry over to the other.  We will also explore methods that
-*cannot* be written in the existential style, at least under Scala’s
-restrictions.
+methods, discovering a simple tool for determining whether two
+method types *in general* are equivalent, whereby things you know
+about one easily carry over to the other.  We will also explore
+methods that *cannot* be written in the existential style, at least
+under Scala’s restrictions.
 
 *This article was tested with Scala 2.11.7.*
