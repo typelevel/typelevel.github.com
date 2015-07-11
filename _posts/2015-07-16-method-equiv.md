@@ -11,6 +11,12 @@ meta:
 When are two methods alike?
 ===========================
 
+*This is the second of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+which introduces code we refer to throughout this article without
+further ado.*
+
 We just saw two method types that, though different, are effectively
 the same: those of `plengthT` and `plengthE`.  We have rules for
 deciding when an existential parameter can be lifted into a method
@@ -299,3 +305,5 @@ This is forgivable on Scala’s part, because it’d be annoying to add
 code and it’s probably going to work out fine.  I blame `null`, and
 while I’m at it, I blame `Object` having any methods at all, too.
 We’d be better off without these bad features.
+
+*This article was tested with Scala 2.11.7 and Java 1.8.0_45.*
