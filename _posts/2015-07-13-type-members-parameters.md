@@ -35,18 +35,19 @@ harder to screw up, but if you intend to use it existentially in most
 cases, changing it to a member is probably better**.
 
 Here, and in later posts, we will discuss what on earth that means,
-among other things.  More broadly, though, in this series of articles
-on *Type Parameters and Type Members*, I want to tackle a variety of
-Scala types that look very different, but are really talking about the
-same thing, or almost.
+among other things.  In this series of articles on *Type Parameters
+and Type Members*, I want to tackle a variety of Scala types that look
+very different, but are really talking about the same thing, or
+almost.
 
 Two lists, all alike
 --------------------
 
-To illustrate, let’s see two versions of the functional list.  It’s
-typically not used existentially, so the usual choice of parameter
-over member fits our rule of thumb above.  It’s instructive anyway, so
-let’s see it.
+To illustrate, let’s see two versions of
+[the functional list](http://www.artima.com/pins1ed/working-with-lists.html).
+Typically, it isn’t used existentially, so the usual choice of
+parameter over member fits our rule of thumb above.  It’s instructive
+anyway, so let’s see it.
 
 ```scala
 sealed abstract class PList[T]
@@ -70,8 +71,8 @@ sealed abstract class MCons extends MList {self =>
 We’re not quite done; we’re missing a way to *make* `MNil`s and
 `MCons`es, which `PNil` and `PCons` have already provided for
 themselves, by virtue of being `case class`es.  But it’s already
-pretty clear that a type parameter is a more straightforward way to
-define this data type.
+pretty clear that *a type parameter is a more straightforward way to
+define this particular data type*.
 
 The instance creation takes just a bit more scaffolding for our
 examples:
@@ -97,10 +98,11 @@ Why all the `{type T = ...}`?
 After all, isn’t the virtue of type members that we don’t have to pass
 the type around everywhere?
 
-Let’s see what happens with that theory.  Suppose we remove only one
-of the *refinement*s above, as these `{...}` rainclouds at the type
-level are called.  Let’s remove the one in `val tail`, so `class
-MCons` looks like this:
+Let’s see what happens when we attempt to apply that theory.  Suppose
+we remove only one of the
+[*refinement*s](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#compound-types)
+above, as these `{...}` rainclouds at the type level are called.
+Let’s remove the one in `val tail`, so `class MCons` looks like this:
 
 ```scala
 sealed abstract class MCons extends MList {self =>
@@ -131,7 +133,7 @@ scala> res3.map(_ - res2)
 ```
 
 When we took the refinement off of `tail`, we eliminated any evidence
-about what its `type T` might be.  We only know that it must be *some
+about what its `type T` might be.  We only know that *it must be some
 type*.  That’s what *existential* means.
 
 **In terms of type parameters, `MList` is like `PList[_]`, and `MList
@@ -141,8 +143,9 @@ the member, or parameter, is existential.
 When is existential OK?
 -----------------------
 
-Despite the limitation implied by the error above, there are functions
-that can be written on the existential version.  Here’s the simplest:
+Despite the limitation implied by the error above, there *are* useful
+functions that can be written on the existential version.  Here’s one
+of the simplest:
 
 ```scala
 def mlength(xs: MList): Int =
@@ -181,15 +184,16 @@ can rewrite in an existential manner.
 2. appears nowhere in the result type,
 
 we should always, ideally, be able to write the function in an
-existential manner.
+existential manner.  (We will discuss why it’s only “ideally” in the
+next article.)
 
 You can demonstrate this to yourself by having the parameterized
 variant (e.g. `plengthT`) call the existential variant
 (e.g. `plengthE`), and, voilà, it compiles, so it must be right.
 
-This hints at what is usually, though not always, an advantage for
+This hints at what is usually, though not always, **an advantage for
 type parameters: you have to ask for an existential, rather than
-silently getting one just because you forgot a refinement.  We will
+silently getting one just because you forgot a refinement**.  We will
 discuss what happens when you forget one in a later post.
 
 Equivalence as a learning tool
@@ -201,7 +205,7 @@ there are many aspects of it that are poorly understood in general.
 So why focus on how different features are similar?  When we
 understand one area of Scala well, but another one poorly, we can form
 sensible ideas about the latter by drawing analogies with the former.
-This is how we solve problems with computers in general: we have an
+This is how we solve problems with computers in general: we create an
 informal model in our heads, which we translate to a mathematical
 statement that a program can interpret, and it gives back a result
 that we can translate back to our informal model.
@@ -213,14 +217,14 @@ that neither form of existential is particularly well understood.
 
 By knowing about equivalences and being able to discover more, you
 have a powerful tool for understanding unfamiliar aspects of Scala:
-just translate the problem back to what you know, and think about what
+just translate the problem back to what you know and think about what
 it means there, because the conclusion will still hold when you
-translate it back.  (Category theorists, eat your hearts out.)
+translate it forward.  (Category theorists, eat your hearts out.)
 
 In this vein, we will next generalize the above rule about existential
 methods, discovering a simple tool for determining whether two method
-types *in general* are equivalent, and so that things you know about
-one easily carry over to the other.  We will also explore methods that
+types *in general* are equivalent, whereby things you know about one
+easily carry over to the other.  We will also explore methods that
 *cannot* be written in the existential style, at least under Scala’s
 restrictions.
 
