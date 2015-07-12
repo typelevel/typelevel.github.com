@@ -73,15 +73,15 @@ This method compiles, but I cannot invoke it!
 
 That’s because `MList {type A = T0}` is a perfectly reasonable
 intersection type: values of this type have *both* the type `MList` in
-their supertype tree somewhere, *and* a type member named `A`, which
-is bound to `T0`.  That `MList` has no such type member is irrelevant
+their supertype tree somewhere, *and* a type member named `A`, which
+is bound to `T0`.  That `MList` has no such type member is irrelevant
 to the intersection and refinement of types in Scala.  This type means
-“an instance of the trait `MList`, with a type member named `A` set to
-`T0`”.  This type member `A` could come from another trait mixed with
-`MList` or an inline subclass.  Whether such a thing is impossible to
-instantiate—due to `sealed`, `final`, or anything else—is also
-irrelevant; **types with no values are meaningful and useful in both
-Java and Scala**.
+“an instance of the trait `MList`, with a type member named `A` set
+to `T0`”.  This type member `A` could come from another trait mixed
+with `MList` or an inline subclass.  Whether such a thing is
+impossible to instantiate—due to `sealed`, `final`, or anything
+else—is also irrelevant; **types with no values are meaningful and
+useful in both Java and Scala**.
 
 Why `T0`?  What’s `Aux`?
 ------------------------
