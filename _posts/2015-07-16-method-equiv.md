@@ -300,11 +300,10 @@ def holdOnNow[T <: AnyRef](t: T): T = TmTp2.holdOnNow(t)
 
 def goshWhatIsThis[T](t: T): T = holdOnNow(t)
 
-TmTp2.scala:38: type mismatch;
- found   : T(in method goshWhatIsThis)
- required: T(in method holdOnNow)
+TmTp2.scala:38: inferred type arguments [T] do not conform
+⤹ to method holdOnNow's type parameter bounds [T <: AnyRef]
   def goshWhatIsThis[T](t: T): T = holdOnNow(t)
-                                             ^
+                                   ^
 ```
 
 This is forgivable on Scala’s part, because it’d be annoying to add
