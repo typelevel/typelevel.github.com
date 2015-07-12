@@ -255,8 +255,8 @@ Method likeness and subtyping, all alike
 If you know what the symbol `<:` means in Scala, or perhaps you’ve
 read
 [SLS §3.5 “Relations between types”](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#relations-between-types),
-you might think, “gosh, method equivalence and generality looks
-awfully familiar.”
+you might think, “gosh, method equivalence and generality look awfully
+familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods *m1* and
