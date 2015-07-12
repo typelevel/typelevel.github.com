@@ -30,16 +30,16 @@ A method *r* is more general than or as general as *q* if *q* may be
 implemented by only making a call to *r*, passing along the arguments.
 By more general, we mean *r* can be invoked in all the situations that
 *q* can be invoked in, and more besides.  Let us call the result of
-this test *r* <:ₘ *q*, where <:ₘ is pronounced “party duck”; if the test
-of *q* making a call to  *r* fails, then ¬(*r* <:ₘ *q*).
+this test *r* <:*ₘ* *q*, where <:*ₘ* is pronounced “party duck”; if
+the test of *q* making a call to  *r* fails, then ¬(*r* <:*ₘ* *q*).
 
-If *q* <:ₘ *r* and *r* <:ₘ *q*, then the two method types are
+If *q* <:*ₘ* *r* and *r* <:*ₘ* *q*, then the two method types are
 *equivalent*; that is, neither has more expressive power than the
 other, since each can be implemented merely by invoking the other and
-doing nothing else.  We write this as *q* ≡ₘ *r*.  Likewise, if
-*r* <:ₘ *q* and ¬(*q* <:ₘ *r*), that is, *q* can be written by calling
-*r*, but not vice versa, then *r* is *strictly more general* than *q*,
-or *r* <:ₘ *q*.
+doing nothing else.  We write this as *q* ≡*ₘ* *r*.  Likewise, if
+*r* <:*ₘ* *q* and ¬(*q* <:*ₘ* *r*), that is, *q* can be written by
+calling *r*, but not vice versa, then *r* is *strictly more general*
+than *q*, or *r* <:*ₘ* *q*.
 
 What the concrete method—the one actually doing stuff, not invoking
 the other one—does is irrelevant, for the purposes of this test,
@@ -220,8 +220,8 @@ def mdropFirstE(xs: MList): MList =
 
 It certainly looks nicer.  However, while `mdropFirstE` can be
 implemented by calling `mdropFirstT`, passing the type parameter
-`xs.T`, the opposite is not true; `mdropFirstT` <ₘ `mdropFirstE`, or,
-`mdropFirstT` is *strictly more general*.
+`xs.T`, the opposite is not true; `mdropFirstT` <*ₘ* `mdropFirstE`,
+or, `mdropFirstT` is *strictly more general*.
 
 In this case, the reason is that `mdropFirstE` fails to relate the
 argument’s `T` to the result’s `T`; you could implement `mdropFirstE`
@@ -239,8 +239,8 @@ out with these tools?  You don’t have to; the beauty of the
 equivalence test is that you can apply it mechanically.  **Knowing
 nothing about the mechanics of the parameterization and existentialism
 of the types involved, you can work out with the equivalence test**
-that `mdropFirstT` <ₘ `mdropFirstE`, and therefore, that you can’t get
-away with simply dropping the refinements.
+that `mdropFirstT` <*ₘ* `mdropFirstE`, and therefore, that you can’t
+get away with simply dropping the refinements.
 
 Method likeness and subtyping, all alike
 ----------------------------------------
@@ -255,8 +255,8 @@ Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods *m1* and
 *m2* also pass our method equivalence test, and every pair of methods
 *m3* and *m4* where *m3* <: *m4* passes our *m4*-calls-*m3* test.  So
-*m1* ≡ *m2* implies *m1* ≡ₘ *m2*, and *m3* <: *m4* implies
-*m3* <:ₘ *m4*.
+*m1* ≡ *m2* implies *m1* ≡*ₘ* *m2*, and *m3* <: *m4* implies
+*m3* <:*ₘ* *m4*.
 
 We even follow many of the same rules as the type relations.  We have
 transitivity: if *m1* can call *m2* to implement itself, and *m2* can
@@ -266,7 +266,7 @@ equivalent to itself: reflexivity.  Likewise, if a method *m1* is
 strictly more general than *m2*, obviously *m2* cannot be strictly
 more general than *m1*: antisymmetricity.  And we even copy the
 relationship between ≡ and <: themselves: just as *t1* ≡ *t2* implies
-*t1* <: *t2*, so *r* ≡ₘ *q* implies *r* <:ₘ *q*.
+*t1* <: *t2*, so *r* ≡*ₘ* *q* implies *r* <:*ₘ* *q*.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
@@ -276,13 +276,14 @@ alternative form yourself, if that’s what you want.
 
 I do confess to one oddity in my terminology: **the method that has
 more specific type is *the more general method*.** I hope the example
-of `mdropFirstT` <:ₘ `mdropFirstE` justifies my choice.  `mdropFirstT`
-has more specific type, and rejects more implementations, such as the
-one that returns a list with `42` in it above.  Thus, it has fewer
-implementations, in the same way that more specific types have fewer
-values inhabiting them.  But it can be used in more circumstances, so
-it is “more general”.  The generality in terms of when a method can be
-used is directly proportional to the specificity of its type.
+of `mdropFirstT` <:*ₘ* `mdropFirstE` justifies my choice.
+`mdropFirstT` has more specific type, and rejects more
+implementations, such as the one that returns a list with `42` in it
+above.  Thus, it has fewer implementations, in the same way that more
+specific types have fewer values inhabiting them.  But it can be used
+in more circumstances, so it is “more general”.  The generality in
+terms of when a method can be used is directly proportional to the
+specificity of its type.
 
 Java’s edge of insanity
 -----------------------
