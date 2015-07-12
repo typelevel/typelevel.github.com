@@ -17,10 +17,12 @@ Type Members”.  If you haven’t yet, you should
 which introduces code we refer to throughout this article without
 further ado.*
 
-As I mentioned in the last part, the error of the `mdropFirstE`
-signature, taking `MList` and returning merely `MList`, was to fail to
-relate the input element type to the output element type.  This
-mistake is an easy one to make when it’s the default behavior.
+As I mentioned
+[in the previous article]({% post_url 2015-07-16-method-equiv %}),
+the error of the `mdropFirstE` signature, taking `MList` and returning
+merely `MList`, was to fail to relate the input element type to the
+output element type.  This mistake is an easy one to make when failure
+is the default behavior.
 
 By contrast, **when we try this with `PList`, the compiler helpfully
 points out our error**.
@@ -42,8 +44,8 @@ What happens when I misspell a refinement?
 There is another mistake that type members open you up to. I have been
 using the very odd type parameter—and member—name `T`.
 Java developers will find this choice very ordinary, but the name of
-choice in Scala is `A`.  So suppose I attempted to correct
-`mdropFirstE`’s type as follows:
+choice for the discerning Scala programmer is `A`.  So suppose I
+attempted to correct `mdropFirstE`’s type as follows:
 
 ```scala
 def mdropFirstE2[T0](xs: MList {type A = T0}) =
@@ -73,10 +75,18 @@ This method compiles, but I cannot invoke it!
 
 That’s because `MList {type A = T0}` is a perfectly reasonable
 intersection type: values of this type have *both* the type `MList` in
-their supertype tree somewhere, *and* a type member named `A`, which
-is bound to `T0`.  That `MList` has no such type member is irrelevant
-to the intersection and refinement of types in Scala.  This type means
-“an instance of the trait `MList`, with a type member named `A` set
+their supertype tree somewhere, *and* a type member named `A`, which
+is bound to `T0`.  In terms of subtyping relationships:
+
+```scala
+MList {type A = T0} <: MList
+// and *unrelatedly*,
+MList {type A = T0} <: {type A = T0}
+```
+
+That `MList` has no such type member `A` is irrelevant to the
+intersection and refinement of types in Scala.  This type means “an
+instance of the trait `MList`, with a type member named `A` set
 to `T0`”.  This type member `A` could come from another trait mixed
 with `MList` or an inline subclass.  Whether such a thing is
 impossible to instantiate—due to `sealed`, `final`, or anything
@@ -128,9 +138,9 @@ def mdropFirstT2[T](xs: MList.Aux[T]): MList.Aux[T] = ???
 Furthermore, because the member `T` is not in scope for `Aux`’s type
 parameter position, you can take method type parameters named `T` and
 sensibly write `MList.Aux[T]` without the above error.  You can see
-this in the immediately preceding example.  But this should be
-considered an advantage for type parameters more generally; `PList`
-doesn’t have this problem.
+this in the immediately preceding example.  But, stepping back a bit,
+this should be considered an advantage for type parameters more
+generally; `PList` doesn’t have this problem in the first place.
 
 **Using `Aux` also helps you avoid the errors of forgetting to specify
 or misspelling a type member**, as described at the beginning of this
