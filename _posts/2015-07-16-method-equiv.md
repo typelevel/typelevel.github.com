@@ -144,6 +144,40 @@ unspeakable) existential.  **Method equivalence and generality make it
 possible to write methods, safely, that could not be written
 directly.**
 
+Why are existentials harder to think about?
+-------------------------------------------
+
+I think we, as humans, may have even more difficulty with the lack of
+names for existentials than the compilers do.  The name “unspeakable”,
+which I have borrowed from Jon Skeet’s *C# in Depth*, is telling: even
+in our heads, our thought processes are shaped by language.  We tame
+the mathematics of programming with symbols, with names.  Existentials
+and their “unspeakable” names rob us of the tools to talk about them,
+to think about them.
+
+Java has done its practitioners two great disservices here.  One: by
+calling its existentials “wildcards”.  They are not “wildcards”, in
+any commonly or uncommonly understood sense.  If you suppose your
+preexisting notions of “wildcards” to apply to these much more exotic
+creatures, you will confidently stroll into the darkness until you
+trip and fall off a cliff.  They are only *superficially* “wildcards”.
+The effect of this sorry attempt at avoiding new terminology is
+chiefly to cheat Java programmers out of learning what’s really going
+on.  (We will explore some of this more exotic behavior in a later
+post.)
+
+Two: by
+[encouraging use of existential signatures](https://docs.oracle.com/javase/tutorial/extra/generics/methods.html)
+like `mdropFirstE` over parameterized versions like `mdropFirstT` that
+do not require the same kind of mental gymnastics.
+
+For lifting these type parameters is how we can reclaim the power we
+lost in the debacle of the unspeakable names.  We name them, and in so
+doing can once more talk and think about them without exhausting
+ourselves by gesticulating wildly, comforting ourselves with
+fairytales of “wildcards”.  Because in parameter lifting, we have
+found a *true* analogy.
+
 When are two methods less alike?
 --------------------------------
 
