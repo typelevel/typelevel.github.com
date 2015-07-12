@@ -117,7 +117,10 @@ TmTp3.scala:15: illegal cyclic reference involving type T
 
 This is a scoping problem; the refinement type makes the member `T`
 shadow our method type parameter `T`.  We dealt with the problem in
-`MList#uncons` and `MCons#tail` as well, there by scoping the `T` as
+`MList#uncons` and `MCons#tail` as well, way back in section “Two
+lists, all alike” of
+[the first part]({% post_url 2015-07-13-type-members-parameters %}),
+in those cases by outer-scoping the `T` as
 `self.T` instead.
 
 **When defining a type with members, you should define an `Aux` type
