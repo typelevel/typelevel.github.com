@@ -39,7 +39,7 @@ other, since each can be implemented merely by invoking the other and
 doing nothing else.  We write this as *q* ≡*ₘ* *r*.  Likewise, if
 *r* <:*ₘ* *q* and ¬(*q* <:*ₘ* *r*), that is, *q* can be written by
 calling *r*, but not vice versa, then *r* is *strictly more general*
-than *q*, or *r* <:*ₘ* *q*.
+than *q*, or *r* <*ₘ* *q*.
 
 What the concrete method—the one actually doing stuff, not invoking
 the other one—does is irrelevant, for the purposes of this test,
