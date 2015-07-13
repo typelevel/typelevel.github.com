@@ -253,21 +253,21 @@ you might think, “gosh, method equivalence and generality look awfully
 familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
-type equality!  In fact, every type-equal pair of methods *M1* and
-*M2* also pass our method equivalence test, and every pair of methods
-*M3* and *M4* where $M3 <: M4$ passes our *M4*-calls-*M3* test.  So
-$M1 \equiv M2$ implies $M1 \equiv\_m M2$, and $M3 <: M4$ implies
-$M3 <:\_m M4$.
+type equality!  In fact, every type-equal pair of methods *M*₁ and
+*M*₂ also pass our method equivalence test, and every pair of methods
+*M*₃ and *M*₄ where $M\_3 <: M\_4$ passes our *M*₄-calls-*M*₃ test.
+So $M\_1 \equiv M\_2$ implies $M\_1 \equiv\_m M\_2$, and
+$M\_3 <: M\_4$ implies $M\_3 <:\_m M\_4$.
 
 We even follow many of the same rules as the type relations.  We have
-transitivity: if *M1* can call *M2* to implement itself, and *M2* can
-call *M3* to implement itself, obviously we can snap the pointer and
-have *M1* call *M3* directly.  Likewise, every method type is
-equivalent to itself: reflexivity.  Likewise, if a method *M1* is
-strictly more general than *M2*, obviously *M2* cannot be strictly
-more general than *M1*: antisymmetricity.  And we even copy the
-relationship between ≡ and <: themselves: just as $T1 \equiv T2$
-implies $T1 <: T2$, so $R \equiv\_m Q$ implies $R <:\_m q$.
+transitivity: if *M*₁ can call *M*₂ to implement itself, and *M*₂ can
+call *M*₃ to implement itself, obviously we can snap the pointer and
+have *M*₁ call *M*₃ directly.  Likewise, every method type is
+equivalent to itself: reflexivity.  Likewise, if a method *M*₁ is
+strictly more general than *M*₂, obviously *M*₂ cannot be strictly
+more general than *M*₁: antisymmetricity.  And we even copy the
+relationship between ≡ and <: themselves: just as $T\_1 \equiv T\_2$
+implies $T\_1 <: T\_2$, so $R \equiv\_m Q$ implies $R <:\_m q$.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
