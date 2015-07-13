@@ -124,8 +124,11 @@ in those cases by outer-scoping the `T` as
 `self.T` instead.
 
 **When defining a type with members, you should define an `Aux` type
-in your companion that converts the member to a type parameter.** This
-is pretty much boilerplate; in this case, add this to `object MList`:
+in your companion that converts the member to a type parameter.** The
+name `Aux` is a convention I have borrowed from
+[Shapeless ops](https://github.com/milessabin/shapeless/blob/shapeless-2.2.4/core/src/main/scala/shapeless/ops/hlists.scala#L1501).
+This is pretty much boilerplate; in this case, add this to
+`object MList`:
 
 ```scala
 type Aux[T0] = MList {type T = T0}
