@@ -253,21 +253,20 @@ you might think, “gosh, method equivalence and generality look awfully
 familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
-type equality!  In fact, every type-equal pair of methods *M1* and
-*M2* also pass our method equivalence test, and every pair of methods
-*M3* and *M4* where $M3 <: M4$ passes our *M4*-calls-*M3* test.  So
-$M1 \equiv M2$ implies $M1 \equiv\_m M2$, and $M3 <: M4$ implies
-$M3 <:\_m M4$.
+type equality!  In fact, every type-equal pair of methods *K* and *L*
+also pass our method equivalence test, and every pair of methods *F*
+and *N* where $F <: N$ passes our *N*-calls-*F* test.  So $K \equiv L$
+implies $K \equiv\_m L$, and $F <: N$ implies $F <:\_m N$.
 
 We even follow many of the same rules as the type relations.  We have
-transitivity: if *M1* can call *M2* to implement itself, and *M2* can
-call *M3* to implement itself, obviously we can snap the pointer and
-have *M1* call *M3* directly.  Likewise, every method type is
-equivalent to itself: reflexivity.  Likewise, if a method *M1* is
-strictly more general than *M2*, obviously *M2* cannot be strictly
-more general than *M1*: antisymmetricity.  And we even copy the
-relationship between ≡ and <: themselves: just as $T1 \equiv T2$
-implies $T1 <: T2$, so $R \equiv\_m Q$ implies $R <:\_m q$.
+transitivity: if *K* can call *L* to implement itself, and *L* can
+call *F* to implement itself, obviously we can snap the pointer and
+have *K* call *F* directly.  Likewise, every method type is equivalent
+to itself: reflexivity.  Likewise, if a method *K* is strictly more
+general than *L*, obviously *L* cannot be strictly more general than
+*K*: antisymmetricity.  And we even copy the relationship
+between ≡ and <: themselves: just as $T \equiv U$ implies $T <: U$, so
+$R \equiv\_m Q$ implies $R <:\_m Q$.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
