@@ -6,6 +6,7 @@ meta:
   nav: blog
   author: S11001001
   pygments: true
+  mathjax: true
 ---
 
 When are two methods alike?
@@ -26,20 +27,20 @@ existential—but there are other pairs of method types I want to
 explore that are the same, or very close.  So let’s talk about how we
 determine this equivalence.
 
-A method *r* is more general than or as general as *q* if *q* may be
-implemented by only making a call to *r*, passing along the arguments.
-By more general, we mean *r* can be invoked in all the situations that
-*q* can be invoked in, and more besides.  Let us call the result of
-this test *r* <:*ₘ* *q* (where <:*ₘ* is pronounced “party duck”); if
-the test of *q* making a call to  *r* fails, then ¬(*r* <:*ₘ* *q*).
+A method *R* is more general than or as general as *Q* if *Q* may be
+implemented by only making a call to *R*, passing along the arguments.
+By more general, we mean *R* can be invoked in all the situations that
+*Q* can be invoked in, and more besides.  Let us call the result of
+this test $R <:\_m Q$ (where $<:\_m$ is pronounced “party duck”); if
+the test of *Q* making a call to *R* fails, then $\neg(R <:\_m Q)$.
 
-If *q* <:*ₘ* *r* and *r* <:*ₘ* *q*, then the two method types are
+If $Q <:\_m R$ and $R <:\_m Q$, then the two method types are
 *equivalent*; that is, neither has more expressive power than the
 other, since each can be implemented merely by invoking the other and
-doing nothing else.  We write this as *q* ≡*ₘ* *r*.  Likewise, if
-*r* <:*ₘ* *q* and ¬(*q* <:*ₘ* *r*), that is, *q* can be written by
-calling *r*, but not vice versa, then *r* is *strictly more general*
-than *q*, or *r* <*ₘ* *q*.
+doing nothing else.  We write this as $Q \equiv\_m R$.  Likewise, if
+$R <:\_m Q$ and $\neg(Q <:\_m R)$, that is, *Q* can be written by
+calling *R*, but not vice versa, then *R* is *strictly more general*
+than *Q*, or $R <\_m Q$.
 
 What the concrete method—the one actually doing stuff, not invoking
 the other one—does is irrelevant, for the purposes of this test,
@@ -220,7 +221,7 @@ def mdropFirstE(xs: MList): MList =
 
 It certainly looks nicer.  However, while `mdropFirstE` can be
 implemented by calling `mdropFirstT`, passing the type parameter
-`xs.T`, the opposite is not true; `mdropFirstT` <*ₘ* `mdropFirstE`,
+`xs.T`, the opposite is not true; `mdropFirstT` $<\_m$ `mdropFirstE`,
 or, `mdropFirstT` is *strictly more general*.
 
 In this case, the reason is that `mdropFirstE` fails to relate the
@@ -239,7 +240,7 @@ out with these tools?  You don’t have to; the beauty of the
 equivalence test is that you can apply it mechanically.  **Knowing
 nothing about the mechanics of the parameterization and existentialism
 of the types involved, you can work out with the equivalence test**
-that `mdropFirstT` <*ₘ* `mdropFirstE`, and therefore, that you can’t
+that `mdropFirstT` $<\_m$ `mdropFirstE`, and therefore, that you can’t
 get away with simply dropping the refinements.
 
 Method likeness and subtyping, all alike
@@ -252,21 +253,21 @@ you might think, “gosh, method equivalence and generality look awfully
 familiar.”
 
 Indeed, the thing we’re talking about is very much like subtyping and
-type equality!  In fact, every type-equal pair of methods *m1* and
-*m2* also pass our method equivalence test, and every pair of methods
-*m3* and *m4* where *m3* <: *m4* passes our *m4*-calls-*m3* test.  So
-*m1* ≡ *m2* implies *m1* ≡*ₘ* *m2*, and *m3* <: *m4* implies
-*m3* <:*ₘ* *m4*.
+type equality!  In fact, every type-equal pair of methods *M1* and
+*M2* also pass our method equivalence test, and every pair of methods
+*M3* and *M4* where $M3 <: M4$ passes our *M4*-calls-*M3* test.  So
+$M1 \equiv M2$ implies $M1 \equiv\_m M2$, and $M3 <: M4$ implies
+$M3 <:\_m M4$.
 
 We even follow many of the same rules as the type relations.  We have
-transitivity: if *m1* can call *m2* to implement itself, and *m2* can
-call *m3* to implement itself, obviously we can snap the pointer and
-have *m1* call *m3* directly.  Likewise, every method type is
-equivalent to itself: reflexivity.  Likewise, if a method *m1* is
-strictly more general than *m2*, obviously *m2* cannot be strictly
-more general than *m1*: antisymmetricity.  And we even copy the
-relationship between ≡ and <: themselves: just as *t1* ≡ *t2* implies
-*t1* <: *t2*, so *r* ≡*ₘ* *q* implies *r* <:*ₘ* *q*.
+transitivity: if *M1* can call *M2* to implement itself, and *M2* can
+call *M3* to implement itself, obviously we can snap the pointer and
+have *M1* call *M3* directly.  Likewise, every method type is
+equivalent to itself: reflexivity.  Likewise, if a method *M1* is
+strictly more general than *M2*, obviously *M2* cannot be strictly
+more general than *M1*: antisymmetricity.  And we even copy the
+relationship between ≡ and <: themselves: just as $T1 \equiv T2$
+implies $T1 <: T2$, so $R \equiv\_m Q$ implies $R <:\_m q$.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
@@ -276,7 +277,7 @@ alternative form yourself, if that’s what you want.
 
 I do confess to one oddity in my terminology: **the method that has
 more specific type is *the more general method*.** I hope the example
-of `mdropFirstT` <:*ₘ* `mdropFirstE` justifies my choice.
+of `mdropFirstT` $<:\_m$ `mdropFirstE` justifies my choice.
 `mdropFirstT` has more specific type, and rejects more
 implementations, such as the one that returns a list with `42` in it
 above.  Thus, it has fewer implementations, in the same way that more
