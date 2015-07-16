@@ -184,8 +184,8 @@ can rewrite in an existential manner.
 2. appears nowhere in the result type,
 
 we should always, ideally, be able to write the function in an
-existential manner.  (We will discuss why it’s only “ideally” in the
-next article.)
+existential manner.  (We will discuss why it’s only “ideally” in
+[the next article]({% post_url 2015-07-16-method-equiv %}).)
 
 You can demonstrate this to yourself by having the parameterized
 variant (e.g. `plengthT`) call the existential variant
@@ -227,5 +227,8 @@ method types *in general* are equivalent, whereby things you know
 about one easily carry over to the other.  We will also explore
 methods that *cannot* be written in the existential style, at least
 under Scala’s restrictions.
+
+That all happens in
+[the next part, “When are two methods alike?”]({% post_url 2015-07-16-method-equiv %}).
 
 *This article was tested with Scala 2.11.7.*
