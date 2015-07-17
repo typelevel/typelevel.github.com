@@ -267,7 +267,7 @@ equivalent to itself: reflexivity.  Likewise, if a method *M*₁ is
 strictly more general than *M*₂, obviously *M*₂ cannot be strictly
 more general than *M*₁: antisymmetricity.  And we even copy the
 relationship between ≡ and <: themselves: just as $T\_1 \equiv T\_2$
-implies $T\_1 <: T\_2$, so $R \equiv\_m Q$ implies $R <:\_m q$.
+implies $T\_1 <: T\_2$, so $R \equiv\_m Q$ implies $R <:\_m Q$.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
