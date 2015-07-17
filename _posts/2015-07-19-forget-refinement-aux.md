@@ -80,7 +80,7 @@ is bound to `T0`.  In terms of subtyping relationships:
 
 ```scala
 MList {type A = T0} <: MList
-// and *unrelatedly*,
+// and unrelatedly,
 MList {type A = T0} <: {type A = T0}
 ```
 
@@ -153,5 +153,9 @@ or misspelling a type member**, as described at the beginning of this
 article.  With `Aux`, as with ordinary parameterized types, a missing
 argument is caught by the compiler, and misspelling the parameter name
 is impossible.
+
+In the next part, we’ll see why something that, at first glance, seems
+like a workable alternative to either refinement or the `Aux` trick,
+doesn’t work out as well as people wish it would.
 
 *This article was tested with Scala 2.11.7.*
