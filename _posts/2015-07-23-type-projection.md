@@ -57,7 +57,7 @@ rule of thumb about when to use type members, as described in
 [the first article of this series]({% post_url 2015-07-13-type-members-parameters %}).
 
 A failed attempt at simplified emitting
-----
+---------------------------------------
 
 So, under this theory, you’ve got some values of type `StSource[A]`
 lying around.  And you want a simple function to take a source and its
@@ -108,7 +108,7 @@ result type to argument type, whereas the failure above is to fail to
 relate the two arguments’ types to each other.
 
 Type parameters see existentially
-----
+---------------------------------
 
 As with `mdropFirstE`, a correct solution here is again lifting the
 member to a method type parameter.
