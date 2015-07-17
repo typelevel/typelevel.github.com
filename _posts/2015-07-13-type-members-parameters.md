@@ -194,7 +194,8 @@ variant (e.g. `plengthT`) call the existential variant
 This hints at what is usually, though not always, **an advantage for
 type parameters: you have to ask for an existential, rather than
 silently getting one just because you forgot a refinement**.  We will
-discuss what happens when you forget one in a later post.
+discuss
+[what happens when you forget one in a later post]({% post_url 2015-07-19-forget-refinement-aux %}).
 
 Equivalence as a learning tool
 ------------------------------

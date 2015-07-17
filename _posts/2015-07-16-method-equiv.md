@@ -348,8 +348,10 @@ code and it’s probably going to work out fine.  I blame `null`, and
 while I’m at it, I blame `Object` having any methods at all, too.
 We’d be better off without these bad features.
 
-In the next part, we’ll talk about what happens when you forget
-refinements for things like `MList`, and how you can avoid that while
-simplifying your type-member-binding code.
+In
+[the next part, “What happens when I forget a refinement?”]({% post_url 2015-07-19-forget-refinement-aux %}),
+we’ll talk about what happens when you forget refinements for things
+like `MList`, and how you can avoid that while simplifying your
+type-member-binding code.
 
 *This article was tested with Scala 2.11.7 and Java 1.8.0_45.*
