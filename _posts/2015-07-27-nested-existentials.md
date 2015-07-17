@@ -1,0 +1,286 @@
+---
+layout: post
+title: Nested existentials
+
+meta:
+  nav: blog
+  author: S11001001
+  pygments: true
+---
+
+Nested existentials
+===================
+
+Let’s consider a few values of type `MList`:
+
+```scala
+val estrs: MList = MCons("hi", MCons("bye", MNil()))
+
+val eints: MList = MCons(21, MCons(42, MNil()))
+
+val ebools: MList = MCons(true, MCons(false, MNil()))
+```
+
+Recall from the first part (TODO link) that the equivalent type in
+`PList` is `PList[_]`.  Now, these variables all have the “same” type,
+by virtue of forgetting what their specific element type is, though
+you know that every value of `estrs` has the same type.
+
+What if we list *different* existentials?
+-----------------------------------------
+
+Lists hold values of the same type, and as you might expect, you can
+put these three lists in another list:
+
+```scala
+val elists: PList[MList] = PCons(estrs, PCons(eints, PCons(ebools, PNil())))
+```
+
+Again, the equivalent is `PList[PList[_]]`.  We can see what this
+means merely by doing substitution in the `PList` type.
+
+```scala
+// don't compile this, it's a thought process
+sealed abstract class PList
+final case class PNil() extends PList
+final case class PCons(head: MList, tail: PList)
+```
+
+Equivalently, `head` would have type `PList[_]`, a homogeneous list of
+unknown element type.
+
+Method equivalence … broken?
+----------------------------
+
+But we come to a problem.  Suppose we wish to count the elements of
+doubly-nested lists.
+
+```scala
+def plenLength(xss: PList[PList[_]]): Int =
+  plenLengthTP(xss)
+  // TODO error
+
+def plenLengthTP[T](xss: PList[PList[T]]): Int =
+  xss match {
+    case PNil() => 0
+    case PCons(h, t) => plengthT(h) + plenLengthTP(t)
+  }
+```
+
+According to our equivalence test, neither of these methods works to
+implement the other!  This despite the rules we have already
+discussed.
+
+The problem with calling `plenLengthTP` from `plenLength` is *there is
+no one `T` we can choose, even an unspeakable one, to call
+`plenLengthTP`*.  That’s because `PList[PList[_]]` means
+`PList[PList[E] forSome {type E}]`.  Let’s see the substitution again.
+
+```scala
+// don't compile this, it's a thought process
+sealed abstract class PList
+final case class PNil() extends PList
+final case class PCons(head: PList[E] forSome {type E}, tail: PList)
+```
+
+Java has the same problem.  See?
+
+```java
+int llLength(final List<List<?>> xss) {
+    // TODO error
+    return llLengthTP(xss);
+}
+
+int <T> llLengthTP(final List<List<T>>) {
+    return 0;  // we only care about types in this example
+}
+```
+
+Scoping existential quantifiers
+-------------------------------
+
+The difference is, in Scala, we can write an equivalent for
+`plenLengthTP`, using the Scala-only `forSome` *existential
+quantifier* (TODO pins or sls).
+
+```scala
+def plenLengthE(xss: PList[PList[E]] forSome {type E}): Int =
+  plenLengthTP(xss)
+```
+
+Of course, this type doesn’t mean the same thing as `plenLength`’s
+type; for both `plenLengthE` and `plenLengthTP`, we demand proof that
+each sublist in the argument has the same element type, which is not a
+condition satisfied by either `PList[PList[_]]` or its equivalent
+`PList[MList]`.
+
+<div class="side-note">
+  The reason you can’t invoke `plenLength` from `plenLengthTP` is
+  complicated, even for this article.  In short, `plenLength` demands
+  evidence that, *supposing* `PList` had a method taking an argument
+  of the element type, e.g. `def lookAt(x: T): Unit`, it could do
+  things like `xss.lookAt(PList("hi", PNil()))`.  In `plenLengthTP`,
+  this hypothetical method could only be invoked with empty lists, or
+  lists gotten by inspecting `xss` itself.
+
+  That no such method exists is irrelevant for the purposes of this
+  reasoning; we have written the definition of `PList` in a way that
+  scalac assumes that such a method may exist.  You can determine the
+  consequences yourself by adding the `lookAt` method to `PList`,
+  repeating the above substitution for `PList`, and thinking about the
+  meaning of the resulting `def lookAt(x: PList[E] forSome {type E}):
+  Unit`.
+</div>
+
+Let’s examine the meaning of the type
+`PList[PList[E]] forSome {type E}`.  It requires a little bit more
+mental suspension.
+
+```scala
+// don't compile this, it's a thought process
+// Let there be some unknown (abstract)
+type E
+// then the structure of the value is
+sealed abstract class PList
+final case class PNil() extends PList
+final case class PCons(head: PList[E], tail: PList)
+```
+
+By moving the `forSome` *existential scope* outside the outer `PList`,
+we also move the existential type variable outside of the whole
+structure, substituting *the same* variable for each place we’re
+expanding the type under consideration.  Once the `forSome` scope
+extends over the whole type, Scala can pick that type as the parameter
+to `plenLengthTP`.
+
+What happens when I move the existential scope?
+----
+
+Of course, moving the scope makes the type mean something different,
+which you can tell by counting how many `E`s there will be in a value.
+A `PList[PList[_]]` is a list of lists where each list may have a
+different, unknown element type, like `elists`.  A
+`PList[PList[E]] forSome {type E}` is a list of lists where you still
+don’t know the inner element type, but you know it’s the same for each
+sublist.  We can tell that because, in the expansion, there’s only one
+`E`, whereas the expansion for the former has an `E` introduced in
+each `head` value.
+
+Similarly, also by substitution, `PList[_] => Int` is a function that
+takes `PList`s of any element type and returns `Int`, like `plengthE`.
+You can figure this out by substituting for `Function1#apply` (TODO
+scaladoc):
+
+```scala
+def apply(t: T): R
+def apply(t: PList[_]): Int
+```
+
+But `(PList[E] => Int) forSome {type E}` is a function that takes
+`PList`s of *one specific* element type that we don’t know.
+
+```scala
+// Let there be some unknown (abstract)
+type E
+// then the method is
+def apply(t: List[E]): Int
+```
+
+It’s easy to use existential scoping to create functions that are
+impossible to call, and values that are impossible to use.  But in
+this case, there is one way we can call this function: with an empty
+list.  Whatever the `E` is, it will be inferred when we call `PNil()`.
+
+There is a broader theme here: the most efficient, most easily
+understood way to work with values of existential type is with
+type-parameterized methods.  But we’ll get to that later.
+
+Back to type members
+----
+
+Let us translate the working existential variant we discovered above
+to the `PList[MList]` form of the function, though.  What is the
+existential equivalent to `mlenLengthTP`?
+
+```scala
+def mlenLengthTP[T](xss: PList[MList]): Int =
+  xss match {
+    case PNil() => 0
+    case PCons(h, t) => mlength(h) + mlenLengthTP(t)
+  }
+
+def mlenLength(xss: PList[MList]): Int =
+  mlenLengthTP(xss)
+  // TODO error
+```
+
+`MList` is equivalent to `MList {type T = E} forSome {type E}`.  We
+can prove that directly in Scala.
+
+```scala
+scala> implicitly [MList =:= (MList {type T = E} forSome {type E})]
+TODO or ascription version
+```
+
+That’s why we could use `runStSource` to infer a type parameter for
+the existential `S` in the last post (TODO link): the scope is on the
+outside, so there’s exactly one type parameter to infer.  So the
+scoping problem now looks very similar to the `PList`-in-`PList`
+problem, and we can write:
+
+```scala
+def mlenLengthE(xss: PList[MList {type T = E}] forSome {type E})
+  : Int = mlenLengthTP(xss)
+```
+
+A triangular generalization
+----
+
+Once again, `mlenLengthE` demands proof that each sublist of `xss` has
+the same element type, by virtue of the position of its `forSome`
+scope.  We can’t satisfy that with `elists`.
+
+```scala
+> mlenLengthE(elists)
+// TODO error
+```
+
+So we have the equally general `mlenLengthE` and `mlenLengthTP`.
+`mlenLength`, however, is incompatible with both; neither is more
+general than the other!  What we really want is a function that is
+more general than all three, and subsumes all their definitions.  Here
+it is.
+
+```scala
+def mlenLengthTP2[T <: MList](xss: PList[T]): Int =
+  xss match {
+    case PNil() => 0
+    case PCons(h, t) => mlength(h) + mlenLengthTP2(t)
+  }
+
+def mlenLengthE2(xss: PList[_ <: MList]): Int =
+  xss match {
+    case PNil() => 0
+    case PCons(h, t) => mlength(h) + mlenLengthTP2(t)
+  }
+```
+
+TODO prove expansion in next para
+
+And there it is, shorthand for:
+
+```scala
+PList[E] forSome {
+  type E = MList {
+    type T = E2
+  } forSome {type E2}
+}
+```
+
+…a nested existential, though not in the meaning I intend in the title
+of this article.
+
+And I say all this simply as a means of saying that this is what
+you’re signing up for when you decide to “simplify” your code by using
+type members instead of parameters and leaving off the refinements
+that make them concrete.
