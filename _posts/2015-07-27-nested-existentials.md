@@ -21,10 +21,12 @@ val eints: MList = MCons(21, MCons(42, MNil()))
 val ebools: MList = MCons(true, MCons(false, MNil()))
 ```
 
-Recall from the first part (TODO link) that the equivalent type in
-`PList` is `PList[_]`.  Now, these variables all have the “same” type,
-by virtue of forgetting what their specific element type is, though
-you know that every value of `estrs` has the same type.
+Recall
+[from the first part]({% post_url 2015-07-13-type-members-parameters %})
+that the equivalent type in `PList` is `PList[_]`.  Now, these
+variables all have the “same” type, by virtue of forgetting what their
+specific element type is, though you know that every value of `estrs`
+has the same type.
 
 What if we list *different* existentials?
 -----------------------------------------
@@ -100,8 +102,8 @@ Scoping existential quantifiers
 -------------------------------
 
 The difference is, in Scala, we can write an equivalent for
-`plenLengthTP`, using the Scala-only `forSome` *existential
-quantifier* (TODO pins or sls).
+`plenLengthTP`, using the Scala-only
+[`forSome` *existential quantifier*](http://www.artima.com/pins1ed/combining-scala-and-java.html#29.3).
 
 ```scala
 def plenLengthE(xss: PList[PList[E]] forSome {type E}): Int =
@@ -168,12 +170,12 @@ each `head` value.
 
 Similarly, also by substitution, `PList[_] => Int` is a function that
 takes `PList`s of any element type and returns `Int`, like `plengthE`.
-You can figure this out by substituting for `Function1#apply` (TODO
-scaladoc):
+You can figure this out by substituting for
+[`Function1#apply`](https://github.com/scala/scala/blob/v2.11.7/src/library/scala/Function1.scala#L32-L36):
 
 ```scala
-def apply(t: T): R
-def apply(t: PList[_]): Int
+def apply(v1: T1): R
+def apply(v1: PList[_]): Int
 ```
 
 But `(PList[E] => Int) forSome {type E}` is a function that takes
@@ -183,7 +185,7 @@ But `(PList[E] => Int) forSome {type E}` is a function that takes
 // Let there be some unknown (abstract)
 type E
 // then the method is
-def apply(t: List[E]): Int
+def apply(v1: List[E]): Int
 ```
 
 It’s easy to use existential scoping to create functions that are
@@ -223,9 +225,10 @@ TODO or ascription version
 ```
 
 That’s why we could use `runStSource` to infer a type parameter for
-the existential `S` in the last post (TODO link): the scope is on the
-outside, so there’s exactly one type parameter to infer.  So the
-scoping problem now looks very similar to the `PList`-in-`PList`
+the existential `S` in
+[the last post]({% post_url 2015-07-23-type-projection %}): the scope
+is on the outside, so there’s exactly one type parameter to infer.  So
+the scoping problem now looks very similar to the `PList`-in-`PList`
 problem, and we can write:
 
 ```scala
