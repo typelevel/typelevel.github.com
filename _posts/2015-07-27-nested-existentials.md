@@ -11,6 +11,12 @@ meta:
 Nested existentials
 ===================
 
+*This is the fifth of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+which introduces code we refer to throughout this article without
+further ado.*
+
 Let’s consider a few values of type `MList`:
 
 ```scala
@@ -23,7 +29,7 @@ val ebools: MList = MCons(true, MCons(false, MNil()))
 
 Recall
 [from the first part]({% post_url 2015-07-13-type-members-parameters %})
-that the equivalent type in `PList` is `PList[_]`.  Now, these
+that the equivalent type in `PList` style is `PList[_]`.  Now, these
 variables all have the “same” type, by virtue of forgetting what their
 specific element type is, though you know that every value of `estrs`
 has the same type.
