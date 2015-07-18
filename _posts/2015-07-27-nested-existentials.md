@@ -20,11 +20,11 @@ further ado.*
 Let’s consider a few values of type `MList`:
 
 ```scala
-val estrs: MList = MCons("hi", MCons("bye", MNil()))
+val estrs: MList = MCons("hi", MCons("bye", MNil())): MList.Aux[String]
 
-val eints: MList = MCons(21, MCons(42, MNil()))
+val eints: MList = MCons(21, MCons(42, MNil())): MList.Aux[Int]
 
-val ebools: MList = MCons(true, MCons(false, MNil()))
+val ebools: MList = MCons(true, MCons(false, MNil())): MList.Aux[Boolean]
 ```
 
 Recall
@@ -41,7 +41,8 @@ Lists hold values of the same type, and as you might expect, you can
 put these three lists in another list:
 
 ```scala
-val elists: PList[MList] = PCons(estrs, PCons(eints, PCons(ebools, PNil())))
+val elists: PList[MList] = 
+  PCons(estrs, PCons(eints, PCons(ebools, PNil())))
 ```
 
 Again, the equivalent is `PList[PList[_]]`.  We can see what this
@@ -66,22 +67,38 @@ doubly-nested lists.
 ```scala
 def plenLength(xss: PList[PList[_]]): Int =
   plenLengthTP(xss)
-  // TODO error
 
 def plenLengthTP[T](xss: PList[PList[T]]): Int =
   xss match {
     case PNil() => 0
     case PCons(h, t) => plengthT(h) + plenLengthTP(t)
   }
+
+TmTp5.scala:16: no type parameters for method plenLengthTP:
+⤹ (xss: tmtp.PList[tmtp.PList[T]])Int exist so that it
+⤹ can be applied to arguments (tmtp.PList[tmtp.PList[_]])
+ --- because ---
+argument expression's type is not compatible with formal parameter type;
+ found   : tmtp.PList[tmtp.PList[_]]
+ required: tmtp.PList[tmtp.PList[?T]]
 ```
 
 According to our equivalence test, neither of these methods works to
 implement the other!  This despite the rules we have already
-discussed.
+discussed.  Here’s the error the other way.
+
+```scala
+TmTp5.scala:20: type mismatch;
+ found   : tmtp.PList[tmtp.PList[T]]
+ required: tmtp.PList[tmtp.PList[_]]
+```
 
 The problem with calling `plenLengthTP` from `plenLength` is *there is
 no one `T` we can choose, even an unspeakable one, to call
-`plenLengthTP`*.  That’s because `PList[PList[_]]` means
+`plenLengthTP`*.  That’s what the `?T` and the “no type parameters”
+phrasing in the first error above means.
+
+This is an accurate compiler error because `PList[PList[_]]` means
 `PList[PList[E] forSome {type E}]`.  Let’s see the substitution again.
 
 ```scala
@@ -95,14 +112,30 @@ Java has the same problem.  See?
 
 ```java
 int llLength(final List<List<?>> xss) {
-    // TODO error
     return llLengthTP(xss);
 }
 
-int <T> llLengthTP(final List<List<T>>) {
+<T> int llLengthTP(final List<List<T>> xss) {
     return 0;  // we only care about types in this example
 }
+
+TmTp5.java:7:  error: method llLengthTP in class TmTp5
+⤹ cannot be applied to given types;
+    return llLengthTP(xss);
+           ^
+
+// or, with llLengthTP calling llLength
+TmTp5.java:11:  error: incompatible types: List<List<T>>
+⤹ cannot be converted to List<List<?>>
+    return llLength(xss);
+                    ^
 ```
+
+This discovery, which I made for myself
+[in the depths of the Ermine Java code](https://bitbucket.org/ermine-language/ermine-writers/src/c63d4060a74f1c8520ea1c8c3ba51ebd5d269780/writers/javafx/src/main/java/com/clarifi/reporting/writers/jfx/table/JFXTables.java?at=default#JFXTables.java-163)
+(though it was certainly already well-known to others), was my first
+clue, personally, that the term
+[“wildcard” was a lie, as discussed in a previous part]({% post_url 2015-07-16-method-equiv %}).
 
 Scoping existential quantifiers
 -------------------------------
@@ -195,23 +228,38 @@ def apply(v1: List[E]): Int
 ```
 
 It’s easy to use existential scoping to create functions that are
-impossible to call, and values that are impossible to use.  But in
-this case, there is one way we can call this function: with an empty
-list.  Whatever the `E` is, it will be inferred when we call `PNil()`.
+impossible to call, and values that are impossible to use.  This
+latter is almost one of those:
 
-There is a broader theme here: the most efficient, most easily
-understood way to work with values of existential type is with
-type-parameterized methods.  But we’ll get to that later.
+```scala
+def badlength: (PList[E] => Int) forSome {type E} = plengthE
+badlength(??? : PList[Int])
+
+TmTp5.scala:29: type mismatch;
+ found   : tmtp.PList[Int]
+ required: tmtp.PList[E] where type E
+badlength(??? : PList[Int])
+              ^
+```
+
+But in this case, there is one way we can call this function: with an
+empty list.  Whatever the `E` is, it will be inferred when we call
+`PNil()`.  So `badlength(PNil())` works.
+
+There is a broader theme here hinted at by the interaction between
+`PNil` and `badlength`: the most efficient, most easily understood way
+to work with values of existential type is with type-parameterized
+methods.  But we’ll get to that later.
 
 Back to type members
-----
+--------------------
 
 Let us translate the working existential variant we discovered above
 to the `PList[MList]` form of the function, though.  What is the
 existential equivalent to `mlenLengthTP`?
 
 ```scala
-def mlenLengthTP[T](xss: PList[MList]): Int =
+def mlenLengthTP[T](xss: PList[MList.Aux[T]]): Int =
   xss match {
     case PNil() => 0
     case PCons(h, t) => mlength(h) + mlenLengthTP(t)
@@ -219,15 +267,20 @@ def mlenLengthTP[T](xss: PList[MList]): Int =
 
 def mlenLength(xss: PList[MList]): Int =
   mlenLengthTP(xss)
-  // TODO error
+
+TmTp5.scala:38: type mismatch;
+ found   : tmtp.PList[tmtp.MList]
+ required: tmtp.PList[tmtp.MList.Aux[this.T]]
+  mlenLengthTP(xss)
+               ^
 ```
 
 `MList` is equivalent to `MList {type T = E} forSome {type E}`.  We
 can prove that directly in Scala.
 
 ```scala
-scala> implicitly [MList =:= (MList {type T = E} forSome {type E})]
-TODO or ascription version
+scala> implicitly[MList =:= (MList {type T = E} forSome {type E})]
+res0: =:=[tmtp.MList,tmtp.MList{type T = E} forSome { type E }] = <function1>
 ```
 
 That’s why we could use `runStSource` to infer a type parameter for
@@ -238,7 +291,7 @@ the scoping problem now looks very similar to the `PList`-in-`PList`
 problem, and we can write:
 
 ```scala
-def mlenLengthE(xss: PList[MList {type T = E}] forSome {type E})
+def mlenLengthE(xss: PList[MList.Aux[E]] forSome {type E})
   : Int = mlenLengthTP(xss)
 ```
 
@@ -250,7 +303,7 @@ the same element type, by virtue of the position of its `forSome`
 scope.  We can’t satisfy that with `elists`.
 
 ```scala
-> mlenLengthE(elists)
+mlenLengthE(elists)
 // TODO error
 ```
 
