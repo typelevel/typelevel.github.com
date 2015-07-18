@@ -18,10 +18,12 @@ admittedly imposes a high cognitive load.  That is to say, it’s a lot
 of work to say something that ought to be very simple.
 
 Some people go looking for a solution, and find something that almost
-seems to make sense: type projection (TODO pins or sls), or `MList#T`
-in terms of our ongoing example (TODO 1st part link).  But **type
-projection is, in almost all cases, too vague to really solve problems
-you have using type members**.
+seems to make sense:
+[type projection](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#type-projection),
+or `MList#T` in terms of
+[our ongoing example]({% post_url 2015-07-19-forget-refinement-aux %}).
+But **type projection is, in almost all cases, too vague to really
+solve problems you have using type members**.
 
 A good reason to use type members
 ---------------------------------
@@ -90,19 +92,21 @@ type projection is often confused with something useful.
 
 <div class="side-note">
   There *are* uses for type projection.  But they are so rare, so
-  exotic (they look like this TODO), and even the legitimate ones
-  better off rewritten to avoid them, that the safer assumption is
-  that you’ve gone down the wrong path if you’re trying to use them at
-  all.  My suggestion can usually be phrased something like “move it
-  to a companion object”.
+  exotic (they look
+  [like this](https://github.com/scalaz/scalaz/blob/bdd6d5653313b10af08efdc6884cbbefe41051a2/core/src/main/scala/scalaz/Unapply.scala#L404-L409)),
+  and even the legitimate ones better off rewritten to avoid them,
+  that the safer assumption is that you’ve gone down the wrong path if
+  you’re trying to use them at all.  My suggestion can usually be
+  phrased something like “move it to a companion object”.
 </div>
 
 In reality, `StSource[A]#S` means *some* `StSource`’s `S`.  Not the
 one you gave, just any particular one.  That’s right, it’s
 *existential*.  So, the failure of the above signature is like the
 failure of `mdropFirstE` from section “When are two methods less
-alike?” of [the second post of this series]({% post_url
-2015-07-16-method-equiv %}): a failure to relate types strongly
+alike?” of
+[the second post of this series]({% post_url 2015-07-16-method-equiv %}):
+a failure to relate types strongly
 enough.  The problem with `mdropFirstE` was failure to relate the
 result type to argument type, whereas the failure above is to fail to
 relate the two arguments’ types to each other.
@@ -134,14 +138,15 @@ refine `S`, Scala still infers this type as the `S` argument to pass
 to `runStSource`.
 
 By analogy with type parameters, though, this isn’t too surprising.
-We’ve already seen (TODO link) that `copyToZeroE` inferred its
-argument’s existential parameter to pass along to the named parameter
-to `copyToZeroP`, in the second part of this series.  We even saw it
-apply directly to type members when `mdropFirstE` was able to invoke
-`mdropFirstT`.  However, for whatever reason, we’re used to
-existential parameters being able to do this; even Java manages the
-task.  But it just seems *odder* that merely calling a method can fill
-in the blanks in a whole refinement `{...}` raincloud.
+[We’ve already seen]({% post_url 2015-07-16-method-equiv %})
+that `copyToZeroE` inferred its argument’s existential parameter to
+pass along to the named parameter to `copyToZeroP`, in the second part
+of this series.  We even saw it apply directly to type members when
+`mdropFirstE` was able to invoke `mdropFirstT`.  However, for whatever
+reason, we’re used to existential parameters being able to do this;
+even Java manages the task.  But it just seems *odder* that merely
+calling a method can fill in the blanks in a whole refinement `{...}`
+raincloud.
 
 It’s completely sound, though.  An `StSource` that exists as a value
 *must* have an `S`, even if we existentialized it away.  So, as with
