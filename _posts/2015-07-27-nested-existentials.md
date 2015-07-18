@@ -304,7 +304,7 @@ scope.  We can’t satisfy that with `elists`.
 
 ```scala
 mlenLengthE(elists)
-// TODO error
+// TODO what on earth?
 ```
 
 So we have the equally general `mlenLengthE` and `mlenLengthTP`.
