@@ -11,6 +11,12 @@ meta:
 Type projection isn’t that specific
 ===================================
 
+*This is the fourth of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+which introduces code we refer to throughout this article without
+further ado.*
+
 In the absence of the `Aux` trick presented at the end of
 [the previous article]({% post_url 2015-07-19-forget-refinement-aux %}),
 the continuous use of structural refinement to accomplish basic tasks
@@ -160,3 +166,5 @@ features aren’t really so magical.  But before we get to that, we need
 to see just why existentials are anything but “wildcards”, and why it
 doesn’t *always* make sense to be able to lift existentials like `S`
 to type parameters.  That’s coming in the next post.
+
+*This article was tested with Scala 2.11.7.*
