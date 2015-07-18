@@ -195,7 +195,7 @@ extends over the whole type, Scala can pick that type as the parameter
 to `plenLengthTP`.
 
 What happens when I move the existential scope?
-----
+-----------------------------------------------
 
 Of course, moving the scope makes the type mean something different,
 which you can tell by counting how many `E`s there will be in a value.
@@ -296,7 +296,7 @@ def mlenLengthE(xss: PList[MList.Aux[E]] forSome {type E})
 ```
 
 A triangular generalization
-----
+---------------------------
 
 Once again, `mlenLengthE` demands proof that each sublist of `xss` has
 the same element type, by virtue of the position of its `forSome`
