@@ -6,6 +6,7 @@ meta:
   nav: blog
   author: S11001001
   pygments: true
+  mathjax: true
 ---
 
 Nested existentials
@@ -304,14 +305,28 @@ scope.  We can’t satisfy that with `elists`.
 
 ```scala
 mlenLengthE(elists)
-// TODO what on earth?
 ```
 
-So we have the equally general `mlenLengthE` and `mlenLengthTP`.
-`mlenLength`, however, is incompatible with both; neither is more
-general than the other!  What we really want is a function that is
-more general than all three, and subsumes all their definitions.  Here
-it is.
+Or, we *shouldn't* be able to, anyway.
+[Sometimes, the wrong thing happens.](https://issues.scala-lang.org/browse/SI-9410)
+We get the right error when we try to invoke `mlenLengthTP`.
+
+```scala
+mlenLengthTP(elists)
+
+TmTp5.scala:43: type mismatch;
+ found   : tmtp.PList[tmtp.MList]
+ required: tmtp.PList[tmtp.MList.Aux[this.T]]
+    (which expands to)  tmtp.PList[tmtp.MList{type T = this.T}]
+mlenLengthTP(elists)
+             ^
+```
+
+So we have `mlenLengthE` $\equiv\_m$ `mlenLengthTP`.  `mlenLength`,
+however, is incompatible with both; neither is more general than the
+other!  What we really want is a function that is more general than
+all three, and subsumes all their definitions.  Here it is, in two
+variants, one half-type-parameterized, the other wholly existential.
 
 ```scala
 def mlenLengthTP2[T <: MList](xss: PList[T]): Int =
@@ -327,9 +342,24 @@ def mlenLengthE2(xss: PList[_ <: MList]): Int =
   }
 ```
 
-TODO prove expansion in next para
+We've woven a tangled web, so here are, restated, the full
+relationships for the `MList`-in-`PList` functions above.
 
-And there it is, shorthand for:
+1. `mlenLengthTP2` $\equiv\_m$ `mlenLengthE2`
+2. `mlenLengthTP` $\equiv\_m$ `mlenLengthE`
+3. $\neg($`mlenLength` $<:\_m$ `mlenLengthE`$)$
+4. $\neg($`mlenLengthE` $<:\_m$ `mlenLength`$)$
+5. $\neg($`mlenLength` $<:\_m$ `mlenLengthTP`$)$
+6. $\neg($`mlenLengthTP` $<:\_m$ `mlenLength`$)$
+7. `mlenLengthTP2` $<\_m$ `mlenLengthTP`
+8. `mlenLengthTP2` $<\_m$ `mlenLength`
+9. `mlenLengthTP2` $<\_m$ `mlenLengthE`
+10. `mlenLengthE2` $<\_m$ `mlenLengthTP`
+11. `mlenLengthE2` $<\_m$ `mlenLength`
+12. `mlenLengthE2` $<\_m$ `mlenLengthE`
+
+Moreover, the full existential in `mlenLengthE2` is, in principle if
+`scalac` will not accept it, shorthand for:
 
 ```scala
 PList[E] forSome {
