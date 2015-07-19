@@ -307,7 +307,7 @@ scope.  We can’t satisfy that with `elists`.
 mlenLengthE(elists)
 ```
 
-Or, we *shouldn't* be able to, anyway.
+Or, we *shouldn’t* be able to, anyway.
 [Sometimes, the wrong thing happens.](https://issues.scala-lang.org/browse/SI-9410)
 We get the right error when we try to invoke `mlenLengthTP`.
 
@@ -342,7 +342,7 @@ def mlenLengthE2(xss: PList[_ <: MList]): Int =
   }
 ```
 
-We've woven a tangled web, so here are, restated, the full
+We’ve woven a tangled web, so here are, restated, the full
 relationships for the `MList`-in-`PList` functions above.
 
 1. `mlenLengthTP2` $\equiv\_m$ `mlenLengthE2`
