@@ -376,3 +376,5 @@ And I say all this simply as a means of saying that this is what
 you’re signing up for when you decide to “simplify” your code by using
 type members instead of parameters and leaving off the refinements
 that make them concrete.
+
+*This article was tested with Scala 2.11.7 and Java 1.8.0_45.*
