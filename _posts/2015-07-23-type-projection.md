@@ -161,7 +161,7 @@ parameter.  It makes a whole lot more sense than supposing
 `StSource[A]#S` will just do what I mean.
 
 In a future post, we’ll use this “infer the whole refinement” feature
-to demonstrate that some of the most magical Scala type system
+to demonstrate that some of the most magical-seeming Scala type system
 features aren’t really so magical.  But before we get to that, we need
 to see just why existentials are anything but “wildcards”, and why it
 doesn’t *always* make sense to be able to lift existentials like `S`
