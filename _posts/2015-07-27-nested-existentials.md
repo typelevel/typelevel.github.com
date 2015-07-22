@@ -32,8 +32,8 @@ Recall
 [from the first part]({% post_url 2015-07-13-type-members-parameters %})
 that the equivalent type in `PList` style is `PList[_]`.  Now, these
 variables all have the “same” type, by virtue of forgetting what their
-specific element type is, though you know that every value of `estrs`
-has the same type.
+specific element type is, though you know that every value of, for
+example, `estrs` has the same type.
 
 What if we list *different* existentials?
 -----------------------------------------
@@ -50,14 +50,14 @@ Again, the equivalent is `PList[PList[_]]`.  We can see what this
 means merely by doing substitution in the `PList` type.
 
 ```scala
-// don't compile this, it's a thought process
 sealed abstract class PList
 final case class PNil() extends PList
 final case class PCons(head: MList, tail: PList)
+// don't compile this, it's a thought process
 ```
 
 Equivalently, `head` would have type `PList[_]`, a homogeneous list of
-unknown element type.
+unknown element type, just like `MList`.
 
 Method equivalence … broken?
 ----------------------------
@@ -85,8 +85,9 @@ argument expression's type is not compatible with formal parameter type;
 ```
 
 According to our equivalence test, neither of these methods works to
-implement the other!  This despite the rules we have already
-discussed.  Here’s the error the other way.
+implement the other!  This despite
+[the “simple rule” we have already discussed]({% post_url 2015-07-13-type-members-parameters %}).
+Here’s the error the other way.
 
 ```scala
 TmTp5.scala:20: type mismatch;
@@ -103,10 +104,10 @@ This is an accurate compiler error because `PList[PList[_]]` means
 `PList[PList[E] forSome {type E}]`.  Let’s see the substitution again.
 
 ```scala
-// don't compile this, it's a thought process
 sealed abstract class PList
 final case class PNil() extends PList
 final case class PCons(head: PList[E] forSome {type E}, tail: PList)
+// don't compile this, it's a thought process
 ```
 
 Java has the same problem.  See?
@@ -179,13 +180,13 @@ Let’s examine the meaning of the type
 mental suspension.
 
 ```scala
-// don't compile this, it's a thought process
 // Let there be some unknown (abstract)
 type E
 // then the structure of the value is
 sealed abstract class PList
 final case class PNil() extends PList
 final case class PCons(head: PList[E], tail: PList)
+// don't compile this, it's a thought process
 ```
 
 By moving the `forSome` *existential scope* outside the outer `PList`,
@@ -208,6 +209,11 @@ sublist.  We can tell that because, in the expansion, there’s only one
 `E`, whereas the expansion for the former has an `E` introduced in
 each `head` value.
 
+So for the latter it is type-correct to, say, move elements from one
+sublist to another; you know that, whichever pair of sublists you
+choose to make this trade, they have the same element type.  But you
+*don’t know that* for `PList[PList[_]]`.
+
 Similarly, also by substitution, `PList[_] => Int` is a function that
 takes `PList`s of any element type and returns `Int`, like `plengthE`.
 You can figure this out by substituting for
@@ -229,8 +235,8 @@ def apply(v1: List[E]): Int
 ```
 
 It’s easy to use existential scoping to create functions that are
-impossible to call, and values that are impossible to use.  This
-latter is almost one of those:
+impossible to call and other values that are impossible to use besides
+functions.  This is almost one of those:
 
 ```scala
 def badlength: (PList[E] => Int) forSome {type E} = plengthE
@@ -248,9 +254,9 @@ empty list.  Whatever the `E` is, it will be inferred when we call
 `PNil()`.  So `badlength(PNil())` works.
 
 There is a broader theme here hinted at by the interaction between
-`PNil` and `badlength`: the most efficient, most easily understood way
-to work with values of existential type is with type-parameterized
-methods.  But we’ll get to that later.
+`PNil` and `badlength`: **the most efficient, most easily understood
+way to work with values of existential type is with type-parameterized
+methods**.  But we’ll get to that later.
 
 Back to type members
 --------------------
@@ -326,7 +332,7 @@ So we have `mlenLengthE` $\equiv\_m$ `mlenLengthTP`.  `mlenLength`,
 however, is incompatible with both; neither is more general than the
 other!  What we really want is a function that is more general than
 all three, and subsumes all their definitions.  Here it is, in two
-variants, one half-type-parameterized, the other wholly existential.
+variants: one half-type-parameterized, the other wholly existential.
 
 ```scala
 def mlenLengthTP2[T <: MList](xss: PList[T]): Int =
@@ -359,7 +365,7 @@ relationships for the `MList`-in-`PList` functions above.
 12. `mlenLengthE2` $<\_m$ `mlenLengthE`
 
 Moreover, the full existential in `mlenLengthE2` is, in principle if
-`scalac` will not accept it, shorthand for:
+yet unaccepted by `scalac`, shorthand for:
 
 ```scala
 PList[E] forSome {
@@ -372,7 +378,7 @@ PList[E] forSome {
 …a nested existential, though not in the meaning I intend in the title
 of this article.
 
-And I say all this simply as a means of saying that this is what
+And I say all this simply as a means of saying that *this* is what
 you’re signing up for when you decide to “simplify” your code by using
 type members instead of parameters and leaving off the refinements
 that make them concrete.
