@@ -69,7 +69,7 @@ A failed attempt at simplified emitting
 
 So, under this theory, you’ve got some values of type `StSource[A]`
 lying around.  And you want a simple function to take a source and its
-state, and return a value and the new state.
+state, and return the “next” value and the new state.
 
 ```scala
 def runStSource[A](ss: StSource[A], s: ??): (A, ??) = ss.emit(s)
@@ -90,11 +90,11 @@ TmTp4.scala:22: type mismatch;
                                  ^
 ```
 
-Setting aside that it won’t compile with the above signature -- the
-usual outcome of experiments with type projection, that the types
-aren’t strong enough to be workable without cheating by casting -- the
-reality *sounds* so close to the above that it is understandable that
-type projection is often confused with something useful.
+Setting aside that it won’t compile with the above signature—the usual
+outcome of experiments with type projection, that the types aren’t
+strong enough to be workable without cheating by casting—the reality
+*sounds* so close to the above that it is understandable that type
+projection is often confused with something useful.
 
 <div class="side-note">
   There *are* uses for type projection.  But they are so rare, so
@@ -112,15 +112,15 @@ one you gave, just any particular one.  That’s right, it’s
 failure of `mdropFirstE` from section “When are two methods less
 alike?” of
 [the second post of this series]({% post_url 2015-07-16-method-equiv %}):
-a failure to relate types strongly
-enough.  The problem with `mdropFirstE` was failure to relate the
-result type to argument type, whereas the failure above is to fail to
-relate the two arguments’ types to each other.
+a failure to relate types strongly enough.  The problem with
+`mdropFirstE` was failure to relate the result type to argument type,
+whereas the problem with `runStSource` is to fail to relate the two
+arguments’ types to each other.
 
 Type parameters see existentially
 ---------------------------------
 
-As with `mdropFirstE`, a correct solution here is again lifting the
+As with `mdropFirstE`, one correct solution here is, again, lifting the
 member to a method type parameter.
 
 ```scala
@@ -151,10 +151,10 @@ of this series.  We even saw it apply directly to type members when
 `mdropFirstE` was able to invoke `mdropFirstT`.  However, for whatever
 reason, we’re used to existential parameters being able to do this;
 even Java manages the task.  But it just seems *odder* that merely
-calling a method can fill in the blanks in a whole refinement `{...}`
-raincloud.
+calling a method can create a whole refinement `{...}` raincloud, from
+scratch, filling in the blanks with sensible types along the way.
 
-It’s completely sound, though.  An `StSource` that exists as a value
+It’s completely sound, though.  An `StSource` [that exists as a value]
 *must* have an `S`, even if we existentialized it away.  So, as with
 `_`s, let’s just give it a name to pass as the inferred type
 parameter.  It makes a whole lot more sense than supposing
