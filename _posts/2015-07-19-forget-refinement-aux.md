@@ -154,7 +154,9 @@ article.  With `Aux`, as with ordinary parameterized types, a missing
 argument is caught by the compiler, and misspelling the parameter name
 is impossible.
 
-In the next part, we’ll see why something that, at first glance, seems
+In
+[the next part, “Type projection isn’t that specific”]({% post_url 2015-07-23-type-projection %}),
+we’ll see why something that, at first glance, seems
 like a workable alternative to either refinement or the `Aux` trick,
 doesn’t work out as well as people wish it would.
 
