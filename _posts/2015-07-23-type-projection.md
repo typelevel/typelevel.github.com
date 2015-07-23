@@ -97,9 +97,9 @@ strong enough to be workable without cheating by casting—the reality
 projection is often confused with something useful.
 
 <div class="side-note">
-  There *are* uses for type projection.  But they are so rare, so
+  There <em>are</em> uses for type projection.  But they are so rare, so
   exotic (they look
-  [like this](https://github.com/scalaz/scalaz/blob/bdd6d5653313b10af08efdc6884cbbefe41051a2/core/src/main/scala/scalaz/Unapply.scala#L404-L409)),
+  <a href="https://github.com/scalaz/scalaz/blob/bdd6d5653313b10af08efdc6884cbbefe41051a2/core/src/main/scala/scalaz/Unapply.scala#L404-L409">like this</a>),
   and even the legitimate ones better off rewritten to avoid them,
   that the safer assumption is that you’ve gone down the wrong path if
   you’re trying to use them at all.  My suggestion can usually be
