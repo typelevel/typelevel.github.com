@@ -18,7 +18,7 @@ which introduces code we refer to throughout this article without
 further ado.*
 
 As I mentioned
-[in the previous article]({% post_url 2015-07-16-method-equiv %}),
+[in the previous article]({% post_url 2015-07-16-method-equiv %}#when-are-two-methods-less-alike),
 the error of the `mdropFirstE` signature, taking `MList` and returning
 merely `MList`, was to fail to relate the input element type to the
 output element type.  This mistake is an easy one to make when failure
@@ -119,7 +119,7 @@ This is a scoping problem; the refinement type makes the member `T`
 shadow our method type parameter `T`.  We dealt with the problem in
 `MList#uncons` and `MCons#tail` as well, way back in section “Two
 lists, all alike” of
-[the first part]({% post_url 2015-07-13-type-members-parameters %}),
+[the first part]({% post_url 2015-07-13-type-members-parameters %}#two-lists-all-alike),
 in those cases by outer-scoping the `T` as
 `self.T` instead.
 

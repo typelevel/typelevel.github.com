@@ -18,7 +18,7 @@ Type Members”.  If you haven’t yet, you should
 which introduces code we refer to throughout this article without
 further ado.*
 
-[In the last part]({% post_url 2015-07-13-type-members-parameters %}),
+[In the last part]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok),
 we just saw two method types that, though different, are effectively
 the same: those of `plengthT` and `plengthE`.  We have rules for
 deciding when an existential parameter can be lifted into a method
@@ -196,7 +196,7 @@ def pdropFirst[T](xs: PList[T]): PList[T] =
 ```
 
 According to the `PList` ⇔ `MList` conversion rules given
-[in the previous article]({% post_url 2015-07-13-type-members-parameters %}),
+[in the previous article]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok),
 section “Why all the `{type T = ...}`?”, the equivalent for `MList`
 should be
 
