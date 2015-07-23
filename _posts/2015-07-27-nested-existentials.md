@@ -364,19 +364,18 @@ relationships for the `MList`-in-`PList` functions above.
 11. `mlenLengthE2` $<\_m$ `mlenLength`
 12. `mlenLengthE2` $<\_m$ `mlenLengthE`
 
-Moreover, the full existential in `mlenLengthE2` is, in principle if
-yet unaccepted by `scalac`, shorthand for:
+Moreover, the full existential in `mlenLengthE2` is shorthand for:
 
 ```scala
 PList[E] forSome {
-  type E = MList {
+  type E <: MList {
     type T = E2
   } forSome {type E2}
 }
 ```
 
 …a nested existential, though not in the meaning I intend in the title
-of this article.
+of this article.  You can prove it with `=:=`, as above.
 
 And I say all this simply as a means of saying that *this* is what
 you’re signing up for when you decide to “simplify” your code by using
