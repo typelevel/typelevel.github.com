@@ -158,21 +158,25 @@ condition satisfied by either `PList[PList[_]]` or its equivalent
 `PList[MList]`.
 
 <div class="side-note">
-  The reason you can’t invoke `plenLength` from `plenLengthTP` is
-  complicated, even for this article.  In short, `plenLength` demands
-  evidence that, *supposing* `PList` had a method taking an argument
-  of the element type, e.g. `def lookAt(x: T): Unit`, it could do
-  things like `xss.lookAt(PList("hi", PNil()))`.  In `plenLengthTP`,
-  this hypothetical method could only be invoked with empty lists, or
-  lists gotten by inspecting `xss` itself.
+  <p>The reason you can’t invoke <code>plenLength</code> from
+  <code>plenLengthTP</code> is complicated, even for this article.  In
+  short, <code>plenLength</code> demands evidence that,
+  <em>supposing</em> <code>PList</code> had a method taking an
+  argument of the element type,
+  e.g. <code>def lookAt(x: T): Unit</code>, it could do things like
+  <code>xss.lookAt(PList("hi", PNil()))</code>.  In
+  <code>plenLengthTP</code>, this hypothetical method could only be
+  invoked with empty lists, or lists gotten by inspecting
+  <code>xss</code> itself.</p>
 
-  That no such method exists is irrelevant for the purposes of this
-  reasoning; we have written the definition of `PList` in a way that
-  scalac assumes that such a method may exist.  You can determine the
-  consequences yourself by adding the `lookAt` method to `PList`,
-  repeating the above substitution for `PList`, and thinking about the
-  meaning of the resulting `def lookAt(x: PList[E] forSome {type E}):
-  Unit`.
+  <p>That no such method exists is irrelevant for the purposes of this
+  reasoning; we have written the definition of <code>PList</code> in a
+  way that scalac assumes that such a method may exist.  You can
+  determine the consequences yourself by adding the
+  <code>lookAt</code> method to <code>PList</code>, repeating the
+  above substitution for <code>PList</code>, and thinking about the
+  meaning of the resulting <code>def lookAt(x:
+  PList[E] forSome {type E}): Unit</code>.</p>
 </div>
 
 Let’s examine the meaning of the type
