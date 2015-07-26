@@ -164,8 +164,8 @@ creatures, you will confidently stroll into the darkness until you
 trip and fall off a cliff.  They are only *superficially* “wildcards”.
 The effect of this sorry attempt at avoiding new terminology is
 chiefly to cheat Java programmers out of learning what’s really going
-on.  (We will explore some of this more exotic behavior in a later
-post.)
+on.  (We will explore some of this more exotic behavior
+[in a later post]({% post_url 2015-07-27-nested-existentials %}).)
 
 Two: by
 [encouraging use of existential signatures](https://docs.oracle.com/javase/tutorial/extra/generics/methods.html)

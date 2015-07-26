@@ -29,7 +29,7 @@ val ebools: MList = MCons(true, MCons(false, MNil())): MList.Aux[Boolean]
 ```
 
 Recall
-[from the first part]({% post_url 2015-07-13-type-members-parameters %})
+[from the first part]({% post_url 2015-07-13-type-members-parameters %}#why-all-the-type-t)
 that the equivalent type in `PList` style is `PList[_]`.  Now, these
 variables all have the “same” type, by virtue of forgetting what their
 specific element type is, though you know that every value of, for
@@ -86,7 +86,7 @@ argument expression's type is not compatible with formal parameter type;
 
 According to our equivalence test, neither of these methods works to
 implement the other!  This despite
-[the “simple rule” we have already discussed]({% post_url 2015-07-13-type-members-parameters %}).
+[the “simple rule” we have already discussed]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok).
 Here’s the error the other way.
 
 ```scala
@@ -137,7 +137,7 @@ This discovery, which I made for myself
 [in the depths of the Ermine Java code](https://bitbucket.org/ermine-language/ermine-writers/src/c63d4060a74f1c8520ea1c8c3ba51ebd5d269780/writers/javafx/src/main/java/com/clarifi/reporting/writers/jfx/table/JFXTables.java?at=default#JFXTables.java-163)
 (though it was certainly already well-known to others), was my first
 clue, personally, that the term
-[“wildcard” was a lie, as discussed in a previous part]({% post_url 2015-07-16-method-equiv %}).
+[“wildcard” was a lie, as discussed in a previous part]({% post_url 2015-07-16-method-equiv %}#why-are-existentials-harder-to-think-about).
 
 Scoping existential quantifiers
 -------------------------------
@@ -298,10 +298,10 @@ res0: =:=[tmtp.MList,tmtp.MList{type T = E} forSome { type E }] = <function1>
 
 That’s why we could use `runStSource` to infer a type parameter for
 the existential `S` in
-[the last post]({% post_url 2015-07-23-type-projection %}): the scope
-is on the outside, so there’s exactly one type parameter to infer.  So
-the scoping problem now looks very similar to the `PList`-in-`PList`
-problem, and we can write:
+[the last post]({% post_url 2015-07-23-type-projection %}#type-parameters-see-existentially):
+the scope is on the outside, so there’s exactly one type parameter to
+infer.  So the scoping problem now looks very similar to the
+`PList`-in-`PList` problem, and we can write:
 
 ```scala
 def mlenLengthE(xss: PList[MList.Aux[E]] forSome {type E})
