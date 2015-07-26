@@ -196,6 +196,12 @@ expanding the type under consideration.  Once the `forSome` scope
 extends over the whole type, Scala can pick that type as the parameter
 to `plenLengthTP`.
 
+This isn’t possible in Java at all; `PList<PList<?>>` is your only
+choice, as **`?` in Java, like `_` in Scala, is always scoped to
+exactly one level outside**.  So in Java, you simply can’t write
+`plenLengthE`’s type.  Luckily, the type-parameter equivalent is
+perfectly expressible.
+
 What happens when I move the existential scope?
 -----------------------------------------------
 
