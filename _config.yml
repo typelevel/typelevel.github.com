@@ -3,6 +3,8 @@ title: "typelevel.scala"
 safe: true
 baseurl: http://typelevel.org
 markdown: redcarpet
+redcarpet:
+  extensions: ["with_toc_data"]
 
 permalink: /blog/:year/:month/:day/:title.html
 relative_permalinks: false
