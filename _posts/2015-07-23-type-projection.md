@@ -165,6 +165,7 @@ to demonstrate that some of the most magical-seeming Scala type system
 features aren’t really so magical.  But before we get to that, we need
 to see just why existentials are anything but “wildcards”, and why it
 doesn’t *always* make sense to be able to lift existentials like `S`
-to type parameters.  That’s coming in the next post.
+to type parameters.  That’s coming in
+[the next post, “Nested existentials”]({% post_url 2015-07-27-nested-existentials %}).
 
 *This article was tested with Scala 2.11.7.*
