@@ -115,7 +115,7 @@ which make no secret of favoring functional programming.
 Assignment rewrites existentials
 --------------------------------
 
-[We saw earlier](TODO add/get example) that a simple get from a
+[We saw earlier]({% post_url 2015-07-16-method-equiv %}) that a simple get from a
 `List<?>`, followed by adding that value right back to the same list,
 didn’t work, but if we took that `xs` and passed it to a
 type-parameterized version, everything worked fine.  Why is that?
@@ -123,8 +123,8 @@ type-parameterized version, everything worked fine.  Why is that?
 If you have a *mutable* variable of an existential type, the
 existentialized part of the type may have different [type] values at
 different parts of the program.  Let’s use
-[the `StSource` from the projection post](TODO stsource link).  Note
-that the `S` member is existential, because we did not bind it.
+[the `StSource` from the projection post]({% post_url 2015-07-23-type-projection %}#a-good-reason-to-use-type-members).
+Note that the `S` member is existential, because we did not bind it.
 
 ```scala
 var mxs: StSource[String] = StSource(0)(x => (x.toString, x + 1))
@@ -192,11 +192,12 @@ Making variables read-only matters
 
 If I change the variable to `final` in Java, and remove mutation, I
 shouldn’t have this problem anymore.  Surprisingly, I do; this is what
-happened in [the original `copyToZero` example]({% post_url
-2015-07-16-method-equiv %}), where the argument was declared `final`.
-I assume that this is just a simplifying assumption in `javac`, that
-the extra guarantee of unchanging existentials offered by `final`
-isn’t understood by the compiler.
+happened in
+[the original `copyToZero` example]({% post_url 2015-07-16-method-equiv %}),
+where the argument was declared `final`.  I assume that this is just a
+simplifying assumption in `javac`, that the extra guarantee of
+unchanging existentials offered by `final` isn’t understood by the
+compiler.
 
 In the case of Scala, though, **when you are using existential type
 members, Scala can understand the implications of an immutable
@@ -274,7 +275,8 @@ arguments as `byname[PList[_]]` and `byname[PList[T]]`.  So we have
 exactly the same problem as we had with
 [`plenLength` and `plenLengthTP`]({% post_url 2015-07-27-nested-existentials %}#method-equivalence-%E2%80%A6-broken).
 
-TODO SI-9419 link
+Unfortunately,
+[Scala currently accepts this, where it shouldn’t](https://issues.scala-lang.org/browse/SI-9419).
 
 The difference between these two methods gives us a hint about working
 with existentials: if we can shift the scope for a given existential
