@@ -135,11 +135,11 @@ mxs = StSource("ab")(x => (x, x.reverse))
 // at this point in the program, the S is String
 mxs.emit(s1)
 
-[error] C:\Users\Stephen\Documents\ide\sbt-project\trunk\src\main\scala\TmTp6.scala:14: type mismatch;
-[error]  found   : tmtp6.Tmtp4Funs.s1.type (with underlying type tmtp4.StSource[String]#S)
-[error]  required: _2.S where val _2: tmtp4.StSource[String]
-[error] mxs.emit(s1)
-[error]          ^
+TmTp6.scala:14: type mismatch;
+ found   : tmtp6.Tmtp4Funs.s1.type (with underlying type tmtp4.StSource[String]#S)
+ required: _2.S where val _2: tmtp4.StSource[String]
+mxs.emit(s1)
+         ^
 ```
 
 And it’s good that this happens, because the value we got from `init`
