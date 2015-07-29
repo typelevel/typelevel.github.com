@@ -392,4 +392,10 @@ you’re signing up for when you decide to “simplify” your code by using
 type members instead of parameters and leaving off the refinements
 that make them concrete.
 
+In
+[the next part, “Values never change types”]({% post_url 2015-07-30-values-never-change-types %}),
+we’ll get some idea of why working with existential types can be so
+full of compiler errors, especially when allowing for mutation and
+impure functions.
+
 *This article was tested with Scala 2.11.7 and Java 1.8.0_45.*

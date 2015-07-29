@@ -30,7 +30,8 @@ your code, and everything falls apart.  But this is just about
 [nothing being a free lunch](http://blog.higher-order.com/blog/2014/12/21/maximally-powerful/):
 **the wide variety of values meeting any given existential type,
 combined with the possibility for mutation, means a sound typechecker
-must be very conservative about what it permits**.
+must be very conservative about what it permits when using those
+values**.
 
 So, in this article, we’ll explore some of these type error pitfalls,
 see why it’s perfectly reasonable for the compilers to complain about
@@ -79,11 +80,12 @@ strs.value = 42
 ```
 
 Now, presumably, completely aside from the value, the variable `strs`
-has *changed types* to `OneThing[Int]`.  OK, so what if that variable
-came from someplace else?
+has *changed types* to `OneThing[Int]`.  Not just the value in it, the
+variable itself.  OK, so what if that variable came from someplace
+else?
 
 ```scala
-def replaceWithInt(t: OneThing[_]): Unit =
+def replaceWithInt(ote: OneThing[_]): Unit =
   t.value = 42
 
 val strs: OneThing[String] = OneThing("hi")
@@ -92,19 +94,20 @@ replaceWithInt(strs)
 ```
 
 Now, the type of `replaceWithInt` must contain a note that “by the
-way, the type of `t`, and any variables that refer to it, will change
-as a result of this call”.
+way, the type of `ote`, and any variables that refer to it, and any
+variables that refer to *those* variables, and so on until it stops,
+will change as a result of this call”.
 
 This is a problem of *aliases*, all the locations that may refer to a
 value.  If you change the type of the value, you also have to update
-every reference to it!  This is *the type system*; your promise that
-you have no other references is not good enough, you have to *prove*
-it.
+every reference to it, at compile time!  This is *the type system*;
+your promise that you have no other references is not good enough.
+You have to *prove* it.
 
 As with the previous problem, the known solutions to this problem
 would complicate the type systems of Java and Scala beyond their
-design goals.  In a sense, this aspect of their type systems can be
-considered to encourage functional programming.  A type-changing map
+design goals.  In a sense, **this aspect of their type systems can be
+considered to encourage functional programming**.  A type-changing map
 that builds a new list of the new type, or what have you, instead of
 mutating the old one, is *trivial* in the Java/Scala generics systems.
 There are no chances of aliasing problems, because no one could
@@ -164,11 +167,11 @@ trait Ref[T] {
 }
 ```
 
-So, by substitution, the variable `mxs` is really a pair of functions.
-The “getter” returns `StSource[String]`; each time you invoke that
-getter, you might get an `StSource[String]` with a different `S`
-member, because the `forSome` effectively occurs inside the body, as
-described in
+So, by substitution, the variable `mxs` is really a pair of functions,
+`() => StSource[String]` and `StSource[String] => Unit`.  The “getter”
+returns `StSource[String]`; each time you invoke that getter, you
+might get an `StSource[String]` with a different `S` member, because
+the `forSome` effectively occurs inside the body, as described in
 [the substitutions of “Nested existentials”]({% post_url 2015-07-27-nested-existentials %}#what-if-we-list-different-existentials).
 
 Of course, this means you can take advantage of this in your own
@@ -220,8 +223,9 @@ Naming the existential
 
 The benefit we get from
 [passing `copyToZeroP`’s argument to `copyToZeroT`]({% post_url 2015-07-16-method-equiv %})
-is we *name* the existential for the single reference to the argument
-that we make.  We name it `T` there, for the scope of its invocation.
+is that we *name* the existential for the single reference to the
+argument that we make.  We name it `T` there, for the scope of its
+invocation.
 
 Likewise, in Scala, each `val` introduces, while it is in scope, each
 existential member it has, as a type name.  There are
