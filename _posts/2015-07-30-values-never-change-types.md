@@ -157,8 +157,9 @@ reference to the variable gets fresh values to fill in the
 existentials*.
 
 If it helps, you can think of a mutable variable as an *immutable*
-variable that wraps its type with an extra layer.  So `mxs` is of type
-`Ref[StSource[String]]`, where
+variable that wraps its type with an extra layer.  In fact, that's
+[what scalac does when you capture a `var`](https://github.com/scala/scala/blob/v2.11.7/src/library/scala/runtime/ObjectRef.java#L14-L17).
+So `mxs` is, in a sense, of type `Ref[StSource[String]]`, where
 
 ```scala
 trait Ref[T] {
