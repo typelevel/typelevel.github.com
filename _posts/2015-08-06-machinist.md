@@ -26,7 +26,7 @@ Introduction
 > value classes or are there still some use cases? An example of using
 > value class for zero-cost implicit enrichment: [...]
 
-The short answer is that Machinist value classes existed before the Machinist macros were implemented, and they do not solve the same problem Machinist solves.
+The short answer is that value classes existed before the Machinist macros were implemented, and they do not solve the same problem Machinist solves.
 
 This article is the long answer.
 
