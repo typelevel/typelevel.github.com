@@ -86,7 +86,7 @@ Now, we can just say `x / y` and have that call `Div#div` automatically. We also
 
 With a normal implicit conversion, every call to `gen` would construct an instance of `Test3.DivOps`. However, since we have defined `Test3.DivOps` as a value class (by extending `AnyVal`), the object instantiation is ellided. Instead, the method call is dispatched to `Test3.DivOps.$div$extension` which calls `ev.div`.
 
-We often talk about value classes as not having a *cost*. Since no class is instantiation, we are not required to pay a cost in allocations, but we do still pay a cost in indirection (instead of calling `ev.div` directly as in `Test1` we have an intermediate extension method).
+We often talk about value classes as not having a *cost*. Since no class is instantiated, we are not required to pay a cost in allocations, but we do still pay a cost in indirection (instead of calling `ev.div` directly as in `Test1` we have an intermediate extension method).
 
 You can see the difference in the output from `javap`.
 
@@ -175,11 +175,13 @@ The issue that sparked this article used the operator `+/+`. Machinist claims to
 
 The answer has to do with how Scala macros work. Scala requires that macros be defined in a separate "compilation unit" from the one they are invoked in. This makes it very awkward to create a code snippet that both defines and uses a macro. In this case, it means that we can't extend `machinist.Ops` to define new symbolic operators in the same file that demonstrates their use. This is why we used `/` (which maps to `div` and is a "default operator").
 
+You can arrange your "real" projects so that they are not affected by this limitation.
+
 ### Use outside of generic methods
 
 Now that we've demonstrated the cost that implicit conversions to value classes impose, you might imagine wanting to perform this transformation on *all* your implicit conversions.
 
-Unfortunately, Machinist is not sufficiently general to support this. Right now its macros support a number of different "shapes" but assume generic methods with type parameters. It might be possible to write macros which inline the method body of a concrete implicit class, but that's outside the scope of the project. 
+Unfortunately, Machinist is not sufficiently general to support this. Right now its macros support a number of different "shapes" but assume generic method which dispatches to an implicit evidence parameter. It might be possible to write macros which inline the method body of a concrete implicit class, but that's outside the scope of the project. 
 
 
 Postscript: messy details
