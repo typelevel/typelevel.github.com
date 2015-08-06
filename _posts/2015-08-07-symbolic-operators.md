@@ -6,6 +6,7 @@ meta:
   nav: blog
   author: non
   pygments: true
+  mathjax: true
 ---
 
 Symbolic operators and type classes for Cats
@@ -20,7 +21,7 @@ type in an associative manner.
 
 <div class="side-note">
   What does <em>associativity</em> mean?
-  We call an operation `⊕` associative, if for all `a`, `b` and `c`, `a ⊕ (b ⊕ c) = (a ⊕ b) ⊕ c` holds.
+  We call an operation $\oplus$ associative, if for all $a$, $b$ and $c$, $a \oplus (b \oplus c) = (a \oplus b) \oplus c$ holds.
   Read more about this in the <a href="https://github.com/non/algebra#algebraic-properties-and-terminology">README of the algebra repository</a>.
 </div>
 
@@ -85,7 +86,7 @@ Yes we do. Our import also provides an implicit value [`intGroup`](https://githu
 of type `AdditiveCommutativeGroup[Int]`. Leaving aside what *additive*, *commutative*,
 and *group* mean here, this is a subtype of `Semigroup[Int]`, so it matches.
 
-Let's continue with our current example. At this point we have gone form:
+Let's continue with our current example. At this point we have gone from:
 
 ```scala
 19 |+| 20 // produces 39
@@ -128,7 +129,7 @@ into:
 intGroup.combine(19, 20)
 ```
 
-The suggestive map item tells us that we should rewrite the `|+|` operator
+The aforementioned suggestive map item tells us that we should rewrite the `|+|` operator
 to method calls on the given type class (i.e. `intGroup`) using `.combine`.
 
 Finishing up
@@ -173,7 +174,7 @@ import cats.Semigroup
 import cats.implicits._
 
 def gsum[A](values: List[A])(implicit s: Semigroup[A]): Option[A] =
-  if (values.isEmpty) None else values.reduceLeft((x, y) => s.combine(x, y0))
+  if (values.isEmpty) None else values.reduceLeft((x, y) => s.combine(x, y))
 
 // values.reduceLeft(s.combine) would also work
 ```
