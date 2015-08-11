@@ -42,7 +42,7 @@ import cats.Semigroup
 import cats.implicits._
 
 def gsum[A: Semigroup](values: List[A]): Option[A] =
-  if (values.isEmpty) None else values.reduceLeft((x, y) => x |+| y)
+  if (values.isEmpty) None else Some(values.reduceLeft((x, y) => x |+| y))
 ```
 
 (A similar method is built into Cats as `Semigroup.combineAllOption`.)
@@ -174,7 +174,7 @@ import cats.Semigroup
 import cats.implicits._
 
 def gsum[A](values: List[A])(implicit s: Semigroup[A]): Option[A] =
-  if (values.isEmpty) None else values.reduceLeft((x, y) => s.combine(x, y))
+  if (values.isEmpty) None else Some(values.reduceLeft((x, y) => s.combine(x, y)))
 
 // values.reduceLeft(s.combine) would also work
 ```
