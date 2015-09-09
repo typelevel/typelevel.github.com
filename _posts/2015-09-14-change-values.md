@@ -88,20 +88,21 @@ three methods.
 
 ```scala
   def initText(): Unit =
-    text = IO.fromSource(filename)
+    text = Source.fromFile(filename.toFile).mkString
 
   def initWordIndex(): Unit = {
     val words = """\w+""".r findAllMatchIn text
-    wordIndex = words.foldLeft(Map.empty){
-      (m, match) =>
-        val word = match.matched
-        val idx = match.start
-        m + (word -> (idx :: m.get(word, Nil)))
+    wordIndex = words.foldLeft(Map[String, List[Int]]()){
+      (m, mtch) =>
+        val word = mtch.matched
+        val idx = mtch.start
+        m + (word -> (idx :: m.getOrElse(word, Nil)))
       }
   }
 
   def initMostPopular(): Unit =
-    mostPopular = wordIndex.sortBy(_._2.size).take(10)
+    mostPopular = wordIndex.mapValues(_.size).toList
+      .sortBy(p => 0 - p._2).take(10)
 ```
 
 This method of organizing object initialization is popular because,
@@ -175,7 +176,7 @@ class` to hold its contents, instead.  Let us call that class, for
 this example, `Doc`.
 
 ```scala
-sealed final case class Doc
+final case class Doc
   (text: String, wordIndex: Map[String, List[Int]],
    mostPopular: List[(String, Int)])
 ```
@@ -185,9 +186,25 @@ Each begins by taking one as an argument, and produces the next state
 as a return type.
 
 ```scala
-  def initText(filename: Path): String = ???
-  def initWordIndex(text: String): (String, Map[String, List[Int]]) = ???
-  def initMostPopular(twi: (String, Map[String, List[Int]])): Doc = ???
+  def initText(filename: Path): String =
+    Source.fromFile(filename.toFile).mkString
+
+  def initWordIndex(text: String): (String, Map[String, List[Int]]) = {
+    val words = """\w+""".r findAllMatchIn text
+    (text, words.foldLeft(Map[String, List[Int]]()){
+       (m, mtch) =>
+       val word = mtch.matched
+       val idx = mtch.start
+         m + (word -> (idx :: m.getOrElse(word, Nil)))
+     })
+  }
+
+  def initMostPopular(twi: (String, Map[String, List[Int]])): Doc = {
+    val (text, wordIndex) = twi
+    Doc(text, wordIndex,
+        wordIndex.mapValues(_.size).toList
+          .sortBy(p => 0 - p._2).take(10))
+  }
 ```
 
 If we have a `Path`, we can get a `Doc` by `(initText _) andThen
@@ -206,7 +223,7 @@ sealed abstract class DocumentTree
 final case class SingleDocument(id: Int, doc: Document)
   extends DocumentTree
 final case class DocumentCategory
-  (name: String, members: DocumentTree)
+  (name: String, members: List[DocumentTree])
   extends DocumentTree
 ```
 
@@ -250,7 +267,7 @@ sealed abstract class DocTree[D]
 final case class SingleDoc[D](id: Int, doc: D)
   extends DocTree[D]
 final case class DocCategory[D]
-  (name: String, members: DocTree[D])
+  (name: String, members: List[DocTree[D]])
   extends DocTree[D]
 ```
 
@@ -296,11 +313,14 @@ would be a perfect place to add a type parameter!
 
 ```scala
 // suppose we
-TODO
+final case class Doc[A]
+  (text: String, wordIndex: Map[String, List[Int]],
+   mostPopular: List[(String, Int)],
+   extra: A)
 ```
 
 You can use a type parameter to represent one simple slot in an
-otherwise specified structure (TODO link).  You can
+otherwise specified structure, as above.  You can
 [use one to represent 10 slots](https://bitbucket.org/ermine-language/ermine-writers/src/9ec9a98c30bc9924cc49888895f8832e8ce4f8e1/writers/html/src/main/scala/com/clarifi/reporting/writers/HTMLDeps.scala?at=default#HTMLDeps.scala-37).
 
 Parameterized types are the type system’s version of functions.  They
@@ -405,22 +425,28 @@ This compiles.  It is wrong, and we can figure out exactly why by
 trying the same shortcut with `map`.
 
 ```scala
-    case DocCategory(n, d, dts) =>
-    DocCategory(n, d, dts map (_ map f))
+      case DocCategory(c, d, dts) =>
+        DocCategory(c, d, dts map (_ map f))
 ```
 
 We are treating the `d: D` like the `name: String`, just passing it
 through.  It is “ignored” in precisely the same way as the `foreach`
 ignores the new data.  But this version does not compile!
 
-TODO error
+```scala
+TmTp7.scala:90: type mismatch;
+ found   : d.type (with underlying type D)
+ required: D2
+        DocCategory(c, d, dts map (_ map f))
+                       ^
+```
 
 More broadly, `map` must return a `DocTree[D2]`.  By implication, the
 second argument must be a `D2`, not a `D`.  We can fix it by using
 `f`.
 
 ```scala
-      DocCategory(n, f(d), dts map (_ map f))
+      DocCategory(c, f(d), dts map (_ map f))
 ```
 
 Likewise, we should make a similar fix to `DocumentTree#foreach`.
