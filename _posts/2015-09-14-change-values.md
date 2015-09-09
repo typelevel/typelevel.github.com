@@ -40,7 +40,7 @@ concerns: to change types, change values.  You can’t do anything about
 the values you have, but you can create new ones of the right type,
 and use those instead.
 
-Type changing is program organization
+Type-changing is program organization
 -------------------------------------
 
 In values with complex construction semantics, it is common to write
@@ -542,6 +542,6 @@ only one natural outcome of the system of type abstraction brought to
 us by type parameters; there are many more interesting conclusions,
 like the ones described above.
 
-Next, in TODO, we will see how existentials turn this
-conceptualization of abstract types on its head, in a different flavor
-of program organization.
+Next, in “Type-changing is abstraction inversion”, we will see how
+existentials turn this conceptualization of abstract types on its
+head, in a different flavor of program organization.
