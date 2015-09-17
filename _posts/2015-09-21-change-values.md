@@ -349,13 +349,9 @@ not functional programming.  But the features we have been considering
 unavoidably coalesce here into an empirical argument for functional
 programming.  Type parameters let us elegantly lift transformations
 from one part of our program to another; the intractable complexities
-of imperative type-changing direct us to program more functionally if
-we want access to these features.
-
-TODO snip was here
-
-…in more of a functional style, by computing new values instead of
-changing old ones.  This, in turn, encourages ever more of our program
+of imperative type-changing direct us to program more functionally, by
+computing new values instead of changing old ones, if we want access
+to these features.  This, in turn, encourages ever more of our program
 to be written in a functional style, just as the switch to different
 `Doc` representations induced a switch to different document tree
 representations, `map` instead of `foreach`.
