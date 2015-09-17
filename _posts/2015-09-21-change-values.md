@@ -292,11 +292,12 @@ step through initialization of `DocTree` with `map`, just as with
 `DocumentTree` and `foreach`.
 
 ```scala
-> val dtp: DocTree[Path] = TODO
-TODO
+scala> val dtp: DocTree[Path] = DocCategory("rt", List(SingleDoc(42, Paths.get("hello.md"))))
+dtp: tmtp7.DocTree[java.nio.file.Path] = DocCategory(rt,List(SingleDoc(42,hello.md)))
 
-> dtp map initTree
-res0: TODO
+scala> dtp map Doc.initText
+res3: tmtp7.DocTree[String] =
+DocCategory(rt,List(SingleDoc(42,contents of the hello.md file!)))
 ```
 
 You wouldn’t avoid writing functions, would you?
@@ -412,7 +413,27 @@ final case class DocCategory[D]
 
 So far, so good.  Next, neither `foreach` nor `map` compile anymore.
 
-TODO compiler error
+```
+⤹ 
+TmTp7.scala:70: wrong number of arguments for pattern
+⤹ tmtp7.DocumentCategory(name: String,doc: tmtp7.Document,
+⤹                        members: List[tmtp7.DocumentTree])
+      case DocumentCategory(_, dts) =>
+                           ^
+TmTp7.scala:71: not found: value d
+        f(d)
+          ^
+TmTp7.scala:91: wrong number of arguments for pattern
+⤹ tmtp7.DocCategory[D](name: String,doc: D,members: List[tmtp7.DocTree[D]])
+      case DocCategory(c, dts) =>
+                      ^
+TmTp7.scala:92: not enough arguments for method
+⤹ apply: (name: String, doc: D, members: List[tmtp7.DocTree[D]]
+⤹        )tmtp7.DocCategory[D] in object DocCategory.
+Unspecified value parameter members.
+        DocCategory(c, dts map (_ map f))
+                   ^
+```
 
 So let us fix `foreach` in the simplest way possible.
 
