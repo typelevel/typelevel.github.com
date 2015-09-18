@@ -483,13 +483,29 @@ We can see how this works out by looking at both `foreach` and `map`
 as the agents of our practical goal: transformation of the tree by
 transforming the documents therein.  `foreach` works like this.
 
-TODO diagram p6
+```
+              document transformer
+               (Document => Unit)
+ DocumentTree ~~~~~~~~~~~~~~~~~~~> DocumentTree
+ ------------                      -----------------
+initial state                      final state
+  (old tree)                       (same type, “new”
+                                    but same tree)
+```
 
 The way `map` looks at `DocTree` is very similar, and we give it the
 responsibilities that `foreach` had, so it is unsurprising that its
 “shape” we think about is similar.
 
-TODO diagram p7
+```
+               document transformer
+                    (D => D2)
+    DocTree[D] ~~~~~~~~~~~~~~~~~~~~> DocTree[D2]
+ -------------                       ----------------
+ initial state                       final state
+  (old tree)                         (changed type,
+                                      changed value!)
+```
 
 The replacement of `D` with `D2` also means that values of type `D`
 cannot occur anywhere in the result, as it is abstract, so only
@@ -523,7 +539,15 @@ have one `D` in mind, one document type in mind.  Setting aside that
 we have 4, there is another problem.  Let’s take a look at the “shape”
 of this transformation.
 
-TODO diagram p9
+```
+               document transformer
+                     (D => D)
+    DocTree[D] ~~~~~~~~~~~~~~~~~~~~> DocTree[D]
+ -------------                       ----------------
+ initial state                       final state
+  (old tree)                         (but no promise,
+                                      same type!)
+```
 
 The problem with a `D => D` transformer is that we can’t make promises
 that all our data passed through it.  After all, a source `d` has the
