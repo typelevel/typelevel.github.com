@@ -12,10 +12,12 @@ To change types, change values
 ==============================
 
 *This is the seventh of a series of articles on “Type Parameters and
-Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
-which introduces code we refer to throughout this article without
-further ado.*
+Type Members”.  You may wish to
+[start at the beginning]({% post_url 2015-07-13-type-members-parameters %});
+more specifically, this post is meant as a followup to
+[the previous entry]({% post_url 2015-07-30-values-never-change-types %}).
+However, in a first for this series, it stands quite well on its own,
+as introductory matter.*
 
 A program is a system for converting data from one format to another,
 which we have endowed with the color of magic.  In typed programming,
