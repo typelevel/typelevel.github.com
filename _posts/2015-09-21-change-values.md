@@ -412,7 +412,6 @@ final case class DocCategory[D]
 So far, so good.  Next, neither `foreach` nor `map` compile anymore.
 
 ```
-⤹ 
 TmTp7.scala:70: wrong number of arguments for pattern
 ⤹ tmtp7.DocumentCategory(name: String,doc: tmtp7.Document,
 ⤹                        members: List[tmtp7.DocumentTree])
