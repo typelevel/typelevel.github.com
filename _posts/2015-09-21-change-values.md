@@ -16,8 +16,8 @@ Type Members”.  You may wish to
 [start at the beginning]({% post_url 2015-07-13-type-members-parameters %});
 more specifically, this post is meant as a followup to
 [the previous entry]({% post_url 2015-07-30-values-never-change-types %}).
-However, in a first for this series, it stands quite well on its own,
-as introductory matter.*
+However, in a first for this series, it stands on its own, as
+introductory matter.*
 
 A program is a system for converting data from one format to another,
 which we have endowed with the color of magic.  In typed programming,
@@ -28,7 +28,8 @@ the extent to which those parts of the functions’ types unify.
 We rely on the richness of our types in these descriptions.  So it is
 natural to want the types to change as you move to different parts of
 the process; each change reflects the reality of what has just
-happened.
+happened.  For example, when you parse a string into an AST, your
+program’s state has changed types, from `String` to `MyAST`.
 
 But, as we have just seen, due to decisions we have made to simplify
 our lives,
@@ -47,18 +48,18 @@ Type-changing is program organization
 
 In values with complex construction semantics, it is common to write
 imperative programs that leave “holes” in the data structures using
-the terrible `null` feature of Java, Scala, and many other languages.
-This looks something like this.
+the terrible `null` misfeature of Java, Scala, and many other
+languages.  This looks something like this.
 
 ```scala
 class Document(filename: Path) {
   // this structure has three parts:
-  var text: String = null // a body of text,
+  var text: String = null // ← a body of text,
   var wordIndex: Map[String, List[Int]] = null
-    // an index of words to every
+    // ↑ an index of words to every
     // occurrence in the text,
   var mostPopular: List[(String, Int)] = null
-    // the most frequently used words
+    // ↑ the most frequently used words
     // in the text, and their number of
     // occurrences
 ...
@@ -72,7 +73,7 @@ each in turn.  First, we compute the corpus text.
 ```
 
 Then, we compute and fill in the word index.  If we didn’t fill in
-`text` first, this compiles, but crashes.
+`text` first, this compiles, but crashes at runtime.
 
 ```scala
   initWordIndex()
@@ -146,10 +147,10 @@ recover type safety.
   introducing the refinement feature.
 </div>
 
-The 4 types of `Document`
--------------------------
+The four types of `Document`
+----------------------------
 
-If we consider `Document` as the simple product of its 3 state
+If we consider `Document` as the simple product of its three state
 variables, with some special functions associated with them as
 whatever `Document` methods we intend to support, we have a simple
 3-tuple.
@@ -197,7 +198,7 @@ as a return type.
        (m, mtch) =>
        val word = mtch.matched
        val idx = mtch.start
-         m + (word -> (idx :: m.getOrElse(word, Nil)))
+       m + (word -> (idx :: m.getOrElse(word, Nil)))
      })
   }
 
@@ -212,7 +213,8 @@ as a return type.
 If we have a `Path`, we can get a `Doc` by `(initText _) andThen
 initWordIndex andThen initMostPopular: Path => Doc`.  But that hardly
 replicates the rich runtime behavior of our imperative version, does
-it?
+it?  That is, we can do reordering of operations in a larger context
+with `Document`, but not `Doc`.  Let us see what that means.
 
 Many docs
 ---------
@@ -229,10 +231,10 @@ final case class DocumentCategory
   extends DocumentTree
 ```
 
-In the imperative mode, we can batch and reorder initialization.  Say
-we don’t initialize `Document` when we create it.  This tree then
-contains `Document`s that contain only `Path`s.  We can walk the tree,
-doing step 1 for every `Document`.
+In the imperative mode, we can batch and reorder initialization.  Say,
+for example, we don’t initialize `Document` when we create it.  This
+tree then contains `Document`s that contain only `Path`s.  We can walk
+the tree, doing step 1 for every `Document`.
 
 ```scala
   // add this to DocumentTree
@@ -250,19 +252,19 @@ dtree foreach (_.initText())
 The way software does, it got more complex.  And we can be ever less
 sure that we’re doing things right, under this arrangement.
 
-The 4 phases problem, stuck in a tree
--------------------------------------
+The four phases problem, stuck in a tree
+----------------------------------------
 
 Our tree only supports one type of document.  We could choose the
-final one, `Doc`, but there is no way to replicate more exotic documen
-tree initializations like the one above.
+final one, `Doc`, but there is no way to replicate more exotic
+document tree initializations like the one above.
 
 Instead, we want the type of the tree to adapt along with the document
-changes.  If we have 4 states, *A*, *B*, *C*, and *D*, we want 4
-different kinds of `DocumentTree` to go along with them.  In a
-language with type parameters, this is easy: we can model those 4 as
-`DocTree[A]`, `DocTree[B]`, `DocTree[C]`, and `DocTree[D]`,
-respectively, by adding a type parameter.
+changes.  If we have four states, *Foo*, *Bar*, *Baz*, and *Quux*, we
+want four different kinds of `DocumentTree` to go along with them.  In
+a language with type parameters, this is easy: we can model those four
+as `DocTree[Foo]`, `DocTree[Bar]`, `DocTree[Baz]`, and
+`DocTree[Quux]`, respectively, by adding a type parameter.
 
 ```scala
 sealed abstract class DocTree[D]
@@ -315,7 +317,7 @@ In fact, if we were likely to annotate `Doc`s with more data, `Doc`
 would be a perfect place to add a type parameter!
 
 ```scala
-// suppose we
+// suppose we add some "extra" data
 final case class Doc[A]
   (text: String, wordIndex: Map[String, List[Int]],
    mostPopular: List[(String, Int)],
@@ -323,7 +325,7 @@ final case class Doc[A]
 ```
 
 You can use a type parameter to represent one simple slot in an
-otherwise specified structure, as above.  You can
+otherwise concretely specified structure, as above.  You can
 [use one to represent 10 slots](https://bitbucket.org/ermine-language/ermine-writers/src/9ec9a98c30bc9924cc49888895f8832e8ce4f8e1/writers/html/src/main/scala/com/clarifi/reporting/writers/HTMLDeps.scala?at=default#HTMLDeps.scala-37).
 
 Parameterized types are the type system’s version of functions.  They
@@ -379,10 +381,10 @@ connections.  The type system is ideally suited to this role.
 
 <div class="side-note">
   We induced more <em>explicit</em> data representation, not more
-  representations overall.  The imperative <code>Document</code> has 4
-  stages of initialization, at each of which it exhibits different
-  behavior.  All we have done is expose this fact to the type system
-  level, at which our usage can be checked.
+  representations overall.  The imperative <code>Document</code> has
+  four stages of initialization, at each of which it exhibits
+  different behavior.  All we have done is expose this fact to the
+  type system level, at which our usage can be checked.
 </div>
 
 Don’t miss one!
@@ -495,8 +497,8 @@ initial state                      final state
 ```
 
 The way `map` looks at `DocTree` is very similar, and we give it the
-responsibilities that `foreach` had, so it is unsurprising that its
-“shape” we think about is similar.
+responsibilities that `foreach` had, so it is unsurprising that the
+“shape” we imagine for transformation is similar.
 
 ```
                document transformer
@@ -509,7 +511,7 @@ responsibilities that `foreach` had, so it is unsurprising that its
 ```
 
 The replacement of `D` with `D2` also means that values of type `D`
-cannot occur anywhere in the result, as it is abstract, so only
+cannot occur anywhere in the result, as `D` is abstract, so only
 appears as `doc` by virtue of being the type parameter passed to
 `DocTree` and its data constructors (er, “subclasses”).
 
@@ -537,8 +539,8 @@ Suppose we instead defined `map` as follows.
 If you subscribe to the idea of type parameters being for wonky
 academics, this is “simpler”.  And it’s fine, I suppose, if you only
 have one `D` in mind, one document type in mind.  Setting aside that
-we have 4, there is another problem.  Let’s take a look at the “shape”
-of this transformation.
+we have four, there is another problem.  Let’s take a look at the
+“shape” of this transformation.
 
 ```
                document transformer
