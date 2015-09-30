@@ -292,8 +292,10 @@ for example.  So, despite the occasional convenience of path-dependent
 types, **type parameterized methods are still your best friends when
 working with existential types**.
 
-In the next article, we’ll look at some programs that make use of the
-two kinds of “type changing” discussed above, and finally talk about
+In
+[the next article, “To change types, change values”]({% post_url 2015-09-21-change-values %}),
+we’ll look at some programs that make use of the two kinds of “type
+changing” discussed above.  After that, we’ll finally talk about
 methods that *return* values of existential type, rather than merely
 taking them as arguments.
 
