@@ -24,7 +24,7 @@ Community staff will be happy to help participants contact local law enforcement
 
 We expect participants to follow these rules at all community venues (including online venues) and social events associated with the community.
 
-For any questions or with any concerns at all, please contact any member of community staff. Specifically, you can contact:
+If you have any questions or concerns, please contact a member of the community staff, such as:
 * [Miles Sabin](mailto:%6d%69%6c%65%73@%6d%69%6c%65%73%73%61%62%69%6e.%63%6f%6d)
 * [Erik Osheim](mailto:d_m@plastic-idolatry.com)
 * [Stew O'Connor](mailto:%73%74%65%77@%76%69%72%65%6f.%6f%72%67)
