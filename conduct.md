@@ -22,11 +22,12 @@ If you are being harassed, notice that someone else is being harassed, or have a
 
 Community staff will be happy to help participants contact local law enforcement or otherwise assist those experiencing harassment to feel safe. We value your participation.
 
-We expect participants to follow these rules at all community venues (including online venues) and social events associated with the community. These venues include (but are not necessarily limited to): 
-* GitHub repositories and comments (specifically, all repositories under the [typelevel organization](https://github.com/typelevel))
-* Chat rooms (specifically, all Gitter channels under the [typelevel organization](https://gitter.im/orgs/typelevel/rooms) and the #typelevel IRC channel on Freenode)
-* Mailing lists (specifically, the [Typelevel Google Group](https://groups.google.com/forum/#!forum/typelevel))
-* Any conference or meetup that adopts the typelevel code of conduct (which includes all that are organized by the typelevel organization)
+We expect participants to follow these rules at all Typelevel-supported venues --including online venues-- and social events associated with Typelevel. These venues include but are not necessarily limited to: 
+* All GitHub repositories and comments under the [Typelevel organization](https://github.com/typelevel)
+* All Gitter channels under the [Typelevel organization](https://gitter.im/orgs/typelevel/rooms),
+* The #typelevel IRC channel on Freenode,
+* The [Typelevel Google Group](https://groups.google.com/forum/#!forum/typelevel), and
+* All conferences organized by the Typelevel organization.
 
 For any questions or with any concerns at all, please contact any member of community staff.
 
