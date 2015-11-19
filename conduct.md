@@ -29,7 +29,12 @@ We expect participants to follow these rules at all Typelevel-supported venues -
 * The [Typelevel Google Group](https://groups.google.com/forum/#!forum/typelevel), and
 * All conferences organized by the Typelevel organization.
 
-For any questions or with any concerns at all, please contact any member of community staff.
+If you have any questions or concerns, please contact a member of the community staff, such as:
+* [Miles Sabin](mailto:%6d%69%6c%65%73@%6d%69%6c%65%73%73%61%62%69%6e.%63%6f%6d)
+* [Erik Osheim](mailto:d_m@plastic-idolatry.com)
+* [Stew O'Connor](mailto:%73%74%65%77@%76%69%72%65%6f.%6f%72%67)
+* [Cody Allen](mailto:%63%65%65%64%75%62%73@%67%6d%61%69%6c.%63%6f%6d)
+* Any other [members of the typelevel organization](https://github.com/orgs/typelevel/people).
 
 
 _This CoC was adapted from [haskellnow.org](http://www.haskellnow.org), which is inspired from [Geek Feminism](http://geekfeminism.wikia.com/wiki/Event_Guidelines)._
