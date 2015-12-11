@@ -18,7 +18,7 @@ meta:
   <div class="span4">
     <h2>cats</h2>
     <p><span class="tagline">Functional programming.</span> An experimental library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency.</p>
-    <p><a class="btn" href="https://github.com/non/cats">{% include octocat.html %}</a></p>
+    <p><a class="btn" href="https://github.com/non/cats">{% include octocat.html %}</a> <a class="btn" href="https://non.github.io/cats/">Learn more &raquo;</a></p>
   </div>
   <div class="span8">
     <h2>cats ecosystem</h2>
@@ -45,7 +45,7 @@ meta:
   <div class="span4">
     <h2>shapeless</h2>
     <p><span class="tagline">Generic programming.</span> Shapeless is an generic programming library. Starting with implementations of <em>Scrap your boilerplate</em> and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes.</p>
-    <p><a class="btn" href="https://github.com/milessabin/shapeless">Learn more &raquo;</a></p>
+    <p><a class="btn" href="https://github.com/milessabin/shapeless">{% include octocat.html %}</a></p>
   </div>
   <div class="span8">
     <h2>shapeless ecosystem</h2>
