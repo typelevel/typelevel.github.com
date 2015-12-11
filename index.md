@@ -10,7 +10,6 @@ meta:
 <div class="jumbotron">
   <h1>{% include typelevel.html %}</h1>
   <p class="lead">Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
-  <a class="btn btn-large btn-success" href="{{ site.baseurl }}/projects">Get started</a>
 </div>
 
 <hr>
