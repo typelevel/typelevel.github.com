@@ -62,7 +62,7 @@ meta:
           <td>Automatic derivation for ScalaCheck</td>
         </tr>
         <tr>
-          <td><a class="btn" href="https://github.com/fommil/spray-json-shapeless">{% include octocat.html %} spary-json-shapeless</a></td>
+          <td><a class="btn" href="https://github.com/fommil/spray-json-shapeless">{% include octocat.html %} spray-json-shapeless</a></td>
           <td>Automatic derivation for spray-json</td>
         </tr>
         <tr>
