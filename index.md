@@ -10,6 +10,12 @@ meta:
 <div class="jumbotron">
   <h1>{% include typelevel.html %}</h1>
   <p class="lead">Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
+
+  <p class="well">
+  <strong>Typelevel Summits 2016</strong>
+  In Philadelphia on 2nd &amp; 3rd March, and in Oslo on 4th May.
+  <a href="http://goo.gl/forms/SX3plxsOKb">Call for Papers</a> now open.
+  </p>
 </div>
 
 <hr>
@@ -22,7 +28,7 @@ meta:
   </div>
   <div class="span8">
     <h2>cats ecosystem</h2>
-    <p><span class="tagline">Extensions &amp; companions for cats.</span></p> 
+    <p><span class="tagline">Extensions &amp; companions for cats.</span></p>
     <p>
       <table>
         <tr>
@@ -49,7 +55,7 @@ meta:
   </div>
   <div class="span8">
     <h2>shapeless ecosystem</h2>
-    <p><span class="tagline">Extensions &amp; companions for shapeless.</span></p> 
+    <p><span class="tagline">Extensions &amp; companions for shapeless.</span></p>
     <p>
       <table>
         <tr>
