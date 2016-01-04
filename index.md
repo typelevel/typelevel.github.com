@@ -196,7 +196,7 @@ meta:
         </tr>
         <tr>
           <td><a class="btn" href="https://github.com/mpilquist/simulacrum">{% include octocat.html %} simulacrum</a></td>
-          <td>First-class syntax for type classeo</td>
+          <td>First-class syntax for type classes</td>
         </tr>
       </table>
     </p>
