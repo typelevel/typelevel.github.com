@@ -14,7 +14,9 @@ meta:
   <p class="well">
   <strong>Typelevel Summits 2016</strong>
   In Philadelphia on 2nd &amp; 3rd March, and in Oslo on 4th May.
-  <a href="http://goo.gl/forms/SX3plxsOKb">Call for Papers</a> now open.
+  <a href="http://goo.gl/forms/SX3plxsOKb">Call for Papers</a> now open.<br>
+  Plan to hang around after the Philadelphia Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th. Ticket sales open January 16th.<br>
+  Arriving early for the Oslo Summit? <a href="http://2016.flatmap.no/">flatMap(Oslo)</a> will be held at the same location on May 2nd and 3rd. CfP and ticket sales are now open.
   </p>
 </div>
 
