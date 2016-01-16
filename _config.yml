@@ -4,6 +4,7 @@ twitter: typelevel
 email: info@typelevel.org
 gitter: "https://gitter.im/orgs/typelevel/rooms"
 google_groups: "https://groups.google.com/group/typelevel"
+baseurl: http://typelevel.org
 
 # Configurations
 markdown: redcarpet
