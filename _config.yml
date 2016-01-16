@@ -11,7 +11,7 @@ markdown: redcarpet
 redcarpet:
     extensions: [with_toc_data]
 highlighter: pygments # or rouge or null
-exclude: ["node_modules", "gulpfile.js", "package.json"]
+exclude: ["node_modules", "gulpfile.js", "package.json", "README.md", "CNAME"]
 permalink: /blog/:year/:month/:day/:title.html
 relative_permalinks: false
 paginate: 10
