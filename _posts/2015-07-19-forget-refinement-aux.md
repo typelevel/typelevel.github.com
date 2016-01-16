@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-What happens when I forget a refinement?
-========================================
-
 *This is the third of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
 [start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),

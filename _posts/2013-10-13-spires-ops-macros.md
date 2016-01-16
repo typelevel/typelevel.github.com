@@ -8,11 +8,7 @@ meta:
   pygments: true
 ---
 
-How to use Spire's Ops macros in your own project
-=================================================
-
-What are Spire's Ops macros?
-----------------------------
+## What are Spire's Ops macros?
 
 Spire's type classes abstract over very basic operators like `+` and
 `*`.  These operations are normally very fast. This means that any
@@ -25,8 +21,7 @@ have developed a set of Ops macros to avoid unnecessary object
 instantiations at compile-time. This post explains how, and
 illustrates how you can use these macros in your code!
 
-How implicit operators on type classes usually work
----------------------------------------------------
+## How implicit operators on type classes usually work
 
 When using type classes in Scala, we rely on implicit conversions to
 "add" operators to an otherwise generic type.
@@ -91,8 +86,7 @@ former) and go on with their lives.
 However, since this issue affects Spire deeply, we spent a bit more
 time looking at this problem to see what could be done.
 
-Having our cake and eating it too
----------------------------------
+## Having our cake and eating it too
 
 Let's look at another example, to compare how the "nice" and "fast"
 code snippets look after implicits are resolved:
@@ -140,8 +134,7 @@ ops classes:
 import scala.language.experimental.macros
 ```
 
-Let's see an example
---------------------
+## Let's see an example
 
 Consider `Sized`, a type class that abstracts over the notion of
 having a size. Type class instances for `Char`, `Map`, and `List` are
@@ -223,8 +216,7 @@ def totalSize[A: Sized](as: Seq[A]): Int =
 
 Not bad, eh?
 
-The fine print
---------------
+## The fine print
 
 Of course, there's always some fine-print.
 
@@ -243,8 +235,7 @@ If you fail to follow these rules, or if your class has the wrong
 shape, your code will fail to compile. So don't worry. If your code
 compiles, it means you got it right!
 
-Symbolic names
---------------
+## Symbolic names
 
 The previous example illustrates rewriting method calls to avoid
 allocations, but what about mapping symbolic operators to method
@@ -282,8 +273,7 @@ possible to use your own mapping. This should make it easier for other
 libraries that make heavy use of implicit symbolic operators
 (e.g. Scalaz) to use these macros as well.
 
-Other considerations
---------------------
+## Other considerations
 
 You might wonder how the Ops macros interact with
 specialization. Fortunately, macros are expanded before the
@@ -309,8 +299,7 @@ they work for you. If you have problems, please open an
 fixes (or new features) feel free to open a
 [pull request](https://github.com/non/spire/pulls)!
 
-Conclusion
-----------
+## Conclusion
 
 We are used to thinking about abstractions having a cost. So we often
 end up doing mental accounting: "Is it worth making this generic? Can

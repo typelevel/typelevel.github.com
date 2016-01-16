@@ -9,8 +9,6 @@ meta:
   mathjax: true
 ---
 
-# Towards Scalaz
-
 A lot of people see Scalaz as a hard fringe, ivory tower,
 not suited for real-world applications library, which is
 unfortunate. The goal of this blog post series is to introduce

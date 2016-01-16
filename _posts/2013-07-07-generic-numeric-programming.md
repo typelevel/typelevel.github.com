@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-An Intro to Generic Numeric Programming with Spire
-==================================================
-
 In this post I'd like to introduce you to what I have been calling *generic
 numeric programming*.
 

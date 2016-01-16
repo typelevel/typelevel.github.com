@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-When can `Liskov` be lifted?
-============================
-
 Scalaz avoids
 [variance in the sense of the Scala type parameter annotation](http://docs.scala-lang.org/tutorials/tour/variances.html),
 with its associated higher-kind implications, except where it has

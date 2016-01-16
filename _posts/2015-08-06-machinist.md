@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-Machinist vs. value classes
-===========================
-
 This article is about [machinist](https://github.com/typelevel/machinist), a stand-alone project which started out as part of the [spire](https://github.com/non/spire) project and has been originally published in [October 2014](https://gist.github.com/non/a6ff3c0796e566db20d1).
 The original description can be found on [this blog]({% post_url 2013-10-13-spires-ops-macros %}).
 You should read that linked post first if you are not familiar with how Machinist works.

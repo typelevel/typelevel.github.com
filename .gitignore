@@ -1,3 +1,4 @@
-.pyenv
-_site/
-*.swp*
+_site
+.idea
+node_modules
+s3_website.yml

@@ -35,8 +35,6 @@ announced!
 
 ### Call for Speakers, Attendance, & FAQs
 
-The [Call for Speakers](http://goo.gl/forms/SX3plxsOKb) is already online!
-
 The planning phase is in full swing and we’ll announce more details soon.
 Attendance will probably be limited to about 100. We’re also looking for
 sponsors to help pay for the venue and cover other expenses. And we’re also

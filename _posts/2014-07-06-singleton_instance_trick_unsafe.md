@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-The singleton instance trick is unsafe
-======================================
-
 *Also, the “fake covariance” trick.*
 
 Sometimes, Scala programmers notice a nice optimization they can use

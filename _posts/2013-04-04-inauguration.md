@@ -1,13 +1,11 @@
 ---
 layout: post
-title: Inauguration
+title: Inaugurating the typelevel.scala blog
 
 meta:
   nav: blog
   author: larsrh
 ---
-
-<h1>Inaugurating the {% include typelevel.html %} blog</h1>
 
 This Twitter conversation happened today:
 
@@ -17,12 +15,12 @@ This Twitter conversation happened today:
   <blockquote><p>@<a href="https://twitter.com/d6">d6</a> @<a href="https://twitter.com/eed3si9n">eed3si9n</a> *cough* <a href="http://t.co/07ye9z78Qc" title="http://typelevel.org/blog/">typelevel.org/blog/</a> *cough*</p>&mdash; Tom Switzer (@tixxit) <a href="https://twitter.com/tixxit/status/319805809586495489">April 4, 2013</a></blockquote>
 </div>
 
-So, here it is, the {% include typelevel.html %} blog!
+So, here it is, the typelevel.scala blog!
 
 What is it about?
 -----------------
 
-As you might already know, {% include typelevel.html %} is a collection of libraries which provide a great amount of abstraction.
+As you might already know, typelevel.scala is a collection of libraries which provide a great amount of abstraction.
 Here, we would like to show how to use them in your code, provide examples, collect learning resources, and explore implementation details.
 
 Who writes here?

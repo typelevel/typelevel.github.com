@@ -9,8 +9,6 @@ meta:
   mathjax: true
 ---
 
-# Deriving Type Class Instances
-
 This is a three-part blog series on how to leverage Scala macros to generate type class instances for case classes (or sets of case classes).
 First, we will explore the underlying abstractions and how we can possibly get rid of all the boilerplate code.
 Second, we will dive into the details, e.g. how the macro is implemented.
@@ -71,7 +69,7 @@ But first, let us introduce all the related concepts properly.
 </div>
 
 Type classes are an incredibly useful abstraction mechanism, originally introduced in Haskell.
-If you have been using some of the {% include typelevel.html %} libraries already, you probably know how type classes and their instances are represented in Scala: as traits and implicits.
+If you have been using some of the typelevel.scala libraries already, you probably know how type classes and their instances are represented in Scala: as traits and implicits.
 In the following section, we will get started with an example type class from abstract algebra, which is implemented in *spire*.
 
 ### Group theory
@@ -290,7 +288,7 @@ The work can be roughly divided between three roles:
 2. The library author, who defines type classes, fundamental instances thereof, and of course the necessary `TypeClass` instances.
 
    These are usually contained in the libraries you use, but the last part will additionally require a bridge library.
-   But fear not, those bridge libraries already exist, at least for the {% include typelevel.html %} libraries, and can be readily added as dependency for your build.
+   But fear not, those bridge libraries already exist, at least for the typelevel.scala libraries, and can be readily added as dependency for your build.
    Head over to the <a href="https://github.com/typelevel/shapeless-contrib#readme">GitHub project</a>, we will keep you posted for when a new version comes out.
    We also plan to put a compatibility chart on this site.
 3. The library user, who defines data types and wants to get instances without all the boilerplate.
