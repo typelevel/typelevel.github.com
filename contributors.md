@@ -11,6 +11,7 @@ title: Contributors
 * choedl
 * Cody Allen
 * Dave Cleaver
+* Dave Gurnell
 * Erik Osheim
 * Fabian Schultz
 * George Leontiev
@@ -19,6 +20,7 @@ title: Contributors
 * Michael Pilquist
 * Miles Sabin
 * Ricky Elrod
+* Rüdiger Klaehn
 * Sam Halliday
 * Stephen Compall
 * Tom Switzer
