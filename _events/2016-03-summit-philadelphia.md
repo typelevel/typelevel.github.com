@@ -36,7 +36,8 @@ Talks for the Philadelphia Summit are accepted until January 25th.
 <a class="btn large" href="http://goo.gl/forms/SX3plxsOKb">Submit your talk here</a>
 
 ## Assistance and Bursaries
-We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog](/blog/2016/01/14/summit_assistance.html) and apply using the button below:
+
+We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
@@ -52,3 +53,8 @@ If you would like to talk to us about other sponsorship options, please get in t
 ## Venue
 
 This event will take place at Hub's Cira Centre, next to 30th Street Station.
+
+## Related coolness
+
+Plan to hang around after the Typelevel Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th.
+RSVPs open January 16th.

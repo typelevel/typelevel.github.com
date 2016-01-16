@@ -28,10 +28,24 @@ Talks for the Oslo Summit are accepted until April 3rd.
 
 <a class="btn large" href="http://goo.gl/forms/SX3plxsOKb">Submit your talk here</a>
 
+## Assistance and Bursaries
+
+We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
+
+<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
+
 ## Sponsors
 
-<a class="btn large" href="#">Become a sponsor</a>
+If you would like to talk to us about sponsorship options, please get in touch with us:
+
+<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
 
 ## Venue
 
 This event will take place at Teknologihuset.
+
+## Related coolness
+
+Arriving early for the Typelevel Summit?
+<a href="http://2016.flatmap.no/">flatMap(Oslo)</a> will be held at the same location on May 2nd and 3rd.
+CfP and ticket sales are now open.
