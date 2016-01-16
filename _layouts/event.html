@@ -1,0 +1,36 @@
+---
+layout: default
+menu: event
+---
+</div> <!-- close wrapper -->
+
+<div class="event__hero" style="background-image: url({{ page.poster_hero }});">
+  <div class="wrapper">
+    <div class="event__header js-fade-in">
+      <p>{{ page.title }}</p>
+      <ul class="navigation">
+        <li><a href="#about">About Summit</a></li>
+        {% if page.papers_section %}
+          <li><a href="#call-for-papers">Call for Papers</a></li>
+        {% endif %}
+        {% if page.location_section %}
+          <li><a href="#venue">Venue</a></li>
+        {% endif %}
+        {% if page.sponsors_section %}
+          <li><a href="#sponsors">Sponsors</a></li>
+        {% endif %}
+      </ul>
+    </div>
+    <h1 class="js-fade-in">{{ page.title }}</h1>
+    <p class="hero__lead js-fade-in">
+      <strong>{{ page.date_string }}</strong>
+      at {{ page.location }}
+    </p>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="content content-small js-fade-in" id="about">
+    {{ page.content }}
+  </div>
+</div>

@@ -8,8 +8,6 @@ meta:
   pygments: true
 ---
 
-# Towards Scalaz
-
 A lot of people see Scalaz as a hard fringe, ivory tower,
 not suited for real-world applications library, which is
 unfortunate. The goal of this blog post series is to introduce
@@ -148,7 +146,7 @@ In recent days, the word "Hadoop" has become synonymous with "big data." The Map
 system made popular by [Google](http://research.google.com/archive/mapreduce.html)
 has made it's way into several companies looking to glean information from their data.
 
-Why am I mentioning this in a {% include typelevel.html %} blog post? Well, think about the reduce phase –
+Why am I mentioning this in a typelevel.scala blog post? Well, think about the reduce phase –
 what is really happening? For a particular key, we're given a list of values emitted
 for that key, and we want to reduce those values into a single value. Sound familiar?
 Sounds a bit like `fold`, doesn't it? Note that not all reductions in MapReduce have to follow

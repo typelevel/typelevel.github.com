@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-To change types, change values
-==============================
-
 *This is the seventh of a series of articles on “Type Parameters and
 Type Members”.  You may wish to
 [start at the beginning]({% post_url 2015-07-13-type-members-parameters %});

@@ -1,13 +1,11 @@
 ---
 layout: post
-title: How do I error handle thee? Let me count the ways
+title: How do I error handle thee?
 meta:
   nav: blog
   author: adelbertc
   pygments: true
 ---
-
-# How do I error handle thee?
 
 Scala has several ways to deal with error handling, and often times people
 get confused as to when to use what. This post hopes to address that.

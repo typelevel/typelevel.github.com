@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-When `implicitly` isn't specific enough
-=======================================
-
 When working with implicit-encoded dependent function types, such as
 `scalaz.Unapply` and numerous Shapeless operations, you'd frequently
 like to acquire instances of those functions to see what types get

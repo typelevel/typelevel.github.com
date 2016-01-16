@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-Type members are [almost] type parameters
-=========================================
-
 *This is the first of a series of articles on “Type Parameters and Type
 Members”.*
 

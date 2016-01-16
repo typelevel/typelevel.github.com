@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-Why is ADT pattern matching allowed?
-====================================
-
 One of the rules of
 [the Scalazzi Safe Scala Subset](https://dl.dropboxusercontent.com/u/7810909/talks/parametricity/4985cb8e6d8d9a24e32d98204526c8e3b9319e33/parametricity.pdf)
 is “no type casing”; in other words, testing the type via

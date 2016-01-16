@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-Typelevel Scala and the future of the Scala ecosystem
-=====================================================
-
 **tl;dr** Typelevel is forking Scala; we call on all stakeholders in the Scala ecosystem to collaborate on the creation of an independent, non-profit, open source foundation to safeguard the interests of the entire Scala community.
 
 Last week I tweeted the following question:

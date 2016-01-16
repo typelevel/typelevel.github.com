@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-A function from type equality to `Leibniz`
-==========================================
-
 The Scala standard library provides evidence of two types being equal
 at the data level: a value of type
 [`(A =:= B)`](http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html)

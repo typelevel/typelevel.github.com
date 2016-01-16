@@ -9,9 +9,6 @@ meta:
   mathjax: true
 ---
 
-When are two methods alike?
-===========================
-
 *This is the second of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
 [start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),

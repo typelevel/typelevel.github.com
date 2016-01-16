@@ -8,9 +8,6 @@ meta:
   pygments: true
 ---
 
-Using `scalaz.Unapply`
-======================
-
 Once you've started really taking advantage of Scalaz's typeclasses
 for generic programming, you might have noticed a need to write
 typelambdas to use some of your neat abstractions, or use syntax like

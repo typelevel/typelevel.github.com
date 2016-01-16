@@ -1,0 +1,40 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 3150187, 2016-01-07T12:38:57-0500
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: AvenirLTStd-Oblique by Linotype
+ * URL: http://www.myfonts.com/fonts/linotype/avenir/55-oblique/
+ * 
+ * Webfont: AvenirLTStd-Book by Linotype
+ * URL: http://www.myfonts.com/fonts/linotype/avenir/45-book/
+ * 
+ * 
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3150187
+ * Licensed pageviews: 250,000
+ * Webfonts copyright: Copyright &#x00A9; 1989, 1995, 2002 Adobe Systems Incorporated.  All Rights Reserved. &#x00A9; 1981, 1995, 2002 Heidelberger Druckmaschinen AG. All rights reserved.
+ * 
+ * © 2016 MyFonts Inc
+*/
+
+
+/* @import must be at top of file, otherwise CSS will not work */
+@import url("//hello.myfonts.net/count/30116b");
+
+  
+@font-face {
+    font-family: 'AvenirLTStd-Oblique';
+    src: local('Avenir Oblique'),local('AvenirBook-Oblique'),url(fonts/30116B_0_0.eot);
+    src: local('Avenir Oblique'),local('AvenirBook-Oblique'),url(fonts/30116B_0_0.eot?#iefix) format("embedded-opentype"),url(fonts/30116B_0_0.woff2) format("woff2"),url(fonts/30116B_0_0.woff) format("woff"),url(fonts/30116B_0_0.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'AvenirLTStd-Book';
+    src: local('Avenir'),local('AvenirBook'),url(fonts/30116B_1_0.eot);
+    src: local('Avenir'),local('AvenirBook'),url(fonts/30116B_1_0.eot?#iefix) format("embedded-opentype"),url(fonts/30116B_1_0.woff2) format("woff2"),url(fonts/30116B_1_0.woff) format("woff"),url(fonts/30116B_1_0.ttf) format("truetype");
+}
