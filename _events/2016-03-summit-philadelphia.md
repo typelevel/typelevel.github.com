@@ -31,7 +31,10 @@ If you're interested in types and pure functional programming we'd love to see y
 
 The Summit will feature both 30 minute and 15 minute-long talks.
 The Call for Papers is joint with the <a href="/event/2016-05-summit-oslo/">Oslo Summit</a>.
-Talks for the Philadelphia Summit are accepted until January 25th.
+
+We will announce a first batch of talks starting January 25th, considering proposals submitted until January 24th.
+But don't worry: If you missed that date, you've still got one more week to submit a talk.
+The final deadline for proposals is January 31st (anywhere on Earth).
 
 <a class="btn large" href="http://goo.gl/forms/SX3plxsOKb">Submit your talk here</a>
 
