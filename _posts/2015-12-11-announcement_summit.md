@@ -7,9 +7,6 @@ meta:
   author: larsrh
 ---
 
-Announcement: Typelevel Summits coming up in 2016
--------------------------------------------------
-
 We have a big announcement to make. In 2016, there will be not just one, but
 two Typelevel Summits. Also, we’ve updated our website to include an up-to-date
 list of Typelevel projects. There’s been much work behind the scenes which we
