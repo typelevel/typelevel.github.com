@@ -509,6 +509,7 @@ blockquote {
   display: block;
   width: 100%; height: 260px;
   background-size: cover;
+  background-position: center;
   text-align: left;
 
   @include media-query($content) {
