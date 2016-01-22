@@ -36,7 +36,7 @@ def fizzle[A]: PList[A] => PList[A] = {
 }
 ```
 
-/img/media/ieoti-fizzle.png
+![Universal outside existential inside](/img/media/ieoti-fizzle.png)
 
 The caller can select any `A`, but the implementation must work with
 whatever `A` the caller chooses. So `fizzle` is universal in `A` from
@@ -52,7 +52,7 @@ def wazzle: Int => PList[_] =
        else PCons("hi", PNil())
 ```
 
-/img/media/ieoti-wazzle.png
+![Existential outside universal inside](/img/media/ieoti-wazzle.png)
 
 Now the implementation gets to choose an `A`, and the caller must work
 with whatever `A` the implementation chooses. So `wazzle` is universal
@@ -76,7 +76,7 @@ def duzzle2: PList[_] => Int = {
 }
 ```
 
-/img/media/ieoti-duzzle.png
+![Universal outside existential inside](/img/media/ieoti-duzzle.png)
 
 `wazzle` “returns” a type, alongside the list, because the existential
 appears as part of the return type. However, `duzzle2` places the
