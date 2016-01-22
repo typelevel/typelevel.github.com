@@ -509,6 +509,7 @@ blockquote {
   display: block;
   width: 100%; height: 260px;
   background-size: cover;
+  background-position: center;
   text-align: left;
 
   @include media-query($content) {
@@ -625,21 +626,6 @@ blockquote {
   .home {
     .projects__container {
       padding: 0 $spacing-unit * 2;
-    }
-
-    .projects__project {
-      display: none;
-      width: 49%;
-      margin-right: 2%;
-    }
-
-    .projects__project:nth-child(2) {
-      margin-right: 0;
-    }
-
-    .projects__project:nth-child(1),
-    .projects__project:nth-child(2) {
-      display: block;
     }
   }
 }

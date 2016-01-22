@@ -56,10 +56,12 @@ The whole building process, including Jekyll, happens trough [gulp](http://gulpj
 To start development install the dependencies and start `gulp`.
 
 1. `npm install`
-2. `gulp`
-3. Navigate to [127.0.0.1:3000](http://127.0.0.1:3000).
+2. `npm install gulp -g` (globally install gulp)
+3. You might have to install some gems, use `gem install bundler && bundle install` for that (also installs Jekyll).
+4. `gulp`
+5. Navigate to [127.0.0.1:3000](http://127.0.0.1:3000).
 
-Keep in mind that you need Ruby, Node.js and Jekyll installed on your machine (see above).
+Keep in mind that you need Ruby and Node.js installed on your machine (see above).
 
 ## Development
 
