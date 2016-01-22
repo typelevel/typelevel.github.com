@@ -583,6 +583,7 @@ only one natural outcome of the system of type abstraction brought to
 us by type parameters; there are many more interesting conclusions,
 like the ones described above.
 
-Next, in “Type-changing is abstraction inversion”, we will see how
-existentials turn this conceptualization of abstract types on its
-head, in a different flavor of program organization.
+Next, in
+[“It’s existential on the inside”]({% post_url 2016-01-28-existential-inside %}),
+we will see how deeply intertwined universal and existential types
+really are.
