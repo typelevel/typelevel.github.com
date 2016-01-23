@@ -8,8 +8,6 @@ meta:
   pygments: true
 ---
 
-# It’s existential on the inside
-
 *This is the eighth of a series of articles on “Type Parameters and
 Type Members”.  You may wish to
 [check out the beginning]({% post_url 2015-07-13-type-members-parameters %}),
