@@ -26,6 +26,19 @@ The Summit will feature both 30 minute and 15 minute-long talks.
 The Call for Papers is joint with the <a href="/event/2016-03-summit-philadelphia/">Philadelphia Summit</a>.
 Talks for the Oslo Summit are accepted until April 3rd.
 
+We are looking for a variety of topics; including, but not limited to:
+
+- Experience reports:  "How we migrated our code base to shapeless"
+- Typelevel project updates: "What's new in Typelevel project X"
+- Your project updates: "What's new in X", where X uses Typelevel heavily
+- Big picture: "Where is Scala headed for typed FP?"
+- Tutorial-style: "Error-handling with cats", "Idiomatic ScalaCheck"
+- Tooling: "We can now use Ensime in Notepad"
+- Related work: "How language X does typed FP and what we could learn"
+- Non-tech issues: "Diversity in the Scala community", "Governance in Typelevel"
+
+Proposals should be related to the Typelevel family in some way or follow the Typelevel spirit.
+
 <a class="btn large" href="http://goo.gl/forms/SX3plxsOKb">Submit your talk here</a>
 
 ## Assistance and Bursaries
