@@ -20,10 +20,10 @@ sponsors_section: true
 
 The second Typelevel Summit will be co-located with <a href="http://2016.flatmap.no/">flatMap(Oslo)</a>.
 
-## Call for Papers
+## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
-The Call for Papers is joint with the <a href="/event/2016-03-summit-philadelphia/">Philadelphia Summit</a>.
+The Call for Speakers is joint with the <a href="/event/2016-03-summit-philadelphia/">Philadelphia Summit</a>.
 Talks for the Oslo Summit are accepted until April 3rd.
 
 We are looking for a variety of topics; including, but not limited to:
