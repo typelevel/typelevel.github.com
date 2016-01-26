@@ -27,7 +27,7 @@ If you're interested in types and pure functional programming we'd love to see y
 
 <a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Buy tickets</a>
 
-## Call for Papers
+## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
 The Call for Papers is joint with the <a href="/event/2016-05-summit-oslo/">Oslo Summit</a>.
