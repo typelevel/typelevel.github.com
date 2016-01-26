@@ -43,10 +43,11 @@ val shapes: Array[Shape] = circles // works only if Array is covariant
 shapes(0) = Square(..) // Square is a subtype of Shape
 ```
 
-If `Array` was covariant this would compile fine, but fail at runtime. The compiler would accept this
-because it would be valid to upcast an `Array[Circle]` into an `Array[Shape]`, and it is valid to
-insert a `Shape` into an `Array[Shape]`. However the runtime representation of `shapes` is still an
-`Array[Circle]` and inserting a `Square` into it isn't allowed.
+If `Array` was covariant this would compile fine, but fail at runtime. In fact, Java arrays are
+covariant and so the analogous Java code would compile, throwing an `ArrayStoreException` when
+run. The compiler accepts this because it is valid to upcast an `Array[Circle]` into an `Array[Shape]`,
+and it is valid to insert a `Shape` into an `Array[Shape]`. However the runtime representation of
+`shapes` is still an `Array[Circle]` and inserting a `Square` into it isn't allowed.
 
 ## Read-only and covariance
 In general, a type can be made safely covariant if it is read-only. If we know how to read a specific type, we know
