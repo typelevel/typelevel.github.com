@@ -245,6 +245,33 @@ val arrayInvariant: Invariant[Array] =
   }
 ```
 
+## SerDe
+Another example of a read-write type that doesn't involve `Array`s (or mutation) can be
+found by just combining the `Read` and `Show` interfaces:
+
+```scala
+trait Serializer[A] extends Read[A] with Show[A] {
+  def read(s: String): Option[A]
+  def show(a: A): String
+}
+```
+
+`Serializer` both reads (from a `String`) and writes (to a `String`). We can't make it
+covariant because that would cause issues with `show`, and we can't make it contravariant
+because that would cause issues with `read`. Therefore our only choice is to keep it
+invariant.
+
+```scala
+val serializerInvariant: Invariant[Serializer] =
+  new Invariant[Serializer] {
+    def imap[A, B](fa: Serializer[A])(f: A => B)(g: B => A): Serializer[B] =
+      new Serializer[B] {
+        def read(s: String): Option[B] = fa.read(s).map(f)
+        def show(b: B): String = fa.show(g(b))
+      }
+  }
+```
+
 # Bringing it all together
 We can see the `Invariant` interface is more general than both `Functor` and `Contravariant` -
 where `Invariant` requires functions going in both directions, `Functor` and `Contravariant` only
@@ -267,7 +294,7 @@ trait Contravariant[F[_]] extends Invariant[F] {
 }
 ```
 
-Going back to treating `Array` as a read/write store, if we make it read-only (like a read-only
+Going back to treating `Array` and `Serializer` as a read/write store, if we make it read-only (like a read-only
 handle on a resource) we can safely treat it as if it were covariant. If we are asked to read
 `Shape`s and we know how to read `Circle`s, we can read a `Circle` and upcast it into a `Shape`
 before handing it over.
