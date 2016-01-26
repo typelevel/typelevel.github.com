@@ -254,14 +254,14 @@ the direction we don't care about.
 trait Functor[F[_]] extends Invariant[F] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
-  def imap[A, B}(fa: F[A])(f: A => B)(g: B => A): F[B] =
+  def imap[A, B](fa: F[A])(f: A => B)(g: B => A): F[B] =
     map(fa)(f)
 }
 
 trait Contravariant[F[_]] extends Invariant[F] {
   def contramap[A, B](fa: F[A])(f: B => A): F[B]
 
-  def imap[A, B}(fa: F[A])(f: A => B)(g: B => A): F[B] =
+  def imap[A, B](fa: F[A])(f: A => B)(g: B => A): F[B] =
     contramap(fa)(g)
 }
 ```
