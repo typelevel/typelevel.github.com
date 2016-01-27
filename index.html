@@ -27,7 +27,7 @@ class: home
       <span class="meta">{{ event.date_string }}</span>
       <p>
        {{ event.description }}
-       {% if event.papers_section %}<a class="btn text" href="{{ event.url | append:'#call-for-papers' }}">Call for Papers</a> now open.{% endif %}
+       {% if event.papers_section %}<a class="btn text" href="{{ event.url | append:'#call-for-speakers' }}">Call for Speakers</a> now open.{% endif %}
       </p>
       <a class="btn large center" href="{{ event.url }}">Learn More</a>
     </div>
