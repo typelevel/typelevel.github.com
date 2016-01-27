@@ -33,7 +33,7 @@ _Chris Vogt. Slick co-author, Compossible records author, frequent Scala confere
 <br style="clear: both;">
 
 <img src="/img/media/speakers/chrishodapp.jpg" style="float: right; width: 15%; margin-left: 1em;">
-_Chris Hodapp. Several-time Scala GSOC student and eventually mentor, author of the ill-fated Comprehensive Comprehensions project. I'm hoping to see tooling and techniques from the FP/Typelevel community improve the leverage of the average developer. Based in the SF Bay Area._
+_Chris Hodapp. Several-time Scala GSOC student and eventually mentor, author of the ill-fated Comprehensive Comprehensions project. He's hoping to see tooling and techniques from the FP/Typelevel community improve the leverage of the average developer. Based in the SF Bay Area._
 <br style="clear: both;">
 
 ### Scala Exercises
