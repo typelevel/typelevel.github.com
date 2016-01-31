@@ -32,8 +32,6 @@ If you're interested in types and pure functional programming we'd love to see y
 The Summit will feature both 30 minute and 15 minute-long talks.
 The Call for Speakers is joint with the <a href="/event/2016-05-summit-oslo/">Oslo Summit</a>.
 
-We will announce a first batch of talks starting January 27th, considering proposals submitted until January 24th.
-But don't worry: If you missed that date, you've still got one more week to submit a talk.
 The final deadline for proposals is January 31st (anywhere on Earth).
 
 We are looking for a variety of topics; including, but not limited to:
@@ -57,20 +55,51 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
-## Sponsors
-
-If you are the higher-kinded type who would like to support the Summit as well (or instead of) attending we are offering several levels of Supporter tickets and a Donor option which will help us fund speaker and attendee bursaries.
-These are available on <a href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Eventbrite</a>.
-
-If you would like to talk to us about other sponsorship options, please get in touch with us:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
-
 ## Venue
 
 This event will take place at Hub's Cira Centre, next to 30th Street Station.
 
-## Related coolness
-
 Plan to hang around after the Typelevel Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th.
 RSVPs open January 16th.
+
+## Sponsors
+
+We'd like to thank all our sponsors, some of which appear below. We would also like to thank our Gold sponsor Verizon (updates to follow).
+
+<div style="float: left; width: 45%">
+  <h3>Platinum Sponsors</h3>
+  <img alt="47 Degrees" src="/img/media/sponsors/47_degrees.png" style="height: 6em;">
+</div>
+
+<div style="float: left; width: 45%">
+  <h3>Gold Sponsors</h3>
+  <img alt="Underscore" src="/img/media/sponsors/underscore.png" style="height: 4em;"><br><br>
+  <!--Verizon-->
+</div>
+
+<br style="clear: both;">
+
+### Silver Sponsors
+
+<div style="float: left; width: 45%">
+  <img alt="MediaMath" src="/img/media/sponsors/comcast.jpg" style="height: 4em;">
+</div>
+<div style="float: left; width: 45%">
+  <img alt="Typesafe" src="/img/media/sponsors/typesafe.png" style="height: 3em; align: left;">
+</div>
+<div style="clear: both; padding-bottom: 2em;"></div>
+<div style="float: left; width: 45%">
+  <img alt="MediaMath" src="/img/media/sponsors/mediamath.png" style="height: 6em; align: left;">
+</div>
+<br style="clear: both;">
+
+### Supporters
+
+If you are the higher-kinded type who would like to support the Summit as well (or instead of) attending we are offering several levels of Supporter tickets and a Donor option which will help us fund speaker and attendee bursaries.
+These are available on <a href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Eventbrite</a>.
+
+Thanks to the generous supporters: Michael Pilquist, Pedro Furlanetto, Rob Norris, Ryan Delucchi, Erik Osheim, Steve Buzzard, and the anonymous patrons.
+
+If you would like to talk to us about sponsorship options, please get in touch with us:
+
+<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>

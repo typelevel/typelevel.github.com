@@ -9,7 +9,7 @@ baseurl: http://typelevel.org
 # Configurations
 markdown: redcarpet
 redcarpet:
-    extensions: [with_toc_data]
+  extensions: [with_toc_data]
 highlighter: pygments # or rouge or null
 exclude: ["node_modules", "gulpfile.js", "package.json", "README.md", "CNAME"]
 permalink: /blog/:year/:month/:day/:title.html
