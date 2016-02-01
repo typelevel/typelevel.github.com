@@ -6,10 +6,12 @@ gitter: "https://gitter.im/orgs/typelevel/rooms"
 google_groups: "https://groups.google.com/group/typelevel"
 baseurl: http://typelevel.org
 
-markdown: redcarpet
-redcarpet:
-  extensions: [with_toc_data]
-highlighter: pygments
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  hard_wrap: false
+highlighter: rouge
 exclude:
   ["node_modules", "gulpfile.js", "package.json", "README.md", "CNAME", "vendor"]
 permalink: /blog/:year/:month/:day/:title.html
