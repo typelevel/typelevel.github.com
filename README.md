@@ -43,16 +43,18 @@ This will start a local web server on port 4000 where you can browse the site an
 
 ### CSS
 
-The stylesheets are written in SASS, and can be found in the `_scss` directory. It is being processed/compiled into regular CSS by gulp. The processed and minified CSS is moved to `css/`.
+The stylesheets are written in SASS, and can be found in the `css` and `_scss` directories.
+It is being processed/compiled into regular CSS by Jekyll.
 
 ```
+├── css/
+│   ├── main.scss # Custom CSS, brings all stylesheets together
 ├── _scss/
 │   ├── _fonts.scss # @font-face embedding.
 │   ├── _mixins.scss # SASS mixins
 │   ├── _reset.scss # Normalize stylesheet
 │   ├── _syntax.scss # Syntax highlighting by Pygments
 │   ├── _variables.scss # SASS variables (colors, fonts, etc.)
-│   ├── main.scss # Custom CSS, brings all stylesheets together
 ```
 
 ### Javascript
