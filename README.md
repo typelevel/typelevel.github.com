@@ -24,12 +24,7 @@ That's it, we'll take care of the rest. If you wish, you can also submit just a 
 
 ### Previewing your changes
 
-To preview your changes, you have to install the following things first:
-
-* Ruby + Bundler
-* node.js
-* Pygments
-
+To preview your changes, you have to install Ruby and Bundler first.
 Once you've done that, you can start the Jekyll server like this:
 
 ```bash
