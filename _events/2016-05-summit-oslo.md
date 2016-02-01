@@ -20,10 +20,13 @@ sponsors_section: true
 
 The second Typelevel Summit will be co-located with <a href="http://2016.flatmap.no/">flatMap(Oslo)</a>.
 
+The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
+Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
+If you're interested in types and pure functional programming we'd love to see you here!
+
 ## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
-The Call for Speakers is joint with the <a href="/event/2016-03-summit-philadelphia/">Philadelphia Summit</a>.
 Talks for the Oslo Summit are accepted until April 3rd.
 
 We are looking for a variety of topics; including, but not limited to:
