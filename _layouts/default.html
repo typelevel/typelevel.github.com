@@ -36,7 +36,7 @@
           <li>
             <span class="js-subnav {% if page.path contains '_event' %} active {% endif %}">Events</span>
             <ul class="subnav">
-              {% for event in site.events limit:2 %}
+              {% for event in site.events %}
                 <li>
                   <a href="{{ event.url }}">{{ event.short_title }}</a>
                 </li>

@@ -13,6 +13,8 @@ poster_thumb: "/img/media/philly-thumb.jpg"
 
 location_section: true
 sponsors_section: true
+
+featured: true
 ---
 
 ## About the Summit
