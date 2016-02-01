@@ -3,3 +3,6 @@ _site
 node_modules
 s3_website.yml
 Gemfile.lock
+/vendor/bundle
+css/main.css
+.sass-cache

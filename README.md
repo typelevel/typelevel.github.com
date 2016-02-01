@@ -1,9 +1,7 @@
 typelevel website
 =================
 
-This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](//typelevel.org).
-
-Initial development setup comes from [shakyShane/jekyll-gulp-sass-browser-sync](https://github.com/shakyShane/jekyll-gulp-sass-browser-sync).
+This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](http://typelevel.org).
 
 ## Getting Started (the short version)
 
@@ -28,55 +26,35 @@ That's it, we'll take care of the rest. If you wish, you can also submit just a 
 
 To preview your changes, you have to install the following things first:
 
-* Ruby
+* Ruby + Bundler
 * node.js
 * Pygments
 
-Once you've done that, you need to install `github-pages`.
-This will give you a local setup mirroring GitHub's setup.
-You can install this package via `gem`:
+Once you've done that, you can start the Jekyll server like this:
 
 ```bash
-# don't forget to add the directory where Gem binaries are installed to your `$PATH`
-# on my machine, that's `$HOME/.gem/ruby/2.2.0/bin`
-gem install github-pages
-```
-
-Everything set up? Great. Now you just have to tell Jekyll to generate the site (the empty quotation at the end is important):
-
-```bash
-jekyll serve --watch --baseurl ''
+bundle install
+bundle exec jekyll serve --watch --baseurl
 ```
 
 This will start a local web server on port 4000 where you can browse the site and which re-generates the site if you change the source files.
-
-## Full Setup
-
-The whole building process, including Jekyll, happens trough [gulp](http://gulpjs.com/).
-To start development install the dependencies and start `gulp`.
-
-1. `npm install`
-2. `npm install gulp -g` (globally install gulp)
-3. You might have to install some gems, use `gem install bundler && bundle install` for that (also installs Jekyll).
-4. `gulp`
-5. Navigate to [127.0.0.1:3000](http://127.0.0.1:3000).
-
-Keep in mind that you need Ruby and Node.js installed on your machine (see above).
 
 ## Development
 
 ### CSS
 
-The stylesheets are written in SASS, and can be found in the `_scss` directory. It is being processed/compiled into regular CSS by gulp. The processed and minified CSS is moved to `css/`.
+The stylesheets are written in SASS, and can be found in the `css` and `_scss` directories.
+It is being processed/compiled into regular CSS by Jekyll.
 
 ```
+├── css/
+│   ├── main.scss # Custom CSS, brings all stylesheets together
 ├── _scss/
 │   ├── _fonts.scss # @font-face embedding.
 │   ├── _mixins.scss # SASS mixins
 │   ├── _reset.scss # Normalize stylesheet
 │   ├── _syntax.scss # Syntax highlighting by Pygments
 │   ├── _variables.scss # SASS variables (colors, fonts, etc.)
-│   ├── main.scss # Custom CSS, brings all stylesheets together
 ```
 
 ### Javascript
