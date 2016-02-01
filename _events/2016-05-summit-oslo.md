@@ -3,7 +3,6 @@ layout: event
 
 title: "Typelevel Summit Oslo"
 short_title: "Oslo Summit"
-date: 04-05-16
 date_string: "May 4, 2016"
 location: "Teknologihuset"
 description: "One day of talks, co-located with flatMap(Oslo)."

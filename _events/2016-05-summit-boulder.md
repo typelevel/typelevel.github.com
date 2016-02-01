@@ -3,7 +3,6 @@ layout: event
 
 title: "Typelevel Summit Boulder"
 short_title: "Boulder Summit"
-date: 25-05-16
 date_string: "May 25, 2016"
 location: "Jennie Smoly Caruthers Biotechnology Building"
 description: "One day of talks and workshops, co-located with LambdaConf."

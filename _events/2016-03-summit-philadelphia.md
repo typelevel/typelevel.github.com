@@ -3,7 +3,6 @@ layout: event
 
 title: "Typelevel Summit Philadelphia"
 short_title: "Philadelphia Summit"
-date: 02-03-16
 date_string: "March 2-3, 2016"
 location: "Hub's Cira Centre"
 description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
