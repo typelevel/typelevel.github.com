@@ -3,8 +3,8 @@ layout: post
 title: "Cats"
 category: "Functional Programming"
 description: "An experimental library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
-permalink: "https://non.github.io/cats/"
-github: "https://github.com/non/cats"
+permalink: "http://typelevel.org/cats/"
+github: "https://github.com/typelevel/cats"
 
 core: true
 extensions:
