@@ -45,7 +45,7 @@ RSVPs open January 16th.
 
 ## Sponsors
 
-We'd like to thank all our sponsors, some of which appear below. We would also like to thank our Gold sponsor Verizon (updates to follow).
+We'd like to thank all our sponsors who help to make the Summit happen:
 
 <div style="float: left; width: 45%">
   <h3>Platinum Sponsors</h3>
@@ -55,7 +55,7 @@ We'd like to thank all our sponsors, some of which appear below. We would also l
 <div style="float: left; width: 45%">
   <h3>Gold Sponsors</h3>
   <img alt="Underscore" src="/img/media/sponsors/underscore.png" style="height: 4em;"><br><br>
-  <!--Verizon-->
+  <img alt="Underscore" src="/img/media/sponsors/verizon.png" style="height: 3em;">
 </div>
 
 <br style="clear: both;">
