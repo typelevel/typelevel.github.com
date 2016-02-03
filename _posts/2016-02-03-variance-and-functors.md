@@ -15,7 +15,7 @@ Similarly in functional programming, there are covariant functors, contravariant
 similarity in names is not coincidental.
 
 # Covariance
-The most common example is `List[+A]` which is covariant in its type parameter, denoted by the `+` next to the `A`.
+The common example is `List[+A]` which is covariant in its type parameter, denoted by the `+` next to the `A`.
 A type constructor with a covariant type parameter means that if there is a subtyping relationship between the
 type parameter, there is a subtyping relationship between the two instances of the type constructor. This means that
 if we have a `List[Circle]`, we can substitute it anywhere we have a `List[Shape]`.
@@ -47,7 +47,7 @@ If `Array` was covariant this would compile fine, but fail at runtime. In fact, 
 covariant and so the analogous Java code would compile, throwing an `ArrayStoreException` when
 run. The compiler accepts this because it is valid to upcast an `Array[Circle]` into an `Array[Shape]`,
 and it is valid to insert a `Shape` into an `Array[Shape]`. However the runtime representation of
-`shapes` is still an `Array[Circle]` and inserting a `Square` into it isn't allowed.
+`shapes` is still an `Array[Circle]` and inserting a `Square` into that isn't allowed.
 
 ## Read-only and covariance
 In general, a type can be made safely covariant if it is read-only. If we know how to read a specific type, we know
@@ -190,9 +190,108 @@ def contraUpcast[F[_], A, B >: A](contra: Contravariant[F], fb: F[B]): F[A] =
 
 Going back to `Shape`s and `Circle`s, we can show a `Circle` by upcasting it into a `Shape` and showing that.
 
+# Function variance
+We observed that read-only types are covariant and write-only types are contravariant. This can be
+seen in the context of functions and what function types are subtypes of others.
+
+## Parameters
+An example function:
+
+```scala
+// Right now we only care about the input
+def squiggle(circle: Circle): Unit = ???
+
+// or
+
+val squiggle: Circle => Unit = ???
+```
+
+What type is a valid subtype of `Circle => Unit`? An important note is we're not
+looking for what subtypes we can *pass in* to the function, we are looking for a value with a type
+that satisfies the entirety of the function type `Circle => Unit`.
+
+A first guess may involve some subtype of `Circle` like `Dot` (a circle with a radius of 0), such
+as `Dot => Unit`.
+
+```scala
+val squiggle: Circle => Unit =
+  (d: Dot) => d.someDotSpecificMethod()
+```
+
+This doesn't work - we are asserting with the moral equivalent of a downcast that any
+`Circle` input to the function is a `Dot`, which is not safe to assume.
+
+What if we used a supertype of `Circle`?
+
+```scala
+val squiggle: Circle => Unit =
+  (s: Shape) => s.shapeshift()
+```
+
+This is valid - from the outside looking in we have a function that takes a `Circle` and
+returns `Unit`. Internally, we can take any `Circle`, upcast it into a `Shape`, and go from there.
+Showing things a bit differently reveals better the relationship:
+
+```scala
+type Input[A] = A => Unit
+val inputSubtype: Input[Shape] = (s: Shape) => s.shapeshift()
+val input: Input[Circle] = inputSubtype
+```
+
+We have `Input[Shape] <: Input[Circle]`, with `Circle <: Shape`, so function parameters are contravariant.
+
+## Return
+Let's do the same exercise with function return types.
+
+```scala
+val squaggle: Unit => Shape = ???
+```
+
+Since using the supertype seemed to work with parameters, let's pick a supertype here, `Object`.
+
+```scala
+val squaggle: Unit => Shape =
+  (_: Unit) => somethingThatReturnsObject()
+```
+
+For similar issues with using a subtype for the input parameter, we cannot use
+a supertype for the output. The function type states the return type is `Shape`, but we're
+returning an `Object` which may or may not be a valid `Shape`. As far as the type checker is concerned,
+this is invalid and the checker rejects the program.
+
+Trying instead with a subtype:
+
+```scala
+val squaggle: Unit => Shape =
+  (_: Unit) => Circle(..)
+```
+
+This makes sense - the function type says it returns a `Shape` and inside we return a `Circle` which is
+a perfectly valid `Shape`.
+
+As before, rephrasing the type signatures leads to some insights.
+
+```scala
+type Output[A] = Unit => A
+val outputSubtype: Output[Circle] = (_: Unit) => Circle(..)
+val output: Output[Shape] = outputSubtype
+```
+
+That is `Output[Circle] <: Output[Shape]` with `Circle <: Shape` - function return types are covariant.
+
+## All together now
+Function inputs are contravariant and function outputs are covariant. Taking the previous examples together,
+a function type `Shape => Circle` can be put in a place expecting a function type `Circle => Shape`.
+
+We arrived at this conclusion by observing the behavior of subtype variance and the corresponding functors. Taken
+in the context of functional programming where the only primitive is a function, we can draw a conclusion in
+the other direction. Where function inputs are contravariant, types in positions where computations are
+done (e.g. input or read-only positions) are also contravariant (similarly for covariance).
+
 # Invariance
-Unannotated type parameters are considered invariant - different instantiations of a type constructor have no
-relationship with one another regardless of what relationships the type parameters may have. Given invariant
+Unannotated type parameters are considered invariant - the only relationship that holds is if a type `A`
+is equal to a type `B`, then `F[A]` is equal to `F[B]`. Otherwise different instantiations of a
+type constructor have no relationship with one another. Given invariant
 `F[_]`, an `F[Circle]` is not a subtype of `F[Shape]` - you need to explicitly provide the conversion.
 
 ## Array once more
@@ -201,7 +300,7 @@ covariant, we can get unsafe writes. If we make it contravariant, we can get uns
 read-only types can only be covariant and write-only types contravariant, our compromise is to make
 types that support both invariant.
 
-Therefore in order to treat an `Array` of one type as an `Array` of another, we need to have a way of converting
+In order to treat an `Array` of one type as an `Array` of another, we need to have conversions
 in both directions. This must be provided manually as the type checker has no way of knowing what the
 conversion would be.
 
@@ -272,7 +371,7 @@ val serializerInvariant: Invariant[Serializer] =
   }
 ```
 
-# Bringing it all together
+# Bringing everything together
 We can see the `Invariant` interface is more general than both `Functor` and `Contravariant` -
 where `Invariant` requires functions going in both directions, `Functor` and `Contravariant` only
 require one. We can make `Functor` and `Contravariant` subtypes of `Invariant` by ignoring
@@ -305,5 +404,58 @@ we can upcast each `Circle` into a `Shape` before storing it.
 
 Variance manifests in two levels: one at the type level where subtyping relationships are defined, and
 the other at the value level where it is encoded as an interface which certain types can conform to.
-The types that can implement `Functor` are precisely those that can be made covariant, and the types that
-can implement `Contravariant` are precisely those that can be made contravariant.
+
+## One more thing
+Thus far we have seen the three kinds of variances Scala supports:
+
+```scala
+1. invariance: A = B → F[A] = F[B]
+2. covariance: A <: B → F[A] <: F[B]
+3. contravariance: A >: B → F[A] <: F[B]
+```
+
+This gives us the following graph:
+
+```
+   invariance
+     ↑   ↑
+    /      \
+   -        +
+```
+
+Completing the diamond implies a fourth kind of variance, one that takes contravariance and
+covariance together. This is known as phantom variance or anyvariance, a variance with no constraints on the
+type parameters: `F[A] = F[B]` regardless of what `A` and `B` are. Unfortunately Scala's type system is
+missing this kind of variance which leaves us just short of a nice diamond, but we can still encode it
+in an interface.
+
+```scala
+trait Phantom[F[_]] {
+  def pmap[A, B](fa: F[A]): F[B]
+}
+```
+
+Given any `F[A]`, we can turn that into an `F[B]`, for all choices of `A` and `B`. With this power we can
+implement covariant and contravariant functors.
+
+```scala
+trait Phantom[F[_]] extends Functor[F] with Contravariant[F] {
+  def pmap[A, B](fa: F[A]): F[B]
+
+  def map[A, B](fa: F[A])(f: A => B): F[B] = pmap(fa)
+
+  def contramap[A, B](fa: F[A])(f: B => A): F[B] = pmap(fa)
+}
+```
+
+This completes our diamond of variance.
+
+```
+   invariance
+     ↑   ↑
+    /      \
+   -        +
+   ↑        ↑
+    \      /
+    phantom
+```
