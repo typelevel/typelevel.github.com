@@ -55,7 +55,7 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 <div style="float: left; width: 45%">
   <h3>Gold Sponsors</h3>
   <img alt="Underscore" src="/img/media/sponsors/underscore.png" style="height: 4em;"><br><br>
-  <img alt="Underscore" src="/img/media/sponsors/verizon.png" style="height: 3em;">
+  <img alt="Verizon" src="/img/media/sponsors/verizon.png" style="height: 3em;">
 </div>
 
 <br style="clear: both;">
@@ -63,7 +63,7 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 ### Silver Sponsors
 
 <div style="float: left; width: 45%">
-  <img alt="MediaMath" src="/img/media/sponsors/comcast.jpg" style="height: 4em;">
+  <img alt="Comcast" src="/img/media/sponsors/comcast.jpg" style="height: 4em;">
 </div>
 <div style="float: left; width: 45%">
   <img alt="Typesafe" src="/img/media/sponsors/typesafe.png" style="height: 3em; align: left;">
@@ -79,7 +79,8 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 If you are the higher-kinded type who would like to support the Summit as well (or instead of) attending we are offering several levels of Supporter tickets and a Donor option which will help us fund speaker and attendee bursaries.
 These are available on <a href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Eventbrite</a>.
 
-Thanks to the generous supporters: Michael Pilquist, Pedro Furlanetto, Rob Norris, Ryan Delucchi, Erik Osheim, Steve Buzzard, and the anonymous patrons.
+Thanks to the generous supporters (in alphabetic order):
+Steve Buzzard, Ryan Delucchi, Pedro Furlanetto, Rob Norris, Erik Osheim, Michael Pilquist, Frank S. Thomas, and the anonymous patrons.
 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
