@@ -254,6 +254,23 @@ val input: Input[Circle] = inputSubtype
 
 We have `Input[Shape] <: Input[Circle]`, with `Circle <: Shape`, so function parameters are contravariant.
 
+The type checker enforces this when we try to use covariant type parameters in contravariant positions.
+
+```scala
+scala> trait Foo[+A] { def foo(a: A): Int = 42 }
+<console>:15: error: covariant type A occurs in contravariant position in type A of value a
+       trait Foo[+A] { def foo(a: A): Int = 42 }
+                               ^
+```
+
+Since type parameters are contravariant, a type in that position cannot also be covariant. To solve this
+we "reverse" the constraint imposed by the covariant annotation by parameterizing with a supertype `B`.
+
+```scala
+scala> trait Foo[+A] { def foo[B >: A](a: B): Int = 42 }
+defined trait Foo
+```
+
 ## Return
 Let's do the same exercise with function return types.
 
@@ -292,6 +309,22 @@ val output: Output[Shape] = outputSubtype
 ```
 
 That is `Output[Circle] <: Output[Shape]` with `Circle <: Shape` – function return types are covariant.
+
+Again the type checker will enforce this:
+
+```scala
+scala> trait Bar[-A] { def bar(): A = ??? }
+<console>:15: error: contravariant type A occurs in covariant position in type ()A of method bar
+       trait Bar[-A] { def bar(): A = ??? }
+                           ^
+```
+
+As before, we solve this by "reversing" the contraint imposed by the variance annotation.
+
+```scala
+scala> trait Bar[-A] { def bar[B <: A](): B = ??? }
+defined trait Bar
+```
 
 ## All together now
 Function inputs are contravariant and function outputs are covariant. Taking the previous examples together,
