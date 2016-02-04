@@ -56,7 +56,17 @@ covariant because it is immutable and we can only ever read information off of i
 cannot make it covariant because we are able to write to it.
 
 ## Functor
-We can also encode the covariance behavior in an explicit interface, commonly called `Functor`.
+As we've just seen, covariance states that when `A` subtypes `B`, then `F[A]` subtypes `F[B]`. Put differently,
+if `A` can be turned into a `B`, then `F[A]` can be turned into an `F[B]`. We can encode this behavior
+literally in the notion of a `Functor`.
+
+```scala
+trait Functor[F[_]] {
+  def map[A, B](f: A => B): F[A] => F[B]
+}
+```
+
+This is often encoded slightly differently by changing the order of the arguments:
 
 ```scala
 trait Functor[F[_]] {
@@ -156,11 +166,15 @@ at runtime, the underlying `Array[Shape]` may give us a `Shape` that is not a `C
 
 ## Contravariant
 Our `Functor` interface made explicit the behavior of covariance - we can define a similar interface that
-captures contravariant behavior. Remember that contravariance is covariance with the direction flipped,
-which translates to the direction of the function being flipped.
+captures contravariant behavior. If `B` can be used where `A` is expected, then `F[A]` can be used where an
+`F[B]` is expected. To encode this explicitly:
 
 ```scala
 trait Contravariant[F[_]] {
+  // Alternative encoding:
+  // def contramap[A, B](f: B => A): F[A] => F[B]
+
+  // More typical encoding
   def contramap[A, B](fa: F[A])(f: B => A): F[B]
 }
 ```
