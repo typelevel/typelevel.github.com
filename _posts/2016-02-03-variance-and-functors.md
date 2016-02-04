@@ -8,7 +8,7 @@ meta:
   pygments: true
 ---
 Scala's type system allows us to annotate type parameters with their variance: covariant, contravariant, invariant.
-Variance allows us to define the subtyping relationships between type constructors - that is, under which
+Variance allows us to define the subtyping relationships between type constructors – that is, under which
 conditions `F[A]` is a subtype of `F[B]`.
 
 Similarly in functional programming, there are covariant functors, contravariant functors, and invariant functors. The
@@ -17,8 +17,8 @@ similarity in names is not coincidental.
 # Covariance
 The common example is `List[+A]` which is covariant in its type parameter, denoted by the `+` next to the `A`.
 A type constructor with a covariant type parameter means that if there is a subtyping relationship between the
-type parameter, there is a subtyping relationship between the two instances of the type constructor. This means that
-if we have a `List[Circle]`, we can substitute it anywhere we have a `List[Shape]`.
+type parameter, there is a subtyping relationship between the two instances of the type constructor.
+For example if we have a `List[Circle]`, we can substitute it anywhere we have a `List[Shape]`.
 
 ## Read
 Another example of covariance is in parsing, for example in the following `Read` type class.
@@ -115,17 +115,17 @@ def upcast[F[_], A, B <: A](functor: Functor[F], fb: F[B]): F[A] =
   functor.map(fb)(b => b: A)
 ```
 
-`upcast`'s behavior does exactly what covariance does - given some supertype `A` (`Shape`) and a subtype `B` (`Circle`),
+`upcast`'s behavior does exactly what covariance does – given some supertype `A` (`Shape`) and a subtype `B` (`Circle`),
 we can mechanically (and safely) turn an `F[B]` into an `F[A]`. Put differently, anywhere we expect an `F[A]` we can provide
 an `F[B]`, i.e. covariance. For this reason, `Functor` is sometimes referred to in full as covariant functor.
 
 # Contravariance
-Contravariance flips the direction of the relationship in covariance - an `F[Shape]` is considered a
-subtype of `F[Circle]`. This seems strange - when I was first learning about variance I couldn't
+Contravariance flips the direction of the relationship in covariance – an `F[Shape]` is considered a
+subtype of `F[Circle]`. This seems strange – when I was first learning about variance I couldn't
 come up with a situation where this would make sense.
 
-If we have a `List[Shape]` we cannot safely treat it as a `List[Circle]` - doing so comes with all the usual
-warnings about downcasting. Similarly if we have a `Read[Shape]`, we cannot treat it as a `Read[Circle]` -
+If we have a `List[Shape]` we cannot safely treat it as a `List[Circle]` – doing so comes with all the usual
+warnings about downcasting. Similarly if we have a `Read[Shape]`, we cannot treat it as a `Read[Circle]` –
 we know how to parse a `Shape`, but we don't know how to parse any additional information `Circle` may need.
 
 ## Show
@@ -139,8 +139,8 @@ trait Show[-A] {
 }
 ```
 
-`Show` is the other side of `Read` - instead of going from a `String` to an `A`, we go from an `A` into
-a `String`. This reversal allows us to define contravariant behavior - if we are asked to provide a way
+`Show` is the other side of `Read` – instead of going from a `String` to an `A`, we go from an `A` into
+a `String`. This reversal allows us to define contravariant behavior – if we are asked to provide a way
 to show a `Circle` (`Show[Circle]`), we can give instead a way to show just a `Shape`. This is a valid
 substitution because we can show a `Circle` by throwing away `Circle`-specific information and showing just
 the `Shape` bits. This means that `Show[Shape]` is a subtype of `Show[Circle]`, despite `Circle` being a
@@ -232,7 +232,7 @@ val squiggle: Circle => Unit =
   (d: Dot) => d.someDotSpecificMethod()
 ```
 
-This doesn't work - we are asserting with the moral equivalent of a downcast that any
+This doesn't work – we are asserting with the moral equivalent of a downcast that any
 `Circle` input to the function is a `Dot`, which is not safe to assume.
 
 What if we used a supertype of `Circle`?
@@ -242,7 +242,7 @@ val squiggle: Circle => Unit =
   (s: Shape) => s.shapeshift()
 ```
 
-This is valid - from the outside looking in we have a function that takes a `Circle` and
+This is valid – from the outside looking in we have a function that takes a `Circle` and
 returns `Unit`. Internally, we can take any `Circle`, upcast it into a `Shape`, and go from there.
 Showing things a bit differently reveals better the relationship:
 
@@ -280,7 +280,7 @@ val squaggle: Unit => Shape =
   (_: Unit) => Circle(..)
 ```
 
-This makes sense - the function type says it returns a `Shape` and inside we return a `Circle` which is
+This makes sense – the function type says it returns a `Shape` and inside we return a `Circle` which is
 a perfectly valid `Shape`.
 
 As before, rephrasing the type signatures leads to some insights.
@@ -291,7 +291,7 @@ val outputSubtype: Output[Circle] = (_: Unit) => Circle(..)
 val output: Output[Shape] = outputSubtype
 ```
 
-That is `Output[Circle] <: Output[Shape]` with `Circle <: Shape` - function return types are covariant.
+That is `Output[Circle] <: Output[Shape]` with `Circle <: Shape` – function return types are covariant.
 
 ## All together now
 Function inputs are contravariant and function outputs are covariant. Taking the previous examples together,
@@ -303,10 +303,10 @@ the other direction. Where function inputs are contravariant, types in positions
 done (e.g. input or read-only positions) are also contravariant (similarly for covariance).
 
 # Invariance
-Unannotated type parameters are considered invariant - the only relationship that holds is if a type `A`
+Unannotated type parameters are considered invariant – the only relationship that holds is if a type `A`
 is equal to a type `B`, then `F[A]` is equal to `F[B]`. Otherwise different instantiations of a
 type constructor have no relationship with one another. Given invariant
-`F[_]`, an `F[Circle]` is not a subtype of `F[Shape]` - you need to explicitly provide the conversion.
+`F[_]`, an `F[Circle]` is not a subtype of `F[Shape]` – you need to explicitly provide the conversion.
 
 ## Array once more
 `Array`s are invariant in Scala because they can be neither covariant nor contravariant. If we make it
@@ -347,18 +347,18 @@ val arrayInvariant: Invariant[Array] =
   new Invariant[Array] {
     def imap[A, B](fa: Array[A])(f: A => B)(g: B => A): Array[B] =
       new Array[B] {
-        // Convert read A to B before returning - covariance
+        // Convert read A to B before returning – covariance
         override def read(i: Int): B =
           f(fa.read(i))
 
-        // Convert B to A before writing - contravariance
+        // Convert B to A before writing – contravariance
         override def write(i: Int, b: B): Unit =
           fa.write(i, g(a))
       }
   }
 ```
 
-## SerDe
+## Serialization
 Another example of a read-write type that doesn't involve `Array`s (or mutation) can be
 found by just combining the `Read` and `Show` interfaces:
 
@@ -386,7 +386,7 @@ val serializerInvariant: Invariant[Serializer] =
 ```
 
 # Bringing everything together
-We can see the `Invariant` interface is more general than both `Functor` and `Contravariant` -
+We can see the `Invariant` interface is more general than both `Functor` and `Contravariant` –
 where `Invariant` requires functions going in both directions, `Functor` and `Contravariant` only
 require one. We can make `Functor` and `Contravariant` subtypes of `Invariant` by ignoring
 the direction we don't care about.
