@@ -14,6 +14,7 @@ location_section: true
 papers_section: true
 sponsors_section: true
 
+featured: true
 ---
 
 ## About the Summit

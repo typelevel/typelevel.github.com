@@ -12,7 +12,6 @@ poster_hero: "/img/media/boulder.jpg"
 location_section: true
 papers_section: true
 
-featured: true
 ---
 
 ## About the Summit
