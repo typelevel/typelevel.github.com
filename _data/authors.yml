@@ -43,3 +43,24 @@ davegurnell:
   portrait: "https://secure.gravatar.com/avatar/6cf3fbc6afb50515276a614cf44bfef9"
   twitter: "davegurnell"
   github: "davegurnell"
+sweirich:
+  full_name: "Stephanie Weirich"
+  portrait: "https://avatars2.githubusercontent.com/u/2103670?v=2&s=80"
+  github: "sweirich"
+  bio: "Stephanie will join the Summit on March 2nd to talk about Dependently-Typed Haskell. We hope this will give us an exciting opportunity to exchange knowledge between the Haskell and Scala communities."
+cvogt:
+  full_name: "Chris Vogt"
+  portrait: "https://avatars0.githubusercontent.com/u/274947?v=2&s=80"
+  github: "cvogt"
+clhodapp:
+  full_name: "Chris Hodapp"
+  portrait: "https://avatars3.githubusercontent.com/u/108633?v=2&s=80"
+  github: clhodapp
+raulraja:
+  full_name: "Raul Raja"
+  portrait: "https://avatars0.githubusercontent.com/u/456796?v=2&s=80"
+  github: "raulraja"
+noelwelsh:
+  full_name: "Noel Welsh"
+  portrait: "https://pbs.twimg.com/profile_images/3058988676/49f0ea302bd82c0355f72b6bc6dac09c_80x80.png"
+  github: "noelwelsh"

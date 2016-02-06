@@ -21,7 +21,7 @@ schedule:
     break: true
   - time: "9:00"
     title: "Keynote at the Philadelphia Summit"
-    speakers: ["milessabin", "non"]
+    speakers: ["sweirich"]
     summary: "Stephanie Weirich is a Professor at the University of Pennsylvania. Her research centers on programming languages, type theory and machine-assisted reasoning. In particular, she studies generic programming, metaprogramming, dependent type systems, and type inference in the context of functional programming languages. She is currently an Editor of the Journal of Functional Programming and served as the program chair for ICFP in 2010 and the Haskell Symposium in 2009."
   - time: "10:00"
     title: "Coffee Break"
@@ -30,6 +30,27 @@ schedule:
     title: "Becoming a cat(s) person"
     speakers: ["adelbertc"]
     summary: "Want to contribute to Cats? Let's head over to the Cats Issues list and do some live coding! Along the way we will see how the codebase is organized, the various bits of automation provided, and how you can use our various channels to get feedback on..."
+  - time: "11:00"
+    title: "Coffee Break"
+    break: true
+  - time: "11:15"
+    title: "Direct syntax for monad comprehensions"
+    speakers: ["cvogt", "clhodapp"]
+    summary: "Easy, intuitive, direct-style syntax for monad comprehensions! Like Scala  async  or SBT  .value , but generalized to any monad. Implemented, ready to be used and requiring only vanilla Scala 2.10/2.11 and blackbox macros. Future extensions could..."
+  - time: "12:00"
+    title: "Lunch Break"
+    break: true
+  - time: "13:00"
+    title: "Scala Exercises"
+    speakers: ["raulraja"]
+    summary: "Scala Exercises is a web based community tool open sourced by 47 Degrees. It contains multiple koan and free form style exercises maintained by library authors and maintainers to help you master some of the most important tools in the Scala Ecosystem..."
+  - time: "13:45"
+    title: "Coffee Break"
+    break: true
+  - time: "14:00"
+    title: "Probabilistic Programming: What It Is and How It Works"
+    speakers: ["noelwelsh"]
+    summary: "Probabilistic programming is the other Big Thing to happen in machine learning alongside deep learning. It is also closely tied to functional programming. In this talk I will explain the goals of probabilistic programming and how we can implement a..."
 ---
 
 ## About the Summit
@@ -52,7 +73,7 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
-## Schedule
+## Speakers and Schedule
 {% include schedule.html %}
 
 ## Venue

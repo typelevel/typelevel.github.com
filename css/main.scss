@@ -20,6 +20,10 @@ body {
   background-repeat: repeat-x;
   font-family: $sans-serif;
   color: $dark-grey;
+
+  &.overflow {
+    overflow: hidden;
+  }
 }
 
 p {
@@ -234,7 +238,7 @@ blockquote {
   position: relative;
   background-color: #fff;
   line-height: $spacing-unit * 4;
-  z-index: 1337;
+  z-index: 137;
   @include box-shadow(0 1px 0 rgba($black, .1), 0 1px 3px rgba($black, .1));
   @include clearfix;
 
@@ -469,8 +473,8 @@ blockquote {
   }
 }
 
-// S
-.s__ {
+// EVENTS
+.events__event {
   position: relative;
   float: left;
   width: 46%;
@@ -507,7 +511,7 @@ blockquote {
   }
 }
 
-.s__-poster {
+.events__event-poster {
   position: relative;
   display: block;
   width: 100%; height: 260px;
@@ -978,7 +982,7 @@ blockquote {
 
     li {
       display: inline-block;
-      margin-right: $spacing-unit * 5;
+      margin-right: $spacing-unit * 3;
 
       @include media-query($content) {
         margin-right: $spacing-unit * 2;
@@ -1002,6 +1006,35 @@ blockquote {
   }
 }
 
+
+// Fixed Naviation
+.fixed {
+  .event__hero .navigation li a {
+    color: $black;
+  }
+
+  .event__header .wrapper {
+    padding-top: $spacing-unit;
+    padding-bottom: $spacing-unit;
+    background-color: #fff;
+    background-clip: padding-box;
+    @include box-shadow(0 1px 0 rgba($black, .1));
+  }
+
+  .event__header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 0;
+    background-color: #fff;
+    border: none;
+    text-shadow: none;
+
+    p {
+      color: $black;
+    }
+  }
+}
+
 .schedule {
   width: 100%;
   border: 1px solid $border;
@@ -1017,6 +1050,10 @@ blockquote {
     font-size: 1em;
     font-weight: normal;
     color: rgba($black, .8);
+  }
+
+  .btn.text {
+    margin-top: $spacing-unit / 4;
   }
 
   th {
@@ -1060,6 +1097,7 @@ blockquote {
   @include clearfix;
 
   hgroup {
+    max-width: 75%;
     margin-left: $spacing-unit / 2;
     margin-bottom: 0;
     padding-top: $spacing-unit / 4;
@@ -1141,33 +1179,52 @@ blockquote {
   }
 }
 
-// Fixed Naviation
-.fixed {
-  .event__hero .navigation li a {
-    color: $black;
+.speakers {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba($black, .6);
+  z-index: 420;
+  overflow: scroll;
+
+  hgroup {
+    padding-top: $spacing-unit / 2;
   }
 
-  .event__header .wrapper {
-    padding-top: $spacing-unit;
-    padding-bottom: $spacing-unit;
-    border-bottom: 1px solid rgba($black, .1);
+  .speakers__overlay {
+    display: none;
+    position: relative;
+    max-width: $content;
+    margin-top: $spacing-unit * 4;
+    margin-left: auto;
+    margin-right: auto;
+    padding: $spacing-unit * 2;
     background-color: #fff;
-    background-clip: padding-box;
-  }
 
-  .event__header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 0;
-    border: none;
-    text-shadow: none;
+    h3,
+    h4 {
+      margin-top: $spacing-unit * 2;
+    }
 
-    p {
-      color: $black;
+    h3:first-of-type {
+      margin-top: 0;
+    }
+
+    h4 {
+      margin-top: 0;
+      font-style: italic;
     }
   }
 }
 
+.ico-close {
+  position: absolute;
+  right: $spacing-unit; top: $spacing-unit;
+  width: 30px; height: 30px;
+  background-image: url('../img/ico-close.svg');
+  background-size: 30px 30px;
+}
 
 
 /* BLOG
