@@ -71,7 +71,7 @@ $(function() {
     $('html,body').animate({
       scrollTop: $('#CoC').offset().top - 20
     }, 1000);
-  });  
+  });
 
   fadeInScroll();
 });
@@ -85,9 +85,27 @@ function fadeInScroll() {
   $('.js-fade-in').each( function(i){
     var bottom_of_object = $(this).offset().top;
     var bottom_of_window = $(window).scrollTop() + $(window).height();
-    
+
     if( bottom_of_window > bottom_of_object  ){
         $(this).animate({'opacity':'1'},500);
     }
   });
+
+  // Fixed subnavigation on scroll
+  var $header = $('.event__header');
+  var $hero = $('.event__hero');
+  var $body = $('body');
+  var bottom = $hero.position().top + $hero.innerHeight();
+  var height = $header.outerHeight(true);
+
+  $(window).on('scroll', function(){
+    if($(window).scrollTop() >= bottom && !$body.hasClass('fixed')){
+      $body.addClass('fixed');
+      $hero.css("padding-top", height);
+    }
+    else if($(window).scrollTop() < bottom && $body.hasClass('fixed')){
+      $body.removeClass('fixed');
+      $hero.css("padding-top", 0);
+    }
+});
 }
