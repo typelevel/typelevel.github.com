@@ -90,11 +90,38 @@ $(function() {
     return false;
   });
 
+  // close popup on esc
   $(document).keyup(function(e) {
     if (e.keyCode == 27) {
       closePopup();
     }
   });
+
+  // adaptive aspect ratio of sponsor logos
+  $('.sponsors img').each(function(_, img) {
+    var $this = $(this);
+    var ratio = $this.height() / $this.width();
+
+    console.log($this.attr("src") + ": " + ($this.height() / $this.width()))
+
+    if(ratio > 0.7) {
+      $this.css({
+        maxHeight: '100px'
+      });
+    } else if(ratio > 0.5) {
+      $this.css({
+        maxHeight: '80px'
+      });
+    } else if(ratio > 0.3) {
+      $this.css({
+        maxHeight: '60px'
+      });
+    } else if(ratio > 0.1) {
+      $this.css({
+        maxHeight: '50px'
+      });
+    }
+});
 
   fadeInScroll();
   stickyNavbar();

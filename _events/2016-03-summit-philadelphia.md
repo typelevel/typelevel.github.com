@@ -51,6 +51,32 @@ schedule:
     title: "Probabilistic Programming: What It Is and How It Works"
     speakers: ["noelwelsh"]
     summary: "Probabilistic programming is the other Big Thing to happen in machine learning alongside deep learning. It is also closely tied to functional programming. In this talk I will explain the goals of probabilistic programming and how we can implement a..."
+
+sponsors:
+  - name: "47 Degrees"
+    logo: "/img/media/sponsors/47_degrees.png"
+    link: "http://www.47deg.com/"
+    type: "platinum"
+  - name: "Underscore"
+    logo: "/img/media/sponsors/underscore.png"
+    link: "http://underscore.io/"
+    type: "gold"
+  - name: "Verizon"
+    logo: "/img/media/sponsors/verizon.png"
+    link: "http://www.verizonwireless.com/"
+    type: "gold"
+  - name: "Typesafe"
+    logo: "/img/media/sponsors/typesafe.png"
+    link: "https://www.typesafe.com/"
+    type: "silver"
+  - name: "MediaMath"
+    logo: "/img/media/sponsors/mediamath.png"
+    link: "http://www.mediamath.com/"
+    type: "silver"
+  - name: "Comcast"
+    logo: "/img/media/sponsors/comcast.png"
+    link: "http://www.comcast.com/"
+    type: "silver"
 ---
 
 ## About the Summit
@@ -86,35 +112,9 @@ RSVPs open January 16th.
 {% include venue_map.html %}
 
 ## Sponsors
-
 We'd like to thank all our sponsors who help to make the Summit happen:
 
-<div style="float: left; width: 45%">
-  <h3>Platinum Sponsors</h3>
-  <img alt="47 Degrees" src="/img/media/sponsors/47_degrees.png" style="height: 6em;">
-</div>
-
-<div style="float: left; width: 45%">
-  <h3>Gold Sponsors</h3>
-  <img alt="Underscore" src="/img/media/sponsors/underscore.png" style="height: 4em;"><br><br>
-  <img alt="Verizon" src="/img/media/sponsors/verizon.png" style="height: 3em;">
-</div>
-
-<br style="clear: both;">
-
-### Silver Sponsors
-
-<div style="float: left; width: 45%">
-  <img alt="Comcast" src="/img/media/sponsors/comcast.jpg" style="height: 4em;">
-</div>
-<div style="float: left; width: 45%">
-  <img alt="Typesafe" src="/img/media/sponsors/typesafe.png" style="height: 3em; align: left;">
-</div>
-<div style="clear: both; padding-bottom: 2em;"></div>
-<div style="float: left; width: 45%">
-  <img alt="MediaMath" src="/img/media/sponsors/mediamath.png" style="height: 6em; align: left;">
-</div>
-<br style="clear: both;">
+{% include sponsors.html %}
 
 ### Supporters
 

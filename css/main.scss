@@ -1226,6 +1226,43 @@ blockquote {
   background-size: 30px 30px;
 }
 
+.sponsors {
+  margin-bottom: $spacing-unit;
+  @include clearfix;
+  
+  a { text-decoration: none; }
+  img {
+    max-height: 100px;
+    margin-right: $spacing-unit * 2;
+    margin-bottom: $spacing-unit;
+    vertical-align: middle;
+  }
+
+  h3 {
+    margin-top: $spacing-unit;
+    margin-bottom: $spacing-unit * 2;
+
+    &:after {
+      position: absolute;
+      display: block;
+      width: 40px;
+      border-bottom: 2px solid $border;
+      margin-top: $spacing-unit / 1.5;
+      content: "";
+    }
+  }
+}
+
+.sponsors__sponsor {
+  overflow: auto;
+  float: left;
+  @include clearfix;
+}
+
+.sponsors__sponsor--platinum,
+.sponsors__sponsor--gold {
+  width: 50%;
+}
 
 /* BLOG
 ========================================================================== */
