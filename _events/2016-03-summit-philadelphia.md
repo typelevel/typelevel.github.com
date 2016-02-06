@@ -14,6 +14,22 @@ location_section: true
 sponsors_section: true
 
 featured: true
+
+schedule:
+  - time: "8:30"
+    title: "Breakfast and Registration"
+    break: true
+  - time: "9:00"
+    title: "Keynote at the Philadelphia Summit"
+    speakers: ["milessabin", "non"]
+    summary: "Stephanie Weirich is a Professor at the University of Pennsylvania. Her research centers on programming languages, type theory and machine-assisted reasoning. In particular, she studies generic programming, metaprogramming, dependent type systems, and type inference in the context of functional programming languages. She is currently an Editor of the Journal of Functional Programming and served as the program chair for ICFP in 2010 and the Haskell Symposium in 2009."
+  - time: "10:00"
+    title: "Coffee Break"
+    break: true
+  - time: "10:15"
+    title: "Becoming a cat(s) person"
+    speakers: ["adelbertc"]
+    summary: "Want to contribute to Cats? Let's head over to the Cats Issues list and do some live coding! Along the way we will see how the codebase is organized, the various bits of automation provided, and how you can use our various channels to get feedback on..."
 ---
 
 ## About the Summit
@@ -36,12 +52,17 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
+## Schedule
+{% include schedule.html %}
+
 ## Venue
 
 This event will take place at Hub's Cira Centre, next to 30th Street Station.
 
 Plan to hang around after the Typelevel Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th.
 RSVPs open January 16th.
+
+{% include venue_map.html %}
 
 ## Sponsors
 

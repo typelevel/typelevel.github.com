@@ -469,8 +469,8 @@ blockquote {
   }
 }
 
-// EVENTS
-.events__event {
+// S
+.s__ {
   position: relative;
   float: left;
   width: 46%;
@@ -507,7 +507,7 @@ blockquote {
   }
 }
 
-.events__event-poster {
+.s__-poster {
   position: relative;
   display: block;
   width: 100%; height: 260px;
@@ -889,14 +889,14 @@ blockquote {
 
 
 
-/* EVENT PAGES
+/*  PAGES
 ========================================================================== */
 .event__hero {
   position: relative;
   width: 100%;
   margin-bottom: $spacing-unit * 4;
   padding: 0 0 $spacing-unit * 6;
-  // background-image: provided in layout (event.html)
+  // background-image: provided in layout (.html)
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -1002,9 +1002,147 @@ blockquote {
   }
 }
 
+.schedule {
+  width: 100%;
+  border: 1px solid $border;
+  box-shadow: 0 1px 2px rgba($black, .05);
+
+  p {
+    margin: 0;
+  }
+
+  h5 {
+    margin: 0;
+    font-family: $serif;
+    font-size: 1em;
+    font-weight: normal;
+    color: rgba($black, .8);
+  }
+
+  th {
+    padding: $spacing-unit;
+    text-align: left;
+    font-family: $serif;
+    font-size: 1em;
+    font-weight: normal;
+    color: rgba($black, .8);
+
+    &:first-child {
+      text-align: right;
+    }
+  }
+
+  tr {
+    &:nth-child(even) {
+      background-color: $border;
+    }
+  }
+
+  td {
+    padding: $spacing-unit;
+
+    &.talk {
+      padding-top: $spacing-unit / 1.5;
+    }
+
+    &:first-child {
+      vertical-align: top;
+      font-family: $serif;
+      font-size: 1em;
+      font-weight: normal;
+      color: rgba($black, .8);
+    }
+  }
+}
+
+.schedule__header {
+  margin-bottom: $spacing-unit / 2;
+  @include clearfix;
+
+  hgroup {
+    margin-left: $spacing-unit / 2;
+    margin-bottom: 0;
+    padding-top: $spacing-unit / 4;
+    float: left;
+  }
+}
+
+.schedule__speakers {
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    margin-bottom: 0;
+    list-style: none;
+    line-height: 1.8;
+    color: rgba($black, .8);
+
+    &:first-child {
+    	text-transform: capitalize;
+    }
+
+    &:after{
+    	content: ',';
+    	padding-right: 0;
+    }
+
+    &:nth-last-child(2):after {
+    	content: '';
+    	padding-right: 0;
+    }
+
+    &:last-child:before {
+    	content: 'and ';
+    	padding-right: 0;
+    }
+
+    &:last-child:after {
+    	content: '';
+    	clear: both;
+    }
+
+    /* this prs single item lists from containing commas and 'ands' */
+    &:only-of-type:before, &:only-of-type:after {
+    	content: '';
+    	padding: 0;
+    }
+  }
+}
+
+.schedule__avatars {
+  margin: 0;
+  padding: 0;
+  float: left;
+
+  li {
+    position: relative;
+    margin-bottom: 0;
+    display: inline-block;
+    list-style: none;
+    border-radius: 1337px;
+    float: left;
+    width: 50px; height: 50px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 2px solid transparent;
+
+    &:not(:first-child) {
+      margin-left: -$spacing-unit / 2;
+      border-color: #fff;
+    }
+  }
+
+  img {
+    position: relative;
+    width: 100%; height: 100%;
+    border-radius: 1337px;
+  }
+}
+
 // Fixed Naviation
 .fixed {
-
   .event__hero .navigation li a {
     color: $black;
   }

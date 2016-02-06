@@ -1,0 +1,44 @@
+{% assign profiles = site.data.authors %}
+
+<table class="schedule">
+  <tr>
+    <th>Time</th>
+    <th>Talk</th>
+  </tr>
+
+  {% for item in page.schedule %}
+    {% if item.break %}
+      <tr>
+        <td>{{ item.time }}</td>
+        <td>
+          <h5>{{ item.title }}</h5>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td>{{ item.time }}</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              {% for speaker in item.speakers %}
+                <li>
+                  <img src="{{ profiles[speaker].portrait }}" />
+                </li>
+              {% endfor %}
+            </ul>
+            <hgroup>
+              <h5>{{ item.title }}</h5>
+              <ul class="schedule__speakers">
+                {% for speaker in item.speakers %}
+                  <li>{{ profiles[speaker].full_name }}</li>
+                {% endfor %}
+              </ul>
+            </hgroup>
+          </div>
+          <p>{{ item.summary }}</p>
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+
+</table>
