@@ -76,6 +76,7 @@ $(function() {
   // speaker popups
   $('.js-open-popup').click(function(e) {
     e.preventDefault();
+    console.log(e);
     var popup = $(this).attr('data-id');
     var className = ".speakers__overlay[data-id='" + popup + "']";
 
@@ -105,21 +106,13 @@ $(function() {
     console.log($this.attr("src") + ": " + ($this.height() / $this.width()))
 
     if(ratio > 0.7) {
-      $this.css({
-        maxHeight: '100px'
-      });
+      $this.css('height', 100);
     } else if(ratio > 0.5) {
-      $this.css({
-        maxHeight: '80px'
-      });
+      $this.css('height', 80);
     } else if(ratio > 0.3) {
-      $this.css({
-        maxHeight: '60px'
-      });
-    } else if(ratio > 0.1) {
-      $this.css({
-        maxHeight: '50px'
-      });
+      $this.css('height', 60);
+    } else {
+      $this.css('height', 50);
     }
 });
 
@@ -153,20 +146,22 @@ function fadeInScroll() {
 
 // Fixed subnavigation on scroll
 function stickyNavbar() {
-  var $header = $('.event__header');
-  if($header.length) {
-    var $hero = $('.event__hero');
-    var $body = $('body');
-    var bottom = $hero.position().top + $hero.innerHeight();
-    var height = $header.outerHeight(true);
+  if ( $(window).width() > 690 ) {
+    var $header = $('.event__header');
+    if($header.length) {
+      var $hero = $('.event__hero');
+      var $body = $('body');
+      var bottom = $hero.position().top + $hero.innerHeight();
+      var height = $header.outerHeight(true);
 
-    if($(window).scrollTop() >= bottom && !$body.hasClass('fixed')){
-      $body.addClass('fixed');
-      $hero.css("padding-top", height);
-    }
-    else if($(window).scrollTop() < bottom && $body.hasClass('fixed')){
-      $body.removeClass('fixed');
-      $hero.css("padding-top", 0);
+      if($(window).scrollTop() >= bottom && !$body.hasClass('fixed')){
+        $body.addClass('fixed');
+        $hero.css("padding-top", height);
+      }
+      else if($(window).scrollTop() < bottom && $body.hasClass('fixed')){
+        $body.removeClass('fixed');
+        $hero.css("padding-top", 0);
+      }
     }
   }
 }

@@ -38,7 +38,7 @@
           <p>
             {{ item.summary | truncate:250 }}
           </p>
-          <a href="#" class="btn text js-open-popup" data-id="{{ item.title | slugify }}">More</a>
+          <span class="btn text js-open-popup" data-id="{{ item.title | slugify }}">More</span>
         </td>
       </tr>
     {% endif %}
