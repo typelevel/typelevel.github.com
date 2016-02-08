@@ -43,3 +43,24 @@ davegurnell:
   portrait: "https://secure.gravatar.com/avatar/6cf3fbc6afb50515276a614cf44bfef9"
   twitter: "davegurnell"
   github: "davegurnell"
+sweirich:
+  full_name: "Stephanie Weirich"
+  portrait: "https://avatars2.githubusercontent.com/u/2103670?v=2&s=80"
+  github: "sweirich"
+  bio: "Stephanie Weirich is a Professor at the University of Pennsylvania. Her research centers on programming languages, type theory and machine-assisted reasoning. In particular, she studies generic programming, metaprogramming, dependent type systems, and type inference in the context of functional programming languages. She is currently an Editor of the Journal of Functional Programming and served as the program chair for ICFP in 2010 and the Haskell Symposium in 2009."
+cvogt:
+  full_name: "Chris Vogt"
+  portrait: "https://avatars0.githubusercontent.com/u/274947?v=2&s=80"
+  github: "cvogt"
+clhodapp:
+  full_name: "Chris Hodapp"
+  portrait: "https://avatars3.githubusercontent.com/u/108633?v=2&s=80"
+  github: clhodapp
+raulraja:
+  full_name: "Raul Raja"
+  portrait: "https://avatars0.githubusercontent.com/u/456796?v=2&s=80"
+  github: "raulraja"
+noelwelsh:
+  full_name: "Noel Welsh"
+  portrait: "https://pbs.twimg.com/profile_images/3058988676/49f0ea302bd82c0355f72b6bc6dac09c_80x80.png"
+  github: "noelwelsh"

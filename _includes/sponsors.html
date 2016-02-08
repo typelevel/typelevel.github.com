@@ -1,0 +1,32 @@
+<div class="sponsors">
+  <div class="sponsors__sponsor sponsors__sponsor--platinum">
+    <h3>Platinum Sponsors</h3>
+    {% for sponsor in page.sponsors %}
+      {% if sponsor.type == "platinum" %}
+        <a href="{{ sponsor.link }}">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="sponsors__sponsor sponsors__sponsor--gold">
+    <h3>Gold Sponsors</h3>
+    {% for sponsor in page.sponsors %}
+      {% if sponsor.type == "gold" %}
+        <a href="{{ sponsor.link }}">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="sponsors__sponsor sponsors__sponsor--silver">
+    <h3>Silver Sponsors</h3>
+    {% for sponsor in page.sponsors %}
+      {% if sponsor.type == "silver" %}
+        <a href="{{ sponsor.link }}">
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

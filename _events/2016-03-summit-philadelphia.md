@@ -14,6 +14,44 @@ location_section: true
 sponsors_section: true
 
 featured: true
+
+schedule:
+  - time: "14:00"
+    title: "Keynote: Dependently-Typed Haskell"
+    speakers: ["sweirich"]
+    summary: "Is Haskell a dependently typed programming language? The Glasgow Haskell Compailer's many type-system features, such as Generalized Algebraic Datatypes (GADTs), datatype promotion, multiparameter type classes, type families, and more recent extensions give programmers the ability to encode domain-specific invariants in their types. Clever Haskell programmers have used these features to enhance the reasoning capabilities of static type checking. But how far have we come? Could we do more?"
+
+sponsors:
+  - name: "47 Degrees"
+    logo: "/img/media/sponsors/47_degrees.png"
+    link: "http://www.47deg.com/"
+    type: "platinum"
+    height: 100
+  - name: "Underscore"
+    logo: "/img/media/sponsors/underscore.png"
+    link: "http://underscore.io/"
+    type: "gold"
+    height: 50
+  - name: "Verizon"
+    logo: "/img/media/sponsors/verizon.png"
+    link: "http://www.verizonwireless.com/"
+    type: "gold"
+    height: 50
+  - name: "Typesafe"
+    logo: "/img/media/sponsors/typesafe.png"
+    link: "https://www.typesafe.com/"
+    type: "silver"
+    height: 60
+  - name: "MediaMath"
+    logo: "/img/media/sponsors/mediamath.png"
+    link: "http://www.mediamath.com/"
+    type: "silver"
+    height: 100
+  - name: "Comcast"
+    logo: "/img/media/sponsors/comcast.png"
+    link: "http://www.comcast.com/"
+    type: "silver"
+    height: 70
 ---
 
 ## About the Summit
@@ -36,6 +74,10 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
+## Speakers and Schedule
+
+{% include schedule.html %}
+
 ## Venue
 
 This event will take place at Hub's Cira Centre, next to 30th Street Station.
@@ -43,36 +85,13 @@ This event will take place at Hub's Cira Centre, next to 30th Street Station.
 Plan to hang around after the Typelevel Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th.
 RSVPs open January 16th.
 
+{% include venue_map.html %}
+
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
 
-<div style="float: left; width: 45%">
-  <h3>Platinum Sponsors</h3>
-  <img alt="47 Degrees" src="/img/media/sponsors/47_degrees.png" style="height: 6em;">
-</div>
-
-<div style="float: left; width: 45%">
-  <h3>Gold Sponsors</h3>
-  <img alt="Underscore" src="/img/media/sponsors/underscore.png" style="height: 4em;"><br><br>
-  <img alt="Verizon" src="/img/media/sponsors/verizon.png" style="height: 3em;">
-</div>
-
-<br style="clear: both;">
-
-### Silver Sponsors
-
-<div style="float: left; width: 45%">
-  <img alt="Comcast" src="/img/media/sponsors/comcast.jpg" style="height: 4em;">
-</div>
-<div style="float: left; width: 45%">
-  <img alt="Typesafe" src="/img/media/sponsors/typesafe.png" style="height: 3em; align: left;">
-</div>
-<div style="clear: both; padding-bottom: 2em;"></div>
-<div style="float: left; width: 45%">
-  <img alt="MediaMath" src="/img/media/sponsors/mediamath.png" style="height: 6em; align: left;">
-</div>
-<br style="clear: both;">
+{% include sponsors.html %}
 
 ### Supporters
 

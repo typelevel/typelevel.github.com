@@ -14,12 +14,17 @@
 /* BASICS/COMMON
 ========================================================================== */
 body {
-  height: 100%;
+  position: relative;
+  width: 100%; height: 100%;
   background-color: white;
   background-image: url('../img/bg-pattern.svg');
   background-repeat: repeat-x;
   font-family: $sans-serif;
   color: $dark-grey;
+
+  &.overflow {
+    overflow: hidden;
+  }
 }
 
 p {
@@ -102,6 +107,7 @@ em {
   color: #fff;
   text-decoration: none;
   border-radius: 420px;
+  cursor: pointer;
   @include ease;
 
   &:hover {
@@ -227,14 +233,13 @@ blockquote {
 }
 
 
-
 /* HEADER + NAVIGATION
 ========================================================================== */
 .header {
   position: relative;
   background-color: #fff;
   line-height: $spacing-unit * 4;
-  z-index: 1337;
+  z-index: 137;
   @include box-shadow(0 1px 0 rgba($black, .1), 0 1px 3px rgba($black, .1));
   @include clearfix;
 
@@ -349,7 +354,7 @@ blockquote {
         opacity: 1;
         @include transform(scale(1));
       }
-      
+
       li {
         display: block;
         width: 100%;
@@ -407,7 +412,7 @@ blockquote {
     padding-left: $spacing-unit;
     padding-right: $spacing-unit;
   }
-  
+
   // Logo glyph in hero
   &:before {
     position: absolute;
@@ -679,7 +684,7 @@ blockquote {
     width: 100%;
     margin-left: 0;
   }
-  
+
   @include media-query-min($content) {
     &:nth-child(3n) {
       margin-left: 0;
@@ -755,7 +760,7 @@ blockquote {
   text-decoration: none;
   line-height: 32px;
   @include box-shadow(inset 0 0 0 1px $border);
-  
+
   @include media-query($content) {
     width: 49%;
     margin-bottom: $spacing-unit;
@@ -857,7 +862,7 @@ blockquote {
     width: 100%;
     padding: $spacing-unit 0;
     border-top: 1px solid $border;
-    @include clearfix; 
+    @include clearfix;
 
     &:first-child {
       padding-top: 0;
@@ -889,14 +894,14 @@ blockquote {
 
 
 
-/* EVENT PAGES
+/*  PAGES
 ========================================================================== */
 .event__hero {
   position: relative;
   width: 100%;
   margin-bottom: $spacing-unit * 4;
   padding: 0 0 $spacing-unit * 6;
-  // background-image: provided in layout (event.html)
+  // background-image: provided in layout (.html)
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -925,10 +930,12 @@ blockquote {
   }
 
   h1 {
+    margin-top: $spacing-unit * 6;
     font-size: 4em;
 
     @include media-query($small) {
       font-size: 2em;
+      margin-top: 0;
     }
   }
 
@@ -952,12 +959,11 @@ blockquote {
 
   .event__header {
     width: 100%;
-    margin-bottom: $spacing-unit * 6;
     padding-top: $spacing-unit;
     padding-bottom: $spacing-unit;
     border-bottom: 1px solid rgba(#fff, .1);
     font-size: 0.9em;
-    @include clearfix; 
+    @include clearfix;
 
     @include media-query($small) {
       display: none;
@@ -978,7 +984,7 @@ blockquote {
 
     li {
       display: inline-block;
-      margin-right: $spacing-unit * 5;
+      margin-right: $spacing-unit * 3;
 
       @include media-query($content) {
         margin-right: $spacing-unit * 2;
@@ -1003,9 +1009,297 @@ blockquote {
 }
 
 
+// Fixed Naviation
+.fixed {
+  .event__hero .navigation li a {
+    color: $black;
+  }
+
+  .event__header .wrapper {
+    padding-top: $spacing-unit;
+    padding-bottom: $spacing-unit;
+    background-color: #fff;
+    background-clip: padding-box;
+    @include box-shadow(0 1px 0 rgba($black, .1));
+  }
+
+  .event__header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 0;
+    background-color: #fff;
+    border: none;
+    text-shadow: none;
+
+    p {
+      color: $black;
+    }
+  }
+}
+
+.schedule {
+  width: 100%;
+  border: 1px solid $border;
+  box-shadow: 0 1px 2px rgba($black, .05);
+
+  p {
+    margin: 0;
+  }
+
+  h5 {
+    margin: 0;
+    font-family: $serif;
+    font-size: 1em;
+    font-weight: normal;
+    color: rgba($black, .8);
+  }
+
+  .btn.text {
+    margin-top: $spacing-unit / 4;
+  }
+
+  th {
+    padding: $spacing-unit;
+    text-align: left;
+    font-family: $serif;
+    font-size: 1em;
+    font-weight: normal;
+    color: rgba($black, .8);
+
+    @include media-query($small) {
+      padding: $spacing-unit / 2;
+    }
+
+    &:first-child {
+      text-align: right;
+    }
+  }
+
+  tr {
+    &:nth-child(even) {
+      background-color: $border;
+    }
+  }
+
+  td {
+    padding: $spacing-unit;
+
+    @include media-query($small) {
+      padding: $spacing-unit / 2;
+    }
+
+    &.talk {
+      padding-top: $spacing-unit / 1.5;
+    }
+
+    &:first-child {
+      vertical-align: top;
+      font-family: $serif;
+      font-size: 1em;
+      font-weight: normal;
+      color: rgba($black, .8);
+    }
+  }
+}
+
+.schedule__header {
+  margin-bottom: $spacing-unit / 2;
+  @include clearfix;
+
+  hgroup {
+    max-width: 75%;
+    margin-left: $spacing-unit / 2;
+    margin-bottom: 0;
+    padding-top: $spacing-unit / 4;
+    float: left;
+
+    @include media-query($small) {
+      max-width: 100%;
+      margin-left: 0;
+      float: none;
+    }
+  }
+}
+
+.schedule__speakers {
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    margin-bottom: 0;
+    list-style: none;
+    line-height: 1.8;
+    color: rgba($black, .8);
+
+    &:first-child {
+    	text-transform: capitalize;
+    }
+
+    &:after{
+    	content: ',';
+    	padding-right: 0;
+    }
+
+    &:nth-last-child(2):after {
+    	content: '';
+    	padding-right: 0;
+    }
+
+    &:last-child:before {
+    	content: 'and ';
+    	padding-right: 0;
+    }
+
+    &:last-child:after {
+    	content: '';
+    	clear: both;
+    }
+
+    /* this prs single item lists from containing commas and 'ands' */
+    &:only-of-type:before, &:only-of-type:after {
+    	content: '';
+    	padding: 0;
+    }
+  }
+}
+
+.schedule__avatars {
+  margin: 0;
+  padding: 0;
+  float: left;
+
+  @include media-query($small) {
+    float: none;
+    display: block;
+    margin-bottom: $spacing-unit / 4;
+    @include clearfix;
+  }
+
+  li {
+    position: relative;
+    margin-bottom: 0;
+    display: inline-block;
+    list-style: none;
+    border-radius: 1337px;
+    float: left;
+    width: 50px; height: 50px;
+    border: 2px solid transparent;
+
+    &:not(:first-child) {
+      margin-left: -$spacing-unit / 2;
+      border-color: #fff;
+    }
+  }
+
+  img {
+    position: relative;
+    width: 100%; height: 100%;
+    border-radius: 1337px;
+  }
+}
+
+.speakers {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba($black, .6);
+  z-index: 420;
+  overflow: scroll;
+
+  hgroup {
+    padding-top: $spacing-unit / 2;
+  }
+
+  .speakers__overlay {
+    display: none;
+    position: relative;
+    max-width: $content;
+    margin-top: $spacing-unit * 4;
+    margin-left: auto;
+    margin-right: auto;
+    padding: $spacing-unit * 2;
+    background-color: #fff;
+
+    @include media-query($small) {
+      margin-top: 0;
+      min-height: 100%;
+    }
+
+    h3,
+    h4 {
+      margin-top: $spacing-unit * 2;
+      max-width: 90%;
+    }
+
+    h3:first-of-type {
+      margin-top: 0;
+    }
+
+    h4 {
+      margin-top: 0;
+      font-style: italic;
+    }
+  }
+}
+
+.ico-close {
+  position: absolute;
+  right: $spacing-unit; top: $spacing-unit;
+  width: 30px; height: 30px;
+  background-image: url('../img/ico-close.svg');
+  background-size: 30px 30px;
+}
+
+.sponsors {
+  margin-bottom: $spacing-unit;
+  @include clearfix;
+
+  a { text-decoration: none; }
+  img {
+    max-height: 100px;
+    margin-right: $spacing-unit * 2;
+    margin-bottom: $spacing-unit;
+    vertical-align: middle;
+  }
+
+  h3 {
+    margin-top: $spacing-unit;
+    margin-bottom: $spacing-unit * 2;
+
+    &:after {
+      position: absolute;
+      display: block;
+      width: 40px;
+      border-bottom: 2px solid $border;
+      margin-top: $spacing-unit / 1.5;
+      content: "";
+    }
+  }
+}
+
+.sponsors__sponsor {
+  overflow: hidden;
+  float: left;
+  @include clearfix;
+}
+
+.sponsors__sponsor--platinum,
+.sponsors__sponsor--gold {
+  width: 50%;
+
+  @include media-query($small) {
+    width: 100%;
+  }
+}
 
 /* BLOG
 ========================================================================== */
+img {
+  max-width: 100%;
+}
+
 .posts {
   margin-top: $spacing-unit * 4;
 }
@@ -1025,7 +1319,7 @@ blockquote {
   .sidebar__about {
     margin-bottom: $spacing-unit * 2;
   }
-  
+
   .btn.text {
     float: left;
     display: block;
@@ -1193,7 +1487,7 @@ blockquote {
   opacity: 1;
 }
 
-@include keyframes(pulsate) { // keyframe animation 
+@include keyframes(pulsate) { // keyframe animation
   0% {
     @include transform(translateY(0));
   }
