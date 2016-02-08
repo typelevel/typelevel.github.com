@@ -98,24 +98,6 @@ $(function() {
     }
   });
 
-  // adaptive aspect ratio of sponsor logos
-  $('.sponsors img').each(function(_, img) {
-    var $this = $(this);
-    var ratio = $this.height() / $this.width();
-
-    console.log($this.attr("src") + ": " + ($this.height() / $this.width()))
-
-    if(ratio > 0.7) {
-      $this.css('height', 100);
-    } else if(ratio > 0.5) {
-      $this.css('height', 80);
-    } else if(ratio > 0.3) {
-      $this.css('height', 60);
-    } else {
-      $this.css('height', 50);
-    }
-});
-
   fadeInScroll();
   stickyNavbar();
 });

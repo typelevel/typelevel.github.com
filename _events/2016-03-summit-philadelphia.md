@@ -52,31 +52,38 @@ schedule:
     speakers: ["noelwelsh"]
     summary: "Probabilistic programming is the other Big Thing to happen in machine learning alongside deep learning. It is also closely tied to functional programming. In this talk I will explain the goals of probabilistic programming and how we can implement a..."
 
+# Height is for the height of the image in pixels (on the page)
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
     link: "http://www.47deg.com/"
     type: "platinum"
+    height: 100
   - name: "Underscore"
     logo: "/img/media/sponsors/underscore.png"
     link: "http://underscore.io/"
     type: "gold"
+    height: 50
   - name: "Verizon"
     logo: "/img/media/sponsors/verizon.png"
     link: "http://www.verizonwireless.com/"
     type: "gold"
+    height: 50
   - name: "Typesafe"
     logo: "/img/media/sponsors/typesafe.png"
     link: "https://www.typesafe.com/"
     type: "silver"
+    height: 60
   - name: "MediaMath"
     logo: "/img/media/sponsors/mediamath.png"
     link: "http://www.mediamath.com/"
     type: "silver"
+    height: 100
   - name: "Comcast"
     logo: "/img/media/sponsors/comcast.png"
     link: "http://www.comcast.com/"
     type: "silver"
+    height: 70
 ---
 
 ## About the Summit
@@ -99,8 +106,10 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
+{% comment %}
 ## Speakers and Schedule
 {% include schedule.html %}
+{% endcomment %}
 
 ## Venue
 

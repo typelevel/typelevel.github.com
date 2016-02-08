@@ -4,7 +4,7 @@
     {% for sponsor in page.sponsors %}
       {% if sponsor.type == "platinum" %}
         <a href="{{ sponsor.link }}">
-          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
         </a>
       {% endif %}
     {% endfor %}
@@ -14,7 +14,7 @@
     {% for sponsor in page.sponsors %}
       {% if sponsor.type == "gold" %}
         <a href="{{ sponsor.link }}">
-          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
         </a>
       {% endif %}
     {% endfor %}
@@ -24,7 +24,7 @@
     {% for sponsor in page.sponsors %}
       {% if sponsor.type == "silver" %}
         <a href="{{ sponsor.link }}">
-          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+          <img src="{{ sponsor.logo }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" style="height:{{ sponsor.height }}px" />
         </a>
       {% endif %}
     {% endfor %}
