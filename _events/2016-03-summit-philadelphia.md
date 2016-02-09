@@ -52,6 +52,11 @@ sponsors:
     link: "http://www.comcast.com/"
     type: "silver"
     height: 70
+  - name: "Scotiabank"
+    logo: "/img/media/sponsors/scotiabank.png"
+    link: "http://www.scotiabank.com/"
+    type: "silver"
+    height: 40
 ---
 
 ## About the Summit
