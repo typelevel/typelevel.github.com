@@ -25,6 +25,8 @@ The Summits are open to all, not just current contributors to and users of the T
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
 
+<a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-oslo-tickets-21637542472">Buy tickets</a>
+
 ## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
