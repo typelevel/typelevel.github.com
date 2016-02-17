@@ -28,6 +28,7 @@ adelbertc:
   portrait: "https://secure.gravatar.com/avatar/fb8e986500c5059b2a6c0b2184bb0faf"
   twitter: "adelbertchang"
   github: "adelbertc"
+  bio: "Adelbert Chang is a Software Engineer at Box and a recent graduate from UC Santa Barbara where he studied Computer Science and researched graph querying and modeling. He enjoys helping with functional programming education and learning more about programming."
 channingwalton:
   full_name: "Channing Walton"
   portrait: "https://secure.gravatar.com/avatar/560f2f6f76ad8a88a729d8cf684ea6f3"
@@ -43,24 +44,51 @@ davegurnell:
   portrait: "https://secure.gravatar.com/avatar/6cf3fbc6afb50515276a614cf44bfef9"
   twitter: "davegurnell"
   github: "davegurnell"
+  bio: "Dave Gurnell is a Scala consultant and developer working for Underscore in London, UK. He has been a Scala developer since 2010 and a functional programmer for nearly a decade."
 sweirich:
   full_name: "Stephanie Weirich"
   portrait: "https://avatars2.githubusercontent.com/u/2103670?v=2&s=80"
   github: "sweirich"
+  twitter: "fancytypes"
   bio: "Stephanie Weirich is a Professor at the University of Pennsylvania. Her research centers on programming languages, type theory and machine-assisted reasoning. In particular, she studies generic programming, metaprogramming, dependent type systems, and type inference in the context of functional programming languages. She is currently an Editor of the Journal of Functional Programming and served as the program chair for ICFP in 2010 and the Haskell Symposium in 2009."
 cvogt:
   full_name: "Chris Vogt"
   portrait: "https://avatars0.githubusercontent.com/u/274947?v=2&s=80"
   github: "cvogt"
+  twitter: "cvogt"
+  bio: "Slick co-author, Compossible records author, frequent Scala conference/user group speaker, former member of Martin's team at LAMP/EPFL, based in NYC, Senior Software Engineer at x.ai"
 clhodapp:
   full_name: "Chris Hodapp"
   portrait: "https://avatars3.githubusercontent.com/u/108633?v=2&s=80"
-  github: clhodapp
+  github: "clhodapp"
+  twitter: "clhodapp"
+  bio: "Several-time Scala GSOC student and eventually mentor, author of the ill-fated Comprehensive Comprehensions project. He's hoping to see tooling and techniques from the FP/Typelevel community improve the leverage of the average developer. Based in the SF Bay Area."
 raulraja:
   full_name: "Raul Raja"
   portrait: "https://avatars0.githubusercontent.com/u/456796?v=2&s=80"
   github: "raulraja"
+  twitter: "raulraja"
+  bio: "Raul Raja is a functional programming enthusiast, CTO and Co-founder at 47 Degrees, a functional programming consultancy specialized in Scala."
 noelwelsh:
   full_name: "Noel Welsh"
   portrait: "https://pbs.twimg.com/profile_images/3058988676/49f0ea302bd82c0355f72b6bc6dac09c_80x80.png"
   github: "noelwelsh"
+  bio: "Noel Welsh is a partner at Underscore, a consultancy that specializes in Scala. He’s been using Scala for 6 years in all sorts of applications. He’s the author of Advanced Scala, which is in the process of being rewritten to use Cats."
+dreadedsoftware:
+  full_name: "Marcus Henry, Jr."
+  portrait: "https://pbs.twimg.com/profile_images/573668978502934528/_kkdpOjb.jpeg"
+  twitter: "dreadedsoftware"
+  github: "dreadedsoftare"
+  bio: "Marcus Henry is a Software Engineer for a small Defense Contractor. They are a C++, Java and Javascript shop, however, the product he leads is Functional Scala. He mainly works in big data and modeling. In his experience, FP fits these needs much better than OO could have."
+sellout:
+  full_name: "Greg Pfeil"
+  portrait: "https://avatars3.githubusercontent.com/u/33031?v=3&s=80"
+  twitter: "sellout"
+  github: "sellout"
+  bio: "Greg Pfeil was introduced to Scala by SlamData almost two years ago. Prior to that, he was consulting, doing primarily Common Lisp and Haskell work for most of a decade. Aside from working on SlamData’s Quasar core, he spends time on Matryoshka, Idris, and developing his own languages."
+mpilquist:
+  full_name: "Michael Pilquist"
+  portrait: "https://avatars1.githubusercontent.com/u/118078?v=3&s=80"
+  twitter: "mpilquist"
+  github: "mpilquist"
+  bio: "Michael Pilquist is the author of Scodec, a suite of open source Scala libraries for working with binary data, and Simulacrum, a library that simplifies working with type classes. He is also a committer on a number of other projects in the Scala ecosystem, including Cats and FS2. He is also the chief software architect at Combined Conditional Access Development (CCAD), a joint venture between Comcast and ARRIS, Inc., where he is responsible for the design and development of control systems that manage tens of millions of cable system devices, including set-top boxes and head-end equipment."
