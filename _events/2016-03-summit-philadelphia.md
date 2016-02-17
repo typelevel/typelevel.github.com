@@ -73,12 +73,6 @@ Stay tuned while we prepare the programme._
 
 <a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Buy tickets</a>
 
-## Assistance and Bursaries
-
-We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
-
-<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
-
 ## Speakers and Schedule
 
 {% include schedule.html %}
@@ -109,3 +103,9 @@ Steve Buzzard, Ryan Delucchi, Pedro Furlanetto, Rob Norris, Erik Osheim, Michael
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
+
+## Assistance and Bursaries
+
+We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
+
+<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
