@@ -63,6 +63,8 @@ If you would like to talk to us about sponsorship options, please get in touch w
 
 This event will take place at Teknologihuset.
 
+{% include venue_map.html %}
+
 ## Related coolness
 
 Arriving early for the Typelevel Summit?

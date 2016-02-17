@@ -138,9 +138,6 @@ Stay tuned while we prepare the programme._
 
 This event will take place at Hub's Cira Centre, next to 30th Street Station.
 
-Plan to hang around after the Typelevel Summit, because this year, the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> will be held at the same location on March 4th and 5th.
-RSVPs open January 16th.
-
 {% include venue_map.html %}
 
 ## Sponsors
