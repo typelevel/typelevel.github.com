@@ -63,10 +63,8 @@ If you would like to talk to us about sponsorship options, please get in touch w
 
 This event will take place at Teknologihuset.
 
-{% include venue_map.html %}
-
-## Related coolness
-
 Arriving early for the Typelevel Summit?
 <a href="http://2016.flatmap.no/">flatMap(Oslo)</a> will be held at the same location on May 2nd and 3rd.
 CfP and ticket sales are now open.
+
+{% include venue_map.html %}

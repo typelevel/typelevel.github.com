@@ -53,3 +53,5 @@ wet" with conference speaking!
 ## Venue
 
 This event will take place at Jennie Smoly Caruthers Biotechnology Building, 3415 Colorado Ave.
+
+{% include venue_map.html %}
