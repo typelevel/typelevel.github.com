@@ -16,14 +16,8 @@ layout: default
       <p>by {{ author.full_name }} 
     {% endif %}
     on {{ page.date | date: "%b %d, %Y" }}</p>
-    {% if author.twitter %}
-      <a href="https://twitter.com/{{ author.twitter }}" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @{{ author.twitter }}</a>
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    {% endif %}
-    {% if author.github %}
-      <a class="github-button" href="https://github.com/{{ author.github }}" aria-label="Follow @{{ author.github }} on GitHub">Follow @{{ author.github }}</a>
-      <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-    {% endif %}
+
+    {% include social.html person=author %}
   </div>
   <a class="btn text" href="/blog">Back to blog</a>
 
