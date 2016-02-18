@@ -125,14 +125,17 @@ The Summits are open to all, not just current contributors to and users of the T
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
 
-_Call for Speakers is now closed!
-Stay tuned while we prepare the programme._
-
 <a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Buy tickets</a>
 
 ## Speakers and Schedule
 
+### Day 1
+
 {% include schedule.html %}
+
+### Day 2
+
+_Unconference TBD_
 
 ## Venue
 
