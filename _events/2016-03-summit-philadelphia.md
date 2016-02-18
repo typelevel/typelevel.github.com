@@ -54,7 +54,7 @@ schedule:
   - time: "14:00"
     title: "Keynote: Dependently-Typed Haskell"
     speakers: ["sweirich"]
-    summary: "Is Haskell a dependently typed programming language? The Glasgow Haskell Compailer's many type-system features, such as Generalized Algebraic Datatypes (GADTs), datatype promotion, multiparameter type classes, type families, and more recent extensions give programmers the ability to encode domain-specific invariants in their types. Clever Haskell programmers have used these features to enhance the reasoning capabilities of static type checking. But how far have we come? Could we do more?"
+    summary: "Is Haskell a dependently typed programming language? The Glasgow Haskell Compiler's many type-system features, such as Generalized Algebraic Datatypes (GADTs), datatype promotion, multiparameter type classes, type families, and more recent extensions give programmers the ability to encode domain-specific invariants in their types. Clever Haskell programmers have used these features to enhance the reasoning capabilities of static type checking. But how far have we come? Could we do more?"
   - time: "15:00"
     title: "Break"
     break: true
