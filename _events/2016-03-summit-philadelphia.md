@@ -155,7 +155,7 @@ If you are the higher-kinded type who would like to support the Summit as well (
 These are available on <a href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Eventbrite</a>.
 
 Thanks to the generous supporters (in alphabetic order):
-Steve Buzzard, Ryan Delucchi, Pedro Furlanetto, Rob Norris, Erik Osheim, Michael Pilquist, Stewart Stewart, Frank S. Thomas, and the anonymous patrons.
+Steve Buzzard, Ryan Delucchi, Pedro Furlanetto, Rob Norris, Erik Osheim, Michael Pilquist, SlamData, Stewart Stewart, Frank S. Thomas, and the anonymous patrons.
 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
