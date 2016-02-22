@@ -30,7 +30,9 @@ If you're interested in types and pure functional programming we'd love to see y
 ## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
-Talks for the Oslo Summit are accepted until April 3rd.
+We will announce a first batch of talks starting March 8th, considering proposals submitted until March 1st.
+But don't worry: If you missed that date, you've still got time to submit a talk.
+The final deadline for proposals is April 3rd (anywhere on Earth).
 
 We are looking for a variety of topics; including, but not limited to:
 
