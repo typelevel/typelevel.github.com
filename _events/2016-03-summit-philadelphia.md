@@ -109,6 +109,11 @@ sponsors:
     link: "http://www.comcast.com/"
     type: "silver"
     height: 70
+  - name: "Box"
+    logo: "/img/media/sponsors/box.png"
+    link: "http://www.box.com/"
+    type: "silver"
+    height: 50
   - name: "Scotiabank"
     logo: "/img/media/sponsors/scotiabank.png"
     link: "http://www.scotiabank.com/"
