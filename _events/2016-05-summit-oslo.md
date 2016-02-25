@@ -15,6 +15,13 @@ papers_section: true
 sponsors_section: true
 
 featured: true
+
+sponsors:
+  - name: "Lightbend"
+    logo: "/img/media/sponsors/lightbend.png"
+    link: "https://www.lightbend.com/"
+    type: "silver"
+    height: 60
 ---
 
 ## About the Summit

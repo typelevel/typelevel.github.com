@@ -94,9 +94,9 @@ sponsors:
     link: "http://www.verizonwireless.com/"
     type: "gold"
     height: 50
-  - name: "Typesafe"
-    logo: "/img/media/sponsors/typesafe.png"
-    link: "https://www.typesafe.com/"
+  - name: "Lightbend"
+    logo: "/img/media/sponsors/lightbend.png"
+    link: "https://www.lightbend.com/"
     type: "silver"
     height: 60
   - name: "MediaMath"
