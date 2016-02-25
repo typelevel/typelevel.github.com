@@ -78,6 +78,23 @@ schedule:
     speakers: ["mpilquist"]
     summary: "Simulacrum simplifies development of type class libraries. It is used in a number of open source libraries, including Cats. In this talk, we’ll tour the features of Simulacrum, and look at the forthcoming Typeclassic project, which merges Simulacrum with complementary projects like machinist and export-hook."
 
+unconf:
+  - time: "8:30"
+    title: "Registration"
+    break: true
+  - time: "9:00"
+    title: "Unconference Sessions"
+    break: true
+  - time: "12:30"
+    title: "Lunch Break"
+    break: true
+  - time: "14:00"
+    title: "Unconference Sessions"
+    break: true
+  - time: "17:00"
+    title: "Doors Closing"
+    break: true
+
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
@@ -136,11 +153,15 @@ If you're interested in types and pure functional programming we'd love to see y
 
 ### Day 1
 
+{% assign schedule=page.schedule %}
+{% assign header=true %}
 {% include schedule.html %}
 
 ### Day 2
 
-_Unconference TBD_
+{% assign schedule=page.unconf %}
+{% assign header=false %}
+{% include schedule.html %}
 
 ## Venue
 

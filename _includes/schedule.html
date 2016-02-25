@@ -1,12 +1,14 @@
 {% assign profiles = site.data.authors %}
 
 <table class="schedule">
-  <tr>
-    <th>Time</th>
-    <th>Talk</th>
-  </tr>
+  {% if header == true %}
+    <tr>
+      <th>Time</th>
+      <th>Talk</th>
+    </tr>
+  {% endif %}
 
-  {% for item in page.schedule %}
+  {% for item in schedule %}
     {% if item.break %}
       <tr>
         <td>{{ item.time }}</td>
@@ -48,7 +50,7 @@
 
 <!--- All speaker popups -->
 <div class="speakers js-close-popup">
-  {% for item in page.schedule %}
+  {% for item in schedule %}
     {% if item.break == null or item.break == false %}
 
       <div class="speakers__overlay" data-id="{{ item.title | slugify }}">
