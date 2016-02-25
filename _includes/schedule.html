@@ -48,45 +48,47 @@
 
 </table>
 
-<!--- All speaker popups -->
-<div class="speakers js-close-popup">
-  {% for item in schedule %}
-    {% if item.break == null or item.break == false %}
+{% if header == true %}
+  <!--- All speaker popups -->
+  <div class="speakers js-close-popup">
+    {% for item in schedule %}
+      {% if item.break == null or item.break == false %}
 
-      <div class="speakers__overlay" data-id="{{ item.title | slugify }}">
-        <a href="#" class="ico-close js-close-popup"></a>
+        <div class="speakers__overlay" data-id="{{ item.title | slugify }}">
+          <a href="#" class="ico-close js-close-popup"></a>
 
-        <div class="content content-small">
-          <h3>{{ item.title }}</h3>
-          <h4>at {{ item.time }}</h4>
-          <p>{{ item.summary }}</p>
+          <div class="content content-small">
+            <h3>{{ item.title }}</h3>
+            <h4>at {{ item.time }}</h4>
+            <p>{{ item.summary }}</p>
 
-          <h3>About Speaker</h3>
-          <div class="schedule__header">
-            <ul class="schedule__avatars">
-              {% for speaker in item.speakers %}
-                <li>
-                  <img src="{{ profiles[speaker].portrait }}" />
-                </li>
-              {% endfor %}
-            </ul>
-            <hgroup>
-              <ul class="schedule__speakers">
+            <h3>About Speaker</h3>
+            <div class="schedule__header">
+              <ul class="schedule__avatars">
                 {% for speaker in item.speakers %}
-                  <li>{{ profiles[speaker].full_name }}</li>
+                  <li>
+                    <img src="{{ profiles[speaker].portrait }}" />
+                  </li>
                 {% endfor %}
               </ul>
-            </hgroup>
+              <hgroup>
+                <ul class="schedule__speakers">
+                  {% for speaker in item.speakers %}
+                    <li>{{ profiles[speaker].full_name }}</li>
+                  {% endfor %}
+                </ul>
+              </hgroup>
+            </div>
+
+            {% for speaker in item.speakers %}
+              <p>{{ profiles[speaker].bio }}</p>
+              {% assign person = profiles[speaker] %}
+              <!-- <div>{% include social.html person=person %}</div> -->
+            {% endfor %}
           </div>
-
-          {% for speaker in item.speakers %}
-            <p>{{ profiles[speaker].bio }}</p>
-            {% assign person = profiles[speaker] %}
-            <!-- <div>{% include social.html person=person %}</div> -->
-          {% endfor %}
         </div>
-      </div>
 
-    {% endif %}
-  {% endfor %}
-</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
