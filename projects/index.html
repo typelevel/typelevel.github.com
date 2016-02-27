@@ -71,6 +71,27 @@ class: projects-page
 </div>
 
 <div class="section macros js-fade-in">
+  <div class="projects__project incubator">
+    <div class="projects__project-header">
+      <h4>Incubator Projects</h4>
+    </div>
+    <div class="projects__project-body">
+      <span class="tag">Newly joined projects</span>
+      <div class="list">
+        {% for incubator in site.data.incubator %}
+          <div class="list__item">
+            <a href="{{ incubator.github }}">
+              <span class="ico-repo"></span><h6>{{ incubator.title }}</h6>
+            </a>
+            <span class="list__item-slug">{{ incubator.description }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section macros js-fade-in">
   <div class="projects__project macros">
     <div class="projects__project-header">
       <h4>Macros and Compiler Plugins</h4>
