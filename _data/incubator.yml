@@ -11,7 +11,7 @@
   description: "High-performance asynchronous and event-based programming"
   github: "https://github.com/monixio/monix"
 - title: "Frameless"
-  description: "Types for Spark and SparkSQL"
+  description: "Expressive types for Spark"
   github: "https://github.com/adelbertc/frameless"
 - title: "eff-cats"
   description: "Extendsible effects for Cats"
