@@ -14,5 +14,5 @@
   description: "Expressive types for Spark"
   github: "https://github.com/adelbertc/frameless"
 - title: "eff-cats"
-  description: "Extendsible effects for Cats"
+  description: "Extensible effects for Cats"
   github: "https://github.com/etorreborre/eff-cats"
