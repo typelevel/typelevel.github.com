@@ -7,7 +7,7 @@
 - title: "Finch"
   description: "Purely functional basic blocks atop of Finagle for building composable HTTP APIs"
   github: "https://github.com/finagle/finch"
-- title: "monix"
+- title: "Monix"
   description: "High-performance asynchronous and event-based programming"
   github: "https://github.com/monixio/monix"
 - title: "Frameless"
