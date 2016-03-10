@@ -114,7 +114,7 @@ trait Universal {
 Here `Universal#apply` says *for all* choices of `A`, a function `A => A` can be
 written. In the [Curry-Howard Isomorphism][propositionsAsTypes], a profound
 relationship between logic and computation, this translates to "for all propositions
-`A`, `A` impies `A`." It is therefore acceptable to write the following, which picks
+`A`, `A` implies `A`." It is therefore acceptable to write the following, which picks
 `A` to be `Int`.
 
 ```scala
