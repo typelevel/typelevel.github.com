@@ -222,7 +222,7 @@ def badUsage(set: IntSet) = {
 
   // Maybe it's a Vector
   s.reverse
-  contains(10, Vector(10, 5, 1)) //
+  contains(10, Vector(10, 5, 1))
 }
 // <console>:23: error: value reverse is not a member of set.Repr
 //          s.reverse
@@ -230,7 +230,7 @@ def badUsage(set: IntSet) = {
 // <console>:24: error: type mismatch;
 //  found   : scala.collection.immutable.Vector[Int]
 //  required: set.Repr
-//          contains(10, Vector(10, 5, 1)) //
+//          contains(10, Vector(10, 5, 1))
 //                             ^
 ```
 
