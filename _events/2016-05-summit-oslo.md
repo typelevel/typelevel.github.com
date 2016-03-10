@@ -17,6 +17,16 @@ sponsors_section: true
 featured: true
 
 sponsors:
+  - name: "Underscore"
+    logo: "/img/media/sponsors/underscore.png"
+    link: "http://underscore.io/"
+    type: "gold"
+    height: 50
+  - name: "Arktekk"
+    logo: "/img/media/sponsors/arktekk.png"
+    link: "http://www.arktekk.no/"
+    type: "gold"
+    height: 80
   - name: "Lightbend"
     logo: "/img/media/sponsors/lightbend.png"
     link: "https://www.lightbend.com/"
@@ -63,6 +73,10 @@ We are providing bursaries and assistance for speakers and attendees. You can re
 <a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
 
 ## Sponsors
+
+We'd like to thank all our sponsors who help to make the Summit happen:
+
+{% include sponsors.html %}
 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
