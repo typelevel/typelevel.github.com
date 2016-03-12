@@ -26,20 +26,8 @@ leaked, the user can use this knowledge to violate the invariant.
 ```scala
 import scala.annotation.tailrec
 
-def binarySearch(i: Int, repr: Vector[Int]): (Boolean, Int) = {
-  @tailrec
-  def binarySearchAux(minIndex: Int, maxIndex: Int): (Boolean, Int) = {
-    val midIndex = minIndex + ((maxIndex - minIndex) / 2)
-
-    if (maxIndex < minIndex) (false, midIndex)
-    else {
-      if (repr(midIndex) > i) binarySearchAux(minIndex, midIndex - 1)
-      else if (repr(midIndex) < i) binarySearchAux(midIndex + 1, maxIndex)
-      else (true, midIndex)
-    }
-  }
-  binarySearchAux(0, repr.size - 1)
-}
+/** (i in repr, position of i in repr) */
+def binarySearch(i: Int, repr: Vector[Int]): (Boolean, Int) = /* elided */
 
 object IntSet {
   type Repr = Vector[Int]
@@ -101,7 +89,7 @@ client code.
 It turns out there is a [well understood principle][understandingTypes]
 behind this idea called *existential quantification*. Contrast with
 universal quantification which says "for all", existential quantification
-says "there exists."
+says "there is a."
 
 Below is an encoding of universal quantification via parametric polymorphism.
 
@@ -118,9 +106,9 @@ relationship between logic and computation, this translates to "for all proposit
 `A` to be `Int`.
 
 ```scala
-def intUniversal(u: Universal): Int => Int =
+def intInstantiatedU(u: Universal): Int => Int =
   (i: Int) => u.apply(i)
-// intUniversal: (u: Universal)Int => Int
+// intInstantiatedU: (u: Universal)Int => Int
 ```
 
 Existential quantification can also be written in Scala.
@@ -140,12 +128,12 @@ blog series.
 The type parameter on `apply` has been moved up to a type member of the trait.
 Practically, this means every instance of `Existential` must pick **one** choice of
 `A`, whereas in `Universal` the `A` was parameterized and therefore free. In the
-language of logic, `Existential#apply` says "there exists some `A` such that
-`A` implies `A`." This "there exists" is the crux of the error when trying
+language of logic, `Existential#apply` says "there is a" or "there exists some `A` such that
+`A` implies `A`." This "there is a" is the crux of the error when trying
 to write a corresponding `intExistential` function.
 
 ```scala
-def intExistential(e: Existential): Int => Int =
+def intInstantiatedE(e: Existential): Int => Int =
   (i: Int) => e.apply(i)
 // <console>:19: error: type mismatch;
 //  found   : i.type (with underlying type Int)
