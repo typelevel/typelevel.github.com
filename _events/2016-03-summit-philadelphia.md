@@ -10,7 +10,6 @@ description: "One day of recorded talks and one day of unconference, co-located 
 poster_hero: "/img/media/philly.jpg"
 poster_thumb: "/img/media/philly-thumb.jpg"
 
-location_section: true
 sponsors_section: true
 
 featured: true
@@ -78,23 +77,6 @@ schedule:
     speakers: ["mpilquist"]
     summary: "Simulacrum simplifies development of type class libraries. It is used in a number of open source libraries, including Cats. In this talk, we’ll tour the features of Simulacrum, and look at the forthcoming Typeclassic project, which merges Simulacrum with complementary projects like machinist and export-hook."
 
-unconf:
-  - time: "8:30"
-    title: "Registration"
-    break: true
-  - time: "9:00"
-    title: "Unconference Sessions"
-    break: true
-  - time: "12:30"
-    title: "Lunch Break"
-    break: true
-  - time: "14:00"
-    title: "Unconference Sessions"
-    break: true
-  - time: "17:00"
-    title: "Doors Closing"
-    break: true
-
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
@@ -140,34 +122,18 @@ sponsors:
 
 ## About the Summit
 
-The first Typelevel Summit will be co-located with the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> in Philadelphia.
-There will be one day of recorded talks and one day of unconference.
+The first Typelevel Summit was co-located with the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> in Philadelphia, with one day of recorded talks and one day of unconference.
 
 The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
-
-<a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Buy tickets</a>
+Check our <a href="/">front page</a> for upcoming events.
 
 ## Speakers and Schedule
-
-### Day 1
 
 {% assign schedule=page.schedule %}
 {% assign header=true %}
 {% include schedule.html %}
-
-### Day 2
-
-{% assign schedule=page.unconf %}
-{% assign header=false %}
-{% include schedule.html %}
-
-## Venue
-
-This event will take place at Hub's Cira Centre, next to 30th Street Station.
-
-{% include venue_map.html %}
 
 ## Sponsors
 
@@ -175,20 +141,5 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
 
-### Supporters
-
-If you are the higher-kinded type who would like to support the Summit as well (or instead of) attending we are offering several levels of Supporter tickets and a Donor option which will help us fund speaker and attendee bursaries.
-These are available on <a href="https://www.eventbrite.co.uk/e/typelevel-summit-us-tickets-20778897241">Eventbrite</a>.
-
-Thanks to the generous supporters (in alphabetic order):
+Thanks to the generous private supporters (in alphabetic order):
 Steve Buzzard, Jeff Clites, Ryan Delucchi, Pedro Furlanetto, Rob Norris, Erik Osheim, Michael Pilquist, SlamData, Stewart Stewart, Frank S. Thomas, and the anonymous patrons.
-
-If you would like to talk to us about sponsorship options, please get in touch with us:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
-
-## Assistance and Bursaries
-
-We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
-
-<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
