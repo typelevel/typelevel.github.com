@@ -17,6 +17,11 @@ sponsors_section: true
 featured: true
 
 sponsors:
+  - name: "47 Degrees"
+    logo: "/img/media/sponsors/47_degrees.png"
+    link: "http://www.47deg.com/"
+    type: "platinum"
+    height: 100
   - name: "Underscore"
     logo: "/img/media/sponsors/underscore.png"
     link: "http://underscore.io/"
