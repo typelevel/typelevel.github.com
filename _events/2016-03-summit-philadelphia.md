@@ -135,7 +135,6 @@ Check our <a href="/">front page</a> for upcoming events.
 ## Speakers and Schedule
 
 {% assign schedule=page.schedule %}
-{% assign header=true %}
 {% include schedule.html %}
 
 ## Sponsors
