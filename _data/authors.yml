@@ -92,3 +92,18 @@ mpilquist:
   twitter: "mpilquist"
   github: "mpilquist"
   bio: "Michael Pilquist is the author of Scodec, a suite of open source Scala libraries for working with binary data, and Simulacrum, a library that simplifies working with type classes. He is also a committer on a number of other projects in the Scala ecosystem, including Cats and FS2. He is also the chief software architect at Combined Conditional Access Development (CCAD), a joint venture between Comcast and ARRIS, Inc., where he is responsible for the design and development of control systems that manage tens of millions of cable system devices, including set-top boxes and head-end equipment."
+fthomas:
+  full_name: "Frank Thomas"
+  portrait: "https://avatars2.githubusercontent.com/u/141252?v=3&s=80"
+  github: "fthomas"
+  bio: "Frank is a physicist by education and a programmer by profession, currently working in a telecommunications company. He started programming in Scala in 2011 and is a contributor to scalaz-stream and cats. Most of his Scala work is done in his free time."
+cheng:
+  full_name: "Dr Eugenia Cheng"
+  portrait: "https://pbs.twimg.com/profile_images/661900712201338880/98D0qmH__400x400.jpg"
+  twitter: "DrEugeniaCheng"
+  bio: "Eugenia Cheng is a Senior Lecturer (Associate Professor) of Pure Mathematics in the School of Mathematics and Statistics, University of Sheffield, UK."
+alexandru:
+  full_name: "Alexandru Nedelcu"
+  portrait: "https://avatars2.githubusercontent.com/u/11753?v=3&s=80"
+  github: "alexandru"
+  bio: "Alexandru has been a professional software developer for about 10 years and has used Scala both for work and for personal projects for the last 4 years. He has first introduced Scala at the startup he was working on back then."

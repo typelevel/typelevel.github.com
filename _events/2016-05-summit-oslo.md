@@ -16,6 +16,20 @@ sponsors_section: true
 
 featured: true
 
+schedule:
+  - time: "TBD"
+    title: How to bake "How to Bake Pi"
+    speakers: ["cheng"]
+    summary: "Mathematics is a very misunderstood subject.  Many people associate it only with painful experiences with childhood, or think it's all about numbers and calculations, or that it's a cold subject with clear rights and wrongs. My mission is to bring my love of mathematics to more people, and as part of this journey I need to show the beauty and the power of abstract thinking. In this talk I will present my experiences of this, starting with the book I wrote for a very general audience, and the Category Theory course I teach to art students at the School of the Art Institute of Chicago. Using a variety of surprising examples, I will show that it is possible to convince maths phobics and maths sceptics that abstract mathematics can be relevant and useful for everyone."
+  - time: "TBD"
+    title: "Decorate your types with refined"
+    speakers: ["fthomas"]
+    summary: "Scala has a powerful type system that allows to create very expressive types. But sometimes we need guarantees about our values beyond what the type system can usually check, for example integers in the range from zero to fifty-nine, or chars that are either a letter or a digit. One way to realize these constraints is known as smart constructors, where the construction mechanism validates at runtime that our values satisfy the constraint. Unfortunately this technique requires some boilerplate and always incur runtime checks even if the values are kown at compile-time. This talk will introduce a library for refining types with type-level predicates, which abstracts over smart constructors. We'll go from the idea of refinement types to examples of the library using the rich set of predicates it provides, and show how it can be used at compile- and runtime alike. On that way we'll see how we can make good use of literal-based singleton types that are proposed in SIP-23. I'll also demonstrate how refined integrates with other libraries like circe, Monocle, or scodec."
+  - time: "TBD"
+    title: "Monitoring and controlling power plants with Monix"
+    speakers: ["alexandru"]
+    summary: "This talk is about my experience in dealing with modeling behavior by processing asynchronous soft-real time signals from different source using Monix, the library for building asynchronous and event-based logic.  It's an experience report from my work at E.On, in monitoring and controlling power plants. We do this by gathering signals in real time and modeling state machines that give us the state in which an asset is in. The component, for lack of inspiration named Asset-Engine, is the one component in the project that definitely adheres to FP principles, the business logic being described with pure functions and data-structures and the communication being handled by actors and by Observable streams.  I want to show how I pushed side effects at the edges, in a very pragmatic setup."
+
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
@@ -48,6 +62,13 @@ Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a 
 If you're interested in types and pure functional programming we'd love to see you here!
 
 <a class="btn large" href="https://www.eventbrite.co.uk/e/typelevel-summit-oslo-tickets-21637542472">Buy tickets</a>
+
+## Speakers and Schedule
+
+Stay tuned while we prepare the full programme!
+
+{% assign schedule=page.schedule %}
+{% include schedule.html %}
 
 ## Call for Speakers
 
