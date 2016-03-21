@@ -107,3 +107,7 @@ alexandru:
   portrait: "https://avatars2.githubusercontent.com/u/11753?v=3&s=80"
   github: "alexandru"
   bio: "Alexandru has been a professional software developer for about 10 years and has used Scala both for work and for personal projects for the last 4 years. He has first introduced Scala at the startup he was working on back then."
+cwmyers:
+  full_name: "Chris Myers"
+  portrait: "/img/media/speakers/chrismyers.jpg"
+  bio: "Chris is an experienced FP/Scala dev working at REA Group, Australia's largest Property website. He uses Scala daily in building the next generation APIs for our business. He also curates http://functionaltalks.org and is the creator of Monet.js (http://cwmyers.github.io/monet.js/), a powerful monad library for JS."
