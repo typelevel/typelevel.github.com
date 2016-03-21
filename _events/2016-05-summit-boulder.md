@@ -8,9 +8,12 @@ location: "Jennie Smoly Caruthers Biotechnology Building"
 description: "One day of talks and workshops, co-located with LambdaConf."
 
 poster_hero: "/img/media/boulder.jpg"
+poster_thumb: "/img/media/boulder-thumb.jpg"
 
 location_section: true
 papers_section: true
+
+featured: true
 
 ---
 

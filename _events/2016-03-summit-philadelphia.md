@@ -12,8 +12,6 @@ poster_thumb: "/img/media/philly-thumb.jpg"
 
 sponsors_section: true
 
-featured: true
-
 schedule:
   - time: "8:30"
     title: "Registration"
