@@ -35,6 +35,11 @@ schedule:
     summary: " The Free monad and the Interpreter Pattern has gained significant interest in the Scala community of late.  It is a pattern that has helped unlock the problems of separating pure functions from effects.  At REA Group we have had an explosion of interest in FP and Scala in the last two years.  Beginning with just a couple of experienced functional programmers to now multiple teams and dozens of developers, we have experienced the growing pains of introducing FP and Scala to a large organisation.  The Free monad has been a key element  in our journey.  As we grew, we were particularly conscious of what patterns we could lay down, especially for beginners, that promoted the integral values of FP such as referential transparency and to allow obvious ways that software should grow.  After many experiments and much research, we discovered that the Free monad and interpreter pattern has been something that tangibly isolates effects, maintains referential transparency, subsumes dependency injection, is modular and is surprisingly accessible to FP/Scala new comers.  This talk briefly covers the mechanics of the Free monad and the interpreter pattern but largely looks at how a year with the Free monad has allowed us to make novice teams productive while they learn and embrace FP and Scala."
 
 sponsors:
+  - name: "Commonwealth Bank of Australia"
+    logo: "/img/media/sponsors/commbank.png"
+    link: "https://www.commbank.com.au/"
+    type: "platinum"
+    height: 40
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
     link: "http://www.47deg.com/"
