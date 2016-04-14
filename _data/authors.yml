@@ -111,3 +111,19 @@ cwmyers:
   full_name: "Chris Myers"
   portrait: "/img/media/speakers/chrismyers.jpg"
   bio: "Chris is an experienced FP/Scala dev working at REA Group, Australia's largest Property website. He uses Scala daily in building the next generation APIs for our business. He also curates http://functionaltalks.org and is the creator of Monet.js (http://cwmyers.github.io/monet.js/), a powerful monad library for JS."
+jqno:
+  full_name: "Jan Ouwens"
+  portrait: "https://avatars0.githubusercontent.com/u/862385?v=3&s=80"
+  bio: "Jan Ouwens is a Scala developer at Codestar and has worked and experimented with Scala and Akka for the past five years. He has worked on a wide variety of projects over the years in the fields of service management, electron microscopes, banking, and the operation of trains. He has a polyglot mindset, having worked with a wide variety of languages such as Java, C#, Jess/Clips and yes, even VBscript. Jan is also the creator of EqualsVerifier (https://github.com/jqno/equalsverifier). Jan has presented at local Scala user groups before. He has also been a frequent presenter at his places of employment, where he spoke about Scala, FP, and EqualsVerifier. One of these talks can be viewed at https://www.youtube.com/watch?v=uksqLVk3l6M (in Dutch), an introductory talk about Scala for ±60 students. Jan also spoke at the TOPdesk Symposium in front of an audience of about 350 non-technical people, where his talk was voted 2nd most popular."
+dialelo:
+  full_name: "Alejandro Gómez"
+  portrait: "/img/media/speakers/alejandrogomez.jpg"
+  bio: "Alejandro is a functional programing enthusiast with a lot of experience with dynamic languages, specially Clojure. He's the author of the Clojure cats library (https://github.com/funcool/cats) which predates Scala's cats, and has been trying to map pure FP concepts to Clojure as an experiment for quite some time. He recently started working for 47degrees writing Scala and has started the Fetch project, similar to Facebook's Haxl project (Haskell, open source) and Twitter's Stitch (Scala, not open sourced)."
+smarter:
+  full_name: "Guillaume Martres"
+  portrait: "/img/media/speakers/guillaumemartres.jpg"
+  bio: "Compiler Engineer at EPFL working on Dotty. He's currently working on incremental compilation support using sbt."
+dwijnand:
+  full_name: "Dale Wijnand"
+  portrait: "https://avatars2.githubusercontent.com/u/344610?v=3&s=80"
+  bio: "Dale is an active OSS contributor, typically in Scala, and an sbt maintainer."
