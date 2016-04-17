@@ -115,6 +115,10 @@ jqno:
   full_name: "Jan Ouwens"
   portrait: "https://avatars0.githubusercontent.com/u/862385?v=3&s=80"
   bio: "Jan Ouwens is a Scala developer at Codestar and has worked and experimented with Scala and Akka for the past five years. He has worked on a wide variety of projects over the years in the fields of service management, electron microscopes, banking, and the operation of trains. He has a polyglot mindset, having worked with a wide variety of languages such as Java, C#, Jess/Clips and yes, even VBscript. Jan is also the creator of EqualsVerifier (https://github.com/jqno/equalsverifier). Jan has presented at local Scala user groups before. He has also been a frequent presenter at his places of employment, where he spoke about Scala, FP, and EqualsVerifier. One of these talks can be viewed at https://www.youtube.com/watch?v=uksqLVk3l6M (in Dutch), an introductory talk about Scala for ±60 students. Jan also spoke at the TOPdesk Symposium in front of an audience of about 350 non-technical people, where his talk was voted 2nd most popular."
+jmerritt:
+  full_name: "Jonathan Merritt"
+  portrait: "https://pbs.twimg.com/profile_images/2864057027/6187027c20065a62fabdd61be21a29d4.png"
+  bio: "Jonathan Merritt is a software engineer at the Commonwealth Bank in Australia, writing code in Haskell and Scala to support data scientists to develop large-scale predictive models. Before joining the tech industry 2 years ago, he completed a PhD on equine biomechanics followed by 10 years on the post-doc treadmill; dissecting human cadavers, building photogrammetrically-guided robots, testing horseshoes that had an in-built inertial navigation system, and doing motion capture in horses."
 dialelo:
   full_name: "Alejandro Gómez"
   portrait: "/img/media/speakers/alejandrogomez.jpg"
@@ -127,3 +131,7 @@ dwijnand:
   full_name: "Dale Wijnand"
   portrait: "https://avatars2.githubusercontent.com/u/344610?v=3&s=80"
   bio: "Dale is an active OSS contributor, typically in Scala, and an sbt maintainer."
+InTheNow:
+  full_name: "Alistair Johnson"
+  portrait: "https://avatars3.githubusercontent.com/u/5887373?v=3&s=80"
+  bio: "Alistair has been programming for far too long, for far too many companies, but as a dedicated type fan, not long enough in Scala."
