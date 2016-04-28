@@ -112,6 +112,8 @@ If you would like to talk to us about sponsorship options, please get in touch w
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
 
+Thanks to the generous private supporters (in alphabetic order): Frank S. Thomas, Eric Torreborre, and the anonymous patrons.
+
 ## Venue
 
 This event will take place at Teknologihuset.
