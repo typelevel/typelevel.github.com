@@ -102,12 +102,6 @@ Stay tuned while we prepare the full programme!
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
 
-## Assistance and Bursaries
-
-We are providing bursaries and assistance for speakers and attendees. You can read more about this [on our blog]({% post_url 2016-01-14-summit_assistance %}) and apply using the button below:
-
-<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
-
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
