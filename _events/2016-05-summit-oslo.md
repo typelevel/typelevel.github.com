@@ -118,8 +118,6 @@ If you're interested in types and pure functional programming we'd love to see y
 
 ## Speakers and Schedule
 
-Stay tuned while we prepare the full programme!
-
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
 
@@ -129,17 +127,10 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
 
-If you would like to talk to us about sponsorship options, please get in touch with us:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
-
 Thanks to the generous private supporters (in alphabetic order): Frank S. Thomas, Eric Torreborre, and the anonymous patrons.
 
 ## Venue
 
 This event will take place at Teknologihuset.
-
-Arriving early for the Typelevel Summit?
-<a href="http://2016.flatmap.no/">flatMap(Oslo)</a> will be held at the same location on May 2nd and 3rd.
 
 {% include venue_map.html %}
