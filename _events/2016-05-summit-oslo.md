@@ -10,7 +10,6 @@ description: "One day of talks, co-located with flatMap(Oslo)."
 poster_hero: "/img/media/oslo.jpg"
 poster_thumb: "/img/media/oslo-thumb.jpg"
 
-location_section: true
 sponsors_section: true
 
 featured: true
@@ -128,9 +127,3 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 {% include sponsors.html %}
 
 Thanks to the generous private supporters (in alphabetic order): Frank S. Thomas, Eric Torreborre, and the anonymous patrons.
-
-## Venue
-
-This event will take place at Teknologihuset.
-
-{% include venue_map.html %}
