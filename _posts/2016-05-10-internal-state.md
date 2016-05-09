@@ -251,8 +251,8 @@ value using that type.
 Remember that existential types are pairs.
 
 Having collapsed callee-of-callee back to caller perspective, let’s
-apply the rule of thumb from the first post in this series (TODO post
-url).
+apply the rule of thumb from
+[the first post in this series]({% post_url 2015-07-13-type-members-parameters %}).
 
 > A type parameter is usually more convenient and harder to screw up, but if you intend to use it existentially in most cases, changing it to a member is probably better.
 
@@ -292,7 +292,9 @@ scala> vb.result(with2)
 res0: Vector[Int] = Vector(2, 2, 3)
 ```
 
-As in TODO past link, `vb.S` is abstract, existential, irreducible.
+As in
+[“Values never change types”]({% post_url 2015-07-30-values-never-change-types %}#naming-the-existential),
+`vb.S` is abstract, existential, irreducible.
 
 ## Last minute adjustments
 
