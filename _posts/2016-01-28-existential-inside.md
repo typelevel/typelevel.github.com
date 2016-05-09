@@ -157,6 +157,7 @@ It is also the root of my frustration that Scala doesn’t support a
 `forAll`, like `forSome` but for universally-quantified types. After
 all, you can’t work with one without the other.
 
-Now we have enough groundwork for “Type-changing is abstraction
-inversion”, the hypothetical next part of this series. I suspect it
-will be a little prosaic at this point, though.
+Now we have enough groundwork for
+[“Making internal state functional”]({% post_url 2016-05-10-internal-state %}),
+the next part of this series. I suspect it will be a little prosaic at
+this point, though.
