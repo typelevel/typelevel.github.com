@@ -114,7 +114,7 @@ cwmyers:
 jqno:
   full_name: "Jan Ouwens"
   portrait: "https://avatars0.githubusercontent.com/u/862385?v=3&s=80"
-  bio: "Jan Ouwens is a Scala developer at Codestar and has worked and experimented with Scala and Akka for the past five years. He has worked on a wide variety of projects over the years in the fields of service management, electron microscopes, banking, and the operation of trains. He has a polyglot mindset, having worked with a wide variety of languages such as Java, C#, Jess/Clips and yes, even VBscript. Jan is also the creator of EqualsVerifier (https://github.com/jqno/equalsverifier). Jan has presented at local Scala user groups before. He has also been a frequent presenter at his places of employment, where he spoke about Scala, FP, and EqualsVerifier. One of these talks can be viewed at https://www.youtube.com/watch?v=uksqLVk3l6M (in Dutch), an introductory talk about Scala for ±60 students. Jan also spoke at the TOPdesk Symposium in front of an audience of about 350 non-technical people, where his talk was voted 2nd most popular."
+  bio: "Jan Ouwens is a Scala developer at Codestar and has worked and experimented with Scala and Akka for the past five years. He has worked on a wide variety of projects over the years in the fields of service management, electron microscopes, banking, and the operation of trains. He has a polyglot mindset, having worked with a wide variety of languages such as Java, C#, Jess/Clips and yes, even VBscript."
 jmerritt:
   full_name: "Jonathan Merritt"
   portrait: "/img/media/speakers/jonathanmerritt.jpg"
