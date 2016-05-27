@@ -1,0 +1,23 @@
+---
+layout: default
+title: Events
+---
+<div class="content content-small pull-left">
+  <div class="posts">
+    {% for event in site.events reversed %}
+    <div class="post js-fade-in">
+      <h2>
+        <a href="{{ event.url }}">{{ event.title }}</a>
+      </h2>
+      <p>{{ event.description }}</p>
+      <div class="post__meta">
+        <img class="portrait" style="object-fit: cover;" src="{{ event.poster_thumb }}" />
+        <p>
+          <strong>{{ event.date_string }}</strong> at {{ event.location }}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>

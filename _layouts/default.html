@@ -33,15 +33,8 @@
           <li {% if page.path contains 'projects' %} class="active" {% endif %}>
             <a href="/projects">Projects</a>
           </li>
-          <li>
-            <span class="js-subnav {% if page.path contains '_event' %} active {% endif %}">Events</span>
-            <ul class="subnav">
-              {% for event in site.events %}
-                <li>
-                  <a href="{{ event.url }}">{{ event.short_title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
+          <li {% if page.path contains 'events' or page.path contains '_event' %} class="active" {% endif %}>
+            <a href="/events">Events</a>
           </li>
           <li {% if page.path contains 'blog' or page.path contains '_posts' %} class="active" {% endif %}>
             <a href="/blog">Blog</a>
