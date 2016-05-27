@@ -29,7 +29,7 @@ Once you've done that, you can start the Jekyll server like this:
 
 ```bash
 bundle install
-bundle exec jekyll serve --watch --baseurl
+bundle exec jekyll serve --watch --baseurl ''
 ```
 
 This will start a local web server on port 4000 where you can browse the site and which re-generates the site if you change the source files.
