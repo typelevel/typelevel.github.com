@@ -28,7 +28,7 @@ gems: [jekyll-paginate]
 collections:
   events:
     output: true
-    permalink: /event/:path/
+    permalink: /event/:year-:month-:title/
     layout: event
   projects:
     output: false
