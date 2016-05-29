@@ -7,9 +7,9 @@ meta:
   author: davegurnell
 ---
 
-As it says in our [code of conduct][code-of-conduct], we are dedicated to creating a harrassment-free, inclusive community of developers. We want to extend this philosophy to the Typelevel Summits in [Philadelphia][philadelphia] and [Oslo][oslo] by providing assistance and bursaries to help speakers and attendees who would otherwise not be able to join us.
+_Update: The summits are over, which means applying for assistance is not possible any longer._
 
-<a class="btn large" href="https://docs.google.com/a/underscoreconsulting.com/forms/d/1hhia7etHm_UT4WnQS7JTyGE03z-2-T1xJGujOkvacjs/viewform">Apply for bursaries / speaker assistance</a>
+As it says in our [code of conduct][code-of-conduct], we are dedicated to creating a harrassment-free, inclusive community of developers. We want to extend this philosophy to the Typelevel Summits in [Philadelphia][philadelphia] and [Oslo][oslo] by providing assistance and bursaries to help speakers and attendees who would otherwise not be able to join us.
 
 ### Bursaries for Speakers and Attendees
 
