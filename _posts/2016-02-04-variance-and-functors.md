@@ -188,7 +188,7 @@ val showContravariant: Contravariant[Show] =
       new Show[B] {
         def show(b: B): String = {
           val a = f(b)
-          fa.show(toShow)
+          fa.show(a)
         }
       }
   }
