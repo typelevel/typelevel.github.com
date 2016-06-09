@@ -226,7 +226,7 @@ The `Semigroup` law requires $+$ to be associative. That is:
 
 <div style="text-align:center;">
 	$(a + b) + c = a + (b + c)$
-</div/>
+</div>
 
 In addition to the `Semigroup` law for the binary operation, the `Monoid` law relates
 $+$ and $0$:
