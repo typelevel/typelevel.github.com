@@ -3,7 +3,7 @@ layout: event
 
 title: "Typelevel Workshop in the Lake District"
 short_title: "Penrith Workshop"
-date_string: "September 13, 2016"
+date_string: "September 14, 2016"
 location: "Rheged Centre, Penrith"
 description: "Talks in the morning & unconference in the afternoon, co-located with Scala World."
 
