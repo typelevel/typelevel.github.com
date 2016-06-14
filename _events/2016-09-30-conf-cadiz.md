@@ -11,6 +11,14 @@ poster_hero: "/img/media/cadiz.jpg"
 poster_thumb: "/img/media/cadiz-thumb.jpg"
 
 location_section: true
+sponsors_section: true
+
+sponsors:
+  - name: "47 Degrees"
+    logo: "/img/media/sponsors/47_degrees.png"
+    link: "http://www.47deg.com/"
+    type: "platinum"
+    height: 100
 
 ---
 
@@ -24,3 +32,9 @@ Stay tuned for details!
 This event will take place at the Palacio de Congresos de Cádiz.
 
 {% include venue_map.html %}
+
+## Sponsors
+
+We'd like to thank all our sponsors who help to make the Summit happen:
+
+{% include sponsors.html %}
