@@ -1,3 +1,4 @@
 source "http://rubygems.org"
 
-gem "github-pages", "80"
+gem "activesupport", "4.2.7"
+gem "github-pages", "87"
