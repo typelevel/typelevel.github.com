@@ -13,6 +13,12 @@ poster_thumb: "/img/media/cadiz-thumb.jpg"
 location_section: true
 sponsors_section: true
 
+schedule:
+
+  - time: "--:--"
+    title: "Your proposal can be the first! :-)"
+
+
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
@@ -25,7 +31,19 @@ sponsors:
 ## About the Conference
 
 A day of Typelevel sessions, co-located with [Lambda World](http://www.lambda.world).
-Stay tuned for details!
+
+On Friday, September 30th,[Lambda World](http://www.lambda.world) will host a Typelevel Unconference during the morning and a few workshops in the afternoon. The day will conclude with a community dinner where attendees can discuss functional concepts while enjoying Flamenco music.
+
+If you're interested in speaking during the Unconference, please send your proposals. We will publish all the submitted talks on the website for review.
+
+<a class="typeform-share btn large" href="https://jorgegalindocruces.typeform.com/to/dTlYCv" data-mode="2" target="_blank">Send your Proposal</a>
+<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
+
+
+## Talks proposals
+
+{% assign schedule=page.schedule %}
+{% include schedule.html %}
 
 ## Venue
 
