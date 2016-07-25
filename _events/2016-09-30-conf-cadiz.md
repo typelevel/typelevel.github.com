@@ -16,9 +16,10 @@ sponsors_section: true
 schedule:
 
   - time: "--:--"
-    title: "Your proposal can be the first! :-)"
-
-
+    title: "Free like the wind and the summer"
+    speakers: ["dialelo"]
+    summary: "Free Monads and Applicatives are being used by functional programmers for writing applications by separating a DSL for the problem domain from the interpreter for such DSL. This allows us to write our application logic in a purely functional way and do the IO and other effectful computations in the interpreters, using a effect-capturing monad when running our programs. Although they bring great benefits in modularity and composability they have their tradeoffs in terms of boilerplate, performance and simplicity. In this talk I'll explain the strengths and weaknesses of Free Monads/Applicatives for writing both applications and libraries, explore the available libraries in Scala for using this technique and provide examples from our real-world uses of Free. I'll also speak about some of the gotchas that you may find when using Free, provide some tips and suggest future work that can benefit everyone using Free structures."
+    
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
