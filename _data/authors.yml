@@ -135,3 +135,12 @@ InTheNow:
   full_name: "Alistair Johnson"
   portrait: "https://avatars3.githubusercontent.com/u/5887373?v=3&s=80"
   bio: "Alistair has been programming for far too long, for far too many companies, but as a dedicated type fan, not long enough in Scala."
+jserranohidalgo:
+  full_name: "Juan Manuel Serrano"
+  portrait: "https://avatars3.githubusercontent.com/u/3715323?v=3&s=80"
+  bio: "Juan Manuel is CTO and co-founder at Habla Computing, a company specializing in functional programming techniques for reactive system development."
+noelmarkham:
+  full_name: "Noel Markham"
+  portrait: "https://avatars2.githubusercontent.com/u/1492487?v=3&s=80"
+  bio: "  Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees
+"

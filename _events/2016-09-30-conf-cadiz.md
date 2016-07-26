@@ -15,11 +15,19 @@ sponsors_section: true
 
 schedule:
 
-  - time: "--:--"
+  - time: ""
     title: "Free like the wind and the summer"
     speakers: ["dialelo"]
     summary: "Free Monads and Applicatives are being used by functional programmers for writing applications by separating a DSL for the problem domain from the interpreter for such DSL. This allows us to write our application logic in a purely functional way and do the IO and other effectful computations in the interpreters, using a effect-capturing monad when running our programs. Although they bring great benefits in modularity and composability they have their tradeoffs in terms of boilerplate, performance and simplicity. In this talk I'll explain the strengths and weaknesses of Free Monads/Applicatives for writing both applications and libraries, explore the available libraries in Scala for using this technique and provide examples from our real-world uses of Free. I'll also speak about some of the gotchas that you may find when using Free, provide some tips and suggest future work that can benefit everyone using Free structures."
-    
+  - time: ""
+    title: "We are reactive! Programming actors as cofree coalgebras"
+    speakers: ["jserranohidalgo"]
+    summary: "Actor-based technologies such as Akka offer powerful abstractions and tools to cope with the increasing levels of scalability and fault tolerance demanded by applications nowadays. However, functional and non-functional concerns are typically intertwined in Akka-based applications. For instance, the functional requirements of a chat application are what they are, regardless of the deployment strategy we may eventually choose: actor systems, web services, javascript clients, etc. To account for optimum levels of modularity, these requirements should be thus completely decoupled from the Akka implementation. In this talk, we show how to exploit coalgebras, arguably one of the most comprehensive techniques for the description of system dynamics, to shape the implementation of functional requirements of reactive systems. Then, we show how actor systems can be obtained as particular machines derived from coalgebraic specifications, i.e. as cofree coalgebras. We illustrate the advantages of this approach concerning testing, reuse and evolvability of the resulting applications. Last, we show the role that categorical duals of coalgebraic notions (namely, algebras, monads, free algebras, etc.) play in the proposed architecture of reactive systems."  
+  - time: ""
+    title: "Using Typelevel to make the most of ScalaCheck"
+    speakers: ["noelmarkham"]
+    summary: "ScalaCheck can be such a powerful tool that sometimes you need to rein in how it operates in order to get the most value, to make your tests as understandable and concise as possible. In the second on my series of ScalaCheck talks, I will discuss the value of adding other Typelevel libraries alongside ScalaCheck, such as Cats, Shapeless, Refined, and a new date/time library, in order to get as much value as possible from this great testing suite without having to make any compromises to quality or coverage."  
+        
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
