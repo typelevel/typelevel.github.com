@@ -5,7 +5,7 @@ title: "Typelevel Community Conference Cádiz"
 short_title: "Cádiz Community Conference"
 date_string: "September 30, 2016"
 location: "Palacio de Congresos de Cádiz"
-description: "Co-located with Lambda World"
+description: "Co-located with Lambda World."
 
 poster_hero: "/img/media/cadiz.jpg"
 poster_thumb: "/img/media/cadiz-thumb.jpg"
