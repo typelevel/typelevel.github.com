@@ -27,7 +27,11 @@ schedule:
     title: "Using Typelevel to make the most of ScalaCheck"
     speakers: ["noelmarkham"]
     summary: "ScalaCheck can be such a powerful tool that sometimes you need to rein in how it operates in order to get the most value, to make your tests as understandable and concise as possible. In the second on my series of ScalaCheck talks, I will discuss the value of adding other Typelevel libraries alongside ScalaCheck, such as Cats, Shapeless, Refined, and a new date/time library, in order to get as much value as possible from this great testing suite without having to make any compromises to quality or coverage."  
-        
+  - time: ""
+    title: "Describe & Compile (with freek)"
+    speakers: ["mandubian"]
+    summary: "Through some basic live coding not requiring any deep theoretical background, we'll demonstrate how we can build a program describing some business logic using very basic Domain Specific Languages (DSL), combining them using Coproducts, Free monads & monadic stacks. Finally, we'll interpret that description of a program into an effectful computation using different kinds of interpreters. For that purpose, we'll use OSS `freek` library that we've developed in the context of Project September in order to simplify a lot the handling of those concepts in scala."  
+                
 sponsors:
   - name: "47 Degrees"
     logo: "/img/media/sponsors/47_degrees.png"
