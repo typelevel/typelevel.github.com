@@ -31,7 +31,7 @@ few others. However, users of Java, C#, F#,
 [Elm](http://elm-lang.org/), and many others may proceed no further,
 and must turn back here.
 
-![Various languages' chapter 11 support](https://canvas-files-prod.s3.amazonaws.com/uploads/1c3546a3-4aa5-4709-af86-9868d5abf5ad/hkt-inflection.png)
+![Various languages' chapter 11 support](/img/media/hkt-inflection.png)
 
 Here is where abstracting over type constructors, or "higher-kinded
 types", comes into play. At this point in the book, you can give up,
