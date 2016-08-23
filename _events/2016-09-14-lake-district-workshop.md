@@ -56,7 +56,7 @@ sense of the gobbledygook and we can continue in a later session.
 #### Pere Villega &mdash; What happens when you use Free Monads
 
 There's a lot of talk about Free Monads and how awesome they are. But, what happens when we try to implement a real
-application using Free? Pere will show ane example ussing [Freek](https://github.com/ProjectSeptemberInc/freek/) and
+application using Free? Pere will show ane example using [Freek](https://github.com/ProjectSeptemberInc/freek/) and
 the [StockFighter API](https://starfighter.readme.io/docs/) and highlight some of the choices and limitations
 involved. Later, during the unconference, we can experiment with Free Monads to see their impact in everyday concerns
 like testing, program design, etc.
