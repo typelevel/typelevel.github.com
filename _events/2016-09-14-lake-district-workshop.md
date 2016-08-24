@@ -45,7 +45,7 @@ Following on from the fix for SI-2712 the Typelevel Scala project has been reinv
 quick overview of what Typelevel Scala adds to Lightbend Scala and set the scene for unconference sessions on using it
 in your projects today and contributing to Typelevel and Lightbend Scala development.
 
-#### Paweł Szulc &mdash; Real World Gobbledygook
+#### Paweł Szulc &mdash; The Cats toolbox: a quick tour of some basic typeclasses
 
 It's happened to all of us: we ran away from some conversation or library because it kept on using those "weird"
 phrases.  You know, like "type classes", "semigroups", "monoids", "applicatives".  Yikes! They all seem so academic,
