@@ -202,8 +202,9 @@ trait BindicTM[+A] {
 }
 ```
 
-Note that we must use higher kinds to support our higher kinds;
-otherwise, we can’t write the return types for `map` and `flatMap`.
+Note that we must use higher-kinded trait type signatures to support
+our higher-kinded method types; otherwise, we can’t write the return
+types for `map` and `flatMap`.
 
 ```scala
 trait BindicBad[F] {
