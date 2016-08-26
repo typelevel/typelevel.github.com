@@ -69,21 +69,21 @@ For example, supposing we have `map` and `flatMap` for a type, we can
 ‘tuple’ the values within.
 
 ```scala
-def tuple[A, B](xs: List[A], ys: List[B]): List[(A, B)] =
-  xs.flatMap{a =>
-    ys.map((a, _))}
+def tuple[A, B](as: List[A], bs: List[B]): List[(A, B)] =
+  as.flatMap{a =>
+    bs.map((a, _))}
     
-def tuple[A, B](xs: Option[A], ys: Option[B]): Option[(A, B)] =
-  xs.flatMap{a =>
-    ys.map((a, _))}
+def tuple[A, B](as: Option[A], bs: Option[B]): Option[(A, B)] =
+  as.flatMap{a =>
+    bs.map((a, _))}
     
-def tuple[E, A, B](xs: Either[E, A], ys: Either[E, B]): Either[E, (A, B)] =
-  xs.flatMap{a =>
-    ys.map((a, _))}
+def tuple[E, A, B](as: Either[E, A], bs: Either[E, B]): Either[E, (A, B)] =
+  as.flatMap{a =>
+    bs.map((a, _))}
     
-def tuple[S, A, B](xs: State[S, A], ys: State[S, B]): State[S, (A, B)] =
-  xs.flatMap{a =>
-    ys.map((a, _))}
+def tuple[S, A, B](as: State[S, A], bs: State[S, B]): State[S, (A, B)] =
+  as.flatMap{a =>
+    bs.map((a, _))}
 ```
 
 *Functional Programming in Scala* contains several such functions,
@@ -109,7 +109,7 @@ functions, or ‘functions as arguments’. For the type constructor, we
 need ‘type-level functions as arguments’.
 
 ```scala
-def tuplef[F[_], A, B](xs: F[A], ys: F[B]): F[(A, B)] = ???
+def tuplef[F[_], A, B](fa: F[A], fb: F[B]): F[(A, B)] = ???
 ```
 
 We’ve handled ‘type constructor as argument’, and will add the
@@ -149,13 +149,13 @@ these substitutions for `tuplef`, we get
 
 ```scala
 // original, as above
-def tuplef[F[_], A, B](xs: F[A], ys: F[B]): F[(A, B)]
+def tuplef[F[_], A, B](fa: F[A], fb: F[B]): F[(A, B)]
 
 // F = List
-def tupleList[A, B](xs: List[A], ys: List[B]): List[(A, B)]
+def tupleList[A, B](fa: List[A], fb: List[B]): List[(A, B)]
 
 // F = Option
-def tupleOpt[A, B](xs: Option[A], ys: Option[B]): Option[(A, B)]
+def tupleOpt[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)]
 ```
 
 More complicated and powerful cases are available with other kinds of
@@ -165,10 +165,10 @@ parameters into the `F` parameter.
 
 ```scala
 // F = Either[E, ...]
-def tupleEither[E, A, B](xs: Either[E, A], ys: Either[E, B]): Either[E, (A, B)]
+def tupleEither[E, A, B](fa: Either[E, A], fb: Either[E, B]): Either[E, (A, B)]
 
 // F = State[S, ...]
-def tupleState[S, A, B](xs: State[S, A], ys: State[S, B]): State[S, (A, B)]
+def tupleState[S, A, B](fa: State[S, A], fb: State[S, B]): State[S, (A, B)]
 ```
 
 Just as with `double`, though this isn’t the whole story of `tuplef`,
@@ -181,7 +181,7 @@ interesting.
 The type of `tuplef` expresses precisely our intent—the idea of
 “multiplying” two `F`s, tupling the values within—but cannot be
 implemented as written. That’s because we don’t have functions that
-operate on `F`-constructed values, like `xs: F[A]` and `ys: F[B]`. As
+operate on `F`-constructed values, like `fa: F[A]` and `fb: F[B]`. As
 with any value of an ordinary type parameter, these are opaque.
 
 In Scala, there are a few ways to pass in the necessary functions. One
@@ -217,9 +217,9 @@ implicitly convert to `Bindic`, such as `List[+A] extends
 Bindic[List, A]`, and write `tuplef` as follows.
 
 ```scala
-def tupleBindic[F[_], A, B](xs: Bindic[F, A], ys: Bindic[F, B]): F[(A, B)] =
-  xs.flatMap{a =>
-    ys.map((a, _))}
+def tupleBindic[F[_], A, B](fa: Bindic[F, A], fb: Bindic[F, B]): F[(A, B)] =
+  fa.flatMap{a =>
+    fb.map((a, _))}
 ```
 
 ## Escaping two bad choices
@@ -258,7 +258,7 @@ generic function. Luckily, we have a Wadler-made alternative.
 
 To constrain `F` to types with the `flatMap` and `map` we need, we use
 typeclasses instead. For `tuplef`, that means we leave `F` abstract,
-and leave the types of `xs` and `ys` as well as the return type
+and leave the types of `fa` and `fb` as well as the return type
 unchanged, but add an implicit argument, the “typeclass instance”,
 which is a first-class representation of the `map` and `flatMap`
 operations.
@@ -278,10 +278,10 @@ Then we define instances for the types we’d like to have this on:
 Now we just add the argument to `tuplef`.
 
 ```scala
-def tupleTC[F[_], A, B](xs: F[A], ys: F[B])
+def tupleTC[F[_], A, B](fa: F[A], fb: F[B])
            (implicit F: Bind[F]): F[(A, B)] =
-  F.flatMap(xs){a =>
-    F.map(ys)((a, _))}
+  F.flatMap(fa){a =>
+    F.map(fb)((a, _))}
 ```
 
 We typically mirror the typeclass operations back to methods with an
