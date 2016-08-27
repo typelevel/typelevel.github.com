@@ -165,10 +165,12 @@ parameters into the `F` parameter.
 
 ```scala
 // F = Either[E, ...]
-def tupleEither[E, A, B](fa: Either[E, A], fb: Either[E, B]): Either[E, (A, B)]
+def tupleEither[E, A, B](fa: Either[E, A], fb: Either[E, B])
+    : Either[E, (A, B)]
 
 // F = State[S, ...]
-def tupleState[S, A, B](fa: State[S, A], fb: State[S, B]): State[S, (A, B)]
+def tupleState[S, A, B](fa: State[S, A], fb: State[S, B])
+    : State[S, (A, B)]
 ```
 
 Just as with `double`, though this isn’t the whole story of `tuplef`,
@@ -190,12 +192,12 @@ a higher-kinded type parameter or abstract type constructor. Here are
 a couple possibilities.
 
 ```scala
-trait Bindic[F[_], +A] {
+trait Bindable[F[_], +A] {
   def map[B](f: A => B): F[B]
   def flatMap[B](f: A => F[B]): F[B]
 }
 
-trait BindicTM[+A] {
+trait BindableTM[+A] {
   type F[X]
   def map[B](f: A => B): F[B]
   def flatMap[B](f: A => F[B]): F[B]
@@ -207,24 +209,25 @@ our higher-kinded method types; otherwise, we can’t write the return
 types for `map` and `flatMap`.
 
 ```scala
-trait BindicBad[F] {
+trait BindableBad[F] {
   def map[B](f: A => B): F ???
             // where is the B supposed to go?
 ```
 
 Now we make every type we’d like to support either inherit from or
-implicitly convert to `Bindic`, such as `List[+A] extends
-Bindic[List, A]`, and write `tuplef` as follows.
+implicitly convert to `Bindable`, such as `List[+A] extends
+Bindable[List, A]`, and write `tuplef` as follows.
 
 ```scala
-def tupleBindic[F[_], A, B](fa: Bindic[F, A], fb: Bindic[F, B]): F[(A, B)] =
+def tupleBindable[F[_], A, B](fa: Bindable[F, A], fb: Bindable[F, B])
+    : F[(A, B)] =
   fa.flatMap{a =>
     fb.map((a, _))}
 ```
 
 ## Escaping two bad choices
 
-There are two major problems with `Bindic`’s representation of `map`
+There are two major problems with `Bindable`’s representation of `map`
 and `flatMap`, ensuring its wild unpopularity in the Scala functional
 community, though it still appears in some places, such as
 [in Ermine](https://github.com/ermine-language/ermine-parser/blob/cc77bf6e150a16129744d18d69022f7b5902814f/src/main/scala/scalaparsers/Monadic.scala).
@@ -238,17 +241,17 @@ community, though it still appears in some places, such as
    the method type parameters above.
 2. The knowledge required to work out the new type signature above is
    excessively magical. There are rules about when implicit conversion
-   happens, how much duplication of the reference to `Bindic` is
+   happens, how much duplication of the reference to `Bindable` is
    required to have the `F` parameter infer correctly, and even how
-   many calls to `Bindic` methods are performed. For example, we’d
-   have to declare the `F` parameter as `F[X] <: Bindic[F, X]` if we
+   many calls to `Bindable` methods are performed. For example, we’d
+   have to declare the `F` parameter as `F[X] <: Bindable[F, X]` if we
    did one more trailing `map` call. But then we wouldn’t support
    implicit conversion cases anymore, so we’d have to do something
    else, too.
 
 As a result of all this magic, generic functions over higher kinds
 with OO-style operations tend to be ugly; note how much `tuplef`
-looked like the `List`-specific type, and how little `tupleBindic`
+looked like the `List`-specific type, and how little `tupleBindable`
 looks like either of them.
 
 But we still really, really want to be able to write this kind of
@@ -285,7 +288,7 @@ def tupleTC[F[_], A, B](fa: F[A], fb: F[B])
 ```
 
 We typically mirror the typeclass operations back to methods with an
-implicit conversion—unlike with `Bindic`, this has no effect on
+implicit conversion—unlike with `Bindable`, this has no effect on
 exposed APIs, so is benign. Then, we can remove the `implicit F`
 argument, replacing it by writing `F[_]: Bind` in the type argument
 list, and write the method body as it has been written before, with
