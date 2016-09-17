@@ -53,7 +53,7 @@ confusing data in the way.
 
 ## It can be covariant
 
-The rule for a type parameter being parametrically covariant says we
+The rule for a type parameter being parametrically covariant says we
 have to look at all the positions in the data where the type parameter
 occurs; if every one of them is a covariant position, then the type
 parameter may be marked covariant. Consider a simplified version of
@@ -89,7 +89,7 @@ consideration is empty.
 2. Every element of set **S** is a dog.
 3. No element of set **S** is a dog.
 
-2 and 3 can be true at the same time, but only if 1 is true, too. So
+2 and 3 can be true at the same time, but only if 1 is true, too. So
 let us mark `P` contravariant, in a renamed ADT.
 
 ```scala
@@ -101,8 +101,8 @@ case object UnInt extends Gotme[Int]
 ## The usual relationships
 
 Since you can choose any variance for phantom parameters, the
-important question is: what kind of type relationships should exist
-within my ADT?
+important question is: what kind of type relationships should
+exist within my ADT?
 
 At first, this seems to be merely a question of how values of `Gimme`
 and `Gotme` types ought to widen.
@@ -114,13 +114,13 @@ and `Gotme` types ought to widen.
 
 Obviously, if neither of these behaviors—the 1/3 nor the 2/4—is
 desirable, you shouldn't use variance. In my experience, this is the
-case for most phantom types. If one is desirable, then it may be fine,
+case for most phantom types. If one is desirable, then it may be fine,
 but there's more to consider.
 
 ## Extracting the covariant
 
 Pattern-matching on the covariant `Gimme` reveals fully safe type
-information. Unlike `ClassTag` and `TypeTag`, which are egregiously
+information. Unlike `ClassTag` and `TypeTag`, which are egregiously
 broken for this use case, this method of carrying type information
 forward into runtime is closed and Scalazzi-safe.
 
@@ -155,8 +155,8 @@ Things do not work out so well for all such functions.
 
 ## Extracting the contravariant
 
-Matching on the contravariant `Gotme` likewise reveals fully safe type
-information.
+Matching on the contravariant `Gotme` likewise reveals fully safe
+type information.
 
 ```scala
 def mklength[P](g: Gotme[P]): P => Int = g match {
@@ -180,17 +180,17 @@ which only works for the covariant form. That's because
 In the covariant form, we knew that every `String` was a `P`. In this
 code, we know instead that every `P` is a `String`. Functions that can
 handle any `String` are thus able to handle any `P`, logically, so the
-type `String => Int` widens to `P => Int`.
+type `String => Int` widens to `P => Int`.
 
 ## Extracting the invariant
 
-`gimme` would not work with the contravariant GADT; likewise,
-`mklength` would not work with the covariant GADT.
+`gimme` would not work with the contravariant GADT; likewise,
+`mklength` would not work with the covariant GADT.
 
 An invariant GADT supports both, as well as some supported by
-neither. For example, we could produce a `(P, P) => P` from a pattern
+neither. For example, we could produce a `(P, P) => P` from a pattern
 match. We can do this because the equivalent of `AStr` for invariant
-`Gimme` tells us `P = String`, so all three `implicitly` checks
+`Gimme` tells us `P = String`, so all three `implicitly` checks
 succeed.
 
 From the behavior of pattern matching over these three sorts of GADTs,
@@ -205,8 +205,8 @@ I take away two lessons about variance in Scala.
 
 ## A GADT skolem
 
-The “reverse widening” of pattern matching lifts the veil on one of
-the more confusing references in type errors, a “GADT skolem”.
+The “reverse widening” of pattern matching lifts the veil on one of
+the more confusing references in type errors, a “GADT skolem”.
 
 ```scala
 def uncons[A](as: List[A]): Option[::[A]] = as match {
@@ -238,9 +238,8 @@ Constructing `MyCons[String]`, here's what can happen.
 
 So in this code, we cannot reverse `MyList[A]` down to
 `MyCons[A]`. But we *can* get `MyList[L]`, where `L` is an otherwise
-mysterious subtype of `A`. `L` is the “GADT skolem”, similar to `?A1`
-in the above compiler error. The difference is that this code
-compiles.
+mysterious subtype of `A`. `L` is the GADT skolem, similar to `?A1` in
+the above compiler error. The difference is that this code compiles.
 
 ```scala
 def drop1[A](as: MyList[A]): MyList[A] =
@@ -256,10 +255,10 @@ def drop1[A](as: MyList[A]): MyList[A] =
 ## `MyList`'s type parameter is a phantom
 
 We saw earlier that variance has a strong influence on the usability
-of pattern matching. `MyList` has something important in common with
+of pattern matching. `MyList` has something important in common with
 `Gimme`: the class definition does not use `A`, it only *defines*
 it. So the scalac-enforced variance rules do not apply, and we can
-make `MyList` contravariant instead.
+make `MyList` contravariant instead.
 
 ```scala
 sealed abstract class BadList[-A]
@@ -301,8 +300,8 @@ supertype instead of subtype. So
 2. `A <: U`,
 3. we're stuck; there is no `A` value.
 
-This is not to imply something as silly as “covariance good,
-contravariance bad”; you can just as well get these errors by marking
+This is not to imply something as silly as “covariance good,
+contravariance bad”; you can just as well get these errors by marking
 a parameter covariant that can only meaningfully be marked
 contravariant. If anything, contravariance is more important than
 covariance. The problem you must face is that the compiler is less
@@ -326,7 +325,7 @@ case object BooStr extends BooGimme[String]
 case object BooInt extends BooGimme[Int]
 ```
 
-The trouble with letting the compiler infer covariance or
+The trouble with letting the compiler infer covariance or
 contravariance is that, on the face of it, either is as good as the
 other. With phantom, we choose both.
 
@@ -338,13 +337,13 @@ But this variance makes the GADT utterly useless. Consider how
    there are no conditions this time! `P` can be anything at all and
    the widen will still work.
 
-The match tells us nothing about the type parameter; all three of the
+The match tells us nothing about the type parameter; all three of the
 type relationship checks via `implicitly` from the examples above
 fail. We maximize the flexibility of the type parameter at the cost of
 making GADT pattern matching impossible.
 
 Likewise, if you mark `MyList[A]`'s type parameter phantom, there are
-no bounds on the GADT skolem, so there's little you can do with the
+no bounds on the GADT skolem, so there's little you can do with the
 elements of the list.
 
 ## The case for invariance
@@ -362,9 +361,9 @@ contrary, we have seen that
 
 Even if variance is applicable to your datatype, these costs, and the
 cost of the additional complexity burden, should give you pause. Yet,
-I stand by the claim I made in “The missing diamond of Scala
-variance”: subtyping is incomplete without variance, so if variance is
-too complicated, so is subtyping.
+I stand by the claim I made in “The missing diamond
+of Scala variance”: subtyping is incomplete without variance, so if
+variance is too complicated, so is subtyping.
 
 I don't think subtyping—and its necessary component, variance—are too
 complex for the working programmer to understand. Indeed, it can be a
