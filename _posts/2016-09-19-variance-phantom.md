@@ -346,7 +346,7 @@ Likewise, if you mark `MyList[A]`’s type parameter phantom, there are
 no bounds on the GADT skolem, so there’s little you can do with the
 elements of the list.
 
-## The case for invariance
+## The case for choosing no variance
 
 My `scalac` error message pet peeve is the one suggesting that you
 should add a variance annotation. This message treats the addition of
