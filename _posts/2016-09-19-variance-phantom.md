@@ -9,8 +9,11 @@ meta:
 ---
 
 When you use a type parameter to abstract over actual data in your
-ADT, there is typically only one variance that makes sense, if you
-choose to incorporate subtyping into your designs at all.
+ADT, there is typically only one
+[variance]({% post_url 2016-02-04-variance-and-functors %}) that makes
+sense, if you choose to incorporate subtyping into your designs at
+all. This is
+[the natural, “parametrically sound” variance]({% post_url 2014-03-09-liskov_lifting %}#parametrically-sound-covariance).
 
 ```scala
 sealed abstract class MyModel[P, I, -T, +V]
@@ -35,8 +38,9 @@ illustrated above.
 4. `P` meets *both* standards 1 and 2, so…now what?
 
 The fourth case is interesting to me, firstly, because the design of
-variance in Scala has not accounted for it; it is “phantom”, the
-missing fourth variance. I like to write it as I did in
+variance in Scala has not accounted for it; it is “phantom”,
+[the missing fourth variance]({% post_url 2016-02-04-variance-and-functors %}#one-more-thing).
+I like to write it as I did in
 [“The missing diamond of Scala variance”](https://failex.blogspot.com/2016/09/the-missing-diamond-of-scala-variance.html):
 
 ```scala
@@ -49,10 +53,11 @@ confusing data in the way.
 
 ## It can be covariant
 
-The rule for a type parameter being covariant says we have to look at
-all the positions in the data where the type parameter occurs; if
-every one of them is a covariant position, then the type parameter may
-be marked covariant. Consider a simplified version of `MyModel`.
+The rule for a type parameter being parametrically covariant says we
+have to look at all the positions in the data where the type parameter
+occurs; if every one of them is a covariant position, then the type
+parameter may be marked covariant. Consider a simplified version of
+`MyModel`.
 
 ```scala
 sealed abstract class Gimme[P]
@@ -305,14 +310,15 @@ helpful in determining what “meaningful” marking, if any, should be
 applied.
 
 `MyModel`, from the beginning of this article, demonstrates three
-situations in which each supported variance is “natural”. You may use
-it as a guide, but its sanity is not compiler-checked. Variance
+situations in which each supported variance is natural. You may use it
+as a guide, but its sanity is not compiler-checked. Your variances’
 sanity, or lack thereof, only becomes apparent when implementing
 practical functions over a datatype.
 
 ## Extracting the phantom
 
-Suppose the phantom variance was defined, and we revisit the `String`-and-`Int` GADT one more time.
+Suppose the phantom variance was defined, and we revisit the
+`String`-and-`Int` GADT one more time.
 
 ```scala
 sealed abstract class BooGimme[👻P]
