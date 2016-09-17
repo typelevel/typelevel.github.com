@@ -122,7 +122,8 @@ but there’s more to consider.
 Pattern-matching on the covariant `Gimme` reveals fully safe type
 information. Unlike `ClassTag` and `TypeTag`, which are egregiously
 broken for this use case, this method of carrying type information
-forward into runtime is closed and Scalazzi-safe.
+forward into runtime is closed and
+[Scalazzi](https://imgur.com/a04WoHn)-safe.
 
 What type information is revealed?
 
