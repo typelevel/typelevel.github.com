@@ -32,12 +32,12 @@ illustrated above.
    contravariant.
 3. `I` occurs in a pattern that meets neither of standards 1 and 2, so
    may only be marked invariant, while still making sense.
-4. `P` meets *both* standards 1 and 2, so...now what?
+4. `P` meets *both* standards 1 and 2, so…now what?
 
 The fourth case is interesting to me, firstly, because the design of
-variance in Scala has not accounted for it; it is "phantom", the
+variance in Scala has not accounted for it; it is “phantom”, the
 missing fourth variance. I like to write it as I did in
-["The missing diamond of Scala variance"](https://failex.blogspot.com/2016/09/the-missing-diamond-of-scala-variance.html):
+[“The missing diamond of Scala variance”](https://failex.blogspot.com/2016/09/the-missing-diamond-of-scala-variance.html):
 
 ```scala
 sealed abstract class MyModel[👻P, I, -T, +V]
@@ -61,7 +61,7 @@ case object AnInt extends Gimme[Int]
 ```
 
 The type parameter `P` appears in no positions, so it vacuously
-satisfies the requirement "every occurrence is in covariant position".
+satisfies the requirement “every occurrence is in covariant position”.
 
 So let us mark `P` covariant.
 
@@ -77,7 +77,7 @@ type parameter: if every occurrence is in contravariant position, then
 the type parameter may be contravariant.
 
 This rule seems to be contradict the rule for covariance, except that
-all "every" statements are always true when the set under
+all “every” statements are always true when the set under
 consideration is empty.
 
 1. Set **S** is empty.
@@ -107,7 +107,7 @@ and `Gotme` types ought to widen.
 3. every `Gimme[Nothing]` is a `Gimme[T]` no matter what `T` is, and
 4. every `Gotme[Any]` is a `Gotme[T]` no matter what `T` is.
 
-Obviously, if neither of these behaviors---the 1/3 or the 2/4---is
+Obviously, if neither of these behaviors—the 1/3 nor the 2/4—is
 desirable, you shouldn't use variance. In my experience, this is the
 case for most phantom types. If one is desirable, then it may be fine,
 but there's more to consider.
@@ -200,8 +200,8 @@ I take away two lessons about variance in Scala.
 
 ## A GADT skolem
 
-The "reverse widening" of pattern matching lifts the veil on one of
-the more confusing references in type errors, a "GADT skolem".
+The “reverse widening” of pattern matching lifts the veil on one of
+the more confusing references in type errors, a “GADT skolem”.
 
 ```scala
 def uncons[A](as: List[A]): Option[::[A]] = as match {
@@ -215,7 +215,7 @@ def uncons[A](as: List[A]): Option[::[A]] = as match {
 }
 ```
 
-These "GADT skolems" appear all the time in sensible, compiling
+These “GADT skolems” appear all the time in sensible, compiling
 code. Take a `List` with some variance carelessly tossed in.
 
 ```scala
@@ -233,7 +233,7 @@ Constructing `MyCons[String]`, here's what can happen.
 
 So in this code, we cannot reverse `MyList[A]` down to
 `MyCons[A]`. But we *can* get `MyList[L]`, where `L` is an otherwise
-mysterious subtype of `A`. `L` is the "GADT skolem", similar to `?A1`
+mysterious subtype of `A`. `L` is the “GADT skolem”, similar to `?A1`
 in the above compiler error. The difference is that this code
 compiles.
 
@@ -296,16 +296,16 @@ supertype instead of subtype. So
 2. `A <: U`,
 3. we're stuck; there is no `A` value.
 
-This is not to imply something as silly as "covariance good,
-contravariance bad"; you can just as well get these errors by marking
+This is not to imply something as silly as “covariance good,
+contravariance bad”; you can just as well get these errors by marking
 a parameter covariant that can only meaningfully be marked
 contravariant. If anything, contravariance is more important than
 covariance. The problem you must face is that the compiler is less
-helpful in determining what "meaningful" marking, if any, should be
+helpful in determining what “meaningful” marking, if any, should be
 applied.
 
 `MyModel`, from the beginning of this article, demonstrates three
-situations in which each supported variance is "natural". You may use
+situations in which each supported variance is “natural”. You may use
 it as a guide, but its sanity is not compiler-checked. Variance
 sanity, or lack thereof, only becomes apparent when implementing
 practical functions over a datatype.
@@ -328,7 +328,7 @@ But this variance makes the GADT utterly useless. Consider how
 `BooStr` becomes `BooGimme[P]`.
 
 1. `BooStr` widens to `BooGimme[String]`.
-2. `BooGimme[String]` can widen to `BooGimme[P]` where `P` is...oops,
+2. `BooGimme[String]` can widen to `BooGimme[P]` where `P` is…oops,
    there are no conditions this time! `P` can be anything at all and
    the widen will still work.
 
@@ -345,7 +345,7 @@ elements of the list.
 
 My `scalac` error message pet peeve is the one suggesting that you
 should add a variance annotation. This message treats the addition of
-variance like a mechanical change: "if it compiles, it works". On the
+variance like a mechanical change: “if it compiles, it works”. On the
 contrary, we have seen that
 
 1. The flexibility of variance costs flexibility elsewhere;
@@ -356,13 +356,13 @@ contrary, we have seen that
 
 Even if variance is applicable to your datatype, these costs, and the
 cost of the additional complexity burden, should give you pause. Yet,
-I stand by the claim I made in "The missing diamond of Scala
-variance": subtyping is incomplete without variance, so if variance is
+I stand by the claim I made in “The missing diamond of Scala
+variance”: subtyping is incomplete without variance, so if variance is
 too complicated, so is subtyping.
 
-I don't think subtyping---and its necessary component, variance---are
-too complex for the working programmer to understand. Indeed, it can
-be a fascinating exercise, with plenty of practical implications.
+I don't think subtyping—and its necessary component, variance—are too
+complex for the working programmer to understand. Indeed, it can be a
+fascinating exercise, with plenty of practical implications.
 
 But, to me, the consequence of working out such exercises is that
 neither variance nor subtyping ought to be used in the design of
