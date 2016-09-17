@@ -113,9 +113,9 @@ and `Gotme` types ought to widen.
 4. every `Gotme[Any]` is a `Gotme[T]` no matter what `T` is.
 
 Obviously, if neither of these behaviors—the 1/3 nor the 2/4—is
-desirable, you shouldn't use variance. In my experience, this is the
+desirable, you shouldn’t use variance. In my experience, this is the
 case for most phantom types. If one is desirable, then it may be fine,
-but there's more to consider.
+but there’s more to consider.
 
 ## Extracting the covariant
 
@@ -137,14 +137,14 @@ def gimme[P](g: Gimme[P]): (P, P) = g match {
 }
 ```
 
-If we left `Gimme`'s type parameter invariant, all three tests above
+If we left `Gimme`’s type parameter invariant, all three tests above
 would succeed. In the case of this code, on the other hand,
 
 1. `AStr.type` (the type of `AStr`) widens to `Gimme[String]`,
 2. `Gimme[String]` can widen to `Gimme[P]` as long as `P` is a
    *supertype* of `String`.
 
-Because we're reversing this process, we have to assume that #2 could
+Because we’re reversing this process, we have to assume that #2 could
 have happened.
 
 The expression `("hi", "there")` still compiles because `P`, while
@@ -171,7 +171,7 @@ def mklength[P](g: Gotme[P]): P => Int = g match {
 
 Now `P <:< String`, which failed for the covariant form but succeeds
 for the contravariant. On the other hand, we lost `String <:< P`,
-which only works for the covariant form. That's because
+which only works for the covariant form. That’s because
 
 1. `UnStr.type` widens to `Gotme[String]`;
 2. `Gotme[String]` can widen to `Gotme[P]` as long as `P` is a
@@ -201,7 +201,7 @@ I take away two lessons about variance in Scala.
    ought to be possible to write.
 2. The type flexibility of a generic type with variance comes at the
    cost of decreased flexibility in pattern-matching
-   code. [There ain't no such thing as a free lunch.](https://en.wikipedia.org/wiki/TANSTAAFL)
+   code. [There ain’t no such thing as a free lunch.](https://en.wikipedia.org/wiki/TANSTAAFL)
 
 ## A GADT skolem
 
@@ -230,7 +230,7 @@ final case class MyCons[A](head: A, tail: MyList[A])
 case object MyNil extends MyList[Nothing]
 ```
 
-Constructing `MyCons[String]`, here's what can happen.
+Constructing `MyCons[String]`, here’s what can happen.
 
 1. `MyCons[String]` widens to `MyList[String]`.
 2. `MyList[String]` can widen to `MyList[U]` for any supertype `U` of
@@ -252,7 +252,7 @@ def drop1[A](as: MyList[A]): MyList[A] =
   }
 ```
 
-## `MyList`'s type parameter is a phantom
+## `MyList`’s type parameter is a phantom
 
 We saw earlier that variance has a strong influence on the usability
 of pattern matching. `MyList` has something important in common with
@@ -298,7 +298,7 @@ supertype instead of subtype. So
 
 1. `hd: U` (`U` is a GADT skolem),
 2. `A <: U`,
-3. we're stuck; there is no `A` value.
+3. we’re stuck; there is no `A` value.
 
 This is not to imply something as silly as “covariance good,
 contravariance bad”; you can just as well get these errors by marking
@@ -342,8 +342,8 @@ type relationship checks via `implicitly` from the examples above
 fail. We maximize the flexibility of the type parameter at the cost of
 making GADT pattern matching impossible.
 
-Likewise, if you mark `MyList[A]`'s type parameter phantom, there are
-no bounds on the GADT skolem, so there's little you can do with the
+Likewise, if you mark `MyList[A]`’s type parameter phantom, there are
+no bounds on the GADT skolem, so there’s little you can do with the
 elements of the list.
 
 ## The case for invariance
@@ -354,7 +354,7 @@ variance like a mechanical change: “if it compiles, it works”. On the
 contrary, we have seen that
 
 1. The flexibility of variance costs flexibility elsewhere;
-2. the compiler cannot predict how this might harm your APIs'
+2. the compiler cannot predict how this might harm your APIs’
    practicality;
 3. the semantics of pattern matching are more complex in the face of
    variance.
@@ -365,7 +365,7 @@ I stand by the claim I made in “The missing diamond
 of Scala variance”: subtyping is incomplete without variance, so if
 variance is too complicated, so is subtyping.
 
-I don't think subtyping—and its necessary component, variance—are too
+I don’t think subtyping—and its necessary component, variance—are too
 complex for the working programmer to understand. Indeed, it can be a
 fascinating exercise, with plenty of practical implications.
 
