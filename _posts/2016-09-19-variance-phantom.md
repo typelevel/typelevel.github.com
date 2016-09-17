@@ -376,3 +376,5 @@ practical programs, especially when higher-kinded type parameters and
 members are available, offering far more flexibility at a better
 price. There is no need to struggle in the face of all-too-often
 missing features.
+
+*This article was tested with Scala 2.11.8.*
