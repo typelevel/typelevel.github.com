@@ -129,8 +129,8 @@ What type information is revealed?
 ```scala
 def gimme[P](g: Gimme[P]): (P, P) = g match {
   case AStr =>
-    // implicitly[P =:= String]   both
-    // implicitly[P <:< String]   fail
+    // implicitly[P =:= String]   will fail
+    // implicitly[P <:< String]   will fail
     implicitly[String <:< P]
     ("hi", "there")
   case AnInt => (42, 84)
