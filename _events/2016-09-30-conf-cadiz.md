@@ -28,9 +28,9 @@ schedule:
     speakers: ["noelmarkham"]
     summary: "ScalaCheck can be such a powerful tool that sometimes you need to rein in how it operates in order to get the most value, to make your tests as understandable and concise as possible. In the second on my series of ScalaCheck talks, I will discuss the value of adding other Typelevel libraries alongside ScalaCheck, such as Cats, Shapeless, Refined, and a new date/time library, in order to get as much value as possible from this great testing suite without having to make any compromises to quality or coverage."  
   - time: ""
-    title: "Describe & Compile (with freek)"
-    speakers: ["mandubian"]
-    summary: "Through some basic live coding not requiring any deep theoretical background, we'll demonstrate how we can build a program describing some business logic using very basic Domain Specific Languages (DSL), combining them using Coproducts, Free monads & monadic stacks. Finally, we'll interpret that description of a program into an effectful computation using different kinds of interpreters. For that purpose, we'll use OSS `freek` library that we've developed in the context of Project September in order to simplify a lot the handling of those concepts in scala."  
+    title: "Bypassing free monads with object algebras	"
+    speakers: ["javierfuentes"]
+    summary: "Free monads do a great job at representing monadic programs in a purely declarative fashion, without forcing us to commit to particular interpretations. Similarly, they enable a highly modular approach for effect composition through functor coproducts. However, in order to achieve these goodies, programmers will be faced with a major challenge, namely, a deep understanding of GADTs, natural transformations, higher-kinded coproducts, Scala's implicits machinery, etc. We advocate using object algebras to obtain the very same benefits of free monads, at a significant lower cost in terms of entry barriers for novice programmers. We report on our experience at using object algebras in several functional programming courses, and show how both approaches may coexist. Finally, we compare free monads and object algebra encodings from the perspective of initial algebras, and show how to leverage Church encodings to implement non-compositional interpreters of generic monadic programs using pattern matching - without using ADTs at all. In sum, we conclude both approaches to be functionally identical, and point to non-functional differences between them in terms of efficiency, modularity and understandability."  
                 
 sponsors:
   - name: "47 Degrees"
@@ -38,7 +38,22 @@ sponsors:
     link: "http://www.47deg.com/"
     type: "platinum"
     height: 100
-
+  - name: "The Workshop"
+    logo: "http://www.lambda.world/img/partners/logo-TheWorkshop.png"
+    link: "http://www.theworkshop.com/"
+    type: "gold"
+    height: 50
+  - name: "Ciklum"
+    logo: "http://www.lambda.world/img/partners/logo-Ciklum.png"
+    link: "https://www.ciklum.com/"
+    type: "silver"
+    height: 50
+  - name: "Workday"
+    logo: "http://www.lambda.world/img/partners/logo-workday.svg"
+    link: "https://www.workday.com/"
+    type: "silver"
+    height: 50
+    
 ---
 
 ## About the Conference
