@@ -292,7 +292,6 @@ the cost of needing an import at use sites to bring the implicits into scope.
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
-// defined trait Functor
 
 trait Applicative[F[_]] {
   def functor: Functor[F]
@@ -300,15 +299,12 @@ trait Applicative[F[_]] {
   def pure[A](a: A): F[A]
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 }
-// defined trait Applicative
 
 trait Traverse[F[_]] { def functor: Functor[F] }
-// defined trait Traverse
 
 implicit class FunctorOps[F[_], A](fa: F[A])(implicit F: Functor[F]) {
   def map[B](f: A => B): F[B] = F.map(fa)(f)
 }
-// defined class FunctorOps
 
 // Separate from type class definitions
 
@@ -316,16 +312,13 @@ trait FunctorConversions1 {
   implicit def applicativeIsFunctor[F[_]: Applicative]: Functor[F] =
     implicitly[Applicative[F]].functor
 }
-// defined trait FunctorConversions1
 
 trait FunctorConversions0 extends FunctorConversions1 {
   implicit def traverseIsFunctor[F[_]: Traverse]: Functor[F] =
     implicitly[Traverse[F]].functor
 }
-// defined trait FunctorConversions0
 
 object Prelude extends FunctorConversions0
-// defined object Prelude
 ```
 
 ```scala
