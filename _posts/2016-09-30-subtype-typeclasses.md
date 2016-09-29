@@ -365,7 +365,7 @@ trait Applicative[F[_]] extends Functor[F] {
 
 trait Monad[F[_]] extends Applicative[F]
 
-trait Traverse[F[_]] { def applicative: Applicative[F] }
+trait Traverse[F[_]] { def functor: Functor[F] }
 
 def foo[F[_]: Applicative: Traverse]: F[Int] =
   implicitly[Applicative[F]].pure(10).map(identity)
