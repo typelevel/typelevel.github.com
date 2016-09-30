@@ -225,7 +225,7 @@ def foo[F[_]: Applicative: Traverse]: F[Int] =
 //                                                  ^
 ```
 
-Since both implicit conversions have same [priority][implicits], the compiler
+Since both implicits have equal priority, the compiler
 doesn't know which one to pick. **However**, Scala has mechanisms for
 [prioritizing implicits][implicits] which solves the problem.
 
