@@ -8,10 +8,10 @@ meta:
   pygments: true
 ---
 
-## Problem
-
 The common encoding of type classes in Scala relies on subtyping. This singular
 fact gives us a certain cleanliness in the code, but at what cost?
+
+## Problem
 
 Consider the following hierarchy of type classes. A similar hierarchy can be
 found in both [Cats][cats] and [Scalaz 7][scalaz7].
@@ -76,8 +76,9 @@ We're already in trouble. In order to call `map` we need `F` to have a
 our encoding of type classes uses subtyping, a `Monad[F]` **is a** `Functor[F]`.
 Similarly, a `Traverse[F]` **is a** `Functor[F]`. When implicit resolution
 attempts to find a `Functor[F]`, it can't decide between `Monad[F]`'s or
-`Traverse[F]`'s and bails out. Even though the instances may be, and arguably
-should be, the same, the compiler has no way of knowing that.
+`Traverse[F]`'s and bails out. Even though the instances may be,
+[and arguably should be][tcVsWorld], the same, the compiler has no way of
+knowing that.
 
 This problem generalizes to anytime the compiler decides an implicit is ambiguous,
 such as method calls.
@@ -273,8 +274,8 @@ object Prioritized { // needed for tut, irrelevant to demonstration
 }
 ```
 
-The trick is to use trait linearization which gives the effect of implicits
-in subtypes having lower priority than those in supertypes. Here this means
+Because implicit resolution treats implicits in subtypes with higher priority,
+we can organize conversions appropriately to prevent ambiguity. Here this means
 that `applicativeIsFunctor` has lower priority than `traverseIsFunctor`, so
 when both `Applicative` and `Traverse` instances are in scope and the compiler
 is looking for a `Functor`, `traverseIsFunctor` wins.
@@ -400,3 +401,4 @@ the Scato encoding for Scalaz 8 can be found [here][scatoScalaz].
 [scato]: https://github.com/aloiscochard/scato "Scato"
 [scatoScalaz]: https://github.com/scalaz/scalaz/issues/1084 "[scalaz8] Subtyping-free encoding for typeclasses"
 [tut]: https://github.com/tpolecat/tut "tut: doc/tutorial generator for scala"
+[tcVsWorld]: https://www.youtube.com/watch?v=hIZxTQP1ifo "Edward Kmett - Type Classes vs. the World"
