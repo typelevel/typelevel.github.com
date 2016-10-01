@@ -373,13 +373,13 @@ def foo[F[_]: Applicative: Traverse]: F[Int] =
 ```
 
 This works, but is even messier than the alternatives. We have to
-decide which type classes get to live in the subtype hierachy and which are
+decide which type classes get to live in the subtype hierarchy and which are
 doomed (blessed?) to express the relationship with members. But maybe the
 pros outweigh the cons. Pull requests with this change have been filed for
 [Cats][fixCats] and [Scalaz 7.3][fixScalaz].
 
 I'm not convinced that the story is over though. Maybe there's another solution
-yet to be discovered. If you find it, please let me know :-)
+yet to be discovered.
 
 For further reading, there are open tickets for both [Cats][issueCats] and
 [Scalaz 7][issueScalaz] documenting the subtyping problem. A discussion around
