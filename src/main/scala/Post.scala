@@ -25,6 +25,7 @@ case class Post(file: File) {
   def process(): Unit =
     if (outdated()) {
       println(s"[blog] Processing ${file.getName} ...")
+      BuildInfo.tutOutput.mkdirs()
 
       frontMatter match {
         case Some(FrontMatter(tut)) => 
