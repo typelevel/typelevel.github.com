@@ -6,3 +6,6 @@ Gemfile.lock
 /vendor/bundle
 css/main.css
 .sass-cache
+target
+_posts
+.deploy
