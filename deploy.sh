@@ -26,5 +26,5 @@ cp -r _posts .deploy
 
 cd .deploy
 git add -A -f
-git commit -m "Update site at $(date --rfc-2822 -u)" --allow-empty
+git commit -m "Update site at $(date --rfc-2822 -u) based on $TRAVIS_COMMIT" --allow-empty
 git push
