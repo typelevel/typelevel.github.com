@@ -24,18 +24,18 @@ case class Post(file: File) {
 
   def process(): Unit =
     if (outdated()) {
-      println(s"Processing ${file.getName} ...")
+      println(s"[blog] Processing ${file.getName} ...")
 
       frontMatter match {
         case Some(FrontMatter(tut)) => 
           tut.invoke(file)
         case None =>
-          println("No tut header, copying.")
+          println("[blog] No tut header, copying.")
           Files.copy(file.toPath, out.toPath)
       }
     }
     else {
-      println(s"Skipping ${file.getName} (up to date).")
+      println(s"[blog] Skipping ${file.getName} (up to date).")
     }
 
 }

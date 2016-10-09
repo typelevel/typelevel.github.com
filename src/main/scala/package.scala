@@ -23,13 +23,13 @@ object `package` {
   def resolve(start: Resolution): Try[List[File]] = {
     val logger = new Cache.Logger {
       override def downloadingArtifact(url: String, file: File) =
-        println(s"Downloading artifact from $url ...")
+        println(s"[blog] Downloading artifact from $url ...")
       override def downloadedArtifact(url: String, success: Boolean) = {
         val file = url.split('/').last
         if (success)
-          println(s"Successfully downloaded $file")
+          println(s"[blog] Successfully downloaded $file")
         else
-          println(s"Failed to download $file")
+          println(s"[blog] Failed to download $file")
       }
     }
 
