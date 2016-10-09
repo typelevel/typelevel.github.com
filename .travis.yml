@@ -2,8 +2,34 @@ sudo: false
 language: ruby
 rvm: 2.2
 
+env:
+  global:
+    - secure: "WowDbou7Zejy22YFIxnO0enMSGtxQi++cfp0IKDv/8aK2JVR2FG4TLvLUpW2py0QWfRCyUfNfPxM/Srr4czx580mG5PUrPdYwOR4sk3/VI2SA6FNxteObBp1I0eRopHrXzXFess50ruiLBDVuc+3eM63n2O1gl2VSnW7jKdpL80="
+
 install:
   - bundle install
+  - curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt -o sbt
+  - chmod +x sbt
 
 script:
+  - ./sbt run
   - bundle exec jekyll build
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot
+before_cache:
+  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
+  - find $HOME/.sbt -name "*.lock" -delete
+
+branches:
+  except:
+    - master
+
+deploy:
+  - provider: script
+    script: ./deploy.sh
+    skip_cleanup: true
+    on:
+      branch: development
