@@ -4,7 +4,7 @@ rvm: 2.2
 
 env:
   global:
-    - secure: "WowDbou7Zejy22YFIxnO0enMSGtxQi++cfp0IKDv/8aK2JVR2FG4TLvLUpW2py0QWfRCyUfNfPxM/Srr4czx580mG5PUrPdYwOR4sk3/VI2SA6FNxteObBp1I0eRopHrXzXFess50ruiLBDVuc+3eM63n2O1gl2VSnW7jKdpL80="
+    - secure: "fYE4XBc2dUJxu51JfH8Mj6WDN5qy3xGkn4PrXF0I2rcoBpU8kGEjIpmbirh3yjykFX4VlMbyL4bO9rRAu/twwtMu0IEsrPWnzcTdjz6yvqAyIlbcOMpvSzUIOSbi2XtVP0QzC6BcQ4AV2gGgXONC8O3vEd1vW3U2FysyI4d5HBE="
 
 install:
   - bundle install
