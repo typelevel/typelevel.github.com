@@ -4,6 +4,9 @@ rvm: 2.2
 
 install:
   - bundle install
+  - curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt -o sbt
+  - chmod +x sbt
 
 script:
+  - ./sbt run
   - bundle exec jekyll build

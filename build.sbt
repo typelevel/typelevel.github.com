@@ -18,7 +18,7 @@ lazy val tutInput = SettingKey[File]("tutInput")
 lazy val tutOutput = SettingKey[File]("tutOutput")
 lazy val tutVersion = SettingKey[String]("tutVersion")
 
-tutInput := (baseDirectory in ThisBuild).value / "_tut"
+tutInput := (baseDirectory in ThisBuild).value / "posts"
 tutOutput := (baseDirectory in ThisBuild).value / "_posts"
 tutVersion := "0.4.4"
 
