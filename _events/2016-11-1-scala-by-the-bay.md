@@ -22,7 +22,7 @@ Scala By the Bay is not just another tech conference. It is a learning instituti
 
 <a class="btn large" href="http://scala.bythebay.io/">Learn More</a>
 
-## Descount Coupon
+## Discount Coupon
 
 Follow [this](https://www.universe.com/embed/listings/49LD7R/bookings/new?modal=1&discount_code=MIAMISE10) link (Courtesy of [Miami Scala](https://www.meetup.com/Miami-Scala-Enthusiasts/)) to get a **10%** discount.
 
