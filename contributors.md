@@ -26,3 +26,4 @@ title: Contributors
 * Tom Switzer
 * Victoria Leontieva
 * xuwei-k
+* Nicolas A Perez
