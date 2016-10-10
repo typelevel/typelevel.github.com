@@ -31,16 +31,24 @@ That's it, we'll take care of the rest. If you wish, you can also submit just a 
 
 ### Previewing your changes
 
-To preview your changes, you have to install Ruby, Bundler and sBT first.
+To preview your changes, you have to install Ruby, Bundler and SBT first.
 Once you've done that, you can start the Jekyll server like this:
 
 ```bash
 sbt run
 bundle install
+bundle exec jekyll serve --baseurl ''
+```
+
+This will first preprocess the blog posts and then start a local web server on port 4000 where you can browse the site.
+For automatic site rebuild, run the following two commands in different terminals:
+
+```
+sbt ~run
 bundle exec jekyll serve --watch --baseurl ''
 ```
 
-This will first preprocess the blog posts and then start a local web server on port 4000 where you can browse the site and which re-generates the site if you change the source files.
+This will trigger a recompile and rebuild if you change the source files.
 
 ## Development
 
