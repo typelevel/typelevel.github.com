@@ -19,6 +19,7 @@ title: Contributors
 * Lars Hupel
 * Michael Pilquist
 * Miles Sabin
+* Nicolas A Perez
 * Ricky Elrod
 * Rüdiger Klaehn
 * Sam Halliday
@@ -26,4 +27,3 @@ title: Contributors
 * Tom Switzer
 * Victoria Leontieva
 * xuwei-k
-* Nicolas A Perez
