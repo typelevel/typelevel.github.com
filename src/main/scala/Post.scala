@@ -2,7 +2,7 @@ package org.typelevel.blog
 
 import coursier._
 import java.io.{File, FileInputStream}
-import java.nio.file.Files
+import java.nio.file.{Files, StandardCopyOption}
 import org.yaml.snakeyaml.Yaml
 import scala.util.Try
 
@@ -32,7 +32,7 @@ case class Post(file: File) {
           tut.invoke(file)
         case None =>
           println("[blog] No tut header, copying.")
-          Files.copy(file.toPath, out.toPath)
+          Files.copy(file.toPath, out.toPath, StandardCopyOption.REPLACE_EXISTING)
       }
     }
     else {
