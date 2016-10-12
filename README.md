@@ -50,6 +50,12 @@ bundle exec jekyll serve --watch --baseurl ''
 
 This will trigger a recompile and rebuild if you change the source files.
 
+## License
+
+Two different licenses apply:
+* The Scala code, including the SBT build definition, is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+* Unless otherwise noted, all website content is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/deed.en_US).
+
 ## Development
 
 ### CSS
