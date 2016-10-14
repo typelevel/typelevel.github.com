@@ -34,7 +34,7 @@ More details, including minutes and bylaws, can be found on [their website](http
 
 To make the nomination as transparently as possible, I [opened an issue](https://github.com/typelevel/general/issues/42) shortly after Jon mailed me about the opening.
 The discussion period ended on October 12th.
-All candidates endorsed me, so no vote was necessary.
+All nominees endorsed me, so no vote was necessary.
 
 ## Provisions
 
