@@ -28,7 +28,7 @@ Here, I'd like to contribute by implementing a ScalaCheck clone from scratch usi
 
 The basic point of a property testing library is providing an interface looking roughly like this:
 
-```tut:book
+```tut:book:silent
 class Prop {
   def check(): Unit = ???
 }
@@ -428,7 +428,9 @@ You use the latter when you actually need to supply an integer to your property,
 
 This is where everything really comes together.
 We're now looking at how to use `Gen` to implement the desired `forAll` function we've seen early in the introduction of the post, and how that is related to the `Prop` type I didn't define.
-I'll readily admin that the following isn't really a design decision per se, because we'll be guided by the presence of type classes in Scala.
+I'll readily admit that the following isn't really a design decision per se, because we'll be guided by the presence of type classes in Scala.
+Still, one could reasonably structure this differently, and in fact, the design of the `Prop` type in e.g. QuickCheck is much more complex than what you'll see.
+
 The rest of this post will now depart from the way it's done in ScalaCheck, although the ideas are still similar.
 Instead, I'll try to show a simplified version without introducing complications required to make it work nicely.
 
@@ -585,7 +587,7 @@ check(forAll { (x: Int) =>
 })
 ```
 
-## The final sugar
+## Some more sugar
 
 Okay, we're almost done.
 The only tedious thing that remains is that we have to use the `forAll` combinator, especially in the nested case.
