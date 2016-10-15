@@ -24,6 +24,12 @@ However, the design space of property-testing libraries is rather large.
 I think it is high time to talk about various tradeoffs done in libraries.
 Here, I'd like to contribute by implementing a ScalaCheck clone from scratch using a very similar design and explaining the design choices along the way.
 
+This is not an introduction to property testing.
+However, it can be read as a guide to implementation ideas.
+QuickCheck, ScalaCheck and the like are nice examples of functional library design, but their internals are often obscured by technicalities.
+I hope that by clearing up some of the concepts it will become easier to read their code and perhaps designing your own property-testing library.
+
+
 ## The first design decision
 
 The basic point of a property testing library is providing an interface looking roughly like this:
@@ -149,6 +155,17 @@ The tradeoffs here are the usual when we're talking about functional programming
 In the pure case, there are also multiple other possible encodings, including free monads.
 Luckily, this blog covers that topic in another [post]({% post_url 2016-09-21-edsls-part-1 %}).
 
+How do other libraries fare here?
+
+* ScalaCheck itself uses a mutable random number generator.
+  It does use its own implementation though.
+* Another Scala library for property testing, [scalaprops](https://github.com/scalaprops/scalaprops), does not.
+  I'm not familiar with it, but as far as I can tell from the [sources](https://github.com/scalaprops/scalaprops/blob/v0.3.4/gen/src/main/scala/scalaprops/Rand.scala), it's similar to the `Seed` trait from above, and there is also an additional state-monadic layer on top of it.
+* In QuickCheck, the encoding seems strange at first.
+  They use a primitive generator which looks a lot like `Seed`, but they don't use the updated seed.
+  Instead, their approach is via an additional primitive `split` of type `Seed => (Seed, Seed)`, which gets used to “distribute” randomness during composition (see the [paper by Claessen & Pałka](http://publications.lib.chalmers.se/records/fulltext/183348/local_183348.pdf) about the theory behind that).
+  It is worth noting that Java 8 introduced a [`SplittableRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/SplittableRandom.html) class.
+
 **For this post, we're assuming that mutable state is a given.**
 
 ## The third design decision
@@ -180,6 +197,13 @@ If in the first design decisions we had chosen exhaustive generators, this probl
 
 **For this post, we're assuming that we're only interested in synchronous properties, or can always block.**
 However, I'd like to add, I'd probably try to incorporate async properties right from the start if I were to implement a testing library from scratch.
+
+What about the existing libraries?
+
+* ScalaCheck itself does not support asynchronous properties.
+* In SmallCheck, both [generators](https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Serial) and [properties](https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck.html#t:Property) may be monadic.
+* QuickCheck supports arbitrary I/O actions in a property via a function called [`morallyDubiosIOProperty`](https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Property.html#v:morallyDubiousIOProperty) (nowadays just `ioProperty`).
+  But there is also [more advanced support](https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Monadic.html) for monadic testing.
 
 ## The fourth design decision
 
@@ -439,6 +463,7 @@ A property is something that we can _run_ and which returns a _result_.
 The result should ideally be something like a boolean: Either the property holds or it doesn't.
 But one of the main features of any property testing library is that it will return a counterexample for the inputs where the property doesn't hold.
 Hence, we need to store this counterexample in the failure case.
+In practice, the result type would be much richer, with attached labels, reasons, expectations, counters, ... and more diagnostic fields.
 
 ```tut:book:silent
 sealed trait Result
@@ -625,15 +650,32 @@ check { (x: Int) => (y: Int) =>
 }
 ```
 
-## The end
+Now, if you look closely, you can basically get rid of the `Prop` class and define it as
 
-I'm going to stop here, although there are still some things to explore:
+```tut:book:silent
+type Prop = Gen[Result]
+```
 
-* How to get rid of the boilerplate to generate “boring” data structures?
-* How to generate functions?
+If you think about this for a moment, it makes sense: A “property” is really just a thing which feeds on randomness and produces a result.
+The only thing left is to define a driver which runs a couple of iterations and gathers the results; in our implementation, that's the `check` function.
+I encourage you to spell out the other functions (e.g. `forAll`), and you will notice that our `Prop` trait is indeed isomorphic to `Gen[Result]`.
+In practice, QuickCheck uses such a representation (although with some more contraptions).
+
+## Summary
+
+It turns out that it's not that hard to write a small property-testing library.
+I'm going to stop here with the implementation, although there are still some things to explore:
+
+* How to [get rid of the boilerplate](https://github.com/alexarchambault/scalacheck-shapeless) to generate “boring” data structures?
+* How to [generate functions](https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Arbitrary.html#t:CoArbitrary)?
 * How to improve usability?
-* How to show useful counterexamples?
+* How to [bundle up a bunch of properties](https://github.com/typelevel/discipline)?
+* How to [show useful counterexamples](https://github.com/rickynils/scalacheck/blob/1.13.2/doc/UserGuide.md#test-case-minimisation)?
 * How to test the library itself?
 * How to make sure that your generators produce reasonable values?
-* How to make sure that your generators cover a wide range of values?
+* How to make sure that your generators [cover a wide range of values](https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck.html#v:label)?
+* How to test [polymorphic properties](https://github.com/larsrh/polycheck)?
 * ...
+
+Finally, I'd like to note that there are many more libraries out there than I've mentioned here, some of which depart more, some less, from the original Haskell implementation.
+They even exist for not-functional languages, e.g. [Javaslang](http://www.javaslang.io/javaslang-docs/#_property_checking) for Java or [Hypothesis](http://hypothesis.works/) for Python.
