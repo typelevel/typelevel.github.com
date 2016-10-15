@@ -289,7 +289,7 @@ is looking for a `Functor`, `traverseIsFunctor` wins.
 One thing to note is that we've baked the implicit hierarchy into `Functor`
 itself - in general this means all superclasses are aware of their subclasses.
 This is convenient from a usability perspective as companion objects are
-considered during implicit resoltuion, but from a modularity perspective is
+considered during implicit resolution, but from a modularity perspective is
 strange and in this case would prevent extensions to the hierarchy from external
 sources. This can be solved by removing the hierarchy from the superclasses
 (removing `Functor`'s `extends FunctorConversions0`), but comes at
