@@ -358,6 +358,8 @@ trait Gen[T] { self =>
   }
 
   // Repeatedly generate values until one passes the check
+  // (We would usually call this `filter`, but Scala requires us to
+  // call it `withFilter` in order to be used in `for` comprehensions)
   def withFilter(p: T => Boolean): Gen[T] = new Gen[T] {
     def generate(size: Int, rnd: Random): T = {
       val candidate = self.generate(size, rnd)
@@ -414,6 +416,18 @@ printSample(fracGen, 10)
 ```
 
 And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
+However, we need to be cautious with the filtering.
+If you look closely at the implementation of `withFilter`, you can see that there is potential for an infinite loop.
+For example, when you pass in the filter `_ => false`.
+It will just keep generating values and then discard them.
+How do existing frameworks alleviate this?
+
+* QuickCheck has two filter combinators: one that returns `Gen[A]` as above, and one that return `Gen[Option[A]]`.
+  The latter uses a number of tries and if they all fail, terminates and returns `None`.
+  The former uses the latter, but keeps increasing the size parameter.
+  Of course, this might not terminate.
+* ScalaCheck's `filter` method returns `Gen[A]`, but the possibility of failure is encoded in the return type of its equivalent of the `generate` method, which always returns `Option[T]`.
+  But there is also a combinator which retries until it finds a valid input, called `retryUntil`.
 
 As a side note: `Gen` as it is right now is _definitely not_ a valid monad, because it internally relies on mutable state.
 But in my opinion, it is still justified to offer the `map` and `flatMap` methods, but don't give a `Monad` instance.
@@ -671,6 +685,7 @@ I'm going to stop here with the implementation, although there are still some th
 * How to improve usability?
 * How to [bundle up a bunch of properties](https://github.com/typelevel/discipline)?
 * How to [show useful counterexamples](https://github.com/rickynils/scalacheck/blob/1.13.2/doc/UserGuide.md#test-case-minimisation)?
+* How to test [conditional properties](https://github.com/rickynils/scalacheck/blob/1.13.2/doc/UserGuide.md#properties)?
 * How to test the library itself?
 * How to make sure that your generators produce reasonable values?
 * How to make sure that your generators [cover a wide range of values](https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck.html#v:label)?
