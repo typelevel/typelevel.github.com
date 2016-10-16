@@ -24,6 +24,9 @@ tutVersion := "0.4.4"
 
 watchSources ++= (tutInput.value ** "*.md").get
 
+cleanFiles += tutOutput.value
+cleanFiles += (baseDirectory in ThisBuild).value / "_site"
+
 enablePlugins(BuildInfoPlugin)
 
 buildInfoKeys := Seq[BuildInfoKey](tutInput, tutOutput, tutVersion)

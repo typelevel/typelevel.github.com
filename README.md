@@ -45,7 +45,7 @@ For automatic site rebuild, run the following two commands in different terminal
 
 ```
 sbt ~run
-bundle exec jekyll serve --watch --baseurl ''
+bundle exec jekyll serve --incremental --baseurl ''
 ```
 
 This will trigger a recompile and rebuild if you change the source files.
