@@ -612,7 +612,18 @@ def check[P](prop: P)(implicit testP: Testable[P]): Unit = {
 }
 ```
 
-Let's run our property!
+What is happening here?
+
+1. The `merge` function takes a list of `Result`s and returns the first `Failure`, if it exists.
+   Otherwise it returns `Success`.
+   In case there are multiple `Failure`s, it doesn't care and just discards the later ones.
+2. The `check` function initializes a fresh random generator.
+3. We have fixed the maximum size to 100 and will run the passed property with each size from 0 to 100.
+   This ensures that we get a nice coverage of various input sizes.
+   An obvious optimisation here would be to stop after the first failure, instead of merging the results in a subsequent step.
+4. In case there's a failure, we just print the counterexample.
+
+Let's check our property!
 
 ```tut
 check(propReflexivity)
