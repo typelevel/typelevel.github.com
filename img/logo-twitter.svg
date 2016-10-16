@@ -1,122 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="-99.5 70.5 45.8 45.799999"
-   enable-background="new -99.5 70.5 141 47"
-   id="svg2"
-   version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="logo-twitter.svg"
-   width="45.799999"
-   height="45.799999"
-   inkscape:export-filename="/home/lars/proj/typelevel/typelevel-beta/img/logo-twitter.png"
-   inkscape:export-xdpi="1133.5"
-   inkscape:export-ydpi="1133.5">
-  <metadata
-     id="metadata32">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Page-1_12_</dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs30">
-    <linearGradient
-       gradientTransform="matrix(39.8,0,0,45.8,4500.6,2.3)"
-       y2="1.735"
-       x2="-114.586"
-       y1="2.243"
-       x1="-115.577"
-       gradientUnits="userSpaceOnUse"
-       id="Shape_2_">
-      <stop
-         id="stop12"
-         stop-color="#FF4C61"
-         offset="0" />
-      <stop
-         id="stop14"
-         stop-color="#F51C2B"
-         offset="1" />
-    </linearGradient>
-  </defs>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1141"
-     id="namedview28"
-     showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:zoom="4.6099291"
-     inkscape:cx="137.22094"
-     inkscape:cy="-9.0378407"
-     inkscape:window-x="-2"
-     inkscape:window-y="-3"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
-  <style
-     type="text/css"
-     id="style4">.st0{fill:url(#Shape_2_);} .st1{fill:#FF6169;} .st2{fill:#FFFFFF;} .st3{fill:#FFB4B5;} .st4{opacity:0.9;} .st5{fill:#21303F;}</style>
-  <title
-     id="title6">Page-1_12_</title>
-  <desc
-     id="desc8">Created with Sketch Beta.</desc>
-  <g
-     id="g3370"
-     transform="translate(3.0499996,0)">
-    <path
-       id="Shape"
-       class="st0"
-       d="M -79.4,116.3 -99.3,105 -99.5,82.1 -79.8,70.5 -60,81.7 l 0.2,22.9 -19.6,11.7 z"
-       style="fill:url(#Shape_2_)"
-       inkscape:connector-curvature="0" />
-    <g
-       transform="translate(-1,0)"
-       id="Shape_1_">
-      <path
-         class="st1"
-         d="m -85.2,98.9 0,5.3 12.5,-7 0,-5.4 -12.5,7.1 z"
-         id="path18"
-         inkscape:connector-curvature="0"
-         style="fill:#ff6169" />
-      <path
-         class="st2"
-         d="m -85.2,88.2 -4.7,-2.6 0,16 4.6,2.6 0,-5.3 4.6,2.7 0.1,-5.4 -4.7,-2.6 0.1,-5.4"
-         id="path20"
-         inkscape:connector-curvature="0"
-         style="fill:#ffffff" />
-      <path
-         class="st3"
-         d="m -80.6,96.2 0,5.4 12.4,-7.1 0,-5.3 -12.4,7 z m 7.8,-15 -12.5,7 0,5.4 12.5,-7.1 0,-5.3 z"
-         id="path22"
-         inkscape:connector-curvature="0"
-         style="fill:#ffb4b5" />
-      <path
-         class="st1"
-         d="m -72.7,86.5 -12.5,7.1 4.6,2.6 12.4,-7.1 -4.5,-2.6 z m -0.1,-5.3 -4.6,-2.7 -12.5,7.1 4.6,2.6 12.5,-7 z"
-         id="path24"
-         inkscape:connector-curvature="0"
-         style="fill:#ff6169" />
+    width="302px"
+    height="348px"
+    viewBox="0 0 302 348"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs>
+        <linearGradient x1="0%" y1="65%" x2="100%" y2="34%" id="background-gradient">
+            <stop stop-color="#FF4C61" offset="0%"></stop>
+            <stop stop-color="#F51C2B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+
+    <g>
+        <polygon fill="url(#background-gradient)" points="151 348 0 260 0 88 151 0 302 88 302 260" />
+        <polygon fill="#FF6169" points="99 214 99 254 193 199 193 159" />
+        <polygon fill="#FF6169" points="134 194 99 174 193 119 228 139" />
+        <polygon fill="#FF6169" points="99 134 64 114 158 59 193 79" />
+        <polygon fill="#FFB4B5" points="134 194 134 234 228 179 228 139" />
+        <polygon fill="#FFB4B5" points="99 134 99 174 193 119 193 79" />
+        <polygon fill="#FFFFFF" points="64 234 99 254 99 214 134 234 134 194 99 174 99 134 64 114" />
     </g>
-  </g>
 </svg>
