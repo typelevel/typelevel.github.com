@@ -157,8 +157,8 @@ Luckily, this blog covers that topic in another [post]({% post_url 2016-09-21-ed
 
 How do other libraries fare here?
 
-* ScalaCheck itself uses a mutable random number generator.
-  It does use its own implementation though.
+* ScalaCheck up to 1.12.x uses a mutable random number generator; namely, `scala.util.Random`.
+* ScalaCheck 1.13.x+ uses its own, immutable implementation.
 * Another Scala library for property testing, [scalaprops](https://github.com/scalaprops/scalaprops), does not.
   I'm not familiar with it, but as far as I can tell from the [sources](https://github.com/scalaprops/scalaprops/blob/v0.3.4/gen/src/main/scala/scalaprops/Rand.scala), it's similar to the `Seed` trait from above, and there is also an additional state-monadic layer on top of it.
 * In QuickCheck, the encoding seems strange at first.
@@ -167,6 +167,7 @@ How do other libraries fare here?
   It is worth noting that Java 8 introduced a [`SplittableRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/SplittableRandom.html) class.
 
 **For this post, we're assuming that mutable state is a given.**
+We'll use `scala.util.Random` (because it's readily available) in a similar fashion to ScalaCheck 1.12.x.
 
 ## The third design decision
 
@@ -705,3 +706,5 @@ I'm going to stop here with the implementation, although there are still some th
 
 Finally, I'd like to note that there are many more libraries out there than I've mentioned here, some of which depart more, some less, from the original Haskell implementation.
 They even exist for not-functional languages, e.g. [Javaslang](http://www.javaslang.io/javaslang-docs/#_property_checking) for Java or [Hypothesis](http://hypothesis.works/) for Python.
+
+_Correction: In a previous version of this post, I incorrectly stated that ScalaCheck uses a mutable random generator. This is only true up to ScalaCheck 1.12.x. I have updated that section in the post._

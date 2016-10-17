@@ -149,7 +149,7 @@ for {
   x <- Random.int(-5, 5)
   y <- Random.int(-3, 3)
 } yield (x, y)
-// res2: Random[(Int, Int)] = Random@587e0cd0
+// res2: Random[(Int, Int)] = Random@2a9d1c8a
 ```
 
 The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
@@ -158,8 +158,8 @@ Luckily, this blog covers that topic in another [post]({% post_url 2016-09-21-ed
 
 How do other libraries fare here?
 
-* ScalaCheck itself uses a mutable random number generator.
-  It does use its own implementation though.
+* ScalaCheck up to 1.12.x uses a mutable random number generator; namely, `scala.util.Random`.
+* ScalaCheck 1.13.x+ uses its own, immutable implementation.
 * Another Scala library for property testing, [scalaprops](https://github.com/scalaprops/scalaprops), does not.
   I'm not familiar with it, but as far as I can tell from the [sources](https://github.com/scalaprops/scalaprops/blob/v0.3.4/gen/src/main/scala/scalaprops/Rand.scala), it's similar to the `Seed` trait from above, and there is also an additional state-monadic layer on top of it.
 * In QuickCheck, the encoding seems strange at first.
@@ -168,6 +168,7 @@ How do other libraries fare here?
   It is worth noting that Java 8 introduced a [`SplittableRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/SplittableRandom.html) class.
 
 **For this post, we're assuming that mutable state is a given.**
+We'll use `scala.util.Random` (because it's readily available) in a similar fashion to ScalaCheck 1.12.x.
 
 ## The third design decision
 
@@ -293,38 +294,38 @@ def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
 
 ```scala
 scala> printSample(Gen.int, 10)
-3
 7
--10
--7
 8
--3
-3
 7
-0
-3
+-1
+-9
+-2
+-8
+-9
+-4
+7
 
 scala> printSample(Gen.int, 3)
-3
--1
 2
+-3
+-2
 
 scala> printSample(Gen.list(Gen.int), 10)
-List(8, -8, 2, -7, 10, 3, 2, -3)
-List(-9, 3)
-List(0, -9, 3, 5, 7)
-List(-5, 7)
-List(6, 0)
-List(-5, -3, -8, -6, -5, -10, 5, 6)
-List(6, 5, -1, -2, 3, -4, -8)
-List(5, -10, -1, 5, -8, 1, 1, -5, 9)
-List(-1, -10, 7, -3, -1, 9, -4, -7)
-List(-10, 9, 6, 10, -9)
+List(-7)
+List()
+List(-5, -9, 4, 6, 0, 1, -3, 2, 2)
+List(-6, 7, -6, 5, 0, -5, -10, 0, -2, -8)
+List(-2, 6, 9, 6, -3, 4)
+List(9, 5, -4)
+List(-9, 5, -7, 2, -6, 9, -4, -10, -8)
+List(-9, -10, -3, -2, 1, 4, 5, 5, -5, 0)
+List(-2, -9, -6, -8, -9, -4)
+List(-4, -2, -2, -10, 3, -7)
 
 scala> printSample(Gen.list(Gen.int), 3)
-List(-1, -3, -2)
-List(-1, 2, 1)
-List()
+List(3, 1)
+List(2)
+List(-1, -1)
 ```
 
 That's already pretty cool.
@@ -351,16 +352,16 @@ def recList[T](genT: Gen[T]): Gen[List[T]] = new Gen[List[T]] {
 // recList: [T](genT: Gen[T])Gen[List[T]]
 
 printSample(recList(Gen.int), 10)
-// List(4, 8, 7, -1, -6, -1, -2, -3)
+// List(6)
+// List(0, -6, 7, 7, 5, 4, 1)
 // List()
-// List(1, -7, 4, 7)
-// List()
-// List(-4, -2, 1, 2, 1, -5, 2, 1, 2, 1)
-// List(-4, 0, 2, -1, -1)
-// List(7, -8, 3, -3)
-// List(9, -6, 6, -7, 1)
-// List(3, 7, 4, 0, -2)
-// List(-5, -6, 4, -2, -6)
+// List(5, 3)
+// List(-10, 7, 4, -3, -3, 2, 1, 0, 2, 0)
+// List(-7, -8, 4, 5, 2, -1, 3)
+// List(-4, 4, 5, 2, 1, -5, 3)
+// List(-2, -6)
+// List(0)
+// List(-5, 1, 7, 6)
 ```
 
 We can also provide a combinator for this:
@@ -448,19 +449,19 @@ val fracGen: Gen[Frac] =
     den <- Gen.int
     if den != 0
   } yield Frac(num, den)
-// fracGen: Gen[Frac] = Gen$$anon$2@3b22ef96
+// fracGen: Gen[Frac] = Gen$$anon$2@4ce09362
 
 printSample(fracGen, 10)
-// Frac(-8,-2)
-// Frac(-1,-10)
-// Frac(-1,-1)
-// Frac(-2,-6)
-// Frac(6,-5)
-// Frac(9,6)
-// Frac(2,3)
+// Frac(0,9)
+// Frac(-7,-4)
+// Frac(-3,-9)
+// Frac(-6,9)
+// Frac(5,-8)
 // Frac(5,2)
-// Frac(6,-10)
-// Frac(6,-7)
+// Frac(7,4)
+// Frac(-1,-2)
+// Frac(-9,3)
+// Frac(-3,5)
 ```
 
 And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
@@ -628,7 +629,7 @@ val propReflexivity =
   forAll { (x: Int) =>
     x == x
   }
-// propReflexivity: Prop = $anon$1@30963aa4
+// propReflexivity: Prop = $anon$1@302bff70
 ```
 
 Cool, but how do we run this?
@@ -727,7 +728,7 @@ scala> check { (x: Int) => (y: Int) =>
 scala> check { (x: Int) => (y: Int) =>
      |   x + y == x * y
      | }
-✗ Property failed with counterexample: (0, -1)
+✗ Property failed with counterexample: (0, 1)
 ```
 
 Now, if you look closely, you can basically get rid of the `Prop` class and define it as
@@ -760,3 +761,5 @@ I'm going to stop here with the implementation, although there are still some th
 
 Finally, I'd like to note that there are many more libraries out there than I've mentioned here, some of which depart more, some less, from the original Haskell implementation.
 They even exist for not-functional languages, e.g. [Javaslang](http://www.javaslang.io/javaslang-docs/#_property_checking) for Java or [Hypothesis](http://hypothesis.works/) for Python.
+
+_Correction: In a previous version of this post, I incorrectly stated that ScalaCheck uses a mutable random generator. This is only true up to ScalaCheck 1.12.x. I have updated that section in the post._
