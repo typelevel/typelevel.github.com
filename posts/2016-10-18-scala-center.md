@@ -11,6 +11,7 @@ meta:
 It is our pleasure to announce that the Scala Center Advisory Board has invited us to nominate a member of the Typelevel community to serve as a community representative, alongside Bill Venners.
 To figure out whether or not we should accept this offer and who we pick we have held [an open discussion on GitHub](https://github.com/typelevel/general/issues/42), resulting in my nomination, which I happily accept.
 Thanks everyone for their trust!
+The corresponding Scala Center announcement can be found [here](http://scala-lang.org/blog/2016/10/17/lars-hupel-joins-sc-board.html).
 
 _On a more personal note:
 Some years ago, when I initially registered the `typelevel.org` domain, I could have never anticipated the large community which has gathered around typeful functional programming in Scala.
