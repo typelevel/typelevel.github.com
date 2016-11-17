@@ -28,7 +28,7 @@ at [CodeNode][codenode],
 Skills Matter's dedicated conference venue and tech hub
 near Moorgate Station in central London.
 
-The full of sessions and topics
+The full list of sessions and topics
 will be decided by the participants on the day.
 There are some preliminary ideas on
 the [ScalaxHack web site][scalaxhack].
