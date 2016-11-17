@@ -42,14 +42,9 @@ Lunch will be sponsored by [Underscore][underscore].
 
 <a class="btn large" href="https://skillsmatter.com/conferences/7975-scalaxhack">Register</a>
 
-<br>
-
-*[Photograph of London skyline][london-skyline] Copyright 2014 John Nuttall, CC-BY-2.0*
-
 [skillsmatter]: http://skillsmatter.com
 [lsug]: http://meetup.com/lonson-scala
 [scalaxhack]: https://skillsmatter.com/conferences/7975-scalaxhack
 [scalax]: http://www.scala-exchange.com
 [codenode]: https://skillsmatter.com/contact-us
 [underscore]: https://underscore.io
-[london-skyline]: https://flic.kr/p/pQZXvW
