@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Deriving Type Class Instances (Part 1)
+title: Deriving Type Class Instances
 
 meta:
   nav: blog
@@ -8,11 +8,6 @@ meta:
   pygments: true
   mathjax: true
 ---
-
-This is a three-part blog series on how to leverage Scala macros to generate type class instances for case classes (or sets of case classes).
-First, we will explore the underlying abstractions and how we can possibly get rid of all the boilerplate code.
-Second, we will dive into the details, e.g. how the macro is implemented.
-Third, we will see how we can verify that our newly-generated instances are actually obeying the laws of the corresponding type class.
 
 ## Motivating example
 
@@ -61,7 +56,7 @@ This will give you `Semigroup` instances for *all* of your data types – with z
 
 But first, let us introduce all the related concepts properly.
 
-## Part 1: Abstracting all the things
+## Abstracting all the things
 
 <div class="side-note">
   If you are already familiar with type classes in general and algebraic structures in particular, you can safely skip this and the next section.
@@ -72,7 +67,7 @@ Type classes are an incredibly useful abstraction mechanism, originally introduc
 If you have been using some of the typelevel.scala libraries already, you probably know how type classes and their instances are represented in Scala: as traits and implicits.
 In the following section, we will get started with an example type class from abstract algebra, which is implemented in *spire*.
 
-### Group theory
+## Group theory
 
 Group theory is a very important field of research in mathematics and has a very broad range of applications, especially in computer science.
 One of the most fundamental structures is a *semigroup*, which consists of a set of elements equipped with one operation (often called *append*, *mplus*, or similarly; in textbooks you will often find $\circ$ or $\oplus$).
@@ -114,7 +109,7 @@ In other words, we just use the built-in addition function.
 
 <div class="side-note">If you want to know more about applications of abstract algebra in programming, especially in <em>spire</em>, head over to YouTube and watch <a href="http://www.youtube.com/watch?v=xO9AoZNSOH4">an introduction by Tom Switzer</a>.</div>
 
-### Composing instances
+## Composing instances
 
 Now suppose you are working with three-dimensional images.
 Most likely, you will encounter a data structure for vectors (or points), which we recall from above:
@@ -149,7 +144,7 @@ implicit def tupleInstance[A, B](implicit A: Semigroup[A], B: Semigroup[B]) =
   }
 ```
 
-### Representing data types
+## Representing data types
 
 Once we know how to produce an instance for a pair, we can apply that two times and obtain an instance for a triple.
 However, there are still two problems here:
@@ -185,7 +180,7 @@ Because we are lazy, we let a macro automatically generate the `to` and `from` m
 We will see in the second part of the series how that works.
 For now, just assume that you can invoke some method, magic happens, and you get the conversions out.
 
-### Using the representation
+## Using the representation
 
 At this point, we have a canonical representation for arbitrary case classes.
 We will also assume that there are `Semigroup` instances for each of its elements.
@@ -227,7 +222,7 @@ Semigroup.derive[Vector3D]
 
 Are we done yet? No. We can go even further.
 
-### Abstracting over type classes
+## Abstracting over type classes
 
 `Semigroup` is not the only type class around. For example, there is a whole tower of classes from group theory for varying use cases. Then there are some type classes from _scalaz_:
 
@@ -249,7 +244,7 @@ Equal.derive[Vector3D]
 I hate duplication, though. I do not want to implement the `derive` macro over and over again.
 Now, if only there was a way to abstract over common functionality of types ...
 
-### A type class called "TypeClass"
+## A type class called "TypeClass"
 
 "What," I hear you saying, "the `TypeClass` type class? You can't be serious!"
 
@@ -275,7 +270,7 @@ trait TypeClass[C[_]] {
 This should actually be not too surprising. We already know exactly how to implement `TypeClass[Semigroup]`.
 If we put this implementation into the companion object of `Semigroup`, it will be available for the macro to use.
 
-### Wrapping it up
+## Wrapping it up
 
 How can this actually be used?
 The work can be roughly divided between three roles:
@@ -307,17 +302,3 @@ The work can be roughly divided between three roles:
    Importing `auto` reduces the boilerplate to the absolute minimum, which is often desirable, but might result in more instances being materialized than you expect.
    Which to choose is partly a matter of taste and partly a function of the size and complexity of the scopes you are importing in to:
    large or complex scopes might favour explicit declarations; tighter, simpler scopes might favour `auto`.
-
-
-### What's next?
-
-The next article in this series will:
-
-* explore implementation details of the macro, and off-loading some work to the compiler
-* introduce another operation on type class instances beyond products
-* provide more examples
-
-
-<div class="updated">
-  <strong>Edit:</strong> This post has been updated to expand the motivating example and change the wording a little. Thanks to Miles Sabin for his suggestions.
-</div>
