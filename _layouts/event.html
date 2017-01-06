@@ -17,6 +17,9 @@ menu: event
           {% if page.schedule %}
             <li><a href="#speakers-and-schedule">Speakers and Schedule</a></li>
           {% endif %}
+          {% if page.schedule_section %}
+            <li><a href="#schedule">Schedule</a></li>
+          {% endif %}
           {% if page.location_section %}
             <li><a href="#venue">Venue</a></li>
           {% endif %}
@@ -36,6 +39,8 @@ menu: event
 
 <div class="wrapper">
   <div class="content content-small js-fade-in" id="about">
-    {{ page.content }}
+    {{ content }}
   </div>
 </div>
+
+<div> <!-- open dummy -->
