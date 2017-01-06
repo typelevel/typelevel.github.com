@@ -3,8 +3,8 @@ layout: event
 
 title: "Typelevel Summit NYC"
 short_title: "NYC Summit"
-date_string: "March TBD, 2017"
-location: "TBD"
+date_string: "March 23, 2017"
+location: "26 Bridge Street, Brooklyn"
 description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
 
 poster_hero: "/img/media/nyc.jpg"
@@ -12,6 +12,7 @@ poster_thumb: "/img/media/nyc-thumb.jpg"
 
 papers_section: true
 sponsors_section: true
+location_section: true
 
 featured: true
 
@@ -45,6 +46,12 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 **We welcome all sorts of talks!** You don't have to write down a perfect abstract. **Submissions by first-time speakers are especially welcome!**
 
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-nyc-2017">Submit your talk here</a>
+
+## Venue
+
+This event will take place at 26 Bridge Event Space, 26 Bridge Street, Brooklyn, New York.
+
+{% include venue_map.html %}
 
 ## Sponsors
 
