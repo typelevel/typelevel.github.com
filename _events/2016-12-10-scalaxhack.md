@@ -10,8 +10,6 @@ description: "Free unconference and hack day, co-located with Scala Exchange."
 poster_hero: "/img/media/london.jpg"
 poster_thumb: "/img/media/london-thumb.jpg"
 
-location_section: true
-
 ---
 
 We're partnering with [Skills Matter][skillsmatter]
