@@ -10,6 +10,7 @@ description: "One day of talks, co-located with Scala Days."
 poster_hero: "/img/media/copenhagen.jpg"
 poster_thumb: "/img/media/copenhagen-thumb.jpg"
 
+papers_section: true
 sponsors_section: true
 location_section: true
 
@@ -44,7 +45,7 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 **We welcome all sorts of talks!** You don't have to write down a perfect abstract. **Submissions by first-time speakers are especially welcome!**
 
-*Stay tuned while we prepare the Call for Speakers.*
+<a class="btn large" href="https://www.papercall.io/typelevel-summit-cph-2017">Submit your talk here</a>
 
 ## Venue
 
