@@ -50,7 +50,8 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 ## Venue
 
-This event will take place at 26 Bridge Event Space, 26 Bridge Street, Brooklyn, New York.
+This event will take place at [26 Bridge Event Space](http://www.26bridge.com/), 26 Bridge Street, Brooklyn, New York.
+Note that the picture on Street View is outdated!
 
 {% include venue_map.html %}
 
