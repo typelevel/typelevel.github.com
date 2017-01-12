@@ -48,6 +48,8 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-nyc-2017">Submit your talk here</a>
 
+Submission closes January 23.
+
 ## Venue
 
 This event will take place at [26 Bridge Event Space](http://www.26bridge.com/), 26 Bridge Street, Brooklyn, New York.
