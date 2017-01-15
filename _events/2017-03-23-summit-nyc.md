@@ -20,12 +20,21 @@ featured: true
 
 ## About the Summit
 
-The third Typelevel Summit will once again be co-located with the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> in New York City, with one day of recorded talks and one day of (shared) unconference.
+The third Typelevel Summit will once again be co-located with the [Northeast Scala Symposium](http://www.nescala.org/) in New York City, with one day of recorded talks and one day of (shared) unconference.
 The Summit will happen on March 23, NE Scala on March 24, and finally, the unconference on March 25.
 
 The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
+
+## Tickets
+
+This year, we're offering a combined ticket for both NE Scala and the Summit.
+We're trying very hard to keep the ticket price low, as this is – as always – not a for-profit venture.
+Participation at the shared unconference will be free of charge.
+
+Tickets will go on sale the week of January 15.
+Watch our [Twitter feed](https://twitter.com/typelevel) for the announcement of the precise date & time.
 
 ## Call for Speakers
 
@@ -54,6 +63,7 @@ Submission closes January 23.
 
 This event will take place at [26 Bridge Event Space](http://www.26bridge.com/), 26 Bridge Street, Brooklyn, New York.
 Note that the picture on Street View is outdated!
+For more information about the venue and accommodation, check out the [NE Scala website](http://www.nescala.org/).
 
 {% include venue_map.html %}
 
