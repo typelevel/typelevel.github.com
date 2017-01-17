@@ -72,3 +72,7 @@ For more information about the venue and accommodation, check out the [NE Scala 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
+
+## Code of Conduct
+
+The Typelevel Summit is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](http://typelevel.org/conduct.html)
