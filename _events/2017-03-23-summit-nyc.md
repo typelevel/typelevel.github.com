@@ -27,6 +27,8 @@ The Summits are open to all, not just current contributors to and users of the T
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
 
+This is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](http://typelevel.org/conduct.html).
+
 ## Tickets
 
 This year, we're offering a combined ticket for both NE Scala and the Summit.
@@ -72,7 +74,3 @@ For more information about the venue and accommodation, check out the [NE Scala 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
-
-## Code of Conduct
-
-The Typelevel Summit is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](http://typelevel.org/conduct.html)
