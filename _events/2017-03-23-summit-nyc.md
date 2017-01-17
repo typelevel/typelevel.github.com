@@ -35,8 +35,9 @@ This year, we're offering a combined ticket for both NE Scala and the Summit.
 We're trying very hard to keep the ticket price low, as this is – as always – not a for-profit venture.
 Participation at the shared unconference will be free of charge.
 
-Tickets will go on sale the week of January 15.
-Watch our [Twitter feed](https://twitter.com/typelevel) for the announcement of the precise date & time.
+**Tickets will go on sale January 19, 12pm EST.**
+
+<a class="btn large" href="https://ti.to/northeast-scala-symposium/northeast-scala-symposium-2017">Buy tickets</a>
 
 ## Call for Speakers
 
