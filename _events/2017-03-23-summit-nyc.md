@@ -10,7 +10,6 @@ description: "One day of recorded talks and one day of unconference, co-located 
 poster_hero: "/img/media/nyc.jpg"
 poster_thumb: "/img/media/nyc-thumb.jpg"
 
-papers_section: true
 sponsors_section: true
 location_section: true
 
@@ -35,32 +34,7 @@ This year, we're offering a combined ticket for both NE Scala and the Summit.
 We're trying very hard to keep the ticket price low, as this is – as always – not a for-profit venture.
 Participation at the shared unconference will be free of charge.
 
-**Tickets will go on sale January 19, 12pm EST.**
-
 <a class="btn large" href="https://ti.to/northeast-scala-symposium/northeast-scala-symposium-2017">Buy tickets</a>
-
-## Call for Speakers
-
-The Summit will feature both 30 minute and 15 minute-long talks.
-
-We are looking for a variety of things! Possible topic ranges include, but are not limited to:
-
-  - Experience reports:  "How we migrated our code base to shapeless"
-  - Typelevel project updates: "What's new in Typelevel project X"
-  - Your project updates: "What's new in X", where X uses Typelevel heavily
-  - Big picture: "Where is Scala headed for typed FP?"
-  - Non-code issues: "Diversity in the Scala community", "Governance in Typelevel"
-  - Tutorial-style: "Error-handling with cats", "Idiomatic ScalaCheck"
-  - Tooling: "We can now use Ensime in Notepad"
-  - Related work: "How language X does typed FP and what we could learn"
-
-Proposals should be related to the Typelevel family in some way or follow the Typelevel spirit.
-
-**We welcome all sorts of talks!** You don't have to write down a perfect abstract. **Submissions by first-time speakers are especially welcome!**
-
-<a class="btn large" href="https://www.papercall.io/typelevel-summit-nyc-2017">Submit your talk here</a>
-
-Submission closes January 23.
 
 ## Venue
 
