@@ -49,6 +49,12 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-cph-2017">Submit your talk here</a>
 
+## Tickets
+
+Tickets will go on sale **Friday, January 27, 09:00 UTC**, starting at 60 €.
+
+<a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-copenhagen">Buy tickets</a>
+
 ## Venue
 
 This event will take place at the Comwell Conference Center Copenhagen.
