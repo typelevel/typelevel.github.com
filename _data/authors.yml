@@ -146,7 +146,7 @@ jserranohidalgo:
 noelmarkham:
   full_name: "Noel Markham"
   portrait: "https://avatars2.githubusercontent.com/u/1492487?v=3&s=80"
-  bio: "  Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees"
+  bio: "Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees"
 mandubian:
   full_name: "Pascal Voitot"
   portrait: "https://avatars0.githubusercontent.com/u/77193?v=3&s=80"
@@ -154,8 +154,44 @@ mandubian:
 javierfuentes:
   full_name: "Javier Fuentes"
   portrait: "https://avatars0.githubusercontent.com/u/3404795?v=3&s=400"
-  bio: "Javier and Jesús Lopez are senior functional programmers and course instructors at Habla Computing. They are heavily involved in expanding the Scala community in Madrid and frequent speakers in meetups and workshops.	"
+  bio: "Javier and Jesús Lopez are senior functional programmers and course instructors at Habla Computing. They are heavily involved in expanding the Scala community in Madrid and frequent speakers in meetups and workshops."
 chrisokasaki:
   full_name: "Chris Okasaki"
   portrait: "https://avatars2.githubusercontent.com/u/19372370?v=3&s=80"
   github: "chrisokasaki"
+sofiacole:
+  full_name: "Sofia Cole"
+  portrait: "https://avatars3.githubusercontent.com/u/12714759?v=3&s=80"
+  twitter: "sofiacole35"
+  github: "sofiaaacole"
+  bio: "Sofia Cole is a Scala Developer at ITV and associate at Underscore consulting. She is also a keen contributor to the Scala and tech communities, mostly focusing on making things more approachable and accessible. One of her goals in 2017 is to visit more schools introducing the wonders of programming, especially helping young girls realise their potential. Her favourite things at the moment are reading about dystopian futures, eating pancakes and watching House for the second time through."
+oweinreese:
+  full_name: "Owein Reese"
+  portrait: "https://avatars2.githubusercontent.com/u/515577?v=3&s=80"
+  twitter: "oweinreese"
+  github: "wheaties"
+  bio: "Owein is the Director of Creatives Engineering at MediaMath, an adtech company. His teams have built systems in Scala which handle over 1M req/s with under 10ms latency daily. Originally starting out as a mathematical programmer working in infrared countermeasures, he moved on to become a full fledged software developer involved first with NASA satellite systems and then with hedge fund analytics. Since discovering the joys of functional programming, he’s looked for ways to incorporate higher powered abstractions in all the code he writes, when he gets to write code."
+danielasfregola:
+  full_name: "Daniela Sfregola"
+  portrait: "https://avatars3.githubusercontent.com/u/810447?v=3&s=80"
+  twitter: "DanielaSfregola"
+  github: "DanielaSfregola"
+  bio: "Daniela Sfregola is a Software Consultant based in London, UK. She is an active contributor to the Scala Community and a passionate blogger at danielasfregola.com."
+dscleaver:
+  full_name: "Dave Cleaver"
+  portrait: "https://avatars0.githubusercontent.com/u/139136?v=3&s=80"
+  twitter: "dscleaver"
+  github: "dscleaver"
+  bio: "Dave Cleaver is a Senior Principal Engineer at Comcast designing and implementing scalable Web Services and Platforms. He has spent the last two years developing and championing solutions in Scala. His interests include AI planning, distributed systems, programming languages, and type systems."
+longcao:
+  full_name: "Long Cao"
+  portrait: "https://avatars2.githubusercontent.com/u/865236?v=3&s=80"
+  twitter: "oacgnol"
+  github: "longcao"
+  bio: "Long Cao is a software engineer specifically working in data engineering, Spark, and Scala. He's been in New York for the last 5 years and have been doing Scala full time since then. He thinks people should listen to him because he likes to make it a point to help teach Scala and make onboarding onto the language and its ideas easier. He likes coffee, beer, whiskey, hiphop music, sports, irreverent internet humor, and loves to socialize at Typelevel events."
+ratan:
+  full_name: "Ratan Sebastian"
+  portrait: "https://pbs.twimg.com/profile_images/1749512839/ratcomic.jpg"
+  twitter: "ratansebastian"
+  github: "rjsvaljean"
+  bio: "Ratan is a software developer at x.ai where they’re building a meeting scheduling personal assistant. He’s been programming in Scala for about 5 years and is interested in learning more about pure functional programming and type systems through Scala."
