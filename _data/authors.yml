@@ -201,3 +201,9 @@ edmundnoble:
   github: "edmundnoble"
   twitter: "edmund_noble"
   bio: "Edmund loves Scala and code in general, and he is intimately interested in how people code. Purely functional programming is his passion; he is particularly interested in new ways to constrain and abstract in programs. He contributes to a couple of the libraries under the typelevel umbrella, including cats and eff, the last of which he maintains."
+igstan:
+  full_name: "Ionuț G. Stan"
+  portrait: "https://avatars3.githubusercontent.com/u/49002?v=3&s=80"
+  github: "igstan"
+  twitter: "igstan"
+  bio: "Ionuț G. Stan is a software developer at Eloquentix, where he works on backend services using Scala. His current interests revolve around functional programming techniques, programming languages and compilers."

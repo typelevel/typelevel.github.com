@@ -52,6 +52,10 @@ schedule:
     speakers: ["dreadedsoftware"]
     title: "Scalable data pipelines with shapeless and cats"
     summary: "The data pipeline is the backbone of most modern platforms. Not only is it important to make sure your pipeline is fast and reliable but, a team also needs to be able to deploy new endpoints quickly. This talk uses inductive implicits and typeclasses to make onboarding painless. With only a limited knowledge of shapeless and cats, a developer can create scalable and maintainable data pipeline architectures that are assembled at compile time. With inductive types, pipelines can be combined to create compound pipelines simply and easily. And cats provides ready-made typeclasses which can help cut down on development time."
+  - time: "--:--"
+    speakers: ["igstan"]
+    title: "A Type Inferencer for ML in 200 Lines of Scala"
+    summary: "Scala is both acclaimed and criticized for its type inference capabilities. But most of this criticism stems from Scala’s object-functional nature, so how does type inference look like and work in functional languages without objects, such as Standard ML or Haskell? This talk aims to show one way to achieving that. We will present Wand’s type inference algorithm, a lesser known, but easier to understand and extend alternative to the classic Damas-Hindley-Milner algorithm. We’ll use a small subset of Standard ML as a vehicle language and Scala as the implementation language."
 
 ---
 
