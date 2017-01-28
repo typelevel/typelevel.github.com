@@ -44,6 +44,14 @@ schedule:
     speakers: ["ratan"]
     title: "Introduction to Recursion Schemes"
     summary: "Recursion is one of the most fundamental tools in the functional programmer’s kit. As with most fundamental tools, it’s quite powerful, and likely, too powerful for most applications. Abstracting away the explicit recursion from algorithms can make them easier to reason about, understand and maintain. Separating description of the program from interpretation, is a pattern we often see in functional programming. This talk is about applying that idea to recursive algorithms. This talk will attempt to be as self-contained as possible and will hopefully make {cata|ana|para|apo}morphisms less intimidating by showing the internals of how they could be implemented with as few parts of Scala as possible."
+  - time: "--:--"
+    speakers: ["edmundnoble"]
+    title: "Extensible Effects: A Leaner Cake for Purely Functional Code"
+    summary: "Purely functional algorithms and data structures are one thing, but purely functional program architectures are a completely different beast. Constructors and dependency injection frameworks compete in the object oriented landscape; in Scala, we have the Cake Pattern as well. Regardless, we aren’t doing purely functional programming just to pass around mutable objects with state, and the Cake Pattern has a similar problem with hiding effects from the user. Extensible effects provide not only a uniform interface to monadic effects, but a dependency injection mechanism that is aware of them. Finally tagless encodings provide an object-oriented view of the problem, which compared to the initial ADT encoding can be not only easier to understand for newcomers but more efficient."
+  - time: "--:--"
+    speakers: ["dreadedsoftware"]
+    title: "Scalable data pipelines with shapeless and cats"
+    summary: "The data pipeline is the backbone of most modern platforms. Not only is it important to make sure your pipeline is fast and reliable but, a team also needs to be able to deploy new endpoints quickly. This talk uses inductive implicits and typeclasses to make onboarding painless. With only a limited knowledge of shapeless and cats, a developer can create scalable and maintainable data pipeline architectures that are assembled at compile time. With inductive types, pipelines can be combined to create compound pipelines simply and easily. And cats provides ready-made typeclasses which can help cut down on development time."
 
 ---
 

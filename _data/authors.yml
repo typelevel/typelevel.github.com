@@ -195,3 +195,9 @@ ratan:
   twitter: "ratansebastian"
   github: "rjsvaljean"
   bio: "Ratan is a software developer at x.ai where they’re building a meeting scheduling personal assistant. He’s been programming in Scala for about 5 years and is interested in learning more about pure functional programming and type systems through Scala."
+edmundnoble:
+  full_name: "Edmund Noble"
+  portrait: "https://avatars3.githubusercontent.com/u/1369693?v=3&s=80"
+  github: "edmundnoble"
+  twitter: "edmund_noble"
+  bio: "Edmund loves Scala and code in general, and he is intimately interested in how people code. Purely functional programming is his passion; he is particularly interested in new ways to constrain and abstract in programs. He contributes to a couple of the libraries under the typelevel umbrella, including cats and eff, the last of which he maintains."
