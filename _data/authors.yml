@@ -32,7 +32,7 @@ adelbertc:
   portrait: "https://secure.gravatar.com/avatar/fb8e986500c5059b2a6c0b2184bb0faf"
   twitter: "adelbertchang"
   github: "adelbertc"
-  bio: "Adelbert Chang is a Software Engineer at Box and a recent graduate from UC Santa Barbara where he studied Computer Science and researched graph querying and modeling. He enjoys helping with functional programming education and learning more about programming."
+  bio: "Adelbert is an engineer at Box where he attempts to reliably copy bytes from one machine to another. He enjoys writing pure functional programs, teaching functional programming, and learning more about computing."
 channingwalton:
   full_name: "Channing Walton"
   portrait: "https://secure.gravatar.com/avatar/560f2f6f76ad8a88a729d8cf684ea6f3"
@@ -188,7 +188,7 @@ longcao:
   portrait: "https://avatars2.githubusercontent.com/u/865236?v=3&s=80"
   twitter: "oacgnol"
   github: "longcao"
-  bio: "Long Cao is a software engineer specifically working in data engineering, Spark, and Scala. He's been in New York for the last 5 years and have been doing Scala full time since then. He thinks people should listen to him because he likes to make it a point to help teach Scala and make onboarding onto the language and its ideas easier. He likes coffee, beer, whiskey, hiphop music, sports, irreverent internet humor, and loves to socialize at Typelevel events."
+  bio: "Long Cao is a software engineer focusing on Scala, Spark, and data engineering and has been in New York for the last 5 years. He cares deeply about showing newcomers the benefits of Scala and functional programming. On his off time likes to enjoy climbing, Rocket League, music, sports, and coffee."
 ratan:
   full_name: "Ratan Sebastian"
   portrait: "https://pbs.twimg.com/profile_images/1749512839/ratcomic.jpg"
