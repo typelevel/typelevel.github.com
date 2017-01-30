@@ -32,7 +32,7 @@ adelbertc:
   portrait: "https://secure.gravatar.com/avatar/fb8e986500c5059b2a6c0b2184bb0faf"
   twitter: "adelbertchang"
   github: "adelbertc"
-  bio: "Adelbert Chang is a Software Engineer at Box and a recent graduate from UC Santa Barbara where he studied Computer Science and researched graph querying and modeling. He enjoys helping with functional programming education and learning more about programming."
+  bio: "Adelbert is an engineer at Box where he attempts to reliably copy bytes from one machine to another. He enjoys writing pure functional programs, teaching functional programming, and learning more about computing."
 channingwalton:
   full_name: "Channing Walton"
   portrait: "https://secure.gravatar.com/avatar/560f2f6f76ad8a88a729d8cf684ea6f3"
@@ -146,7 +146,7 @@ jserranohidalgo:
 noelmarkham:
   full_name: "Noel Markham"
   portrait: "https://avatars2.githubusercontent.com/u/1492487?v=3&s=80"
-  bio: "  Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees"
+  bio: "Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees"
 mandubian:
   full_name: "Pascal Voitot"
   portrait: "https://avatars0.githubusercontent.com/u/77193?v=3&s=80"
@@ -154,8 +154,56 @@ mandubian:
 javierfuentes:
   full_name: "Javier Fuentes"
   portrait: "https://avatars0.githubusercontent.com/u/3404795?v=3&s=400"
-  bio: "Javier and Jesús Lopez are senior functional programmers and course instructors at Habla Computing. They are heavily involved in expanding the Scala community in Madrid and frequent speakers in meetups and workshops.	"
+  bio: "Javier and Jesús Lopez are senior functional programmers and course instructors at Habla Computing. They are heavily involved in expanding the Scala community in Madrid and frequent speakers in meetups and workshops."
 chrisokasaki:
   full_name: "Chris Okasaki"
   portrait: "https://avatars2.githubusercontent.com/u/19372370?v=3&s=80"
   github: "chrisokasaki"
+sofiacole:
+  full_name: "Sofia Cole"
+  portrait: "https://avatars3.githubusercontent.com/u/12714759?v=3&s=80"
+  twitter: "sofiacole35"
+  github: "sofiaaacole"
+  bio: "Sofia Cole is a Scala Developer at ITV and associate at Underscore consulting. She is also a keen contributor to the Scala and tech communities, mostly focusing on making things more approachable and accessible. One of her goals in 2017 is to visit more schools introducing the wonders of programming, especially helping young girls realise their potential. Her favourite things at the moment are reading about dystopian futures, eating pancakes and watching House for the second time through."
+oweinreese:
+  full_name: "Owein Reese"
+  portrait: "https://avatars2.githubusercontent.com/u/515577?v=3&s=80"
+  twitter: "oweinreese"
+  github: "wheaties"
+  bio: "Owein is the Director of Creatives Engineering at MediaMath, an adtech company. His teams have built systems in Scala which handle over 1M req/s with under 10ms latency daily. Originally starting out as a mathematical programmer working in infrared countermeasures, he moved on to become a full fledged software developer involved first with NASA satellite systems and then with hedge fund analytics. Since discovering the joys of functional programming, he’s looked for ways to incorporate higher powered abstractions in all the code he writes, when he gets to write code."
+danielasfregola:
+  full_name: "Daniela Sfregola"
+  portrait: "https://avatars3.githubusercontent.com/u/810447?v=3&s=80"
+  twitter: "DanielaSfregola"
+  github: "DanielaSfregola"
+  bio: "Daniela Sfregola is a Software Consultant based in London, UK. She is an active contributor to the Scala Community and a passionate blogger at danielasfregola.com."
+dscleaver:
+  full_name: "Dave Cleaver"
+  portrait: "https://avatars0.githubusercontent.com/u/139136?v=3&s=80"
+  twitter: "dscleaver"
+  github: "dscleaver"
+  bio: "Dave Cleaver is a Senior Principal Engineer at Comcast designing and implementing scalable Web Services and Platforms. He has spent the last two years developing and championing solutions in Scala. His interests include AI planning, distributed systems, programming languages, and type systems."
+longcao:
+  full_name: "Long Cao"
+  portrait: "https://avatars2.githubusercontent.com/u/865236?v=3&s=80"
+  twitter: "oacgnol"
+  github: "longcao"
+  bio: "Long Cao is a software engineer focusing on Scala, Spark, and data engineering and has been in New York for the last 5 years. He cares deeply about showing newcomers the benefits of Scala and functional programming. On his off time likes to enjoy climbing, Rocket League, music, sports, and coffee."
+ratan:
+  full_name: "Ratan Sebastian"
+  portrait: "https://pbs.twimg.com/profile_images/1749512839/ratcomic.jpg"
+  twitter: "ratansebastian"
+  github: "rjsvaljean"
+  bio: "Ratan is a software developer at x.ai where they’re building a meeting scheduling personal assistant. He’s been programming in Scala for about 5 years and is interested in learning more about pure functional programming and type systems through Scala."
+edmundnoble:
+  full_name: "Edmund Noble"
+  portrait: "https://avatars3.githubusercontent.com/u/1369693?v=3&s=80"
+  github: "edmundnoble"
+  twitter: "edmund_noble"
+  bio: "Edmund loves Scala and code in general, and he is intimately interested in how people code. Purely functional programming is his passion; he is particularly interested in new ways to constrain and abstract in programs. He contributes to a couple of the libraries under the typelevel umbrella, including cats and eff, the last of which he maintains."
+igstan:
+  full_name: "Ionuț G. Stan"
+  portrait: "https://avatars3.githubusercontent.com/u/49002?v=3&s=80"
+  github: "igstan"
+  twitter: "igstan"
+  bio: "Ionuț G. Stan is a software developer at Eloquentix, where he works on backend services using Scala. His current interests revolve around functional programming techniques, programming languages and compilers."
