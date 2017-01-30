@@ -67,10 +67,8 @@ Ensime isn't just for Emacs! Dick Wall will give us a taste of what's been happe
 users of the Sublime Text editor and encourage you all to hack on Ensime later.
 
 
-<a class="btn large" href="https://scala.world/">Register</a>
-
 ## Venue
 
-This event will take place at the Rheged Centre, situated near Penrith in the Lake District National Park, UK.
+This event took place at the Rheged Centre, situated near Penrith in the Lake District National Park, UK.
 
 {% include venue_map.html %}
