@@ -103,7 +103,7 @@ fthomas:
   bio: "Frank is a physicist by education and a programmer by profession, currently working in a telecommunications company. He started programming in Scala in 2011 and is a contributor to scalaz-stream and cats. Most of his Scala work is done in his free time."
 cheng:
   full_name: "Dr Eugenia Cheng"
-  portrait: "https://pbs.twimg.com/profile_images/661900712201338880/98D0qmH__400x400.jpg"
+  portrait: "https://pbs.twimg.com/profile_images/767917112358830080/dy1Xux_7_400x400.jpg"
   twitter: "DrEugeniaCheng"
   bio: "Eugenia Cheng is a Senior Lecturer (Associate Professor) of Pure Mathematics in the School of Mathematics and Statistics, University of Sheffield, UK."
 alexandru:
@@ -139,22 +139,6 @@ InTheNow:
   full_name: "Alistair Johnson"
   portrait: "https://avatars3.githubusercontent.com/u/5887373?v=3&s=80"
   bio: "Alistair has been programming for far too long, for far too many companies, but as a dedicated type fan, not long enough in Scala."
-jserranohidalgo:
-  full_name: "Juan Manuel Serrano"
-  portrait: "https://avatars3.githubusercontent.com/u/3715323?v=3&s=80"
-  bio: "Juan Manuel is CTO and co-founder at Habla Computing, a company specializing in functional programming techniques for reactive system development."
-noelmarkham:
-  full_name: "Noel Markham"
-  portrait: "https://avatars2.githubusercontent.com/u/1492487?v=3&s=80"
-  bio: "Noel started out as a Java developer in finance before moving to functional programming in startups for both games and social media. More recently, he has worked in broadcast media, and is currently working in London at 47 Degrees"
-mandubian:
-  full_name: "Pascal Voitot"
-  portrait: "https://avatars0.githubusercontent.com/u/77193?v=3&s=80"
-  bio: "Senior Backend/Distributed systems developer at 'Project September' loudly advocating for Functional Programming languages, mathematical foundations & cuisine.."
-javierfuentes:
-  full_name: "Javier Fuentes"
-  portrait: "https://avatars0.githubusercontent.com/u/3404795?v=3&s=400"
-  bio: "Javier and Jesús Lopez are senior functional programmers and course instructors at Habla Computing. They are heavily involved in expanding the Scala community in Madrid and frequent speakers in meetups and workshops."
 chrisokasaki:
   full_name: "Chris Okasaki"
   portrait: "https://avatars2.githubusercontent.com/u/19372370?v=3&s=80"
