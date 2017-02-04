@@ -191,3 +191,9 @@ igstan:
   github: "igstan"
   twitter: "igstan"
   bio: "Ionuț G. Stan is a software developer at Eloquentix, where he works on backend services using Scala. His current interests revolve around functional programming techniques, programming languages and compilers."
+nikivazou:
+  full_name: "Niki Vazou"
+  portrait: "https://avatars1.githubusercontent.com/u/714933?v=3&s=80"
+  github: "nikivazou"
+  twitter: "nikivazou"
+  bio: "Niki Vazou is a postdoctoral fellow at University of Maryland. She recently got her Ph.D. at University of California, San Diego, supervised by Ranjit Jhala. She works in the area of programming languages, with the goal of building usable program verifiers that will naturally integrate formal verification techniques into the mainstream software development chain.  Niki Vazou received the Microsoft Research Ph.D. fellowship in 2014 and her BS from National Technical University of Athens, Greece in 2011."
