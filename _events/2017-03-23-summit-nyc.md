@@ -61,6 +61,12 @@ schedule:
     title: "A Type Inferencer for ML in 200 Lines of Scala"
     summary: "Scala is both acclaimed and criticized for its type inference capabilities. But most of this criticism stems from Scala’s object-functional nature, so how does type inference look like and work in functional languages without objects, such as Standard ML or Haskell? This talk aims to show one way to achieving that. We will present Wand’s type inference algorithm, a lesser known, but easier to understand and extend alternative to the classic Damas-Hindley-Milner algorithm. We’ll use a small subset of Standard ML as a vehicle language and Scala as the implementation language."
 
+sponsors:
+  - name: "Rally Health"
+    logo: "/img/media/sponsors/rally.png"
+    link: "https://www.rallyhealth.com/"
+    type: "gold"
+    height: 50
 ---
 
 ## About the Summit
@@ -96,6 +102,10 @@ For more information about the venue and accommodation, check out the [NE Scala 
 {% include venue_map.html %}
 
 ## Sponsors
+
+We'd like to thank all our sponsors who help to make the Summit happen:
+
+{% include sponsors.html %}
 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
