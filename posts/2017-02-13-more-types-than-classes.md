@@ -196,7 +196,7 @@ required to treat each type parameter uniquely, uniformly, and without
 prejudice. The compiler enforces this by making the implementation
 blind to what that parameter, like `G`, could be. It can only use what
 the caller, the “outside”, has told it about `G`—arguments whose
-types contain `G`, like `List[G]`, `(G, G) => G`, or `G` itself, like
+types contain `G`, like `List[G]`, `(G, G) => G`, or `G` itself, like
 the argument to `pickGreeting`. This
 is
 [information-hiding at the type level]({% post_url 2016-03-13-information-hiding %});
@@ -296,8 +296,8 @@ scala> implicitly[greeting3.I =:= Int]
 ```
 
 They are unrelated for much the same reason as `G` was unrelated to
-`String` in the previous example: the only things code following `val
-greeting3` may know are those embodied in the `greeting3.i` and
+`String` in the previous example: the only things code following
+`val greeting3` may know are those embodied in the `greeting3.i` and
 `greeting3.f` members. You can almost think of them as “arguments”.
 
 But that’s not all.
@@ -372,17 +372,17 @@ code that could not compile. We could imagine the sequence of events,
 were it permitted.
 
 1. `allo.f` (which is `greeting3.f`) evaluates. It is the function
-   `(n: Int) => List.fill(n)("hi").mkString(" ")`.
-2. The `allo = bhello` assignment occurs.
+   `(n: Int) => List.fill(n)("hi").mkString(" ")`.
+2. The `allo = bhello` assignment occurs.
 3. `allo.i` (which is `bhello.i`) evaluates. It is the string
    `"olleh"`.
-4. We attempt to pass `"olleh"` as the `(n: Int)` argument to complete
+4. We attempt to pass `"olleh"` as the `(n: Int)` argument to complete
    the evaluation, and get stuck.
 
 Just as it makes no difference what concrete substitutions you make
 for `G`, it makes no difference whether such an assignment could ever
 happen in your specific program; the compiler takes it as a
-possibility because you declared a `var`. (`def allo = greeting3` gets
+possibility because you declared a `var`. (`def allo = greeting3` gets
 the same treatment, lest you think non-functional programs get to have
 all the fun here.) Each _reference_ to `allo` gets a new `I` type
 member. That failing line of code had two `allo` references, so was
@@ -453,7 +453,7 @@ program. That’s why it makes sense to include a “model of the classes”
 in the type system. When we define a class, we also define an
 associated type or family of types.
 
-When we use a class to construct a value, as in `new Blob`, we would
+When we use a class to construct a value, as in `new Blob`, we would
 like to assign as much specific meaning to that expression as we can
 at compile time. So, because we know right now that this expression
 will make a value of class `Blob`, we assign it the type `Blob` too.
@@ -548,10 +548,10 @@ tempting this mistake is.
 
 `String` is a `final class`. So it is true that `G` can contain no
 more specific class than `String`, if the first `case` matches. For
-example, given `trait MyAwesomeMixin`, `G` cannot be `String with
-MyAwesomeMixin` if this `case` succeeds, because that can’t be
-instantiated; you would need to create a subclass of `String` that
-implemented `MyAwesomeMixin`.
+example, given `trait MyAwesomeMixin`, `G` cannot be
+`String with MyAwesomeMixin` if this `case` succeeds, because that
+can’t be instantiated; you would need to create a subclass of `String`
+that implemented `MyAwesomeMixin`.
 
 This pattern match isn’t enough evidence to say that `G` is exactly
 `String`. There are still other class-based types it could be, like
@@ -564,11 +564,11 @@ pickGreeting3[java.io.Serializable](greeting, 4055)
 Instead, it feels like this pattern match confirms `Serializable` as a
 possibility, instead of denying it.
 
-But we don’t need `G = String` for this code to compile; we only need
-`G >: String`. If that was true, then `"Surely type G is String,
+But we don’t need `G = String` for this code to compile; we only need
+`G >: String`. If that was true, then `"Surely type G is String,
 right?"`, a `String`, could simply upcast to `G`.
 
-However, even `G >: String` is unproven. There are no subclasses of
+However, even `G >: String` is unproven. There are no subclasses of
 `String`, but there are infinitely many _subtypes_ of
 `String`. Including the `G` created by each entry into
 `pickGreeting3`, every abstract and existential type bounded by
@@ -598,8 +598,8 @@ def pickGreeting4[G]: G = new G
                                      ^
 ```
 
-You’ll have to do something else here, like take an argument `() =>
-G`, to let `pickGreeting4` construct `G`s.
+You’ll have to do something else here, like take an argument
+`() => G`, to let `pickGreeting4` construct `G`s.
 
 The truly essential role that classes play is that they encapsulate
 instructions for constructing concrete values of various types. In a
