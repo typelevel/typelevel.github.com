@@ -101,6 +101,20 @@ Now we have seven. I’ll spare you spelling out the induction: each new
 variable defined like `salutation` will yield a new alias with a
 distinct type. This is not about _objects_; this is about _variables_!
 
+```scala
+// find a type for the literal "hi there!"
+scala> val literalHiThere = shapeless.Witness("hi there!")
+literalHiThere: shapeless.Witness.Aux[String("hi there!")] = shapeless.Witness$$anon$1@1d1537bb
+
+scala> conformance[greeting.type, literalHiThere.T]
+<console>:15: error: type arguments [greeting.type,literalHiThere.T] do not conform
+              to method conformance's type parameter bounds [A,B >: A]
+
+scala> conformance[literalHiThere.T, greeting.type]
+<console>:15: error: type arguments [literalHiThere.T,greeting.type] do not conform
+              to method conformance's type parameter bounds [A,B >: A]
+```
+
 As local variables are a strictly compile-time abstraction, and we
 have anyway seen that the numbers don’t match up, that should be the
 end of the “types are classes” confusion for you. But maybe this is
@@ -699,4 +713,5 @@ article, it’s not necessary to know that full richness to appreciate
 or remember the difference between the two: types are static and
 compile-time; classes are dynamic and runtime.
 
-*This article was tested with Scala 2.12.1 and Firefox 53.0a2.*
+*This article was tested with Scala 2.12.1, Shapeless 2.3.2, and
+Firefox 53.0a2.*
