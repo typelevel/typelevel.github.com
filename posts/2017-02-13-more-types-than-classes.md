@@ -297,8 +297,9 @@ val greeting3 = later(3){
 How many _classes_ are involved here, in the type of `greeting3`?
 
 1. `Later`, obviously;
-2. `String`, the output type of `greeting3.f`;
-3. `Int`, the `I` type.
+2. `Function1`, the `greeting3.f` overall class;
+3. `String`, the output type of `greeting3.f`;
+4. `Int`, the `I` type.
 
 How many types?
 
