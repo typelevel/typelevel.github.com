@@ -67,6 +67,11 @@ sponsors:
     link: "https://www.rallyhealth.com/"
     type: "gold"
     height: 50
+  - name: "Cake Solutions"
+    logo: "/img/media/sponsors/cake.jpg"
+    link: "http://www.cakesolutions.net/"
+    type: "platinum"
+    height: 100
 ---
 
 ## About the Summit
