@@ -66,12 +66,22 @@ sponsors:
     logo: "/img/media/sponsors/rally.png"
     link: "https://www.rallyhealth.com/"
     type: "gold"
-    height: 50
+    height: 40
   - name: "Cake Solutions"
     logo: "/img/media/sponsors/cake.jpg"
     link: "http://www.cakesolutions.net/"
     type: "platinum"
     height: 100
+  - name: "Underscore"
+    logo: "/img/media/sponsors/underscore.png"
+    link: "http://underscore.io/"
+    type: "silver"
+    height: 50
+  - name: "Giphy"
+    logo: "/img/media/sponsors/giphy.png"
+    link: "https://giphy.com/"
+    type: "gold"
+    height: 60
 ---
 
 ## About the Summit
