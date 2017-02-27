@@ -16,17 +16,17 @@ reusable module that calls that thing, you must define *another*
 trait, and so must the downstream of that, and so on and so forth.
 
 However, we can use type parameters that represent **singleton types**
-to write functions that are polymorphic over these "cakes", without
+to write functions that are polymorphic over these “cakes”, without
 being defined as part of them or mixed in themselves. For example, you
 can use this to write functions that operate on elements of a
 reflection universe, without necessarily passing that universe around
 all over the place.
 
-Well, for the most part. Let's see how far this goes.
+Well, for the most part. Let’s see how far this goes.
 
 ## Our little universe
 
-Let's set aside the heavyweight real-world examples I mentioned above
+Let’s set aside the heavyweight real-world examples I mentioned above
 in favor of a small example. Then, we should be able to explore the
 possibilities in this simpler space.
 
@@ -43,7 +43,7 @@ final case class LittleUniverse() {
 }
 ```
 
-*For brevity, I've defined member `class`es, but this article equally
+*For brevity, I’ve defined member `class`es, but this article equally
 applies if you are using abstract `type`s instead, as any Functional
 programmer of pure, virtuous heart ought to!*
 
@@ -68,13 +68,13 @@ scala> lu.haystack.iter(anotherU.haystack.init)
                                           ^
 ```
 
-The meaning of this error is "you can't use one universe's `Haystack`
-to `iter` a `Needle` from another universe".
+The meaning of this error is “you can’t use one universe’s `Haystack`
+to `iter` a `Needle` from another universe”.
 
-This doesn't look very important given the above code, but it's a
+This doesn’t look very important given the above code, but it’s a
 *real* boon to more complex scenarios. You can set up a lot of
 interdependent abstract invariants, verify them all, and have the
-whole set represented with the "index" formed by the singleton type,
+whole set represented with the “index” formed by the singleton type,
 here `lu.type` or `anotherU.type`.
 
 ##  Working with a universe on hand
@@ -90,7 +90,7 @@ def stepTwice(u: LittleUniverse)(n: u.Needle): u.Needle =
   u.haystack.iter(u.haystack.iter(n))
 ```
 
-The most important feature we're reaching for with these fancy
+The most important feature we’re reaching for with these fancy
 dependent method types, and the one that we have to *keep* reaching
 for if we want to write sane functions outside the cake, is
 **preserving the singleton type index**.
@@ -104,8 +104,8 @@ res4: anotherU.Needle = Needle()
 ```
 
 These values are ready for continued `iter`ing, or whatever else
-you've come up with, in the confines of their respective
-universes. That's because they've "remembered" where they came from.
+you’ve come up with, in the confines of their respective
+universes. That’s because they’ve “remembered” where they came from.
 
 By contrast, consider a simple replacement of the path-dependencies
 with a type projection.
@@ -119,7 +119,7 @@ scala> val bti = brokenTwoInits(lu)
 bti: (LittleUniverse#Needle, LittleUniverse#Needle) = (Needle(),Needle())
 ```
 
-That seems to be okay, until it's time to actually use the result.
+That seems to be okay, until it’s time to actually use the result.
 
 ```scala
 scala> lu.haystack.iter(bti._1)
@@ -130,13 +130,13 @@ scala> lu.haystack.iter(bti._1)
                             ^
 ```
 
-The return type of `brokenTwoInits` "forgot" the index, `lu.type`.
+The return type of `brokenTwoInits` “forgot” the index, `lu.type`.
 
 ## Getting two needles without a universe
 
-When we pass a `LittleUniverse` to the above functions, we're also
+When we pass a `LittleUniverse` to the above functions, we’re also
 kind of passing in a constraint on the singleton type created by the
-argument variable. That's how we know that the returned `u.Needle` is
+argument variable. That’s how we know that the returned `u.Needle` is
 a perfectly acceptable `lu.Needle` in the caller scope, when we pass
 `lu` as the universe.
 
@@ -153,36 +153,36 @@ scala> val tifah = twoInitsFromAHaystack[lu.type](lu.haystack)
 tifah: (lu.Needle, lu.Needle) = (Needle(),Needle())
 ```
 
-Since we didn't pass in `lu`, how did it know that the returned
+Since we didn’t pass in `lu`, how did it know that the returned
 `Needle`s were `lu.Needle`s?
 
 1. The type of `lu.haystack` is `lu.Haystack`.
 2. That type is shorthand for `lu.type#Haystack`.
-3. We passed in `U = lu.type`, and our argument meets the resulting
+3. We passed in `U = lu.type`, and our argument meets the resulting
    requirement for a `lu.type#Haystack` (after expanding `U`).
-4. The type of the expression `h.init` is `u.Needle forSome {val u:
-   U}`. We use an existential because the relevant variable (and its
-   singleton type) is not in scope.
+4. The type of the expression `h.init` is
+   `u.Needle forSome {val u: U}`. We use an existential because the
+   relevant variable (and its singleton type) is not in scope.
 5. This type *widens* to `U#Needle`, satisfying the expected return
    type.
 
-This seems like a more complicated way of doing things, but it's very
+This seems like a more complicated way of doing things, but it’s very
 freeing: by not being forced to *necessarily* pass the universe around
-everywhere, you've managed to escape the cake's clutches much more
+everywhere, you’ve managed to escape the cake’s clutches much more
 thoroughly. You can also write syntax enrichments on various members
-of the universe that don't need to talk about the universe's value,
+of the universe that don’t need to talk about the universe’s value,
 just its singleton type.
 
 Unless, you know, the index appears in contravariant position.
 
 ## Syntactic `stepTwice`
 
-One test of how well we've managed to escape the cake is to be able to
+One test of how well we’ve managed to escape the cake is to be able to
 write enrichments that deal with the universe. This is a little
-tricky, but quite doable if you have the universe's value.
+tricky, but quite doable if you have the universe’s value.
 
 With the advent of `implicit class`, this became a little easier to do
-wrongly, but it's a good start.
+wrongly, but it’s a good start.
 
 ```scala
 implicit class NonWorkingStepTwice(val u: LittleUniverse) {
@@ -191,7 +191,7 @@ implicit class NonWorkingStepTwice(val u: LittleUniverse) {
 }
 ```
 
-That compiles okay, but seemingly can't actually be used!
+That compiles okay, but seemingly can’t actually be used!
 
 ```scala
 scala> lu stepTwiceOops lu.haystack.init
@@ -202,14 +202,14 @@ scala> lu stepTwiceOops lu.haystack.init
                                     ^
 ```
 
-There's a hint in that we had to write `val u`, not `u`, nor `private
+There’s a hint in that we had to write `val u`, not `u`, nor `private
 val u`, in order for the `implicit class` itself to compile. This
-signature tells us that there's an *argument* of type
-`LittleUniverse`, and a *member* `u: LittleUniverse`. However, whereas
+signature tells us that there’s an *argument* of type
+`LittleUniverse`, and a *member* `u: LittleUniverse`. However, whereas
 with the function examples above, we [and the compiler] could trust
-that they're one and the same, we have no such guarantee here. So we
-don't know that an `lu.Needle` is a `u.Needle`. We didn't get far
-enough, but we don't know that a `u.Needle` is an `lu.Needle`, either.
+that they’re one and the same, we have no such guarantee here. So we
+don’t know that an `lu.Needle` is a `u.Needle`. We didn’t get far
+enough, but we don’t know that a `u.Needle` is an `lu.Needle`, either.
 
 ## Relatable variables
 
@@ -229,7 +229,7 @@ implicit def WorkingStepTwice[U <: LittleUniverse](u: U)
 ```
 
 *Unfortunately, the ritual of expanding the `implicit class` shorthand
-is absolutely necessary; the `implicit class` won't generate the
+is absolutely necessary; the `implicit class` won’t generate the
 dependent-method-typed implicit conversion we need.*
 
 Now we can get the proof we need.
@@ -247,36 +247,36 @@ How does this work?
 
 1. Implicitly convert `lu`, giving us a `conv:
    WorkingStepTwice[lu.type]`.
-2. This means that `conv.u: lu.type`, by expansion of `U`.
-3. This in turn means that `conv.u.type <: lu.type`.
+2. This means that `conv.u: lu.type`, by expansion of `U`.
+3. This in turn means that `conv.u.type <: lu.type`.
 
 The next part is worth taking in two parts. It may be worth
 having
-[§3.5.2 "Conformance"](http://www.scala-lang.org/files/archive/spec/2.12/03-types.html#conformance) of
-the language spec open for reference. First, let's consider the return
+[§3.5.2 “Conformance”](http://www.scala-lang.org/files/archive/spec/2.12/03-types.html#conformance) of
+the language spec open for reference. First, let’s consider the return
 type (a covariant position), which is simpler.
 
 1. The return type expands to `conv.u.type#Needle`.
 2. The ninth conformance bullet point tells us that the left side of a
-   `#` projection is covariant, so because `conv.u.type <: lu.type`
+   `#` projection is covariant, so because `conv.u.type <: lu.type`
    (see above), the return type *widens* to `lu.type#Needle`.
 3. For this, `lu.Needle` is a shorthand.
 
-It was far longer until I realized how the argument type works. You'll
-want to scroll up on the SLS a bit, to the "Equivalence" section. Keep
+It was far longer until I realized how the argument type works. You’ll
+want to scroll up on the SLS a bit, to the “Equivalence” section. Keep
 in mind that we are trying to widen `lu.Needle` to `conv.u.Needle`,
 which is the reverse of what we did for the return type.
 
-1. Our argument's type expands to `lu.type#Needle`.
-2. The second bullet point under "Equivalence" says that "If a path
-   *p* has a singleton type *q*`.type`, then *p*`.type` ≡ *q*`.type`."
-   From this, we can derive that `conv.u.type = lu.type`. This is a
+1. Our argument’s type expands to `lu.type#Needle`.
+2. The second bullet point under “Equivalence” says that “If a path
+   *p* has a singleton type *q*`.type`, then *p*`.type` ≡ *q*`.type`.”
+   From this, we can derive that `conv.u.type = lu.type`. This is a
    stronger conclusion than we reached above!
 3. We substitute the left side of the `#` using the equivalence,
    giving us `conv.u.type#Needle`.
 
 I cannot characterize this feature of the type system as anything
-other than "really freaky" when you first encounter it. It seems like
+other than “really freaky” when you first encounter it. It seems like
 an odd corner case. Normally, when you write `val x: T`, then `x.type`
 is a *strict* subtype of `T`, and you can count on that, but this
 carves out an exception to that rule. It is sound, though, and an
@@ -290,7 +290,7 @@ res9: sameLu.Needle = Needle()
 ```
 
 Without this rule, even though we have given it the most specific type
-possible, `sameLu` couldn't be a *true* substitute for `lu` in all
+possible, `sameLu` couldn’t be a *true* substitute for `lu` in all
 scenarios. That means that in order to make use of singleton type
 indices, we would be forever beholden to the *variable* we initially
 stored the value in. I think this would be *extremely inconvenient*,
@@ -302,8 +302,8 @@ indexed by their singleton types in many ways.
 
 ## A pointless argument
 
-Let's try to hide the universe. We don't need it, after all. We can't
-refer to `u` in the method signature anymore, so let's try the same
+Let’s try to hide the universe. We don’t need it, after all. We can’t
+refer to `u` in the method signature anymore, so let’s try the same
 conversion we used with `twoInitsFromAHaystack`. We already have the
 `U` type parameter, after all.
 
@@ -318,7 +318,7 @@ implicit def CleanerStepTwice[U <: LittleUniverse](u: U)
   new CleanerStepTwice(u)
 ```
 
-This has the proper signature, and it's cleaner, since we don't expose
+This has the proper signature, and it’s cleaner, since we don’t expose
 the unused-at-runtime `u` variable anymore. We could refine a little
 further, and replace it with a `U#Haystack`, just as with
 `twoInitsFromAHaystack`.
@@ -331,7 +331,7 @@ scala> def trial = lu stepTwiceLively lu.haystack.init
 trial: lu.Needle
 ```
 
-Now, let's turn to implementation.
+Now, let’s turn to implementation.
 
 ```scala
 class OnceMoreStepTwice[U <: LittleUniverse](u: U) {
@@ -348,35 +348,35 @@ class OnceMoreStepTwice[U <: LittleUniverse](u: U) {
 
 This is the last part of the escape! If this worked, we could *fully
 erase* the `LittleUniverse` from most code, relying on the pure
-type-level index to prove enough of its existence! So it's a little
-frustrating that it doesn't quite work.
+type-level index to prove enough of its existence! So it’s a little
+frustrating that it doesn’t quite work.
 
-Let's break it down. First, the return type is fine.
+Let’s break it down. First, the return type is fine.
 
-1. Since `u: U`, `u.type <: U`. (This is true, and useful, in the
+1. Since `u: U`, `u.type <: U`. (This is true, and useful, in the
    scope of `u`, which is now invisible to the caller.)
 2. `iter` returns a `u.type#Needle`.
     - Note: since `u` is not in scope for the caller, if we returned
       this as is, it would effectively widen to the existentially
-      bound `u.type#Needle forSome {val u: U}`. But the same logic in
+      bound `u.type#Needle forSome {val u: U}`. But the same logic in
       the next step would apply to that type.
 3. By the `#` left side covariance, `u.type#Needle` widens to
    `U#Needle`.
 
-Pretty simple, by the standards of what we've seen so far.
+Pretty simple, by the standards of what we’ve seen so far.
 
 ## Contravariance is the root of all...
 
 But things break down when we try to call `iter(n)`. Keep in mind that
-`n: U#Needle` and the expected type is `u.Needle`. Specifically: since
-we don't know in the implementation that `U` is a singleton type, we
-can't use the "singleton type equivalence" rule on it! But suppose
+`n: U#Needle` and the expected type is `u.Needle`. Specifically: since
+we don’t know in the implementation that `U` is a singleton type, we
+can’t use the “singleton type equivalence” rule on it! But suppose
 that we *could*; that is, **suppose that we could constrain `U` to be
 a singleton type**.
 
 1. The argument type is `U#Needle`.
-2. By singleton equivalence, since `u: U` and `u` is stable, so
-   `u.type = U`.
+2. By singleton equivalence, since `u: U` and `u` is stable, so
+   `u.type = U`.
 3. By substituting the left-hand side of the `#`, we get
    `u.type#Needle`.
 4. This shortens to `u.Needle`.
@@ -405,19 +405,19 @@ def stepTwiceHaystack[U <: LittleUniverse](
                        ^
 ```
 
-Let's walk through it one more time.
+Let’s walk through it one more time.
 
 1. `n: U#Needle`.
-2. `h.iter` expects a `u.type#Needle` for all `val u: U`.
+2. `h.iter` expects a `u.type#Needle` for all `val u: U`.
 3. **Suppose that we constrain `U` to be a singleton type**:
-    1. [The existential] `u.type = U`, by singleton equivalence.
+    1. [The existential] `u.type = U`, by singleton equivalence.
     2. By `#` left side equivalence, `h.iter` expects a `U#Needle`.
 
 The existential variable complicates things, but the rule is sound.
 
 As a workaround, it is commonly suggested to extract the member types
 in question into separate type variables. This works in some cases,
-but let's see how it goes in this one.
+but let’s see how it goes in this one.
 
 ```scala
 def stepTwiceExUnim[N, U <: LittleUniverse{type Needle = N}](
@@ -448,7 +448,7 @@ def stepTwiceEx[N, U <: LittleUniverse{type Needle = N}](
 Instead, we need to index `Haystack` *directly* with the `Needle`
 type, that is, add a type parameter to `Haystack` so that its `Needle`
 arguments can be talked about completely independently of the
-`LittleUniverse`, and then to write `h: U#Haystack[N]`
+`LittleUniverse`, and then to write `h: U#Haystack[N]`
 above. Essentially, this means that any time a type talks about
 another type in a `Universe`, you need another type parameter to
 redeclare a little bit of the relationships between types in the
@@ -457,13 +457,13 @@ universe.
 The problem with this is that we already declared those relationships
 by declaring the universe! All of the non-redundant information is
 represented in the singleton type index. So even where the above
-type-refinement technique works (and it does in many cases), it's
-*still* redeclaring things that ought to be derivable from the "mere"
+type-refinement technique works (and it does in many cases), it’s
+*still* redeclaring things that ought to be derivable from the “mere”
 fact that `U` is a singleton type. If at all possible, I would like to
 find a way to use that information, and only that information, to make
 a complete escape from the cake.
 
-As it stands, we're almost out.
+As it stands, we’re almost out.
 
 1. Escape covariant positions with universe variable: complete.
 2. Escape contravariant/invariant positions with universe variable:
