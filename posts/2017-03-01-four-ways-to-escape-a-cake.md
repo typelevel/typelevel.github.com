@@ -365,7 +365,7 @@ Let’s break it down. First, the return type is fine.
 
 Pretty simple, by the standards of what we’ve seen so far.
 
-## Contravariance is the root of all...
+## Contravariance is the root of all…
 
 But things break down when we try to call `iter(n)`. Keep in mind that
 `n: U#Needle` and the expected type is `u.Needle`. Specifically: since
