@@ -15,7 +15,7 @@ define something in a trait to be mixed in, to produce another
 reusable module that calls that thing, you must define *another*
 trait, and so must the downstream of that, and so on and so forth.
 
-However, we can use type parameters that represent **singleton types**
+However, we can use type parameters that represent **singleton types**
 to write functions that are polymorphic over these “cakes”, without
 being defined as part of them or mixed in themselves. For example, you
 can use this to write functions that operate on elements of a
@@ -93,7 +93,7 @@ def stepTwice(u: LittleUniverse)(n: u.Needle): u.Needle =
 The most important feature we’re reaching for with these fancy
 dependent method types, and the one that we have to *keep* reaching
 for if we want to write sane functions outside the cake, is
-**preserving the singleton type index**.
+**preserving the singleton type index**.
 
 ```scala
 scala> twoInits(lu)
@@ -135,7 +135,7 @@ The return type of `brokenTwoInits` “forgot” the index, `lu.type`.
 ## Getting two needles without a universe
 
 When we pass a `LittleUniverse` to the above functions, we’re also
-kind of passing in a constraint on the singleton type created by the
+kind of passing in a constraint on the singleton type created by the
 argument variable. That’s how we know that the returned `u.Needle` is
 a perfectly acceptable `lu.Needle` in the caller scope, when we pass
 `lu` as the universe.
