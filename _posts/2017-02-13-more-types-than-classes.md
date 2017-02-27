@@ -6,6 +6,12 @@ meta:
   nav: blog
   author: S11001001
   pygments: true
+
+tut:
+  scala: 2.12.1
+  binaryScala: "2.12"
+  dependencies:
+    - org.scala-lang:scala-library:2.12.1
 ---
 
 As programmers, we are very incautious with our use of the word
@@ -62,7 +68,7 @@ So we have exhausted the classes, but aren’t quite done with types.
 
 ```scala
 scala> greeting: greeting.type
-res4: greeting.type = hi there!
+res0: greeting.type = hi there!
 ```
 
 `greeting.type` is not like the other five types we just tested. It is
@@ -307,7 +313,9 @@ The first difference is that `greeting3.I` is not `Int`.
 
 ```scala
 scala> implicitly[greeting3.I =:= Int]
-<console>:13: error: Cannot prove that greeting3.I =:= Int.
+<console>:14: error: Cannot prove that greeting3.I =:= Int.
+       implicitly[greeting3.I =:= Int]
+                 ^
 ```
 
 They are unrelated for much the same reason as `G` was unrelated to
@@ -606,9 +614,8 @@ its class, at the bottom of all the abstractions and indirections used
 to hide this potentially messy detail.
 
 ```scala
-def pickGreeting4[G]: G = new G
-
-<console>:11: error: class type required but G found
+scala> def pickGreeting4[G]: G = new G
+<console>:12: error: class type required but G found
        def pickGreeting4[G]: G = new G
                                      ^
 ```
@@ -641,7 +648,9 @@ most types.
 
 ```scala
 scala> implicitly[reflect.ClassTag[greeting3.I]]
-<console>:13: error: No ClassTag available for greeting3.I
+<console>:14: error: No ClassTag available for greeting3.I
+       implicitly[reflect.ClassTag[greeting3.I]]
+                 ^
 ```
 
 As such, judicious use of `ClassTag` is not a great solution to

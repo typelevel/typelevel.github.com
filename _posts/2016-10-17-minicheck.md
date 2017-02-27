@@ -149,7 +149,7 @@ for {
   x <- Random.int(-5, 5)
   y <- Random.int(-3, 3)
 } yield (x, y)
-// res2: Random[(Int, Int)] = Random@32417393
+// res2: Random[(Int, Int)] = Random@654eb149
 ```
 
 The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
@@ -294,38 +294,38 @@ def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
 
 ```scala
 scala> printSample(Gen.int, 10)
-1
 -9
--1
+9
 -8
-0
--5
--6
-4
-4
+-9
+-3
+5
+3
+3
+2
 -9
 
 scala> printSample(Gen.int, 3)
--2
+1
 3
--1
+0
 
 scala> printSample(Gen.list(Gen.int), 10)
-List(10, 6, -6, -4, 8, -7, 3)
-List(10, 8, 8, -9, 1, 8, 10, -5, -4)
-List(4, 9, 7, 5, 10, -7, -6, -6, -1, 7)
-List(2, -5)
 List()
-List(1, 7, 5, -1, -3, 1)
-List(-6, 2, 10, -4, 0, -6)
-List(2, 8, -4, 3, -4, -10, -5, 2, 6)
-List(4, -6, 10, 5, 0, 8, -10, 9)
-List(9, 3, 9, 5)
+List(-4, -5, 9, 7, 5, 3)
+List(-5, 1, -8, -6, -9, -8, 2)
+List(4)
+List(4, -1)
+List()
+List(5, 9, -5, -10, -6)
+List(6, -4, 7, 8, -5, -10)
+List(-6, 4, -6, 3, -10, 9, -3)
+List(-2, -1, 6, -3, 7, -3, -7, 3, -6)
 
 scala> printSample(Gen.list(Gen.int), 3)
+List(2, -3)
 List(-2)
-List(2)
-List(2, 2)
+List(2, 3)
 ```
 
 That's already pretty cool.
@@ -352,16 +352,16 @@ def recList[T](genT: Gen[T]): Gen[List[T]] = new Gen[List[T]] {
 // recList: [T](genT: Gen[T])Gen[List[T]]
 
 printSample(recList(Gen.int), 10)
-// List(10, 6)
-// List(-2, -6, 1, -2, -1, 1, 2, -3, 2)
-// List(10, -4, 5)
-// List()
-// List(0, -4, -4, -2, 2, -1, 4, 0, -1, 1)
-// List(-9, 4)
-// List(9, -6, -8, 4, -4, -3)
-// List(-8, -5, -6, 2)
-// List(5)
-// List(-10, 9, 8, 0)
+// List(5, -9, 1, 6, -6, 3, -4, 1, -2)
+// List(-7, -1, -5, -3, 0, -2)
+// List(-6, -5, -4, 5, 5, -5)
+// List(5, 0)
+// List(8)
+// List(1, 0, -3, -6, 6, -1, 4, -3)
+// List(7)
+// List(8, -8, 7, 3, 4, -3, -2, -1)
+// List(-8, 3)
+// List(-6)
 ```
 
 We can also provide a combinator for this:
@@ -449,19 +449,19 @@ val fracGen: Gen[Frac] =
     den <- Gen.int
     if den != 0
   } yield Frac(num, den)
-// fracGen: Gen[Frac] = Gen$$anon$2@5aea8c70
+// fracGen: Gen[Frac] = Gen$$anon$2@daaa3fd
 
 printSample(fracGen, 10)
-// Frac(10,10)
-// Frac(6,3)
-// Frac(1,7)
-// Frac(4,-5)
-// Frac(3,3)
-// Frac(8,1)
-// Frac(-9,2)
-// Frac(4,-1)
-// Frac(-9,4)
-// Frac(10,-4)
+// Frac(8,-8)
+// Frac(-9,3)
+// Frac(-2,2)
+// Frac(-7,-10)
+// Frac(-9,10)
+// Frac(7,-5)
+// Frac(4,-3)
+// Frac(7,-8)
+// Frac(7,7)
+// Frac(-2,9)
 ```
 
 And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
@@ -629,7 +629,7 @@ val propReflexivity =
   forAll { (x: Int) =>
     x == x
   }
-// propReflexivity: Prop = $anon$1@4be0e9f8
+// propReflexivity: Prop = $anon$1@70466e82
 ```
 
 Cool, but how do we run this?
@@ -728,7 +728,7 @@ scala> check { (x: Int) => (y: Int) =>
 scala> check { (x: Int) => (y: Int) =>
      |   x + y == x * y
      | }
-✗ Property failed with counterexample: (1, -1)
+✗ Property failed with counterexample: (0, -1)
 ```
 
 Now, if you look closely, you can basically get rid of the `Prop` class and define it as
