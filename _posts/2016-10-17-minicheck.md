@@ -134,6 +134,8 @@ class Random[A](private val op: Seed => (A, Seed)) { self =>
       val (a, seed1) = self.op(seed0)
       f(a).op(seed1)
     })
+
+  override def toString: String = "<random>"
 }
 
 object Random {
@@ -149,7 +151,7 @@ for {
   x <- Random.int(-5, 5)
   y <- Random.int(-3, 3)
 } yield (x, y)
-// res2: Random[(Int, Int)] = Random@654eb149
+// res2: Random[(Int, Int)] = <random>
 ```
 
 The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
@@ -261,6 +263,8 @@ import scala.util.Random
 
 trait Gen[T] {
   def generate(size: Int, rnd: Random): T
+
+  override def toString: String = "<gen>"
 }
 
 object Gen {
@@ -282,11 +286,11 @@ object Gen {
 }
 ```
 
-We can now check this:
+We can now check this (note that for the purpose of this post we'll be using fixed seeds):
 
 ```scala
 def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
-  val rnd = new Random()
+  val rnd = new Random(0)
   for (i <- 0 until size)
     println(genT.generate(size, rnd))
 }
@@ -294,38 +298,38 @@ def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
 
 ```scala
 scala> printSample(Gen.int, 10)
--9
-9
--8
--9
--3
-5
-3
-3
 2
--9
+6
+-6
+-8
+1
+4
+-8
+5
+-4
+-8
 
 scala> printSample(Gen.int, 3)
+2
+-1
 1
-3
-0
 
 scala> printSample(Gen.list(Gen.int), 10)
 List()
-List(-4, -5, 9, 7, 5, 3)
-List(-5, 1, -8, -6, -9, -8, 2)
-List(4)
-List(4, -1)
+List(-6, -8, 1, 4, -8, 5)
+List(-8, -2)
+List(4, 6)
+List(4, 0)
+List(10, 4, -9, -7, 7)
+List(-8, 6, -4, 9, -1, 10, 4, 7, -8)
+List(1, 7, -7, 4, 0, 5, 4, 9, 7, 4)
+List(5, 9, -3, 3, -10)
 List()
-List(5, 9, -5, -10, -6)
-List(6, -4, 7, 8, -5, -10)
-List(-6, 4, -6, 3, -10, 9, -3)
-List(-2, -1, 6, -3, 7, -3, -7, 3, -6)
 
 scala> printSample(Gen.list(Gen.int), 3)
-List(2, -3)
-List(-2)
-List(2, 3)
+List(-1, 1)
+List(1, -3)
+List(-2, 3)
 ```
 
 That's already pretty cool.
@@ -352,16 +356,16 @@ def recList[T](genT: Gen[T]): Gen[List[T]] = new Gen[List[T]] {
 // recList: [T](genT: Gen[T])Gen[List[T]]
 
 printSample(recList(Gen.int), 10)
-// List(5, -9, 1, 6, -6, 3, -4, 1, -2)
-// List(-7, -1, -5, -3, 0, -2)
-// List(-6, -5, -4, 5, 5, -5)
-// List(5, 0)
-// List(8)
-// List(1, 0, -3, -6, 6, -1, 4, -3)
-// List(7)
-// List(8, -8, 7, 3, 4, -3, -2, -1)
-// List(-8, 3)
-// List(-6)
+// List()
+// List(-6, 1, -6)
+// List(-8, 8, 4, 7, 0, 5, -4)
+// List(-8)
+// List(9, -3, 4)
+// List(1, 3, -7, -2, -3, 0, -3, 3)
+// List()
+// List(10, 5, -8, -4, -5, 4, -1)
+// List(-5, 9, 7)
+// List(-8)
 ```
 
 We can also provide a combinator for this:
@@ -411,6 +415,8 @@ trait Gen[T] { self =>
         generate(size, rnd)
     }
   }
+
+  override def toString: String = "<gen>"
 }
 
 object Gen {
@@ -449,19 +455,19 @@ val fracGen: Gen[Frac] =
     den <- Gen.int
     if den != 0
   } yield Frac(num, den)
-// fracGen: Gen[Frac] = Gen$$anon$2@daaa3fd
+// fracGen: Gen[Frac] = <gen>
 
 printSample(fracGen, 10)
-// Frac(8,-8)
-// Frac(-9,3)
-// Frac(-2,2)
-// Frac(-7,-10)
-// Frac(-9,10)
-// Frac(7,-5)
-// Frac(4,-3)
-// Frac(7,-8)
-// Frac(7,7)
-// Frac(-2,9)
+// Frac(2,6)
+// Frac(-6,-8)
+// Frac(1,4)
+// Frac(-8,5)
+// Frac(-4,-8)
+// Frac(-2,-8)
+// Frac(4,6)
+// Frac(1,4)
+// Frac(0,-10)
+// Frac(10,4)
 ```
 
 And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
@@ -553,6 +559,8 @@ Now we define the `Prop` type:
 ```scala
 trait Prop {
   def run(size: Int, rnd: Random): Result
+
+  override def toString: String = "<prop>"
 }
 ```
 
@@ -629,7 +637,7 @@ val propReflexivity =
   forAll { (x: Int) =>
     x == x
   }
-// propReflexivity: Prop = $anon$1@70466e82
+// propReflexivity: Prop = <prop>
 ```
 
 Cool, but how do we run this?
@@ -728,7 +736,7 @@ scala> check { (x: Int) => (y: Int) =>
 scala> check { (x: Int) => (y: Int) =>
      |   x + y == x * y
      | }
-✗ Property failed with counterexample: (0, -1)
+✗ Property failed with counterexample: (1, 1)
 ```
 
 Now, if you look closely, you can basically get rid of the `Prop` class and define it as

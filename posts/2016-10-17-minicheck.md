@@ -134,6 +134,8 @@ class Random[A](private val op: Seed => (A, Seed)) { self =>
       val (a, seed1) = self.op(seed0)
       f(a).op(seed1)
     })
+
+  override def toString: String = "<random>"
 }
 
 object Random {
@@ -260,6 +262,8 @@ import scala.util.Random
 
 trait Gen[T] {
   def generate(size: Int, rnd: Random): T
+
+  override def toString: String = "<gen>"
 }
 
 object Gen {
@@ -281,11 +285,11 @@ object Gen {
 }
 ```
 
-We can now check this:
+We can now check this (note that for the purpose of this post we'll be using fixed seeds):
 
 ```tut:book:silent
 def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
-  val rnd = new Random()
+  val rnd = new Random(0)
   for (i <- 0 until size)
     println(genT.generate(size, rnd))
 }
@@ -370,6 +374,8 @@ trait Gen[T] { self =>
         generate(size, rnd)
     }
   }
+
+  override def toString: String = "<gen>"
 }
 
 object Gen {
@@ -397,7 +403,7 @@ Look how simple composition is now:
 
 ```tut:invisible
 def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
-  val rnd = new Random()
+  val rnd = new Random(0)
   for (i <- 0 until size)
     println(genT.generate(size, rnd))
 }
@@ -505,6 +511,8 @@ Now we define the `Prop` type:
 ```tut:book:silent
 trait Prop {
   def run(size: Int, rnd: Random): Result
+
+  override def toString: String = "<prop>"
 }
 ```
 
