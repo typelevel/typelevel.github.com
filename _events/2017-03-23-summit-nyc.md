@@ -82,11 +82,6 @@ sponsors:
     link: "https://giphy.com/"
     type: "gold"
     height: 60
-  - name: "Comcast"
-    logo: "/img/media/sponsors/comcast.png"
-    link: "http://www.comcast.com/"
-    type: "gold"
-    height: 70
 ---
 
 ## About the Summit
