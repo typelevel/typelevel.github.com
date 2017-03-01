@@ -13,7 +13,8 @@ within traits, as seen in `scala.reflect.Universe`, ScalaTest, and
 other Scala styles, seems to be infectious. By that, I mean once you
 define something in a trait to be mixed in, to produce another
 reusable module that calls that thing, you must define *another*
-trait, and so must the downstream of that, and so on and so forth.
+trait, and so must anyone using *your* module, and so on and so forth.
+You effectively become “trapped in the cake”.
 
 However, we can use type parameters that represent **singleton types**
 to write functions that are polymorphic over these “cakes”, without
