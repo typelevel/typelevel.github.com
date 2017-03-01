@@ -382,13 +382,15 @@ a singleton type**.
    `u.type#Needle`.
 4. This shortens to `u.Needle`.
 
-By our inability to constrain `U` in this way, though, we are
+If we are unable to constrain `U` in this way, though, we are
 restricted to places where `U` occurs in covariant position when using
-cake-extracted APIs, though. We can invoke functions like `init`,
-because they only have the singleton index occurring in covariant
-position. **We are out of luck with any functions with a contravariant
-or invariant occurrence of the index, though.** This is, well, most of
-them.
+cake-extracted APIs.  We can invoke functions like `init`, because
+they only have the singleton index occurring in covariant position.
+
+Invoking functions like `iter`, where the index occurs in
+contravariant or invariant position, requires being able to add this
+constraint, so that we can use singleton equivalence directly on the
+type variable `U`.  This is quite a bit trickier.
 
 ## Extracting more types
 

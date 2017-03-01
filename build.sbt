@@ -20,7 +20,7 @@ lazy val tutVersion = SettingKey[String]("tutVersion")
 
 tutInput := (baseDirectory in ThisBuild).value / "posts"
 tutOutput := (baseDirectory in ThisBuild).value / "_posts"
-tutVersion := "0.4.4"
+tutVersion := "0.4.8"
 
 watchSources ++= (tutInput.value ** "*.md").get
 
