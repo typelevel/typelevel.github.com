@@ -459,11 +459,120 @@ by declaring the universe! All of the non-redundant information is
 represented in the singleton type index. So even where the above
 type-refinement technique works (and it does in many cases), it’s
 *still* redeclaring things that ought to be derivable from the “mere”
-fact that `U` is a singleton type. If at all possible, I would like to
-find a way to use that information, and only that information, to make
-a complete escape from the cake.
+fact that `U` is a singleton type.
 
-As it stands, we’re almost out.
+## The fact that it’s a singleton type
+
+*(The following is based on enlightening commentary by Daniel Urban on
+an earlier draft.)*
+
+Let’s examine the underlying error in `stepTwiceEx` more directly.
+
+```scala
+scala> def fetchIter[U <: LittleUniverse](
+    h: U#Haystack): U#Needle => U#Needle = h.iter
+<console>:14: error: type mismatch;
+ found   : _1.type(in method fetchIter)#Needle
+             where type _1.type(in method fetchIter) <: U with Singleton
+ required: _1.type(in value $anonfun)#Needle
+             where type _1.type(in value $anonfun) <: U with Singleton
+           h: U#Haystack): U#Needle => U#Needle = h.iter
+                                                    ^
+```
+
+It’s a good thing that this doesn’t compile. If it did, we could do
+
+```scala
+fetchIter[LittleUniverse](lu.haystack)(anotherU.haystack.init)
+```
+
+Which is unsound.
+
+[§3.2.1 “Singleton Types”](http://www.scala-lang.org/files/archive/spec/2.12/03-types.html#singleton-types) of
+the specification mentions this `Singleton`, which is in a way related
+to singleton types.
+
+> A *stable type* is either a singleton type or a type which is
+> declared to be a subtype of trait `scala.Singleton`.
+
+Adding `with Singleton` to the upper bound on `U` causes `fetchIter`
+to compile! This is sound, because we are protected from the above
+problem with the original `fetchIter`.
+
+```scala
+def fetchIter[U <: LittleUniverse with Singleton](
+    h: U#Haystack): U#Needle => U#Needle = h.iter
+
+scala> fetchIter[lu.type](lu.haystack)
+res3: lu.Needle => lu.Needle = $$Lambda$1397/1159581520@683e7892
+
+scala> fetchIter[LittleUniverse](lu.haystack)
+<console>:16: error: type arguments [LittleUniverse] do not conform
+                     to method fetchIter's type parameter bounds
+                     [U <: LittleUniverse with Singleton]
+       fetchIter[LittleUniverse](lu.haystack)
+                ^
+```
+
+Let’s walk through the logic for `fetchIter`. The expression `h.iter`
+has type `u.Needle => u.Needle` for some `val u: U`, and our goal type
+is `U#Needle => U#Needle`. So we have two subgoals: prove
+`u.Needle <: U#Needle` for the covariant position (after `=>`), and
+`U#Needle <: u.Needle` for the contravariant position (before `=>`).
+
+First, covariant:
+
+1. Since `u: U`, `u.type <: U`.
+2. Since the left side of `#` is covariant, #1 implies
+   `u.type#Needle <: U#Needle`.
+3. This re-sugars to `u.Needle <: U#Needle`, which is the goal.
+
+Secondly, contravariant. We’re going to have to make a best guess
+here, because it’s not entirely clear to me what’s going on.
+
+1. Since [existential] path `u` has a singleton type `U` (if we define
+   “has a singleton type” as “having a type *X* such that
+   *X*` <: Singleton`”), so `u.type = U` by the singleton equivalence.
+2. Since equivalence implies conformance, according to the first
+   bullet under “Conformance”, #1 implies `U <: u.type`.
+3. Since the left side of `#` is covariant, #2 implies that
+   `U#Needle <: u.type#Needle`.
+4. This resugars to `U#Needle <: u.Needle`, which is the goal.
+
+I don’t quite understand this, because `U` doesn’t *seem* to meet the
+requirements for “singleton type”, according to the definition of
+singleton types. However, I’m *fairly* sure it’s sound, since type
+stability seems to be the property that lets us avoid the
+universe-mixing unsoundness. Unfortunately, it only seems to work with
+*existential* `val`s; we seem to be out of luck with `val`s that the
+compiler can still see.
+
+```scala
+// works fine!
+def stepTwiceSingly[U <: LittleUniverse with Singleton](
+    h: U#Haystack, n: U#Needle): U#Needle = {
+  h.iter(h.iter(n))
+}
+
+// but alas, this form doesn't
+class StepTwiceSingly[U <: LittleUniverse with Singleton](u: U) {
+  def stepTwiceSingly(n: U#Needle): U#Needle =
+    u.haystack.iter(u.haystack.iter(n))
+}
+
+<console>:15: error: type mismatch;
+ found   : U#Needle
+ required: StepTwiceSingly.this.u.Needle
+           u.haystack.iter(u.haystack.iter(n))
+                                            ^
+```
+
+We can work around this by having the second form invoke the first
+with the `Haystack`, thus “existentializing” the universe. I imagine
+that *most*, albeit not all, cakes can successfully follow this
+strategy.
+
+So, finally, we’re almost out of the cake.
 
 1. Escape covariant positions with universe variable: complete.
 2. Escape contravariant/invariant positions with universe variable:
@@ -471,6 +580,6 @@ As it stands, we’re almost out.
 3. Escape covariant positions with universe *singleton type*:
    complete!
 4. Escape contravariant/invariant positions with universe singleton
-   type: `???`
+   type: 90% there!
 
 *This article was tested with Scala 2.12.1.*
