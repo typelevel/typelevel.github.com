@@ -469,16 +469,9 @@ an earlier draft.)*
 
 Let’s examine the underlying error in `stepTwiceEx` more directly.
 
-```scala
-scala> def fetchIter[U <: LittleUniverse](
-    h: U#Haystack): U#Needle => U#Needle = h.iter
-<console>:14: error: type mismatch;
- found   : _1.type(in method fetchIter)#Needle
-             where type _1.type(in method fetchIter) <: U with Singleton
- required: _1.type(in value $anonfun)#Needle
-             where type _1.type(in value $anonfun) <: U with Singleton
-           h: U#Haystack): U#Needle => U#Needle = h.iter
-                                                    ^
+```tut:fail
+def fetchIter[U <: LittleUniverse](
+  h: U#Haystack): U#Needle => U#Needle = h.iter
 ```
 
 It’s a good thing that this doesn’t compile. If it did, we could do
