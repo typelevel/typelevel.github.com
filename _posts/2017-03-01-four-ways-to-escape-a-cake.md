@@ -6,6 +6,12 @@ meta:
   nav: blog
   author: S11001001
   pygments: true
+
+tut:
+  scala: 2.12.1
+  binaryScala: "2.12"
+  dependencies:
+    - org.scala-lang:scala-library:2.12.1
 ---
 
 The mixin style of importing in which classes and traits are defined
@@ -196,7 +202,7 @@ That compiles okay, but seemingly can’t actually be used!
 
 ```scala
 scala> lu stepTwiceOops lu.haystack.init
-<console>:14: error: type mismatch;
+<console>:15: error: type mismatch;
  found   : lu.Needle
  required: _1.u.Needle where val _1: NonWorkingStepTwice
        lu stepTwiceOops lu.haystack.init
