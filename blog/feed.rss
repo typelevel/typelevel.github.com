@@ -7,17 +7,13 @@ layout: empty
     <title>{{ site.name | xml_escape }}</title>
     <description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>    
     <link>{{ site.baseurl }}</link>
-    {% for post in site.posts limit:10 %}
+    {% for post in site.posts %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
         {% if post.author.name %}
           <dc:creator>{{ post.author.name | xml_escape }}</dc:creator>
         {% endif %}        
-        {% if post.excerpt %}
-          <description>{{ post.excerpt | xml_escape }}</description>
-        {% else %}
-          <description>{{ post.content | xml_escape }}</description>
-        {% endif %}
+        <description>{{ post.content | xml_escape }}</description>
         <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
         <link>{{ site.baseurl }}{{ post.url }}</link>
         <guid isPermaLink="true">{{ site.baseurl }}{{ post.url }}</guid>
