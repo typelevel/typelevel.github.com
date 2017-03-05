@@ -7,6 +7,8 @@ layout: default
 
   {{ content }}
 
+{% include license.html %}
+ 
   <div class="post__author js-fade-in">
     {% assign author = site.data.authors[page.meta.author] %}
     {% if author %}
