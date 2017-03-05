@@ -10,8 +10,8 @@ layout: empty
     {% for post in site.posts %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
-        {% if post.author.name %}
-          <dc:creator>{{ post.author.name | xml_escape }}</dc:creator>
+        {% if post.meta.author %}
+          <dc:creator>{{ post.meta.author | xml_escape }}</dc:creator>
         {% endif %}        
         <description>{{ post.content | xml_escape }}</description>
         <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
