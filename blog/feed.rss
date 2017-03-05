@@ -14,7 +14,7 @@ layout: empty
         {% if post.meta.author %}
           <dc:creator>{{ post.meta.author | xml_escape }}</dc:creator>
         {% endif %}        
-        <description>{{ post.content | xml_escape }}</description>
+        <description><![CDATA[{{ post.content }}{% include license.html %}]]></description>
         <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
         <link>{{ site.baseurl }}{{ post.url }}</link>
         <guid isPermaLink="true">{{ site.baseurl }}{{ post.url }}</guid>
