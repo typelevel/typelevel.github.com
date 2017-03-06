@@ -67,19 +67,44 @@ sponsors:
     link: "https://www.rallyhealth.com/"
     type: "gold"
     height: 40
+  - name: "Weight Watchers"
+    logo: "/img/media/sponsors/weight_watchers.png"
+    link: "http://www.weightwatchers.com/"
+    type: "platinum"
+    height: 30
   - name: "Cake Solutions"
     logo: "/img/media/sponsors/cake.jpg"
     link: "http://www.cakesolutions.net/"
     type: "platinum"
     height: 100
+  - name: "Lightbend"
+    logo: "/img/media/sponsors/lightbend.png"
+    link: "https://www.lightbend.com/"
+    type: "platinum"
+    height: 60
+  - name: "Tapad"
+    logo: "/img/media/sponsors/tapad.png"
+    link: "https://www.tapad.com/"
+    type: "platinum"
+    height: 70
   - name: "Underscore"
     logo: "/img/media/sponsors/underscore.png"
     link: "http://underscore.io/"
     type: "silver"
     height: 50
+  - name: "iHeartRadio"
+    logo: "/img/media/sponsors/iheartradio.png"
+    link: "https://www.iheart.com/"
+    type: "silver"
+    height: 80
   - name: "Giphy"
     logo: "/img/media/sponsors/giphy.png"
     link: "https://giphy.com/"
+    type: "gold"
+    height: 60
+  - name: "Driver"
+    logo: "/img/media/sponsors/driver.png"
+    link: "https://www.driver.xyz/"
     type: "gold"
     height: 60
   - name: "Comcast"
