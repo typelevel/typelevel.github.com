@@ -736,7 +736,7 @@ scala> check { (x: Int) => (y: Int) =>
 scala> check { (x: Int) => (y: Int) =>
      |   x + y == x * y
      | }
-✗ Property failed with counterexample: (1, 1)
+✗ Property failed with counterexample: (1, 0)
 ```
 
 Now, if you look closely, you can basically get rid of the `Prop` class and define it as
