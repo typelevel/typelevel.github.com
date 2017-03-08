@@ -16,8 +16,8 @@ location_section: true
 featured: true
 
 schedule:
-  - time: "8:30"
-    title: "Registration"
+  - time: "8:15"
+    title: "Registration & Breakfast"
     break: true
   - time: "9:00"
     title: "Opening Remarks"
