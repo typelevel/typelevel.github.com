@@ -136,6 +136,11 @@ sponsors:
     link: "http://www.comcast.com/"
     type: "gold"
     height: 70
+  - name: "Data Monsters"
+    logo: "/img/media/sponsors/data-monsters.png"
+    link: "https://datamonsters.co/"
+    type: "gold"
+    height: 90
 ---
 
 ## About the Summit
