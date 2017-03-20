@@ -184,6 +184,11 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
 
-If you would like to talk to us about sponsorship options, please get in touch with us:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
+<div class="sponsors">
+  <div class="sponsors__sponsor sponsors__sponsor--silver">
+    <h3>After Party Sponsor</h3>
+    <a href="https://www.meetup.com/">
+      <img src="/img/media/sponsors/meetup.png" alt="Meetup" title="Meetup" style="height:50px" />
+    </a>
+  </div>
+</div>
