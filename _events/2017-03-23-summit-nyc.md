@@ -84,6 +84,9 @@ schedule:
   - time: "17:45"
     title: "Closing Remarks"
     break: true
+  - time: "18:00"
+    title: "After party at the venue hosted by Tapad"
+    break: true
 
 sponsors:
   - name: "Rally Health"
