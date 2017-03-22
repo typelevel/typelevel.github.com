@@ -52,3 +52,6 @@
 - title: "singleton-ops"
   description: "Operations for primitive and String singleton types"
   github: "https://github.com/fthomas/singleton-ops"
+- title: "Case Classy"
+  description: "Data decoding and validation to make configuration easy"
+  github: "https://github.com/47deg/case-classy"
