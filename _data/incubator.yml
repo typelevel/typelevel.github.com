@@ -55,3 +55,6 @@
 - title: "PureConfig"
   description: "A boilerplate-free library for loading configuration files"
   github: "https://github.com/melrief/pureconfig"
+- title: "Case Classy"
+  description: "Data decoding and validation to make configuration easy"
+  github: "https://github.com/47deg/case-classy"
