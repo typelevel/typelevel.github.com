@@ -43,3 +43,6 @@
 - title: "TwoTails"
   description: "A compiler plugin adding support for mutual tail recursion"
   github: "https://github.com/wheaties/TwoTails"
+- title: "libisabelle"
+  description: "A Scala library which talks to Isabelle"
+  github: "https://github.com/larsrh/libisabelle"
