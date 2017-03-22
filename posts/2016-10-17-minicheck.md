@@ -607,7 +607,7 @@ def merge(rs: List[Result]): Result =
   }
 
 def check[P](prop: P)(implicit testP: Testable[P]): Unit = {
-  val rnd = new Random()
+  val rnd = new Random(0)
   val rs =
     for (size <- 0 to 100)
     yield testP.asProp(prop).run(size, rnd)
