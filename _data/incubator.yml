@@ -58,3 +58,6 @@
 - title: "Case Classy"
   description: "Data decoding and validation to make configuration easy"
   github: "https://github.com/47deg/case-classy"
+- title: "Hammock"
+  description: "Purely functional HTTP client"
+  github: "https://github.com/pepegar/hammock"
