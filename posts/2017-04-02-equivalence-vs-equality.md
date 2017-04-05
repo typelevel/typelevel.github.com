@@ -13,6 +13,7 @@ tut:
   binaryScala: "2.12"
   dependencies:
     - org.scala-lang:scala-library:2.12.1
+    - com.github.tomasmikula::hasheq:0.3
 ---
 
 _This is a guest post by Tomas Mikula. It was initially published as a [document](https://github.com/TomasMikula/hasheq/blob/017f289caac398723501b194cd2b36c4584df638/Equivalence-Equality.md) in the [hasheq](https://github.com/TomasMikula/hasheq). It has been slightly edited and is being republished here with the permission of the original author._
@@ -89,15 +90,14 @@ For the compiler, the "tag" is an opaque type. It only has specific meaning for 
 
 An _equivalence-aware_ data structure then carries in its _type_ the tag of the equivalence it uses.
 
-```scala
+```tut:book:reset
 import hasheq._
 import hasheq.immutable._
 import hasheq.std.int._
 ```
 
-```scala
-scala> HashSet(1, 2, 3, 4, 5)
-res0: hasheq.immutable.HashSet[Int] = HashSetoid(5, 1, 2, 3, 4)
+```tut
+HashSet(1, 2, 3, 4, 5)
 ```
 
 What on earth is `HashSetoid`?
@@ -112,9 +112,8 @@ type HashSet[A] = HashSetoid[A, Equality.type]
 So `HashSet` is just a `HashSetoid` whose equivalence is _equality_.
 To create an instance of `HashSet[Int]` above, we needed to have an implicit instance of `Equiv[Int, Equality.type]` in scope.
 
-```scala
-scala> implicitly[Equiv[Int, Equality.type]]
-res1: hasheq.Equiv[Int,hasheq.Equality.type] = hasheq.std.int$$anon$1@2f5b9135
+```tut
+implicitly[Equiv[Int, Equality.type]]
 ```
 
 For the compiler, `Equality` is just a rather arbitrary singleton object.
@@ -126,36 +125,28 @@ There is a convenient type alias provided for _equality_ relation:
 type Equal[A] = Equiv[A, Equality.type]
 ```
 
-```scala
-scala> implicitly[Equal[Int]]
-res2: hasheq.Equal[Int] = hasheq.std.int$$anon$1@7874c103
+```tut
+implicitly[Equal[Int]]
 ```
 
 So how do we deal with the problem of set equality mentioned above, i.e. that `HashSet(1, 2)` and `HashSet(2, 1)` are not truly _equal_?
 We just don't provide a definition of equality for `HashSet[Int]`.
 
-```scala
-scala> implicitly[Equal[HashSet[Int]]]
-<console>:22: error: could not find implicit value for parameter e: hasheq.Equal[hasheq.immutable.HashSet[Int]]
-       implicitly[Equal[HashSet[Int]]]
-                 ^
+```tut:fail
+implicitly[Equal[HashSet[Int]]]
 ```
 
 But that means we cannot have a `HashSet[HashSet[Int]]`!
 (Remember, for a `HashSet[A]`, we need an instance of `Equal[A]`, and we just showed we don't have an instance of `Equal[HashSet[Int]]`.)
 
-```scala
-scala> HashSet(HashSet(1, 2, 3, 4, 5))
-<console>:22: error: could not find implicit value for parameter A: hasheq.Hash[hasheq.immutable.HashSet[Int]]
-       HashSet(HashSet(1, 2, 3, 4, 5))
-              ^
+```tut:fail
+HashSet(HashSet(1, 2, 3, 4, 5))
 ```
 
 But we can have a `HashSetoid[HashSet[Int], E]`, where `E` is _some_ equivalence on `HashSet[Int]`.
 
-```scala
-scala> HashSet.of(HashSet(1, 2, 3, 4, 5))
-res5: hasheq.immutable.HashSetoid[hasheq.immutable.HashSet[Int],hasheq.immutable.Setoid.ContentEquiv[Int,hasheq.Equality.type]] = HashSetoid(HashSetoid(5, 1, 2, 3, 4))
+```tut
+HashSet.of(HashSet(1, 2, 3, 4, 5))
 ```
 
 `HashSet.of(elems)` is like `HashSet(elems)`, except it tries to infer the equivalence on the element type, instead of requiring it to be equality.
@@ -167,7 +158,7 @@ The remaining question is: How does this work in the presence of _multiple usefu
 
 Let's define another equivalence on `Int` (in addition to the provided equality).
 
-```scala
+```tut:silent
 // Our "tag" for equivalence modulo 10.
 // This trait will never be instantiated.
 sealed trait Mod10
@@ -191,75 +182,46 @@ implicit object HashMod10 extends HashEq[Int, Mod10] {
 
 Now let's create a "setoid of sets of integers", as before.
 
-```scala
-scala> HashSet.of(HashSet(1, 2, 3, 4, 5))
-res13: hasheq.immutable.HashSetoid[hasheq.immutable.HashSet[Int],hasheq.immutable.Setoid.ContentEquiv[Int,hasheq.Equality.type]] = HashSetoid(HashSetoid(5, 1, 2, 3, 4))
+```tut
+HashSet.of(HashSet(1, 2, 3, 4, 5))
 ```
 
 This still works, because `HashSet` requires an _equality_ on `Int`, and there is only one in the implicit scope (the newly defined equivalence `EqMod10` is _not_ equality).
 Let's try to create a "setoid of setoids of integers":
 
-```scala
-scala> HashSet.of(HashSet.of(1, 2, 3, 4, 5))
-<console>:25: error: ambiguous implicit values:
- both method hashInstance in object int of type => hasheq.Hash[Int]
- and object HashMod10 of type HashMod10.type
- match expected type hasheq.HashEq[Int,Eq]
-       HashSet.of(HashSet.of(1, 2, 3, 4, 5))
-                            ^
+```tut:fail
+HashSet.of(HashSet.of(1, 2, 3, 4, 5))
 ```
 
 This fails, because there are now more equivalences on `Int` in scope.
-(There are now also multiple hash functions, which is what the error message actually says.) We need to be more specific:
+(There are now also multiple hash functions, which is what the error message actually says.)
+We need to be more specific:
 
-```scala
-scala> HashSet.of(HashSet.of[Int, Mod10](1, 2, 3, 4, 5))
-res15: hasheq.immutable.HashSetoid[hasheq.immutable.HashSetoid[Int,Mod10],hasheq.immutable.Setoid.ContentEquiv[Int,Mod10]] = HashSetoid(HashSetoid(5, 1, 2, 3, 4))
+```tut
+HashSet.of(HashSet.of[Int, Mod10](1, 2, 3, 4, 5))
 ```
 
 Finally, does it **prevent mixing up equivalences**? Let's see:
 
-```scala
-scala> val s1 = HashSet(1,  2,  3,         11, 12, 13    )
-s1: hasheq.immutable.HashSet[Int] = HashSetoid(1, 13, 2, 12, 3, 11)
-
-scala> val s2 = HashSet(    2,  3,  4,  5,         13, 14)
-s2: hasheq.immutable.HashSet[Int] = HashSetoid(5, 14, 13, 2, 3, 4)
-
-scala> val t1 = HashSet.of[Int, Mod10](1,  2,  3,         11, 12, 13    )
-t1: hasheq.immutable.HashSetoid[Int,Mod10] = HashSetoid(1, 2, 3)
-
-scala> val t2 = HashSet.of[Int, Mod10](    2,  3,  4,  5,         13, 14)
-t2: hasheq.immutable.HashSetoid[Int,Mod10] = HashSetoid(5, 2, 3, 4)
+```tut
+val s1 = HashSet(1,  2,  3,         11, 12, 13    )
+val s2 = HashSet(    2,  3,  4,  5,         13, 14)
+val t1 = HashSet.of[Int, Mod10](1,  2,  3,         11, 12, 13    )
+val t2 = HashSet.of[Int, Mod10](    2,  3,  4,  5,         13, 14)
 ```
 
 Combining compatible setoids:
 
-```scala
-scala> s1 union s2
-res16: hasheq.immutable.HashSetoid[Int,hasheq.Equality.type] = HashSetoid(5, 14, 1, 13, 2, 12, 3, 11, 4)
-
-scala> t1 union t2
-res17: hasheq.immutable.HashSetoid[Int,Mod10] = HashSetoid(5, 1, 2, 3, 4)
+```tut
+s1 union s2
+t1 union t2
 ```
 
 Combining incompatible setoids:
 
-```scala
-scala> s1 union t2
-<console>:27: error: type mismatch;
- found   : hasheq.immutable.HashSetoid[Int,Mod10]
- required: hasheq.immutable.HashSetoid[Int,hasheq.Equality.type]
-       s1 union t2
-                ^
-
-scala> t1 union s2
-<console>:27: error: type mismatch;
- found   : hasheq.immutable.HashSet[Int]
-    (which expands to)  hasheq.immutable.HashSetoid[Int,hasheq.Equality.type]
- required: hasheq.immutable.HashSetoid[Int,Mod10]
-       t1 union s2
-                ^
+```tut:fail
+s1 union t2
+t1 union s2
 ```
 
 
@@ -270,4 +232,4 @@ There is nothing very sophisticated about this encoding.
 I think the major win is that we can design APIs so that the extra type parameter (the "equivalence tag") stays unnoticed by the user of the API as long as they only deal with _equalities_.
 As soon as the equivalence tag starts requesting our attention (via an ambiguous implicit or a type error), it is likely that the attention is justified.
 
-*This article was tested with Scala 2.11.8 and hasheq revision [017f289](https://github.com/TomasMikula/hasheq/commit/017f289caac398723501b194cd2b36c4584df638).*
+*This article was tested with Scala 2.11.8 and hasheq version 0.3.*
