@@ -202,3 +202,22 @@ TomasMikula:
   portrait: "https://avatars2.githubusercontent.com/u/433439?v=3&s=80"
   github: "TomasMikula"
   twitter: "tomas_mikula"
+roundcrisis:
+  full_name: "Andrea Magnorsky"
+  portrait: "/img/media/speakers/andreamagnorsky.jpg"
+  bio: "TBD"
+marina:
+  full_name: "Marina Sigaeva"
+  portrait: "https://pbs.twimg.com/profile_images/850071665652490241/hsAyfV7x.jpg"
+  twitter: "besseifunction"
+  bio: "I'm a physicist. And I'm in love with fashion, ballet and beauty."
+julienrf:
+  full_name: "Julien Richard-Foy"
+  portrait: "https://avatars1.githubusercontent.com/u/332812?v=3&s=80"
+  twitter: "julienrf"
+  bio: "Julien Richard-Foy likes writing programs. In particular, he likes leveraging programming language features to solve engineering problems. He is fascinated by languages that make it easy to turn ideas into programs that are executable by machines and easy to reason about by humans. He writes tools and MOOCs for the good of the community, at Scala Center."
+kenbot:
+  full_name: "Ken Scambler"
+  portrait: "https://avatars2.githubusercontent.com/u/316515?v=3&s=80"
+  twitter: "KenScambler"
+  bio: "I'm an FP enthusiast based in Melbourne, Australia, with 15-odd years of programming under the belt, including 7 of Scala. I help out with the YOW Lambda Jam and Compose :: Melbourne FP conferences, and the Melbourne Scala User Group. I work at REA Group, where I was one of the hands hoisting the Scala flag 4 years ago, Iwo Jima-style. My job is mostly to prevent people from writing more software."

@@ -162,14 +162,6 @@ This is a community conference and we strive to make it an inclusive and fulfill
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
 
-## Tickets
-
-This year, we're offering a combined ticket for both NE Scala and the Summit.
-We're trying very hard to keep the ticket price low, as this is – as always – not a for-profit venture.
-Participation at the shared unconference will be free of charge.
-
-<a class="btn large" href="https://ti.to/northeast-scala-symposium/northeast-scala-symposium-2017">Buy tickets</a>
-
 ## Venue
 
 This event will take place at [26 Bridge Event Space](http://www.26bridge.com/), 26 Bridge Street, Brooklyn, New York.
