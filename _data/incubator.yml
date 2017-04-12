@@ -55,3 +55,6 @@
 - title: "Hammock"
   description: "Purely functional HTTP client"
   github: "https://github.com/pepegar/hammock"
+- title: "Libra"
+  description: "Compile time dimensional analysis for any problem domain"
+  github: "https://github.com/to-ithaca/libra"
