@@ -14,7 +14,7 @@ class: projects-page
       <div class="projects__project expandable-core">
         <div class="projects__project-header">
           <a href="{{ project.github }}">
-            <h4>
+            <h4 id="{{ project.title | slugify: 'raw' }}">
               <span class="ico-repo"></span>
               {{ project.title }}
             </h4>
@@ -54,7 +54,7 @@ class: projects-page
         <div class="projects__project expandable js-fade-in">
           <div class="projects__project-header">
             <a href="{{ project.github }}">
-              <h4><span class="ico-repo"></span>{{ project.title }}</h4>
+              <h4 id="{{ project.title | slugify: 'raw' }}"><span class="ico-repo"></span>{{ project.title }}</h4>
             </a>
             {% if project.permalink %}
               <a class="btn pull-right" href="{{ project.permalink }}">More</a>
@@ -79,7 +79,7 @@ class: projects-page
       <span class="tag">Newly joined projects</span>
       <div class="list">
         {% for incubator in site.data.incubator %}
-          <div class="list__item">
+          <div id="{{ incubator.title | slugify: 'raw' }}" class="list__item">
             <a href="{{ incubator.github }}">
               <span class="ico-repo"></span><h6>{{ incubator.title }}</h6>
             </a>
@@ -100,7 +100,7 @@ class: projects-page
       <span class="tag">Extending the language</span>
       <div class="list">
         {% for macro in site.data.macros %}
-          <div class="list__item">
+          <div id="{{ macro.title | slugify: 'raw' }}" class="list__item">
             <a href="{{ macro.github }}">
               <span class="ico-repo"></span><h6>{{ macro.title }}</h6>
             </a>
