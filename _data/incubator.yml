@@ -58,3 +58,6 @@
 - title: "Libra"
   description: "Compile time dimensional analysis for any problem domain"
   github: "https://github.com/to-ithaca/libra"
+- title: "cats-effect"
+  description: "The IO monad for cats"
+  github: "https://github.com/typelevel/cats-effect"
