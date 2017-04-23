@@ -68,7 +68,7 @@ clhodapp:
   twitter: "clhodapp"
   bio: "Several-time Scala GSOC student and eventually mentor, author of the ill-fated Comprehensive Comprehensions project. He's hoping to see tooling and techniques from the FP/Typelevel community improve the leverage of the average developer. Based in the SF Bay Area."
 raulraja:
-  full_name: "Raul Raja"
+  full_name: "Raúl Raja Martínez"
   portrait: "https://avatars0.githubusercontent.com/u/456796?v=2&s=80"
   github: "raulraja"
   twitter: "raulraja"
@@ -221,3 +221,10 @@ kenbot:
   portrait: "https://avatars2.githubusercontent.com/u/316515?v=3&s=80"
   twitter: "KenScambler"
   bio: "I'm an FP enthusiast based in Melbourne, Australia, with 15-odd years of programming under the belt, including 7 of Scala. I help out with the YOW Lambda Jam and Compose :: Melbourne FP conferences, and the Melbourne Scala User Group. I work at REA Group, where I was one of the hands hoisting the Scala flag 4 years ago, Iwo Jima-style. My job is mostly to prevent people from writing more software."
+zainabali:
+  full_name: "Zainab Ali"
+  bio: "Zainab is a functional programmer who converted from object oriented design.  A physicist at heart, she was excited to find an application of dimensional analysis and dependent types to real world problems.  She is the author of Libra and a contributor to many typelevel libraries, such as cats and fs2."
+aaronmblevin:
+  full_name: "Aaron Levin"
+  portrait: "https://avatars3.githubusercontent.com/u/1580060?v=3&s=80"
+  bio: "I am a mathematician turned software engineer. I am excited by data-driven opportunities in environments that foster creativity, diversity, and innovation. I value openness, honesty, empathy, and egolessness. I am passionate about solving challenging problems in functional programming, machine learning, and distributed systems."
