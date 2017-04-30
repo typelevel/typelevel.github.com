@@ -121,8 +121,7 @@ So `HashSet` is just a `HashSetoid` whose equivalence is _equality_.
 To create an instance of `HashSet[Int]` above, we needed to have an implicit instance of `Equiv[Int, Equality.type]` in scope.
 
 ```scala
-scala> implicitly[Equiv[Int, Equality.type]]
-res1: hasheq.Equiv[Int,hasheq.Equality.type] = hasheq.std.int$$anon$1@13840fde
+implicitly[Equiv[Int, Equality.type]]
 ```
 
 For the compiler, `Equality` is just a rather arbitrary singleton object.
@@ -135,8 +134,7 @@ type Equal[A] = Equiv[A, Equality.type]
 ```
 
 ```scala
-scala> implicitly[Equal[Int]]
-res2: hasheq.Equal[Int] = hasheq.std.int$$anon$1@5ccfb11e
+implicitly[Equal[Int]]
 ```
 
 So how do we deal with the problem of set equality mentioned above, i.e. that `HashSet(1, 2)` and `HashSet(2, 1)` are not truly _equal_?
