@@ -14,7 +14,7 @@ kramdown:
   hard_wrap: false
 highlighter: rouge
 exclude:
-  ["node_modules", "gulpfile.js", "package.json", "README.md", "CNAME", "vendor", "src", "project/", "build.sbt", "posts"]
+  ["README.md", "CNAME", "vendor", "src", "project/", "build.sbt", "posts"]
 permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "/blog/:num/"

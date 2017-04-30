@@ -1,6 +1,5 @@
 _site
 .idea
-node_modules
 s3_website.yml
 Gemfile.lock
 /vendor/bundle
