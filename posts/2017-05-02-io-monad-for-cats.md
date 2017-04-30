@@ -19,9 +19,14 @@ tut:
 Haskell is a pure language.  Every Haskell expression is *referentially transparent*, meaning that you can substitute that expression with its evaluated result without changing the program.  Or, put into code:
 
 ```haskell
-f e e
--- is equivalent to
-let x = e in f x x
+-- this program
+f expr expr -- apply function f to arguments expr, expr
+
+-- is equivalent to this one, which factors out `expr`
+let
+  x = expr -- introduce a new variable `x` with the value of `expr`
+in
+  f x x
 ```
 
 And this is true for *all* expressions `e`, and all functions `f`.  These could be complex expressions which describe ways of manipulating network channels or window buffers, or something trivial like a numeric literal.  You can *always* substitute the expression with its value.
@@ -44,7 +49,7 @@ val x = println("hi")
 f(x, x)
 ```
 
-Clearly these are not the same two programs.  The first prints `"hi"` twice, while the second only prints it once.  This is a violation of referential transparency, and it's why we sometimes say that Scala is an *impure* language.
+Clearly these are not the same two programs.  The first prints `"hi"` twice, while the second only prints it once.  This is a violation of referential transparency, and it's why we sometimes say that Scala is an *impure* language.  Any expression which is not referentially transparent must contain *side-effects*, by definition.
 
 Now of course, we found this problem by using a side-effecting function: namely, `println`.  Haskell clearly has the ability to print to standard output, so how does it avoid this issue?  If we build the same program in Haskell, can we violate referential transparency?
 
@@ -64,7 +69,7 @@ The answer is that we want to reason about *where* and *when* our effects are ev
 
 What we need is a data type which allows us to encapsulate Scala-style side-effects in the form of a *pure* value, on which referential transparency holds and which we can compose using other well-defined abstractions, such as `Monad`.  Scalaz defines two such data types which meet these criteria: `scalaz.effect.IO` and `scalaz.concurrent.Task`.  But in practice, nearly everyone uses `Task` instead of `IO` because of its support for *asynchronous* effects.
 
-Cats does not define any such abstraction, and what's worse is the cats *ecosystem* also doesn't really provide any such abstraction.  There are two `Task` implementations that are relatively commonly used with cats – namely, `monix.eval.Task` and `fs2.Task` – but these are not part of cats per se, nor are they deeply integrated into its abstraction hierarchy.  Additionally, the proliferation of broadly equivalent options has led to confusion in the ecosystem, as well as some justifiable fear, uncertainty and doubt on the part of those evaluating cats as a potential dependency.
+Cats does not define any such abstraction, and what's worse is the cats *ecosystem* also doesn't really provide any such abstraction.  There are two `Task` implementations that are relatively commonly used with cats – namely, `monix.eval.Task` and `fs2.Task` – but these are not part of cats per se, nor are they deeply integrated into its abstraction hierarchy.  Additionally, the proliferation of broadly equivalent options has led to confusion in the ecosystem, with middleware authors often forced to choose a solution for their end-users, and end-users uncertain as to which choice is "right".
 
 ## Introducing cats-effect
 
@@ -114,7 +119,7 @@ val program = IO {
 }
 ```
 
-But this gives us less flexibility for composition.  Remember that even though `program` is a pure and referentially transparent value, its *definition* is not.  Anything inside the `IO {` … `}` block is not referentially transparent, and so should be treated with extreme care and suspicion.  The less of our program we have inside these blocks, the better!
+But this gives us less flexibility for composition.  Remember that even though `program` is a pure and referentially transparent value, its *definition* is not, which is to say that `IO { expr }` is not the same as `val x = expr; IO { x }`.  Anything inside the `IO {` … `}` block is not referentially transparent, and so should be treated with extreme care and suspicion.  The less of our program we have inside these blocks, the better!
 
 As a sidebar that is actually kinda cool, we can implement a `readString` `IO` action that wraps `Console.readLine` *as a `val`!*
 
@@ -138,7 +143,7 @@ program
 
 If this weren't the case, then we would be in trouble when trying to construct examples like the Haskell one from earlier.  But there is an implication here that is quite profound: `IO` cannot eagerly evaluate its effects, and similarly cannot memoize its results!  If `IO` were to eagerly evaluate or to memoize, then we could no longer replace references to the expression with the expression itself, since that would result in a *different* `IO` instance to be evaluated separately.
 
-This is precisely why `scala.concurrent.Future` is *not* a suitable type for encapsulating effects in this way: it isn't referentially transparent!  `Future` evaluates eagerly (sort of, see below) and memoizes its results, meaning that a `println` inside of a given `Future` will only evaluate *once*, even if the `Future` is sequenced multiple times.  This in turn means that `val x = Future(...); x; x` is not the same as `Future(...); Future(...)`, which is the very definition of a violation of referential transparency.
+This is precisely why `scala.concurrent.Future` is *not* a suitable type for encapsulating effects in this way: constructing a `Future` that will eventually side-effect is itself a side-effect!  `Future` evaluates eagerly (sort of, see below) and memoizes its results, meaning that a `println` inside of a given `Future` will only evaluate *once*, even if the `Future` is sequenced multiple times.  This in turn means that `val x = Future(...); f(x, x)` is not the same program as `f(Future(...), Future(...))`, which is the very definition of a violation of referential transparency.
 
 Coming back to `IO`…  If `program` does not evaluate eagerly, then clearly there must be some mechanism for asking it to evaluate.  After all, Scala is not like Haskell: we don't return a value of type `IO[Unit]` from our `main` function.  `IO` provides an FFI of sorts for wrapping side-effecting code into pure `IO` values, so it must also provide an FFI for going in the opposite direction: taking a pure `IO` value and evaluating its constituent actions as side-effects.
 
