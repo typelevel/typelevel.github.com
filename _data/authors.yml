@@ -223,6 +223,7 @@ kenbot:
   bio: "I'm an FP enthusiast based in Melbourne, Australia, with 15-odd years of programming under the belt, including 7 of Scala. I help out with the YOW Lambda Jam and Compose :: Melbourne FP conferences, and the Melbourne Scala User Group. I work at REA Group, where I was one of the hands hoisting the Scala flag 4 years ago, Iwo Jima-style. My job is mostly to prevent people from writing more software."
 zainabali:
   full_name: "Zainab Ali"
+  portrait: "/img/media/speakers/zainabali.jpg"
   bio: "Zainab is a functional programmer who converted from object oriented design.  A physicist at heart, she was excited to find an application of dimensional analysis and dependent types to real world problems.  She is the author of Libra and a contributor to many typelevel libraries, such as cats and fs2."
 aaronmblevin:
   full_name: "Aaron Levin"
