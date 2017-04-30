@@ -12,6 +12,7 @@ tut:
   binaryScala: "2.12"
   dependencies:
     - org.scala-lang:scala-library:2.12.1
+    - org.typelevel::cats-effect:0.1-0848c9b
 ---
 
 
@@ -93,7 +94,9 @@ The notable element here is the use of the `IO.apply` constructor to wrap the `p
 
 For example, here's a program that performs some simple user interaction in the shell:
 
-```scala
+```tut:silent
+import cats.effect.IO
+
 val program = for {
   _ <- IO { println("Welcome to Scala!  What's your name?") }
   name <- IO { Console.readLine }
@@ -103,7 +106,7 @@ val program = for {
 
 We could have just as easily written this program in the following way:
 
-```scala
+```tut:silent
 val program = IO {
   println("Welcome to Scala!  What's your name?")
   val name = Console.readLine
@@ -115,7 +118,7 @@ But this gives us less flexibility for composition.  Remember that even though `
 
 As a sidebar that is actually kinda cool, we can implement a `readString` `IO` action that wraps `Console.readLine` *as a `val`!*
 
-```scala
+```tut:silent
 val readString = IO { Console.readLine }
 ```
 
@@ -172,17 +175,17 @@ This presents a bit of a dilemma for cats-effect: we want to provide a *practica
 
 Specifically, `cats.effect.IO` provides an additional constructor, `async`, which allows the construction of `IO` instances from callback-driven APIs.  This is generally referred to as "asynchronous" control flow, as opposed to "synchronous" control flow (represented by the `apply` constructor).  To see how this works, we're going to need a bit of setup.
 
-Consider the following somewhat-realistic NIO API:
+Consider the following somewhat-realistic NIO API (translated to Scala):
 
-```java
-public interface Response<T> {
-  public void onError(Throwable t);
-  public void onSuccess(T t);
+```tut:book
+trait Response[T] {
+  def onError(t: Throwable): Unit
+  def onSuccess(t: T): Unit
 }
 
-public interface Channel {
-  public void sendBytes(byte[] chunk, Response<Void> handler);
-  public void receiveBytes(Response<byte[]> handler);
+trait Channel {
+  def sendBytes(chunk: Array[Byte], handler: Response[Unit]): Unit
+  def receiveBytes(handler: Response[Array[Byte]]): Unit
 }
 ```
 
@@ -190,12 +193,12 @@ This is an asynchronous API.  Neither of the functions `sendBytes` or `receiveBy
 
 Wrapping this sort of API in a referentially transparent and uniform fashion is a very important feature of `IO`, *precisely* because of Scala's underlying platform constraints.  Clearly, `sendBytes` and `receiveBytes` both represent side-effects, but they're different than `println` and `readLine` in that they don't produce their results in a sequentially returned value.  Instead, they take a callback, `Response`, which will eventually be notified (likely on some other thread!) when the result is available.  The `IO.async` constructor is designed for precisely these situations:
 
-```scala
+```tut:book
 def send(c: Channel, chunk: Array[Byte]): IO[Unit] = {
   IO async { cb =>
-    c.sendBytes(chunk, new Response[Void] {
+    c.sendBytes(chunk, new Response[Unit] {
       def onError(t: Throwable) = cb(Left(t))
-      def onSuccess(v: Void) = cb(Right(()))
+      def onSuccess(v: Unit) = cb(Right(()))
     })
   }
 }
@@ -216,12 +219,14 @@ The `async` constructor takes a function which is handed a *callback* (represent
 
 Now remember, `IO` is still a monad, and `IO` values constructed with `async` are perfectly capable of all of the things that "normal", synchronous `IO` values are, which means that you can use these values inside `for`-comprehensions and other conventional composition!  This is incredibly, unbelievably nice in practice, because it takes your complex, nested, callback-driven code and flattens it into simple, easy-to-read sequential composition.  For example:
 
-```scala
+```tut:silent
+val c: Channel = null // pretend this is an actual channel
+
 for {
   _ <- send(c, "SYN".getBytes)
   response <- receive(c)
 
-  _ <- if (response === "ACK".getBytes)   // pretend === works on Array[Byte]
+  _ <- if (response == "ACK".getBytes)   // pretend == works on Array[Byte]
     IO { println("found the guy!") }
   else
     IO { println("no idea what happened, but it wasn't good") }
@@ -244,14 +249,15 @@ We definitely want to run nearly everything on that first pool (which is probabl
 
 The answer is the `shift` function.
 
-```scala
+```tut:silent
+import scala.concurrent._
 implicit val ec = ExecutionContext.global
 
 for {
   _ <- send(c, "SYN".getBytes)
   response <- receive(c).shift    // there's no place like home!
 
-  _ <- if (response === "ACK".getBytes)   // pretend === works on Array[Byte]
+  _ <- if (response == "ACK".getBytes)   // pretend == works on Array[Byte]
     IO { println("found the guy!") }
   else
     IO { println("no idea what happened, but it wasn't good") }
@@ -262,7 +268,9 @@ for {
 
 Another possible application of thread shifting is ensuring that a blocking `IO` action is relocated from the main, CPU-bound thread pool onto one of the pools designated for blocking IO.  An example of this would be any interaction with `java.io`:
 
-```scala
+```tut:book
+import java.io.{BufferedReader, FileReader}
+
 def readLines(name: String): IO[Vector[String]] = IO {
   val reader = new BufferedReader(new FileReader(name))
   var back: Vector[String] = Vector.empty
@@ -279,7 +287,9 @@ def readLines(name: String): IO[Vector[String]] = IO {
 
   back
 }
+```
 
+```tut:silent
 for {
   _ <- IO { println("Name, pls.") }
   name <- IO { Console.readLine }
@@ -294,7 +304,9 @@ for {
 
 Clearly, `readLines` is blocking the underlying thread while it waits for the disk to return the file contents to us, and for a large file, we might be blocking the thread for quite a long time!  Now if we're treating our thread pools with respect (as described above), then we probably have a pair of `ExecutionContext`(s) sitting around in our code somewhere:
 
-```scala
+```tut:silent
+import java.util.concurrent.Executors
+
 implicit val Main = ExecutionContext.global
 val BlockingFileIO = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 ```
@@ -303,7 +315,7 @@ We want to ensure that `readLines` runs on the `BlockingFileIO` pool, while ever
 
 With `shift`!
 
-```scala
+```tut:silent
 for {
   _ <- IO { println("Name, pls.") }
   name <- IO { Console.readLine }
@@ -318,7 +330,7 @@ for {
 
 Now we're definitely in bizarro land.  *Two* calls to `shift`, one after the other?  Let's break this apart:
 
-```scala
+```tut:silent
 readLines("names.txt").shift(BlockingFileIO)
 ```
 
@@ -326,7 +338,7 @@ One of the functions of `shift` is to take the `IO` action it is given and reloc
 
 *Additionally*, the continuation of this work will also be relocated onto the `BlockingFileIO` pool, and that's definitely not what we want.  The evaluation of the `contains` function is definitely CPU-bound, and should be run on the `Main` pool.  So we need to `shift` a second time, but only the *continuation* of the `readLines` action, not `readLines` itself.  As it turns out, we can achieve this just by adding the second `shift` call:
 
-```scala
+```tut:silent
 readLines("names.txt").shift(BlockingFileIO).shift(Main)
 ```
 
@@ -348,7 +360,7 @@ As a sidebar that will be important in a few paragraphs, `IO` also defines a *sa
 
 Another way to look at this is in terms of `unsafeRunAsync`.  You can define `unsafeRunAsync` in terms of `runAsync` and `unsafeRunSync()`:
 
-```scala
+```tut:book
 def unsafeRunAsync[A](ioa: IO[A])(cb: Either[Throwable, A] => Unit): Unit =
   ioa.runAsync(e => IO { cb(e) }).unsafeRunSync()
 ```
@@ -367,7 +379,9 @@ As mentioned earlier (about 10000 words ago…), the cats-effect project not onl
 
 `Effect` is where everything is brought together.  In addition to being able to suspend synchronous and asynchronous side-effecting code, anything that has an `Effect` instance may also be *asynchronously interpreted* into an `IO`.  The way this is specified is using the `runAsync` function:
 
-```scala
+```tut:silent
+import cats.effect.{Async, LiftIO, Sync}
+
 trait Effect[F[_]] extends Sync[F] with Async[F] with LiftIO[F] {
   def runAsync[A](fa: F[A])(cb: Either[Throwable, A] => IO[Unit]): IO[Unit]
 }
