@@ -164,7 +164,7 @@ The above will run `program` *twice*.  So clearly, referential transparency is o
 
 As Viktor Klang is fond of pointing out, `Future` doesn't *need* to evaluate eagerly.  It is possible to define an `ExecutionContext` in which `Future` defers its evaluation until some indefinitely later point.  However, this is not the default mode of operation for 99% of all `Future`s ever constructed; most people just use `ExecutionContext.global` and leave it at that.  Additionally, if someone hands me an arbitrary `Future`, perhaps as a return value from a function, I really have no idea whether or not that `Future` is secretly running without my consent.  In other words, the referential transparency (or lack thereof) of functions that I write using `Future` is dependent on the runtime configuration of some other function which is hidden from me.  That's not referential transparency anymore.  Because we cannot be *certain* that `Future` is deferring its evaluation, we must defensively assume that it is not.
 
-This, in a nutshell, is precisely why you should only use `Future` when interacting with legacy code or third-party APIs which require it, and when you do use `Future`, you should treat it as a side-effect just like `println` or `launchTheMissiles`.
+This, in a nutshell, is precisely why `Future` is not appropriate for functional programming.  `IO` provides a pair of functions (`fromFuture` and `unsafeToFuture`) for interacting with `Future`-using APIs, but in general, you should try to stick with `IO` as much as possible when manipulating effects.
 
 ## Asynchrony and the JVM
 
