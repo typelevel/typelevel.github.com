@@ -112,7 +112,7 @@ type HashSet[A] = HashSetoid[A, Equality.type]
 So `HashSet` is just a `HashSetoid` whose equivalence is _equality_.
 To create an instance of `HashSet[Int]` above, we needed to have an implicit instance of `Equiv[Int, Equality.type]` in scope.
 
-```tut
+```tut:silent
 implicitly[Equiv[Int, Equality.type]]
 ```
 
@@ -125,7 +125,7 @@ There is a convenient type alias provided for _equality_ relation:
 type Equal[A] = Equiv[A, Equality.type]
 ```
 
-```tut
+```tut:silent
 implicitly[Equal[Int]]
 ```
 

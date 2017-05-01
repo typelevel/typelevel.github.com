@@ -223,6 +223,7 @@ kenbot:
   bio: "I'm an FP enthusiast based in Melbourne, Australia, with 15-odd years of programming under the belt, including 7 of Scala. I help out with the YOW Lambda Jam and Compose :: Melbourne FP conferences, and the Melbourne Scala User Group. I work at REA Group, where I was one of the hands hoisting the Scala flag 4 years ago, Iwo Jima-style. My job is mostly to prevent people from writing more software."
 zainabali:
   full_name: "Zainab Ali"
+  portrait: "/img/media/speakers/zainabali.jpg"
   bio: "Zainab is a functional programmer who converted from object oriented design.  A physicist at heart, she was excited to find an application of dimensional analysis and dependent types to real world problems.  She is the author of Libra and a contributor to many typelevel libraries, such as cats and fs2."
 aaronmblevin:
   full_name: "Aaron Levin"
@@ -233,3 +234,15 @@ djspiewak:
   portrait: "https://avatars1.githubusercontent.com/u/752?v=3&s=80"
   github: "djspiewak"
   twitter: "djspiewak"
+harrylaou:
+  full_name: "Harry Laoulakos"
+  portrait: "https://avatars1.githubusercontent.com/u/3307004?v=3&s=80"
+  bio: "Functional programmer, enjoying programming in Scala, Play framework, Akka, Typelevel stack: cats, shapeless, etc"
+vlovgr:
+  full_name: "Viktor Lövgren"
+  portrait: "https://avatars1.githubusercontent.com/u/1163201?v=3&s=80"
+  bio: "Viktor is a Software engineer at Ovo Energy in London, working on the platform powering energy meter readings and consumption data. He’s an advocate of strongly typed functional programming, and Scala in particular, which has been his professional focus the past three years."
+data_fly:
+  full_name: "Zhenhao Li"
+  portrait: "https://avatars0.githubusercontent.com/u/10957195?v=3&s=80"
+  bio: "Zhenhao Li is a data engineer and data scientist at Connecterra, a data science and IoT startup. He is responsible for making scalable data processing jobs and pipelines and making sure data science insights are generated and delivered in real time. Before joining Connecterra, Zhenhao worked for Accenture in the area of big data and IoT technology consulting, helping major clients to adapt new technologies such as Kafka and Flink, the immutable data paradigm, and functional programming to gain business value faster. He holds a bachelor degree in software engineering and a master degree in logic. He was doing a PhD in mathematical logic at the University of Amsterdam when decided to change his career path to big data and data science. He loves functional programming, and Scala is his primary language for engineering work."

@@ -44,6 +44,18 @@ schedule:
     speakers: ["aaronmblevin"]
     title: "Mastering Typeclass Induction"
     summary: "Typeclasses are a powerful feature of the Scala. Using typeclasses to perform type-level induction is a mysterious, yet surprisingly simple, technique used in shapeless, cats, and circe to do generic programming. We will use basic data types to walk you through how this is done and why it’s useful."
+  - time: "--:--"
+    speakers: ["harrylaou"]
+    title: "Monad Stacks or: How I Learned to Stop Worrying and Love the Free Monad"
+    summary: "In this talk, I will demonstrate various techniques, such as: Monad Transformers, Effects libraries, and Free monads. These techniques can be used to transform scala “spaghetti” code (that is embedded maps, flatmaps and pattern matching) to cleaner code that almost looks like imperative code."
+  - time: "--:--"
+    speakers: ["vlovgr"]
+    title: "Refined types for validated configurations"
+    summary: "Are you tired of writing boilerplate code to load configurations? Have you ever had errors because of bad configuration values? Then this talk is for you! In a live-coding session we’ll see how to encode validation rules on the type-level and load validated settings without any boilerplate code.<br/><br/>In the first part of this talk we’ll look at the challenges associated with loading configurations. We’ll see how typesafe config is typically used, and see how we can eliminate most boilerplate code with Typelevel incubator project PureConfig. We’ll however see that it’s still very much possible to load invalid settings.<br/><br/>In the second part we’ll continue by exploring options to encode type invariants, for enforcing validation, looking at how we can get PureConfig to only load validated settings. We’ll ultimately end up with type-level predicates using Typelevel project refined, and see how we can get PureConfig and refined to work together seamlessly.<br/><br/>The end result is more precise types, with static validation guarantees, and a way of loading validated configurations without boilerplate – finally you can stop worrying about your configurations!"
+  - time: "--:--"
+    speakers: ["data_fly"]
+    title: "The power of type classes in big data ETL: a real world use case of combining Spark and Shapeless"
+    summary: "In this talk, we will explore a type driven approach of big data ETL in Spark. Through code snippets, we will see how to express data processing logic with type classes and singleton types using Shapeless, and how to build a higher level DSL over Spark to make the logic easy to read from the code."
 
 ---
 
