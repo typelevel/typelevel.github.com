@@ -16,9 +16,9 @@ location_section: true
 featured: true
 
 schedule:
-  - time: "--:--"
+  - time: "9:15"
     speakers: ["roundcrisis"]
-    title: "Keynote (TBD)"
+    title: "Keynote: Inviting everyone to the party"
     summary: "TBD"
   - time: "--:--"
     speakers: ["marina"]
