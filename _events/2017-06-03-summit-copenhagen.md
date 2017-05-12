@@ -56,6 +56,41 @@ schedule:
     speakers: ["data_fly"]
     title: "The power of type classes in big data ETL: a real world use case of combining Spark and Shapeless"
     summary: "In this talk, we will explore a type driven approach of big data ETL in Spark. Through code snippets, we will see how to express data processing logic with type classes and singleton types using Shapeless, and how to build a higher level DSL over Spark to make the logic easy to read from the code."
+  - time: "--:--"
+    break: true
+    title: "After party hosted by 47 Degrees"
+
+sponsors:
+  - name: "47 Degrees"
+    logo: "/img/media/sponsors/47_degrees.png"
+    link: "http://www.47deg.com/"
+    type: "silver"
+    height: 80
+  - name: "Soundcloud"
+    logo: "/img/media/sponsors/soundcloud.png"
+    link: "http://www.soundcloud.com/"
+    type: "silver"
+    height: 50
+  - name: "Signify"
+    logo: "/img/media/sponsors/signify.png"
+    link: "https://www.signifytechnology.com/"
+    type: "silver"
+    height: 80
+  - name: "scalac"
+    logo: "/img/media/sponsors/scalac.png"
+    link: "https://scalac.io/"
+    type: "silver"
+    height: 50
+  - name: "Underscore"
+    logo: "/img/media/sponsors/underscore.png"
+    link: "http://underscore.io/"
+    type: "gold"
+    height: 60
+  - name: "Lightbend"
+    logo: "/img/media/sponsors/lightbend.png"
+    link: "https://www.lightbend.com/"
+    type: "gold"
+    height: 60
 
 ---
 
@@ -91,6 +126,10 @@ Use code **typelevel** to receive <a href="https://secure.trifork.com/scaladays-
 {% include venue_map.html %}
 
 ## Sponsors
+
+We'd like to thank all our sponsors who help to make the Summit happen:
+
+{% include sponsors.html %}
 
 If you would like to talk to us about sponsorship options, please get in touch with us:
 
