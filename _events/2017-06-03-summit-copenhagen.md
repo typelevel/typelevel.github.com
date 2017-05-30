@@ -22,11 +22,11 @@ schedule:
   - time: "9:00"
     title: "Opening Remarks"
     break: true
-  - time: "9:15"
+  - time: "9:05"
     speakers: ["roundcrisis"]
     title: "Keynote: Inviting everyone to the party"
     summary: "Most of today's popular general-purpose programming languages incorporate various aspects of the imperative, object and functional programming paradigms. In some cases, these languages provide clear guidelines as to what style is preferred, and why. As programmers, we have a choice to make about which paradigm(s) to use and to what extent, even if the language provides clear guidelines. How should we think about those choices? Where are the sweet spots to make trade-offs, and what do they depend on? Let's wear the hats of history and science, thinking about the past and looking to the future, examining these apparent conflicts. Paradigm change is not a new thing - perhaps we can learn something from the history books? Wear Some(hat) and party like it's a hat party. With hats."
-  - time: "10:15"
+  - time: "10:05"
     title: "Break"
     break: true
   - time: "10:30"
