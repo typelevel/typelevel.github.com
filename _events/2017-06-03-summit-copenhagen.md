@@ -77,9 +77,9 @@ schedule:
     speakers: ["kenbot"]
     title: "Lenses for the masses – introducing Goggles"
     summary: "Lenses, or more generally optics, are a technique that is indispensable to modern functional programming. However, implementations have veered between two extremes: incredible abstractive power with a steep learning curve; and limited domain-specific uses that can be picked up in minutes. Why can't we have our cake and eat it too?  Goggles is a new Scala macro built over the powerful & popular Monocle optics library. It uses Scala's macros and scandalously flexible syntax to create a compiler-checked mini-language to concisely construct, compose and apply optics, with a gentle, familiar interface, and extravagantly informative compiler errors.  In this talk I'll introduce the motivation for lenses and why usability is a problem that so badly needs solving, and how the Goggles library, with Monocle, helps address this in an important way.  There'll be some juicy discussion of Scala macro sorcery too!"
-  - time: "TBD"
+  - time: "17:30"
     break: true
-    title: "After party hosted by 47 Degrees"
+    title: "Reception hosted by 47 Degrees"
 
 sponsors:
   - name: "47 Degrees"
