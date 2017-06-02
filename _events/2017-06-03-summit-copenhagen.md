@@ -52,9 +52,9 @@ schedule:
     title: "Lunch Break"
     break: true
   - time: "14:00"
-    speakers: ["zainabali"]
-    title: "Libra: Reaching for the stars with dependent types"
-    summary: "When we code, we code in numerics - doubles, floats and ints. Those numerics always represent real world quantities. Each problem domain has it’s own kinds of quantities, with its own dimensions. Adding quantities of different dimensions is nonsensical, and can have disastrous consequences.  In this talk, we’ll tackle the field of dimensional analysis. We’ll explore dependent types, singleton types, and dive into generic programming along the way. We’ll find that dimensional analysis can be brought much closer to home - in the compilation stage itself! And finally, we’ll end up deriving Libra - a library which brings dimensional analysis to the compile stage for any problem domain."
+    speakers: ["kenbot"]
+    title: "Lenses for the masses – introducing Goggles"
+    summary: "Lenses, or more generally optics, are a technique that is indispensable to modern functional programming. However, implementations have veered between two extremes: incredible abstractive power with a steep learning curve; and limited domain-specific uses that can be picked up in minutes. Why can't we have our cake and eat it too?  Goggles is a new Scala macro built over the powerful & popular Monocle optics library. It uses Scala's macros and scandalously flexible syntax to create a compiler-checked mini-language to concisely construct, compose and apply optics, with a gentle, familiar interface, and extravagantly informative compiler errors.  In this talk I'll introduce the motivation for lenses and why usability is a problem that so badly needs solving, and how the Goggles library, with Monocle, helps address this in an important way.  There'll be some juicy discussion of Scala macro sorcery too!"
   - time: "14:40"
     speakers: ["data_fly"]
     title: "The power of type classes in big data ETL: a real world use case of combining Spark and Shapeless"
@@ -74,9 +74,9 @@ schedule:
     title: "Break"
     break: true
   - time: "16:45"
-    speakers: ["kenbot"]
-    title: "Lenses for the masses – introducing Goggles"
-    summary: "Lenses, or more generally optics, are a technique that is indispensable to modern functional programming. However, implementations have veered between two extremes: incredible abstractive power with a steep learning curve; and limited domain-specific uses that can be picked up in minutes. Why can't we have our cake and eat it too?  Goggles is a new Scala macro built over the powerful & popular Monocle optics library. It uses Scala's macros and scandalously flexible syntax to create a compiler-checked mini-language to concisely construct, compose and apply optics, with a gentle, familiar interface, and extravagantly informative compiler errors.  In this talk I'll introduce the motivation for lenses and why usability is a problem that so badly needs solving, and how the Goggles library, with Monocle, helps address this in an important way.  There'll be some juicy discussion of Scala macro sorcery too!"
+    speakers: ["zainabali"]
+    title: "Libra: Reaching for the stars with dependent types"
+    summary: "When we code, we code in numerics - doubles, floats and ints. Those numerics always represent real world quantities. Each problem domain has it’s own kinds of quantities, with its own dimensions. Adding quantities of different dimensions is nonsensical, and can have disastrous consequences.  In this talk, we’ll tackle the field of dimensional analysis. We’ll explore dependent types, singleton types, and dive into generic programming along the way. We’ll find that dimensional analysis can be brought much closer to home - in the compilation stage itself! And finally, we’ll end up deriving Libra - a library which brings dimensional analysis to the compile stage for any problem domain."
   - time: "17:30"
     break: true
     title: "Reception hosted by 47 Degrees"
