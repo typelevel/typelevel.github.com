@@ -11,9 +11,6 @@ poster_hero: "/img/media/copenhagen.jpg"
 poster_thumb: "/img/media/copenhagen-thumb.jpg"
 
 sponsors_section: true
-location_section: true
-
-featured: true
 
 schedule:
   - time: "8:30"
@@ -136,22 +133,8 @@ Tickets are on sale now, starting at 60 €.
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
 
-## Venue
-
-This event will take place at the Comwell Conference Center Copenhagen.
-
-Arriving early for the Typelevel Summit?
-<a href="http://event.scaladays.org/scaladays-cph-2017">Scala Days</a> will take place at the same location from May 30 to May 31 (trainings) and from May 31 to June 2 (conference).
-Use code **typelevel** to receive <a href="https://secure.trifork.com/scaladays-cph-2017/registration/registration.jsp?promotionCode=typelevel">10% discount</a>.
-
-{% include venue_map.html %}
-
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
-
-If you would like to talk to us about sponsorship options, please get in touch with us:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>

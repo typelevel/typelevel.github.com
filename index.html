@@ -13,29 +13,6 @@ class: home
 
 <div class="wrapper">
 
-<div class="section events js-fade-in">
-  <h2>Upcoming Events</h2>
-  <p>
-    For the second year, we are organizing the Typelevel Summits.
-    Join us in the US, Europe or both for our community-based events.
-  </p>
-
-  {% for event in site.events %}
-    {% if event.featured %}
-      <div class="events__event">
-        <div class="events__event-poster" style="background-image: url({{ event.poster_thumb }})"></div>
-        <h3>{{ event.title }}</h3>
-        <span class="meta">{{ event.date_string }}</span>
-        <p>
-         {{ event.description }}
-         {% if event.papers_section %}<a class="btn text" href="{{ event.url | append:'#call-for-speakers' }}">Call for Speakers</a> now open.{% endif %}
-        </p>
-        <a class="btn large center" href="{{ event.url }}">Learn More</a>
-      </div>
-    {% endif %}
-  {% endfor %}
-</div>
-
 <div class="section projects js-fade-in">
   <h2>Projects</h2>
   <p>Our projects cover a wide range of domains, from general functional programming to tooling.</p>

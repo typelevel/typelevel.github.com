@@ -11,9 +11,6 @@ poster_hero: "/img/media/nyc.jpg"
 poster_thumb: "/img/media/nyc-thumb.jpg"
 
 sponsors_section: true
-location_section: true
-
-featured: true
 
 schedule:
   - time: "8:15"
@@ -161,14 +158,6 @@ This is a community conference and we strive to make it an inclusive and fulfill
 
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
-
-## Venue
-
-This event will take place at [26 Bridge Event Space](http://www.26bridge.com/), 26 Bridge Street, Brooklyn, New York.
-Note that the picture on Street View is outdated!
-For more information about the venue and accommodation, check out the [NE Scala website](http://www.nescala.org/).
-
-{% include venue_map.html %}
 
 ## Sponsors
 
