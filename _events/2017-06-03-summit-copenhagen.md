@@ -122,12 +122,6 @@ If you're interested in types and pure functional programming we'd love to see y
 
 This is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](http://typelevel.org/conduct.html).
 
-## Tickets
-
-Tickets are on sale now, starting at 60 €.
-
-<a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-copenhagen">Buy tickets</a>
-
 ## Speakers and Schedule
 
 {% assign schedule=page.schedule %}
