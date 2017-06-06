@@ -252,7 +252,7 @@ val inputSubtype: Input[Shape] = (s: Shape) => s.shapeshift()
 val input: Input[Circle] = inputSubtype
 ```
 
-We have `Input[Shape] <: Input[Circle]`, with `Circle <: Shape`, so function parameters are contravariant.
+We have `Input[Shape] >: Input[Circle]`, with `Shape >: Circle`, so function parameters are contravariant.
 
 The type checker enforces this when we try to use covariant type parameters in contravariant positions.
 
@@ -458,7 +458,7 @@ Thus far we have seen the three kinds of variances Scala supports:
 ```scala
 1. invariance: A = B → F[A] = F[B]
 2. covariance: A <: B → F[A] <: F[B]
-3. contravariance: A >: B → F[A] <: F[B]
+3. contravariance: A >: B → F[A] >: F[B]
 ```
 
 This gives us the following graph:
