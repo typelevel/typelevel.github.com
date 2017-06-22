@@ -240,8 +240,10 @@ harrylaou:
   bio: "Functional programmer, enjoying programming in Scala, Play framework, Akka, Typelevel stack: cats, shapeless, etc"
 vlovgr:
   full_name: "Viktor Lövgren"
-  portrait: "https://avatars1.githubusercontent.com/u/1163201?v=3&s=80"
+  portrait: "https://avatars1.githubusercontent.com/u/1163201?v=3&s=240"
   bio: "Viktor is a Software engineer at Ovo Energy in London, working on the platform powering energy meter readings and consumption data. He’s an advocate of strongly typed functional programming, and Scala in particular, which has been his professional focus the past three years."
+  twitter: vlovgr
+  github: vlovgr
 data_fly:
   full_name: "Zhenhao Li"
   portrait: "https://avatars0.githubusercontent.com/u/10957195?v=3&s=80"
