@@ -61,3 +61,6 @@
 - title: "coulomb"
   description: "A statically typed unit analysis library for Scala"
   github: "https://github.com/erikerlandson/coulomb"
+- title: "Ciris"
+  description: "Lightweight, extensible, and validated configuration loading in Scala"
+  github: "https://github.com/vlovgr/ciris"
