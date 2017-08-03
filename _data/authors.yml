@@ -248,3 +248,8 @@ data_fly:
   full_name: "Zhenhao Li"
   portrait: "https://avatars0.githubusercontent.com/u/10957195?v=3&s=80"
   bio: "Zhenhao Li is a data engineer and data scientist at Connecterra, a data science and IoT startup. He is responsible for making scalable data processing jobs and pipelines and making sure data science insights are generated and delivered in real time. Before joining Connecterra, Zhenhao worked for Accenture in the area of big data and IoT technology consulting, helping major clients to adapt new technologies such as Kafka and Flink, the immutable data paradigm, and functional programming to gain business value faster. He holds a bachelor degree in software engineering and a master degree in logic. He was doing a PhD in mathematical logic at the University of Amsterdam when decided to change his career path to big data and data science. He loves functional programming, and Scala is his primary language for engineering work."
+kailuowang:
+  full_name: "Kailuo Wang"
+  twitter: "kailuowang"
+  github: "kailuowang"
+  portrait: "https://avatars1.githubusercontent.com/u/83257?v=4&s=80"
