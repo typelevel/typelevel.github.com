@@ -41,7 +41,7 @@ Lunch will be sponsored by [Underscore][underscore].
 <a class="btn large" href="https://skillsmatter.com/conferences/7975-scalaxhack">Register</a>
 
 [skillsmatter]: http://skillsmatter.com
-[lsug]: http://meetup.com/lonson-scala
+[lsug]: http://meetup.com/london-scala
 [scalaxhack]: https://skillsmatter.com/conferences/7975-scalaxhack
 [scalax]: http://www.scala-exchange.com
 [codenode]: https://skillsmatter.com/contact-us

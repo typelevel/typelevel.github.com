@@ -120,7 +120,7 @@ the `map` and `flatMap` calls. The convention however, is that the right side is
 (or "right", if you will) side and the left represents the failure case, but it is tedious to
 continously call `Either#right` on values of type `Either` to achieve this.
 
-Thankfully, we have an alternative in the [Scalaz](http://typelevel.org/) library via
+Thankfully, we have an alternative in the Scalaz library via
 `scalaz.\/` (I just pronounce this "either" – some say disjoint union or just "or"), a right-biased
 version of `scala.util.Either` – that is, calling `\/#map` maps over the value if it's in
 a "right" (`scalaz.\/-`), otherwise if it's "left" (`scalaz.-\/`) it just threads it through

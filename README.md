@@ -1,7 +1,7 @@
 typelevel website
 =================
 
-This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](http://typelevel.org).
+This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](https://typelevel.org).
 
 ## Important notice
 
