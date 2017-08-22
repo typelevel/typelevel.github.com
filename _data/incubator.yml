@@ -64,3 +64,6 @@
 - title: "Ciris"
   description: "Lightweight, extensible, and validated configuration loading in Scala"
   github: "https://github.com/vlovgr/ciris"
+- title: "decline"
+  description: "A composable command-line parser for Scala"
+  github: "https://github.com/bkirwi/decline"
