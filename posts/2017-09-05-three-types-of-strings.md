@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Three strings, all different
+title: There are at least three types of strings
 
 meta:
   nav: blog
@@ -27,7 +27,7 @@ def mungeIDsSafely[UID <: String, GID <: String, OID <: String]
 
 The second function is a strictly more general interface; the first,
 concrete signature can be implemented by calling the second function,
-passing `[String, String, String]` as the type arguments. There is no
+passing `[String, String, String]` as the type arguments. There is no
 need to even have the first signature; anywhere in your program where
 you pass three `List[String]`s as arguments to `mungeIDsSafely`, the
 proper type arguments will be inferred.
@@ -42,7 +42,7 @@ as the opaque abstract type members of the newtype mechanism.
 2. It can’t combine them to produce new IDs.
 3. It *can* treat the three list arguments as `List[String]`. However,
    it cannot convert any `String` back into an ID; any UIDs, GIDs, or
-   OIDs that appear in the result `Magic[UID, GID, OID]` must have
+   OIDs that appear in the result `Magic[UID, GID, OID]` must have
    come from one of the argument lists, directly. (That’s not to say
    that `mungeIDsSafely` can’t *use* the string-nature to make that
    decision; for example, it could always choose the
