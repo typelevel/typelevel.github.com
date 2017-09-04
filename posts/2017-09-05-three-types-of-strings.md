@@ -62,11 +62,27 @@ you have the small consolation of eliminating more useless unit tests.
 
 This is a good first approximation at moving away from the dangers of
 concreteness in Scala, and has the advantage of working in Java, too
-(sort of; the `null` prohibition is sadly relaxed).  In Scala, you can
-also use implicits to devise arbitrary constraints, similar to
-typeclasses in Haskell, and sign your functions using implicits
-instead, for much finer-grained control, improved safety, and
-types-as-documentation.
+(sort of; the `null` prohibition is sadly relaxed).
+
+## Non-supertype constraints
+
+In Scala, you can also use implicits to devise arbitrary constraints,
+similar to typeclasses in Haskell, and sign your functions using
+implicits instead, for much finer-grained control, improved safety,
+and types-as-documentation.
+
+```scala
+// a typeclass for "IDish types" (imagine instances)
+sealed trait IDish[A]
+
+def mungeIDsTCey[UID: IDish, GID: IDish, OID: IDish]
+            (uids: List[UID], gids: List[GID],
+             oids: List[OID]): Magic[UID, GID, OID] 
+```
+
+Though all three types have the same constraint, `IDish`, they are
+still distinct types.  And now, the coupling with `String` is broken;
+as the program author, you get to decide whether you want that or not.
 
 ## Pitfalls avoided for you
 
