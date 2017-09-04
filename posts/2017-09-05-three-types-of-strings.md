@@ -12,7 +12,7 @@ meta:
 are a great way to introduce wrapper-free, global distinctions of
 “different” instances of the same type. But we can do that on a local
 level, too,
-[by using type parameters](https://gist.github.com/jbgi/d6b677d084fafc641fe01f7ffd00591c#file-label-java-L32).
+[by using type parameters](https://gist.github.com/jbgi/d6b677d084fafc641fe01f7ffd00591c/70842ca600e53e8c237c681773fe4e16bd679628#file-label-java-L32).
 
 Consider these two signatures.
 
