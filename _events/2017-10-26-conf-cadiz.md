@@ -2,7 +2,7 @@
 layout: event
 
 title: "Typelevel UnConference - Lambda World Cadiz 2017"
-short_title: "Cádiz Community Conference"
+short_title: "Cádiz Unconference"
 date_string: "October 26th, 2017"
 location: "Palacio de Congresos de Cádiz"
 description: "Co-located with Lambda World."
@@ -32,12 +32,12 @@ We’ll have a Typelevel Unconference during the morning and introductory worksh
 
 ## Venue
 
-This event took place at the Palacio de Congresos de Cádiz.
+This event will take place at the Palacio de Congresos de Cádiz.
 
 {% include venue_map.html %}
 
 ## Sponsors
 
-We'd like to thank all our sponsors who helped to make the conference happen:
+We'd like to thank all our sponsors who are helping to make the conference happen:
 
 {% include sponsors.html %}
