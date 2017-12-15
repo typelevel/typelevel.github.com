@@ -11,6 +11,8 @@ poster_hero: "/img/media/cambridge.jpg"
 poster_thumb: "/img/media/cambridge-thumb.jpg"
 
 sponsors_section: false
+
+featured: true
 ---
 
 ## About the Summit
