@@ -21,7 +21,7 @@ schedule:
     break: true
   - time: "9:15"
     speakers: ["nikivazou"]
-    title: "LiquidHaskell: Liquid Types for Haskell (Keynote)"
+    title: "Keynote: LiquidHaskell: Liquid Types for Haskell"
     summary: "Code deficiencies and bugs constitute an unavoidable part of software systems. In safety-critical systems, like aircrafts or medical equipment, even a single bug can lead to catastrophic impacts such as injuries or death. Formal verification can be used to statically track code deficiencies by proving or disproving correctness properties of a system.  However, at its current state formal verification is a cumbersome process that is rarely used by mainstream developers.  This talk presents LiquidHaskell, a usable formal verifier for Haskell programs. LiquidHaskell naturally integrates the specification of correctness properties in the development process. Moreover, verification is automatic, requiring no explicit proofs or complicated annotations.  At the same time, the specification language is expressive and modular, allowing the user to specify correctness properties ranging from totality and termination to memory safety and safe resource (e.g., file) manipulation.  Finally, LiquidHaskell has been used to verify more than 10,000 lines of real-world Haskell programs.  LiquidHaskell serves as a prototype verifier in a future where formal techniques will be used to facilitate, instead of hinder, software development. For instance, by automatically providing instant feedback, a verifier will allow a web security developer to immediately identify potential code vulnerabilities."
   - time: "10:15"
     title: "Break"

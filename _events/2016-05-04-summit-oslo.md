@@ -20,7 +20,7 @@ schedule:
     title: "Opening Remarks"
     break: true
   - time: "9:15"
-    title: How to bake "How to Bake Pi"
+    title: "Keynote: How to bake \"How to Bake Pi\""
     speakers: ["cheng"]
     summary: "Mathematics is a very misunderstood subject.  Many people associate it only with painful experiences with childhood, or think it's all about numbers and calculations, or that it's a cold subject with clear rights and wrongs. My mission is to bring my love of mathematics to more people, and as part of this journey I need to show the beauty and the power of abstract thinking. In this talk I will present my experiences of this, starting with the book I wrote for a very general audience, and the Category Theory course I teach to art students at the School of the Art Institute of Chicago. Using a variety of surprising examples, I will show that it is possible to convince maths phobics and maths sceptics that abstract mathematics can be relevant and useful for everyone."
   - time: "10:15"
