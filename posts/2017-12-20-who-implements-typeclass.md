@@ -241,7 +241,7 @@ def isadd[A](x: A, y: A)(implicit adder: ISAdder[A]): A =
     case ISAdder.AddInts => x + y
     case ISAdder.AddStrings => s"$x$y"
     case ISAdder.AddVects() =>
-      (x: Vector[e]) ++ y
+      x ++ y
   }
 ```
 
