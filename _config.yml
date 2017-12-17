@@ -23,7 +23,7 @@ sass:
   style: compressed
 future: true
 
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 
 collections:
   events:
