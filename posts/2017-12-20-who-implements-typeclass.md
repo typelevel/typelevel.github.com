@@ -28,9 +28,11 @@ typeclass gives you free fixes for common overload problems.
 
 1. Methods calling the overloaded method do not themselves need to be
    overloaded just to avoid suppressing the flexibility of the
-   overload beneath.
-1. Return-type overloading works, even in Scala, whose “normal”
-   overloads are subject to Java’s rules.
+   overload beneath.  (See `addThree` and `zipAdd` below for
+   examples.)
+1. Return-type overloading works, even in Scala, where it does not
+   when attempting to write overloads in the Java style, i.e. multiple
+   methods with the same name.
 1. Overloads may be defined as recursive type rules, admitting a
    combinatorial explosion or even infinite “effective overloads”.
 
