@@ -1,0 +1,3 @@
+http://typelevel.org/* https://typelevel.org/:splat 301
+
+/cats/* https://typelevel.github.io/cats/:splat 200
