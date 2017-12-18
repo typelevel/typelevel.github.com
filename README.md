@@ -3,13 +3,6 @@ typelevel website
 
 This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](https://typelevel.org).
 
-## Important notice
-
-:loudspeaker: The blog post workflow has changed:
-- The default branch is now `development`. `master` is the target for automated commits from Travis. Please `git checkout development` for doing anything.
-- Posts go into `posts` instead of `_posts`. Run `sbt run` to have them copied over.
-- You can use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` for an example.
-
 ## Getting Started (the short version)
 
 If you just want to add a blog post or fix a typo in the content, here's how to get started.
@@ -29,26 +22,29 @@ If you haven't written a post before, please add yourself to `_data/authors.yml`
 
 That's it, we'll take care of the rest. If you wish, you can also submit just a plain Markdown file and we'll be happy to integrate it.
 
+You can aksi use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` for an example.
+
 ### Previewing your changes
 
-To preview your changes, you have to install Ruby, Bundler and SBT first.
-Once you've done that, you can start the Jekyll server like this:
+To preview your changes, you have to install [Rake](https://ruby.github.io/rake/) and [Bundler](https://bundler.io/) first.
+To download and set up all necessary dependencies, run
 
 ```bash
-sbt run
-bundle install
-bundle exec jekyll serve --baseurl ''
+$ rake init
+... lots of text ...
+Bundle complete! 1 Gemfile dependency, 81 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
 ```
 
-This will first preprocess the blog posts and then start a local web server on port 4000 where you can browse the site.
-For automatic site rebuild, run the following two commands in different terminals:
+Then, you can generate the site by running
 
 ```
-sbt ~run
-bundle exec jekyll serve --incremental --baseurl ''
+$ rake build
 ```
 
-This will trigger a recompile and rebuild if you change the source files.
+The generated site will end up in the `_site` directory.
+
+When you send a pull request, [Netlify](https://www.netlify.com/) will automatically build a rendered preview of the site.
 
 ## License
 
