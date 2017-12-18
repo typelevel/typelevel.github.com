@@ -195,7 +195,9 @@ items, simply by using it twice.
 This has a direct impact on how we structure the functions related to
 `Adder`. The primitives must be split up, their separate
 implementations appearing directly in the implicit instances. Derived
-combinators may occur anywhere that is convenient to us.
+combinators may occur anywhere that is convenient to us: outside the
+typeclass for full flexibility of location, or within the typeclass
+for possible overrides for performance.
 
 But how much of the primitive implementations must occur in the
 instances, really?
@@ -442,7 +444,11 @@ once.
 
 More practically speaking, if you expose the subclasses of a typeclass
 to users of your library, they can define primitives “in lockstep”,
-too.
+too.  The line between primitive and derived combinators is also
+blurred: a would-be derived combinator can pattern-match on the
+typeclass to supply special cases for improved performance, becoming
+“semi-primitive” in the process.  You decide whether these are good
+things or not.
 
 ## Hybrid “clopen” typeclasses
 
