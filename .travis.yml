@@ -2,21 +2,11 @@ sudo: false
 language: ruby
 rvm: 2.2
 
-env:
-  global:
-    - secure: "CD9mNKFgQTq12JVViWBL43hviuh2565ayA+uFZ0cxdNydEr+31UD+t0bVxZRDeZklgIlK5v5fhb4jTMFD6CD3j+/IUq9jXytjPjPf3APcj7D5uDoEtmt1n8y7bEAKQO6nbeLWLyUnFzVXY5kedJNrpzCz2tSwkQ1+4ZeZloQSwg="
-
 jdk:
   - oraclejdk8
 
-install:
-  - bundle install
-  - curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt -o sbt
-  - chmod +x sbt
-
 script:
-  - ./sbt run
-  - bundle exec jekyll build
+  - rake build
 
 cache:
   directories:
@@ -29,10 +19,3 @@ before_cache:
 branches:
   except:
     - master
-
-deploy:
-  - provider: script
-    script: ./deploy.sh
-    skip_cleanup: true
-    on:
-      branch: development

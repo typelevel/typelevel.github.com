@@ -22,6 +22,6 @@ task :posts do
 end
 
 desc 'Build the site'
-task :build => [:posts] do
+task :build => [:init, :posts] do
   sh 'bundle', 'exec', 'jekyll', 'build'
 end
