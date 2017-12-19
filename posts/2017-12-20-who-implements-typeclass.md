@@ -251,19 +251,19 @@ def isadd[A](x: A, y: A)(implicit adder: ISAdder[A]): A =
 
 More specifically, they contain a runtime tag, which allows
 information about the type of `A` to be extracted with a pattern
-match. For example, determining that `adder` is `addInts` reveals that
+match. For example, determining that `adder` is `AddInts` reveals that
 `A = Int`, because that’s what the `extends` clause says.  This is
 *GADT pattern matching*.
 
 The `Vector` case is a little tricky here, because we can only
-determine that `A` is `Vector[e]` *for some unknown e* (a lowercase
-type parameter is required for this usage), but that’s enough
-information to invoke `++` and get a result also of `Vector[e]` for
-the same `e`.
+determine that `A` is `Vector[e]` *for some unknown e*, but that’s
+enough information to invoke `++` and get a result also of `Vector[e]`
+for the same `e`.
 
 You can see this in action by using a [variable type
 pattern](https://groups.google.com/d/msg/scala-user/JlCsy48poIU/DjsQDnzeZboJ)
-to assign the name `e`, so you can refer to it in types.
+to assign the name `e` (a lowercase type parameter is required for
+this usage), so you can refer to it in types.
 
 ```scala
     case _: ISAdder.AddVects[e] =>
@@ -302,13 +302,13 @@ bound the `e` name, so you can’t actually refer to this *unspeakable*
 type.
 
 Usually, you do not need to assign names such as `e` to such types;
-`_` is sufficient. If you have problems getting `scalac` to apply all
-the type equalities it ought to know about, a good first step is to
-assign names to any skolems and try type ascriptions. You’ll need a
-variable type pattern in other situations that don’t infer, too. By
-contrast, with the `e` name bound, we can confirm that `x: Vector[e]`
-in the above example, and `y` is sufficiently well-typed for the whole
-expression to type-check.
+`_` is sufficient.  However, if you have problems getting `scalac` to
+apply all the type equalities it ought to know about, a good first
+step is to assign names to any skolems and try type
+ascriptions. You’ll need a variable type pattern in other situations
+that don’t infer, too. By contrast, with the `e` name bound, we can
+confirm that `x: Vector[e]` in the above example, and `y` is
+sufficiently well-typed for the whole expression to type-check.
 
 ## Porting `addPairs` and other recursive cases
 
@@ -453,8 +453,9 @@ things or not.
 ## Hybrid “clopen” typeclasses
 
 Pattern matching type class GADTs is subject to the same
-exhaustiveness concerns and compiler warnings. If you eliminate a
-`case` from `def isadd`, you’ll see something like
+exhaustiveness concerns and compiler warnings as pattern matching
+ordinary ADTs. If you eliminate a `case` from `def isadd`, you’ll see
+something like
 
 ```scala
 ....scala:57: match may not be exhaustive.
