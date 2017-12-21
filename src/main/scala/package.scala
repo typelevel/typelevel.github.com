@@ -40,8 +40,8 @@ object `package` {
         \/.left(new RuntimeException("resolution did not converge"))
       else if (!resolution.conflicts.isEmpty)
         \/.left(new RuntimeException(s"resolution has conflicts: ${resolution.conflicts.mkString(", ")}"))
-      else if (!resolution.errors.isEmpty)
-        \/.left(new RuntimeException(s"resolution has errors: ${resolution.errors.mkString(", ")}"))
+      else if (!resolution.metadataErrors.isEmpty)
+        \/.left(new RuntimeException(s"resolution has errors: ${resolution.metadataErrors.mkString(", ")}"))
       else {
         Task.gatherUnordered(
           resolution.artifacts.map(artifact =>

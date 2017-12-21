@@ -13,8 +13,8 @@ kramdown:
   syntax_highlighter: rouge
   hard_wrap: false
 highlighter: rouge
-exclude:
-  ["README.md", "CNAME", "vendor", "src", "project/", "build.sbt", "posts"]
+exclude: ["README.md", "CNAME", "vendor", "src", "project/", "build.sbt", "posts", "target"]
+include: ["_redirects"]
 permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "/blog/:num/"
@@ -23,7 +23,7 @@ sass:
   style: compressed
 future: true
 
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 
 collections:
   events:

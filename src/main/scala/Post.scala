@@ -4,6 +4,7 @@ import coursier._
 import java.io.{File, FileInputStream}
 import java.nio.file.{Files, StandardCopyOption}
 import org.yaml.snakeyaml.Yaml
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 case class Post(file: File) {
@@ -22,7 +23,7 @@ case class Post(file: File) {
   def outdated(): Boolean =
     !(out.exists() && out.isFile() && file.lastModified() <= out.lastModified())
 
-  def process(): Unit =
+  def process(implicit ec: ExecutionContext): Future[Unit] =
     if (outdated()) {
       println(s"[blog] Processing ${file.getName} ...")
       BuildInfo.tutOutput.mkdirs()
@@ -33,10 +34,12 @@ case class Post(file: File) {
         case None =>
           println("[blog] No tut header, copying.")
           Files.copy(file.toPath, out.toPath, StandardCopyOption.REPLACE_EXISTING)
+          Future.successful(())
       }
     }
     else {
       println(s"[blog] Skipping ${file.getName} (up to date).")
+      Future.successful(())
     }
 
 }

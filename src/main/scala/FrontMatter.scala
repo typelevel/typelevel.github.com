@@ -4,6 +4,7 @@ import coursier._
 import coursier.util.Parse
 import java.io.File
 import java.net.URLClassLoader
+import scala.concurrent.{ExecutionContext, Future}
 
 case class Tut(scala: String, binaryScala: String, dependencies: List[String]) {
 
@@ -16,7 +17,7 @@ case class Tut(scala: String, binaryScala: String, dependencies: List[String]) {
     Dependency(mod, v)
   }.toSet)
 
-  def invoke(file: File): Unit = {
+  def invoke(file: File)(implicit ec: ExecutionContext): Future[Unit] = {
     val tutClasspath = resolve(tutResolution).get
     val libClasspath = resolve(libResolution).get
 
@@ -32,7 +33,9 @@ case class Tut(scala: String, binaryScala: String, dependencies: List[String]) {
       libClasspath.mkString(File.pathSeparator)
     )
 
-    tutMain.invoke(null, commandLine)
+    Future {
+      tutMain.invoke(null, commandLine)
+    }
   }
 }
 
