@@ -25,3 +25,16 @@ desc 'Build the site'
 task :build => [:init, :posts] do
   sh 'bundle', 'exec', 'jekyll', 'build'
 end
+
+desc 'Continually build posts'
+task :watch_posts do
+  sh './sbt', '~ run'
+end
+
+desc 'Continually serve the site'
+task :serve => [:init] do
+  sh 'bundle', 'exec', 'jekyll', 'serve', '--watch', '--baseurl', ''
+end
+
+desc 'Build posts and serve in parallel (for development)'
+multitask :dev => [:serve, :watch_posts]
