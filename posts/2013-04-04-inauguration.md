@@ -34,4 +34,4 @@ Stay tuned!
 -----------
 
 We hope that this blog will be filled with content soon.
-To make sure that you don't miss anything, follow <a href="https://twitter.com/typelevel">@typelevel</a> on Twitter or subscribe to the <a href="{{ site.baseurl}}/blog/feed.rss">RSS feed</a>.
+To make sure that you don't miss anything, follow <a href="https://twitter.com/typelevel">@typelevel</a> on Twitter or subscribe to the <a href="/blog/feed.rss">RSS feed</a>.
