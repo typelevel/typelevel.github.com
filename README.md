@@ -22,7 +22,7 @@ If you haven't written a post before, please add yourself to `_data/authors.yml`
 
 That's it, we'll take care of the rest. If you wish, you can also submit just a plain Markdown file and we'll be happy to integrate it.
 
-You can aksi use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` for an example.
+You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` for an example.
 
 ### Previewing your changes
 
