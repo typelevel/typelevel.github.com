@@ -34,8 +34,8 @@ import cats.implicits._
 def program[M[_]: FlatMap, F[_]](K: KVStore[M])(implicit P: Parallel[M, F]) =
   for {
     _ <- K.put("A", a)
-    x <- (K.get("B"), K.get("C")).parMapN(f)
-    _ <- K.put("X", x)
+    x <- (K.get("B"), K.get("C")).parMapN(_ |+| _)
+    _ <- K.put("X", x.getOrElse("-"))
   } yield x
 ```
 
@@ -52,7 +52,7 @@ def program[F[_]: Apply](F: KVStore[F]): F[List[String]] =
 ```
 
 Not a very exciting program, but it has some definite optimization potential.
-Right now, if our KVStore implementation is an asychronous one with a network boundary, our program will make 4 network requests sequentially if interpreted with the standard `Apply` instance of something like `cats.effect.IO`.
+Right now, if our KVStore implementation is an asynchronous one with a network boundary, our program will make 4 network requests sequentially if interpreted with the standard `Apply` instance of something like `cats.effect.IO`.
 We also have a duplicate request with the `"Cats"`-key.
 
 So let's look at what we could potentially do about this.
@@ -85,6 +85,7 @@ def optimizedProgram[F[_]: Apply](F: KVStore[F]): F[List[String]] = {
 
   puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
 }
+```
 
 And we got our first very simple optimization.
 It's not much, but we can imagine the power of this technique.
@@ -180,7 +181,7 @@ def optimizedProgram[F[_]: Apply](mouse: String)(F: KVStore[F]): F[List[String]]
 
 So far so good, we've managed to write a function to generically optimize tagless final programs.
 However, one of the main advantages of tagless final is that implementation and logic should be separate concerns.
-With what we have right now, we're violating the seperation, by mixing the optimization part with the program logic part.
+With what we have right now, we're violating the separation, by mixing the optimization part with the program logic part.
 Our optimization should be handled by the interpreter, just as the sequencing of individual steps of a monadic program is the job of the target `Monad` instance.
 
 One way to go forward, is to create a typeclass that requires certain algebras to be optimizable.
