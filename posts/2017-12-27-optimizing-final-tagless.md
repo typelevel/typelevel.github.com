@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Optimizing Tagless Final - Saying farewell to Free
+title: Optimizing Tagless Final – Saying farewell to Free
 
 meta:
   nav: blog
-  author: LukaJCB
+  author: lukajcb
   pygments: true
 
 ---
@@ -130,17 +130,16 @@ The problem of Rank-N types becomes apparent when we want to write a function wh
 
 ```scala
 def optimize[Alg[_[_]], F[_]: Applicative, A, M: Monoid]
-(program: Alg[F] => F[A])
-(extract: Alg[Const[M, ?]])
-(restructure: M => F[A]): Alg[F] => F[A] = { interp =>
+  (program: Alg[F] => F[A])
+  (extract: Alg[Const[M, ?]])
+  (restructure: M => F[A]): Alg[F] => F[A] = { interp =>
 
-  val m = program(extract).getConst // error: type mismatch;
-  // found   : extract.type (with underlying type Alg[[β$0$]cats.data.Const[M,β$0$]])
-  // required: Alg[F]
+    val m = program(extract).getConst // error: type mismatch;
+    // found   : extract.type (with underlying type Alg[[β$0$]cats.data.Const[M,β$0$]])
+    // required: Alg[F]
 
-  restructure(m)
-
-}
+    restructure(m)
+  }
 ```
 So, because of the lack of Rank-N types, this simple definition for our program is not enough to say that our program works for ALL type constructors `F[_]: Applicative`.
 
@@ -152,13 +151,13 @@ trait Program[Alg[_[_]], A] {
 }
 
 def optimize[Alg[_[_]], F[_]: Applicative, A, M: Monoid]
-(program: Program[Alg, A])
-(extract: Alg[Const[M, ?]])
-(restructure: M => F[A]): Alg[F] => F[A] = { interp =>
-  val m = program(extract).getConst
+  (program: Program[Alg, A])
+  (extract: Alg[Const[M, ?]])
+  (restructure: M => F[A]): Alg[F] => F[A] = { interp =>
+    val m = program(extract).getConst
 
-  restructure(m)
-}
+    restructure(m)
+  }
 ```
 
 And now it should compile without a problem.
@@ -193,14 +192,14 @@ trait Optimizer[Alg[_[_]], F[_]] {
   type M
 
   def monoidM: Monoid[M]
-  def applicativeF: Monad[F]
+  def monadF: Monad[F]
 
   def extract: Alg[Const[M, ?]]
   def rebuild(m: M, interpreter: Alg[F]): F[Alg[F]]
 
   def optimize[A](p: Program[Alg, Applicative, A]): Alg[F] => F[A] = { interpreter =>
     implicit val M: Monoid[M] = monoidM
-    implicit val F: Monad[F] = applicativeF
+    implicit val F: Monad[F] = monadF
 
     val m: M = p(extract).getConst
 
@@ -249,7 +248,7 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
 
   def monoidM = implicitly
 
-  def applicativeF = implicitly
+  def monadF = implicitly
 
   def extract = new KVStore[Const[Set[String], ?]] {
     def get(key: String) = Const(Set(key))
