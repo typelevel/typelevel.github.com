@@ -323,7 +323,7 @@ Using the technique described in this blog post, we should be able to have even 
 We've seen a few roadblocks along the way, such as the lack of Rank-N types in Scala, but we might be able to come up with a macro for that in the future, making it even more ergonomic.
 Another thing we haven't covered here, are programs with multiple algebras, which is quite a bit more complex as you can surely imagine, maybe that will be the topic of a follow up blog post.
 
-I'll be publishing all the code from this blog post soon, after getting a feeling for which API feels best.
+The code is published [right here](https://github.com/LukaJCB/sphynx), but might still change after getting a feeling for which API feels best.
 
 What kind of problems and techniques would you like to see with regards to tagless final?
 Would love to hear from you in the comments!
