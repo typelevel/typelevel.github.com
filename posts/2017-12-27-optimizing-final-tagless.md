@@ -31,7 +31,7 @@ To get the easiest example out of the way, here's how to achieve parallelism in 
 import cats._
 import cats.implicits._
 
-def program[M[_]: FlatMap, F[_]](K: KVStore[M])(implicit P: Parallel[M, F]) =
+def program[M[_]: FlatMap, F[_]](a: String)(K: KVStore[M])(implicit P: Parallel[M, F]) =
   for {
     _ <- K.put("A", a)
     x <- (K.get("B"), K.get("C")).parMapN(_ |+| _)
@@ -80,10 +80,11 @@ By using a Tuple of `Set` and `Map` as our `Monoid`, we now get all the unique k
 Next, we can use this information to recreate our program in an optimized way.
 
 ```scala
-def optimizedProgram[F[_]: Apply](F: KVStore[F]): F[List[String]] = {
+def optimizedProgram[F[_]: Applicative](F: KVStore[F]): F[List[String]] = {
   val (gets, puts) = program(analysisInterpreter).getConst
 
-  puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
+  puts.toList.traverse { case (k, v) => F.put(k, v) } 
+    *> gets.toList.traverse(F.get).map(_.flatten)
 }
 ```
 
@@ -102,13 +103,14 @@ def program[F[_]: Apply](mouse: String)(F: KVStore[F]): F[List[String]] =
   (F.get("Cats"), F.get("Dogs"), F.put("Mice", mouse), F.get("Cats"))
     .mapN((f, s, _, t) => List(f, s, t).flatten)
 
-def optimizedProgram[F[_]: Apply](mouse: String)(F: KVStore[F]): F[List[String]] = {
+def optimizedProgram[F[_]: Applicative](mouse: String)(F: KVStore[F]): F[List[String]] = {
   val (gets, puts) = program(mouse)(analysisInterpreter).getConst
 
-  puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
+  puts.toList.traverse { case (k, v) => F.put(k, v) } 
+    *> gets.toList.traverse(F.get).map(_.flatten)
 }
 
-def monadicProgram[F[_]: FlatMap](F: KVStore[F]): F[Unit] = for {
+def monadicProgram[F[_]: Monad](F: KVStore[F]): F[Unit] = for {
   mouse <- F.get("Mice")
   list <- optimizedProgram(mouse.getOrElse("64"))(F)
   _ <- F.put("Birds", list.headOption.getOrElse("128"))
@@ -172,8 +174,8 @@ def wrappedProgram(mouse: String) = new Program[KVStore, List[String]] {
   def apply[F[_]: Applicative](alg: KVStore[F]): F[List[String]] = program(mouse)(alg)
 }
 
-def optimizedProgram[F[_]: Apply](mouse: String)(F: KVStore[F]): F[List[String]] =
-  optimize(wrappedProgram)(analysisInterpreter) { case (gets, puts) =>
+def optimizedProgram[F[_]: Applicative](mouse: String)(F: KVStore[F]): KVStore[F] => F[List[String]] = 
+  optimize(wrappedProgram(mouse))(analysisInterpreter) { case (gets, puts) =>
     puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
   }
 ```
@@ -234,7 +236,7 @@ Let's see what our program would look like with this new functionality:
 ```scala
 def monadicProgram[F[_]: Monad](F: KVStore[F])(implicit O: Optimizer[KVStore, F]): F[Unit] = for {
   mouse <- F.get("Mice")
-  list <- program(mouse.getOrElse("64")).optimize(F)
+  list <- wrappedProgram(mouse.getOrElse("64")).optimize(F)
   _ <- F.put("Birds", list.headOption.getOrElse("128"))
 } yield ()
 ```
