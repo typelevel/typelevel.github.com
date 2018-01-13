@@ -48,3 +48,5 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-boston-2018">Submit your talk here</a>
 
 Submission closes January 16.
+
+There will be a separate Call for Speakers for the co-located NE Scala event. We will publish the Typelevel Summit programme before their call closes, so it is no problem to re-submit a talk to NE Scala in case it did not get accepted for the Typelevel Summit.
