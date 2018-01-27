@@ -36,7 +36,7 @@
             </hgroup>
           </div>
           <p>
-            {{ item.summary | truncate:250 }}
+            {{ item.summary | strip_html | truncate:250 }}
           </p>
           <span class="btn text js-open-popup" data-id="{{ item.title | slugify }}">More</span>
         </td>
