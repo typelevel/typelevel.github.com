@@ -12,6 +12,7 @@ non:
   portrait: "https://secure.gravatar.com/avatar/f4d569c5f1eaa0241c0d39717da9315c"
   twitter: "d6"
   github: "non"
+  bio: "Erik Osheim is one of the founders of Typelevel, and maintains several Scala libraries including Cats, Spire, and others. He hacks Scala for a living at Stripe, and is committed to having his cake and eating it too when it comes to functional programming. Besides programming he spends time playing music, drinking tea, and cycling around Providence, Rhode Island."
 milessabin:
   full_name: "Miles Sabin"
   portrait: "https://secure.gravatar.com/avatar/8a7e159fad28f672ca794fb7f2bf7f0f"
