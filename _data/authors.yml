@@ -89,7 +89,7 @@ sellout:
   portrait: "https://avatars3.githubusercontent.com/u/33031?v=3&s=80"
   twitter: "sellout"
   github: "sellout"
-  bio: "Greg Pfeil was introduced to Scala by SlamData almost two years ago. Prior to that, he was consulting, doing primarily Common Lisp and Haskell work for most of a decade. Aside from working on SlamData’s Quasar core, he spends time on Matryoshka, Idris, and developing his own languages."
+  bio: "Greg Pfeil is a compiler writer and programming language designer. At this point they have written four recursion scheme libraries in three languages, with the goal of getting to half a recursion scheme library for all languages. Greg works at Takt, writing Haskell, using only the purest artisanal FP."
 mpilquist:
   full_name: "Michael Pilquist"
   portrait: "https://avatars1.githubusercontent.com/u/118078?v=3&s=80"
