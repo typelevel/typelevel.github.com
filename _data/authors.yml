@@ -272,3 +272,7 @@ fabio:
   full_name: "Fabio Labella"
   portrait: "/img/media/speakers/fabiolabella.jpeg"
   bio: "I’m a Senior Software Engineer based in Edinburgh, UK, working in Scala in the financial industry. I also actively participate in Open Source (as SystemFw): I’m one of the maintainers of fs2, and a contributor to cats, shapeless, http4s and most of the other libraries in the Scala FP ecosystem. I have a passion for helping people master advanced concepts, so hit me up on Gitter if you have a question!"
+jozic:
+  full_name: "Eugene Platonov"
+  portrait: "https://avatars2.githubusercontent.com/u/124249?s=400&v=4"
+  bio: "I’m a Scala Dev at eBay Inc, working commercially with Scala as my main programming language since early 2011, Java Dev in my past life. Occasional contributor to variety of Scala related OS projects. Scala evangelist who successfully converted individuals and teams to Scala from Java."
