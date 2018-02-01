@@ -276,3 +276,7 @@ jozic:
   full_name: "Eugene Platonov"
   portrait: "https://avatars2.githubusercontent.com/u/124249?s=400&v=4"
   bio: "I’m a Scala Dev at eBay Inc, working commercially with Scala as my main programming language since early 2011, Java Dev in my past life. Occasional contributor to variety of Scala related OS projects. Scala evangelist who successfully converted individuals and teams to Scala from Java."
+lucabelli:
+  full_name: "Luca Belli"
+  portrait: "/img/media/speakers/lucabelli.jpg"
+  bio: "Luca Belli is a Senior Software Engineer at Twitter Cortex, the centralized deep learning hub within the company. Previously he was a Senior Scientist at Conversant Media where he helped bootstrapping image classification using deep learning. His first job was at Wolfram Alpha in Boston. He got his Ph.D. in Mathematics from Tor Vergata University in Rome."
