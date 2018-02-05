@@ -20,6 +20,11 @@ sponsors:
     link: "https://jobs.zalando.com/tech/?utm_source=typelevel&utm_medium=event-page-organic-b&utm_campaign=2018-css&utm_content=01-typelevel-summit"
     type: "platinum"
     height: 50
+  - name: "Signify"
+    logo: "/img/media/sponsors/signify.png"
+    link: "https://www.signifytechnology.com/"
+    type: "silver"
+    height: 80
 ---
 
 ## About the Summit
