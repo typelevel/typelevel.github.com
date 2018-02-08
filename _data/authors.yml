@@ -280,3 +280,6 @@ lucabelli:
   full_name: "Luca Belli"
   portrait: "/img/media/speakers/lucabelli.jpg"
   bio: "Luca Belli is a Senior Software Engineer at Twitter Cortex, the centralized deep learning hub within the company. Previously he was a Senior Scientist at Conversant Media where he helped bootstrapping image classification using deep learning. His first job was at Wolfram Alpha in Boston. He got his Ph.D. in Mathematics from Tor Vergata University in Rome."
+umasrinivasan:
+  full_name: "Uma Srinivasan"
+  bio: "Uma is a Staff Software Engineer in the Advanced Scala Tools team at Twitter. She brings with her multiple decades of experience and expertise in the area of compilers, code generation and related hardware/software co-design. Prior to joining Twitter she worked at Intel and Hewlett Packard. She has a Bachelor’s degree in Electrical Engineering and a Master’s in CS. She holds several patents and technical publications in her field of expertise."

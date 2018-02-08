@@ -71,6 +71,11 @@ schedule:
     speakers: ["lucabelli"]
     title: "Why Monads?"
     summary: "Monads remain a somewhat mysterious concept in Functional Programming, even though the number of tutorials and blog posts trying to “monadsplain” is at an all-time high. Rather than answering the classical question “What is a Monad?”, we are going to dig more into “Why Monads?”. Building intuition on why monads are useful will help better understand what they are as well. We’ll start with a simple function in a monadless world and we’ll see how annoying it would be to use it in different contexts (List, Maybe, Either). As soon as we are sufficiently frustrated we’ll invoke our friendly Monad and see how much easier our life becomes."
+  - time: TBD
+    speakers: ["umasrinivasan"]
+    title: "Scalafix @ Twitter scale"
+    summary: "Scalafix is a fairly popular OSS tool that is useful for performing syntactic and semantic rewrites of Scala code. At Twitter we use it for migration to new library interfaces and maintenance of code health by removal of deprecated code. In this talk we walk through examples of simple and complex Scalafix custom rule specifications for rewrites. We describe the core infrastructure we have set up to support rewrites across our entire monorepo, several orders of magnitude faster than if we were to apply them manually. A simple demo will be included to provide a glimpse of our developer workflow and the user experience with our code base. We envision leveraging this tool for more purposes such as improving performance, upgrading compiler revisions, and assisting developers to automatically recognize and prevent commits of disallowed code patterns."
+
 ---
 
 ## About the Summit
