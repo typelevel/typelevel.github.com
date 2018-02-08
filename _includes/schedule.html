@@ -22,7 +22,9 @@
             <ul class="schedule__avatars">
               {% for speaker in item.speakers %}
                 <li>
-                  <img src="{{ profiles[speaker].portrait }}" />
+                  {% if profiles[speaker].portrait %}
+                    <img src="{{ profiles[speaker].portrait }}" />
+                  {% endif %}
                 </li>
               {% endfor %}
             </ul>
@@ -64,7 +66,9 @@
             <ul class="schedule__avatars">
               {% for speaker in item.speakers %}
                 <li>
-                  <img src="{{ profiles[speaker].portrait }}" />
+                  {% if profiles[speaker].portrait %}
+                    <img src="{{ profiles[speaker].portrait }}" />
+                  {% endif %}
                 </li>
               {% endfor %}
             </ul>
