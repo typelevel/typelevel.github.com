@@ -104,10 +104,9 @@ projection is often confused with something useful.
 </div>
 
 In reality, `StSource[A]#S` means *some* `StSource`’s `S`.  Not the
-one you gave, just any particular one.  That’s right, it’s
-*existential*.  So, the failure of the above signature is like the
-failure of `mdropFirstE` from section “When are two methods less
-alike?” of
+one you gave, just any particular one.  It’s the supertype of all
+possible `S` choices.  So, the failure of the above signature is like
+the failure of `mdropFirstE` from
 [the second post of this series]({% post_url 2015-07-16-method-equiv %}#when-are-two-methods-less-alike):
 a failure to relate types strongly enough.  The problem with
 `mdropFirstE` was failure to relate the result type to argument type,
