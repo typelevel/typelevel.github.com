@@ -272,8 +272,9 @@ this usage), so you can refer to it in types.
 
 ## The lowercase `e` names a GADT skolem
 
-`AddVects[e]` pattern we’ve been discussing, `e` is a *variable type
-pattern*. This is a type that exists only in the scope of the `case`.
+In the `AddVects[e]` pattern immediately above, `e` is a *variable
+type pattern*. This is a type that exists only in the scope of the
+`case`.
 
 It’s *existential* because we don’t know what it is, only that it is
 *some type* and we don’t get to pick here what that is. In this way,
@@ -296,8 +297,8 @@ isn’t true of all
 but is only natural for this one.
 
 `scalac` will create this GADT skolem *regardless of whether we give
-it a name*. In the pattern `case AddVects()`, it’s still known that `A
-= Vector[e]` for some `e`; the only difference is that you haven’t
+it a name*. In the pattern `case AddVects()`, it’s still known that
+`A = Vector[e]` for some `e`; the only difference is that you haven’t
 bound the `e` name, so you can’t actually refer to this *unspeakable*
 type.
 
@@ -307,7 +308,7 @@ apply all the type equalities it ought to know about, a good first
 step is to assign names to any skolems and try type
 ascriptions. You’ll need a variable type pattern in other situations
 that don’t infer, too. By contrast, with the `e` name bound, we can
-confirm that `x: Vector[e]` in the above example, and `y` is
+confirm that `x: Vector[e]` in the above example, and `y` is
 sufficiently well-typed for the whole expression to type-check.
 
 ## Porting `addPairs` and other recursive cases
@@ -387,10 +388,11 @@ because
 
 1. More complex situations require type ascription.
 1. You cannot ascribe with skolems unless you’ve bound the skolems to
-   names with type variable patterns.
-1. You can’t use type variable patterns with the structural
+   names with variable type patterns.
+1. You can’t use variable type patterns with the structural
    “ADT-style” patterns; you must instead use inelegant and
-   inconvenient variable type patterns.
+   inconvenient [non-variable] type patterns. (This may be
+   [improved in Typelevel Scala 4](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md#type-arguments-on-patterns-pull5774-paulp).)
 
 Yet this remains entirely up to shortcomings in the current pattern
 matcher implementation. An improved pattern matcher could make the
@@ -420,7 +422,7 @@ either
 
 This is the end of `ISAdder`’s definition; in particular, there is
 nothing here about “adding two values to get a value”. All that
-matters is what types are in the class!
+is said is what types are in the class!
 
 Given this ‘undefinedness’, if we have another function we want to
 write over the exact same class-of-types, we can just write it without
@@ -452,10 +454,9 @@ things or not.
 
 ## Hybrid “clopen” typeclasses
 
-Pattern matching type class GADTs is subject to the same
-exhaustiveness concerns and compiler warnings as pattern matching
-ordinary ADTs. If you eliminate a `case` from `def isadd`, you’ll see
-something like
+Pattern-matching typeclass GADTs is subject to the same exhaustiveness
+concerns and compiler warnings as pattern-matching ordinary ADTs. If
+you eliminate a `case` from `def isadd`, you’ll see something like
 
 ```scala
 ....scala:57: match may not be exhaustive.
