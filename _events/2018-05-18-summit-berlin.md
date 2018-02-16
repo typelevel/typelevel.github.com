@@ -20,6 +20,21 @@ sponsors:
     link: "https://jobs.zalando.com/tech/?utm_source=typelevel&utm_medium=event-page-organic-b&utm_campaign=2018-css&utm_content=01-typelevel-summit"
     type: "platinum"
     height: 50
+  - name: "Criteo"
+    logo: "/img/media/sponsors/criteo.png"
+    link: "https://www.criteo.com/"
+    type: "gold"
+    height: 55
+  - name: "Commercetools"
+    logo: "/img/media/sponsors/commercetools.png"
+    link: "https://www.commercetools.com/"
+    type: "silver"
+    height: 60
+  - name: "Lightbend"
+    logo: "/img/media/sponsors/lightbend.png"
+    link: "https://www.lightbend.com/"
+    type: "silver"
+    height: 50
   - name: "Signify"
     logo: "/img/media/sponsors/signify.png"
     link: "https://www.signifytechnology.com/"
@@ -49,6 +64,6 @@ We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
 
-If you would like to talk to us about sponsorship options, please get in touch with us:
+If you would like to talk to us about sponsorship options, please get in touch:
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
