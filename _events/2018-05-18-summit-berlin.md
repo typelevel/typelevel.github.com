@@ -21,7 +21,7 @@ sponsors:
     type: "platinum"
     height: 50
   - name: "Criteo"
-    logo: "/img/media/sponsors/criteo.png"
+    logo: "/img/media/sponsors/crite_o.png"
     link: "https://www.criteo.com/"
     type: "gold"
     height: 55
