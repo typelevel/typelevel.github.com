@@ -14,6 +14,10 @@ featured: true
 
 schedule:
   - time: TBD
+    speakers: ["kathifisler"]
+    title: "Keynote: Planning for Rainfall"
+    summary: "Soloway's Rainfall problem, a classic benchmark in computing education research, has proven difficult for many CS1 students.  Rainfall tests students' abilities at plan composition, the task of integrating code fragments that implement subparts of a problem into a single program.  Nearly all early studies of Rainfall involved students who were learning imperative programming with arrays.  Over the last few years, we've conducted studies with students who were learning functional programming instead.  These students have produced atypical profiles of compositions and errors on Rainfall (and similar problems).  What do these results suggest about the role of programming languages in novice programming education?  This talk raises various questions about the relationships between programming languages, program design, curricula, and how students perceive code structure. The talk assumes no experience with having been rained upon."
+  - time: TBD
     speakers: ["longcao"]
     title: "Big Data at the Intersection of Typed FP and Category Theory"
     summary: "Big data, functional programming, and category theory aren’t just three trendy topics smashed into a talk title as bait! Foundational ideas from typed functional programming and category theory have real and practical applications for working with big data and can also be utilized to write more principled pipelines at scale. Whether it’s aggregating with monoids or writing more typesafe Spark jobs, we’ll try and bridge these topics together in a way that can be immediately useful. Some knowledge of Scala and a big data framework like Apache Hadoop, Spark, or Beam is suggested but not necessary."

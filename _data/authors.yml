@@ -283,3 +283,7 @@ lucabelli:
 umasrinivasan:
   full_name: "Uma Srinivasan"
   bio: "Uma is a Staff Software Engineer in the Advanced Scala Tools team at Twitter. She brings with her multiple decades of experience and expertise in the area of compilers, code generation and related hardware/software co-design. Prior to joining Twitter she worked at Intel and Hewlett Packard. She has a Bachelor’s degree in Electrical Engineering and a Master’s in CS. She holds several patents and technical publications in her field of expertise."
+kathifisler:
+  full_name: "Kathi Fisler"
+  portrait: "/img/media/speakers/kathifisler.jpg"
+  bio: "Kathi Fisler is a Research Professor in Computer Science at Brown University, and co-director of Bootstrap, a national-scale K-12 project that integrates introductory CS into existing middle- and high-school classes.  She spent many years doing software and security verification research before deciding that people were harder (and more interesting) to model than systems. She is currently on a mission (with partner-in-crime Shriram Krishnamurthi) to explore how classical CSEd studies might have turned out differently had they considered functional programming.  She's teaching with Scala for the first time this semester."
