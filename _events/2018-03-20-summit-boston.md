@@ -94,8 +94,6 @@ If you're interested in types and pure functional programming we'd love to see y
 
 This is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](/conduct.html).
 
-<a class="btn large" href="https://www.meetup.com/nescala/events/247144352/">Buy tickets</a>
-
 ## Speakers and Schedule
 
 {% assign schedule=page.schedule %}
