@@ -4,7 +4,7 @@ layout: event
 title: "Typelevel Summit Berlin"
 short_title: "Berlin Summit"
 date_string: "May 18, 2018"
-location: "Location TBC, Berlin"
+location: "Zalando, Zeughofstraße 1, Berlin"
 description: "One day of recorded talks after Scala Days."
 
 poster_hero: "/img/media/berlin.jpg"
