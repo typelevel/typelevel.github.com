@@ -14,7 +14,7 @@ featured: true
 
 schedule:
   - time: "8:15"
-    title: "Registration"
+    title: "Registration & Breakfast by Clover Food Labs"
     break: true
   - time: "9:00"
     title: "Opening Remarks"
@@ -72,7 +72,7 @@ schedule:
     title: "Duality and How to Delete Half (minus ε) of Your Code"
     summary: "In functional programming, we often refer to category theory to explain various concepts. We’ll go over where these concepts do and don’t map well to Scala, as well as what duality is, how we can take advantage of it in Scala, and how to distinguish other concepts that are often confused with it."
   - time: "12:15"
-    title: "Lunch Break"
+    title: "Lunch on your own out in Kendall Square"
     break: true
   - time: "14:00"
     speakers: ["kathifisler"]
