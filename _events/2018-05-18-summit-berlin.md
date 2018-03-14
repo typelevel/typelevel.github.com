@@ -22,10 +22,10 @@ sponsors:
     type: "platinum"
     height: 50
   - name: "Criteo"
-    logo: "/img/media/sponsors/crite_o.png"
+    logo: "/img/media/sponsors/crite_o_labs.png"
     link: "https://www.criteo.com/"
     type: "gold"
-    height: 55
+    height: 100
   - name: "Commercetools"
     logo: "/img/media/sponsors/commercetools.png"
     link: "https://www.commercetools.com/"
