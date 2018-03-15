@@ -1,6 +1,6 @@
 http://typelevel.org/* https://typelevel.org/:splat 301
 
+/cats-effect/* https://typelevel.github.io/cats-effect/:splat 200
 /cats/* https://typelevel.github.io/cats/:splat 200
 /frameless/* https://typelevel.github.io/frameless/:splat 200
 /scala/* https://typelevel.github.io/scala/:splat 200
-/cats-effect/* https://typelevel.github.io/cats-effect/:splat 200
