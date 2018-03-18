@@ -55,6 +55,9 @@ This is a community conference and we strive to make it an inclusive and fulfill
 
 Special thanks go to [Zalando](https://jobs.zalando.com/tech/?utm_source=typelevel&utm_medium=event-page-organic-b&utm_campaign=2018-css&utm_content=01-typelevel-summit) who kindly provide the venue.
 
+<a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-berlin/">Buy a ticket</a>
+
+
 ## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
