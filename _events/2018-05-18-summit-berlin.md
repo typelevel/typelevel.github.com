@@ -76,6 +76,8 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-berlin-2018">Submit your talk here</a>
 
+Call for Speakers ends on March 22.
+
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
