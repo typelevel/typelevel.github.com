@@ -12,6 +12,15 @@ poster_thumb: "/img/media/cambridge-thumb.jpg"
 
 featured: true
 
+sponsors_section: true
+
+sponsors:
+  - name: "Comcast"
+    logo: "/img/media/sponsors/comcast.png"
+    link: "https://www.comcast.com/"
+    type: "silver"
+    height: 80
+
 schedule:
   - time: "8:15"
     title: "Registration & Breakfast by Clover Food Labs"
@@ -122,3 +131,9 @@ This is a community conference and we strive to make it an inclusive and fulfill
 
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
+
+## Sponsors
+
+We'd like to thank all our sponsors who help to make the Summit happen:
+
+{% include sponsors.html %}
