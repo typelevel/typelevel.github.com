@@ -18,7 +18,7 @@ sponsors:
   - name: "Comcast"
     logo: "/img/media/sponsors/comcast.png"
     link: "https://www.comcast.com/"
-    type: "silver"
+    type: "gold"
     height: 80
 
 schedule:
