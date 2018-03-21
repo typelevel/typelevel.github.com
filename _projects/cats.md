@@ -8,6 +8,10 @@ github: "https://github.com/typelevel/cats"
 
 core: true
 extensions:
+  - title: Cats-Effect
+    description: "The IO Monad for Scala, plus type classes for general effect types."
+    github: "https://github.com/typelevel/cats-effect/"
+    permalink: "https://typelevel.org/cats-effect/"
   - title: "Dogs"
     description: "Functional data structures"
     github: "https://github.com/stew/dogs"
