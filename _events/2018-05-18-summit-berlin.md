@@ -58,6 +58,15 @@ Special thanks go to [Zalando](https://jobs.zalando.com/tech/?utm_source=typelev
 <a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-berlin/">Buy a ticket</a>
 
 
+## Bursaries
+
+Do you want to attend the Summit, but require funding? We award bursaries for travel, accommodation, and tickets. Everyone is welcome to apply!
+
+If you also want to submit a talk: you can also leave us a note abound funding in the Call for Speakers form (below), and we'll contact you.
+
+<a class="btn large" href="https://docs.google.com/forms/d/e/1FAIpQLSdhS66p9RgW1KQDsTREE8kQRkWge45WKHZXcMLruyl_2lexYg/viewform">Apply for a bursary</a>
+
+
 ## Call for Speakers
 
 The Summit will feature both 30 minute and 15 minute-long talks.
