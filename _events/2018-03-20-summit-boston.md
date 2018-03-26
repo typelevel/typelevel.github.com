@@ -103,8 +103,8 @@ schedule:
     break: true
   - time: "16:30"
     speakers: ["fabio"]
-    title: "fs2 concurrency in practice: compose your program flow with streams"
-    summary: "fs2 is a purely functional streaming library, with support for concurrent and nondeterministic merging of arbitrary streams. Concurrency support means that we can use Stream not only to process data in constant memory, but also as a very general abstraction for program flow: whilst IO gives us an excellent model for a single effectful action, assembling behaviour with it often has a very imperative flavour (pure, but still imperative). This talk will introduce fs2 combinators by example, and will hopefully show how we can model program flow in a declarative, high level, composable fashion. In particular, we will focus on concurrent combinators."
+    title: "Declarative Control Flow with fs2 Stream"
+    summary: "fs2 is a purely functional streaming library, with support for concurrent and nondeterministic merging of arbitrary streams. Concurrency support means that we can use Stream not only to process data in constant memory, but also as a very general abstraction for control flow: whilst IO gives us an excellent model for a single effectful action, assembling behaviour with it often has a very imperative flavour (pure, but still imperative). This talk will introduce fs2 combinators by example, and will hopefully show how we can model control flow in a declarative, high level, composable fashion. In particular, we will focus on concurrent combinators."
   - time: "17:05"
     speakers: ["umasrinivasan"]
     title: "Scalafix @ Twitter scale"
