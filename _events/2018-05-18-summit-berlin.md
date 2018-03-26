@@ -90,6 +90,13 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 
 Call for Speakers ends on March 27.
 
+
+## Co-located Event
+
+The [Scala Center](https://scala.epfl.ch/) will organize a co-located event with roundtables of project maintainers.
+Note that because the space is limited, tickets are not on sale for this event.
+To register interest, please get in touch [via email](mailto:info@typelevel.org).
+
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
