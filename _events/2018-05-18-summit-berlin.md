@@ -12,7 +12,7 @@ poster_thumb: "/img/media/berlin-thumb.jpg"
 
 featured: true
 
-papers_section: true
+papers_section: false
 sponsors_section: true
 
 sponsors:
@@ -65,30 +65,6 @@ Do you want to attend the Summit, but require funding? We award bursaries for tr
 If you also want to submit a talk: you can also leave us a note abound funding in the Call for Speakers form (below), and we'll contact you.
 
 <a class="btn large" href="https://docs.google.com/forms/d/e/1FAIpQLSdhS66p9RgW1KQDsTREE8kQRkWge45WKHZXcMLruyl_2lexYg/viewform">Apply for a bursary</a>
-
-
-## Call for Speakers
-
-The Summit will feature both 30 minute and 15 minute-long talks.
-
-We are looking for a variety of things! Possible topic ranges include, but are not limited to:
-
-  - Experience reports:  "How we migrated our code base to shapeless"
-  - Typelevel project updates: "What's new in Typelevel project X"
-  - Your project updates: "What's new in X", where X uses Typelevel heavily
-  - Big picture: "Where is Scala headed for typed FP?"
-  - Non-code issues: "Diversity in the Scala community", "Governance in Typelevel"
-  - Tutorial-style: "Error-handling with cats", "Idiomatic ScalaCheck"
-  - Tooling: "We can now use Ensime in Notepad"
-  - Related work: "How language X does typed FP and what we could learn"
-
-Proposals should be related to the Typelevel family in some way or follow the Typelevel spirit.
-
-**We welcome all sorts of talks!** You don't have to write down a perfect abstract. **Submissions by first-time speakers are especially welcome!**
-
-<a class="btn large" href="https://www.papercall.io/typelevel-summit-berlin-2018">Submit your talk here</a>
-
-Call for Speakers ends on March 27.
 
 
 ## Co-located Event
