@@ -9,11 +9,11 @@ core: true
 extensions:
   - title: "argonaut-shapeless"
     description: "Automatic derivation for argonaut"
-    github: "https://github.com/alexarchambault/argonaut-shapeless"
+    link: "https://github.com/alexarchambault/argonaut-shapeless"
   - title: "scalacheck-shapeless"
     description: "Automatic derivation for ScalaCheck"
-    github: "https://github.com/alexarchambault/scalacheck-shapeless"
+    link: "https://github.com/alexarchambault/scalacheck-shapeless"
   - title: "shapeless-contrib"
     description: "Various bindings for third-party libraries"
-    github: "https://github.com/typelevel/shapeless-contrib"
+    link: "https://github.com/typelevel/shapeless-contrib"
 ---

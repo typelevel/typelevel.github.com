@@ -32,7 +32,7 @@ class: projects-page
             <div class="list">
               {% for extension in project.extensions %}
                 <div class="list__item">
-                  <a href="{{ extension.github }}">
+                  <a href="{{ extension.link }}">
                     <span class="ico-repo"></span><h6>{{ extension.title }}</h6>
                   </a>
                   <span class="list__item-slug">{{ extension.description }}</span>

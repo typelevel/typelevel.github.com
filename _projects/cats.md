@@ -10,15 +10,14 @@ core: true
 extensions:
   - title: Cats-Effect
     description: "The IO Monad for Scala, plus type classes for general effect types."
-    github: "https://github.com/typelevel/cats-effect/"
-    permalink: "https://typelevel.org/cats-effect/"
+    link: "https://typelevel.org/cats-effect/"
   - title: "Dogs"
     description: "Functional data structures"
-    github: "https://github.com/stew/dogs"
+    link: "https://github.com/stew/dogs"
   - title: "Alleycats"
     description: "Lawless classes & illegal instances"
-    github: "https://github.com/non/alleycats"
+    link: "https://github.com/non/alleycats"
   - title: "Kittens"
     description: "Automatic type class derivation"
-    github: "https://github.com/milessabin/kittens"
+    link: "https://github.com/milessabin/kittens"
 ---
