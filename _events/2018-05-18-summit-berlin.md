@@ -12,7 +12,6 @@ poster_thumb: "/img/media/berlin-thumb.jpg"
 
 featured: true
 
-papers_section: false
 sponsors_section: true
 
 sponsors:
@@ -41,6 +40,32 @@ sponsors:
     link: "https://www.signifytechnology.com/"
     type: "silver"
     height: 80
+
+schedule:
+  - time: "TBD"
+    speakers: ["keikonakata"]
+    title: "Introducing namespaces into SQL result sets using nested structural types"
+    summary: |
+      <p>Many modern programming languages support decent namespaces. Namespaces are commonly structured hierarchies.  We bring this power to a database query language, using nested structural types.</p>
+
+      <p>For this purpose, we hijack table aliases: given a table T containing two columns C of type String and D of type Int, a table &quot;T as S&quot; is a new table containing two columns S.C of type String and S.D of type Int. In Scala, this is neatly expressed as
+      <pre>
+        T : AnyRef { def C : String, def D: Int }
+
+        T as S : AnyRef { def S: { def C: String, def D: Int } }
+      </pre></p>
+
+      <p>We implement the above as operation using the whitebox macro. We rely on Scala's type system's ability to compute Greatest Lower Bounds (GLBs) and Least Upper Bounds (LUBs) of structural types, to enable polymorphic and compositional query creation. To enable GLB and LUB computation for nested structured types, we have patched the Scala compiler.</p>
+  - time: "TBD"
+    speakers: ["pheymann"]
+    title: "Typedapi: Define your API on the type level"
+    summary: |
+      <p>Have you ever thought “I really like Haskell’s Servant. Why don’t we have something like that in Scala?” or “Why can't I just define my APIs as types and Scala does the heavy lifting?”? If so, this talk is made for you.</p>
+
+      <p>I will tell you a short story about excitement, pain and hate peaking in a climax of type-driven enlightenment. I will tell you my journey of developing Typedapi, a library for building typesafe APIs which moves as many computations to the type level as possible.</p>
+
+      <p>We will fight many a beast on our way from Scala’s desugarisation to folds working just on types. But eventually, we will arrive at our destination, exhausted, with scars but also able to make our code a bit safer again.</p>
+
 ---
 
 ## About the Summit
@@ -58,6 +83,12 @@ Special thanks go to [Zalando](https://jobs.zalando.com/tech/?utm_source=typelev
 <a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-berlin/">Buy a ticket</a>
 
 
+## Speakers and Schedule
+
+{% assign schedule=page.schedule %}
+{% include schedule.html %}
+
+
 ## Bursaries
 
 Do you want to attend the Summit, but require funding? We award bursaries for travel, accommodation, and tickets. Everyone is welcome to apply!
@@ -72,6 +103,7 @@ If you also want to submit a talk: you can also leave us a note abound funding i
 The [Scala Center](https://scala.epfl.ch/) will organize a co-located event with roundtables of project maintainers.
 Note that because the space is limited, tickets are not on sale for this event.
 To register interest, please get in touch [via email](mailto:info@typelevel.org).
+
 
 ## Sponsors
 

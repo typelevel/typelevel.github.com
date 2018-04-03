@@ -287,3 +287,9 @@ kathifisler:
   full_name: "Kathi Fisler"
   portrait: "/img/media/speakers/kathifisler.jpg"
   bio: "Kathi Fisler is a Research Professor in Computer Science at Brown University, and co-director of Bootstrap, a national-scale K-12 project that integrates introductory CS into existing middle- and high-school classes.  She spent many years doing software and security verification research before deciding that people were harder (and more interesting) to model than systems. She is currently on a mission (with partner-in-crime Shriram Krishnamurthi) to explore how classical CSEd studies might have turned out differently had they considered functional programming.  She's teaching with Scala for the first time this semester."
+pheymann:
+  full_name: "Paul Heymann"
+  bio: "Paul entered the realm of functional and type-level programming three years ago when he was caught by a Scala meetup. After that, he started doing Scala professionally as a Data Engineer for the social network XING. There he works on recommender systems and the ontology infrastructure which are serving requests of millions of users every day."
+keikonakata:
+  full_name: "Keiko Nakata"
+  bio: "Keiko Nakata works at SAP Innovation Center Network as a Scala programmer. She holds a PhD in computer science from Kyoto University, Japan. She has served on numerous program committees for international conferences and workshops on programming languages, and currently chairs a working group “Types for Verification” at an EU COST Action EUTypes. She loves topology and intuitionistic logics and their application to programming languages."
