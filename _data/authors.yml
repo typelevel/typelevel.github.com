@@ -111,7 +111,7 @@ alexandru:
   full_name: "Alexandru Nedelcu"
   portrait: "https://avatars2.githubusercontent.com/u/11753?v=3&s=80"
   github: "alexandru"
-  bio: "Alexandru has been a professional software developer for about 10 years and has used Scala both for work and for personal projects for the last 4 years. He has first introduced Scala at the startup he was working on back then."
+  bio: "Alexandru is a software developer living in Bucharest, Romania. A startup guy, he's dividing his time between work, family and his personal projects, fueled by his work on the Monix project and his increased contributions to Typelevel Cats. He's also a proud father, husband, has a very unhealthy sleep schedule and appreciates talking about programming over coffee. Sometimes he blogs at: https://alexn.org"
 cwmyers:
   full_name: "Chris Myers"
   portrait: "/img/media/speakers/chrismyers.jpg"
@@ -138,8 +138,7 @@ dwijnand:
   bio: "Dale is an active OSS contributor, typically in Scala, and an sbt maintainer."
 InTheNow:
   full_name: "Alistair Johnson"
-  portrait: "https://avatars3.githubusercontent.com/u/5887373?v=3&s=80"
-  bio: "Alistair has been programming for far too long, for far too many companies, but as a dedicated type fan, not long enough in Scala."
+  bio: "Alistair has been programming for far too long, for far too many companies, but is still passionate about promoting the integration of maths, science and engineering into everyday programming life."
 chrisokasaki:
   full_name: "Chris Okasaki"
   portrait: "https://avatars2.githubusercontent.com/u/19372370?v=3&s=80"
@@ -293,3 +292,9 @@ pheymann:
 keikonakata:
   full_name: "Keiko Nakata"
   bio: "Keiko Nakata works at SAP Innovation Center Network as a Scala programmer. She holds a PhD in computer science from Kyoto University, Japan. She has served on numerous program committees for international conferences and workshops on programming languages, and currently chairs a working group “Types for Verification” at an EU COST Action EUTypes. She loves topology and intuitionistic logics and their application to programming languages."
+propensive:
+  full_name: "Jon Pretty"
+  portrait: "/img/media/speakers/jonpretty.jpg"
+  bio: "Jon has been having fun riding the bleeding edge of Scala for over a decade, and he's not finished yet. While he's not travelling the world attending Scala conferences, or organizing Scala World, Jon spends his time working on a variety of open-source Scala libraries, and providing professional Scala training services."
+stefanschneider:
+  full_name: "Stefan Schneider"

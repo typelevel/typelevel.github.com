@@ -57,6 +57,10 @@ schedule:
 
       <p>We implement the above as operation using the whitebox macro. We rely on Scala's type system's ability to compute Greatest Lower Bounds (GLBs) and Least Upper Bounds (LUBs) of structural types, to enable polymorphic and compositional query creation. To enable GLB and LUB computation for nested structured types, we have patched the Scala compiler.</p>
   - time: "TBD"
+    speakers: ["alexandru"]
+    title: "Cancelable IO"
+    summary: "Task / IO data types have been ported in Scala, inspired by Haskell's monadic IO and are surging in popularity due to the need in functional programming for referential transparency, but also because controlling side effects by means of lawful, FP abstractions makes reasoning about asynchrony and concurrency so much easier. But concurrency brings with it race conditions, i.e. the ability to execute multiple tasks at the same time, possibly interrupting the losers and cleaning up resources afterwards and thus we end up reasoning about preemption. This talk describes the design of Monix's Task for cancelability and preemption, a design that has slowly transpired in cats-effect, first bringing serious performance benefits and now a sane design for cancelation. Topics include how cancelable tasks can be described, along with examples of race conditions that people can relate to, highlighting the challenges faced when people use an IO/Task data type that cannot be interrupted."
+  - time: "TBD"
     speakers: ["pheymann"]
     title: "Typedapi: Define your API on the type level"
     summary: |
@@ -64,7 +68,21 @@ schedule:
 
       <p>I will tell you a short story about excitement, pain and hate peaking in a climax of type-driven enlightenment. I will tell you my journey of developing Typedapi, a library for building typesafe APIs which moves as many computations to the type level as possible.</p>
 
-      <p>We will fight many a beast on our way from Scala’s desugarisation to folds working just on types. But eventually, we will arrive at our destination, exhausted, with scars but also able to make our code a bit safer again.</p>
+      <p>We will fight many a beast on our way from Scala’s desugaring to folds working just on types. But eventually, we will arrive at our destination, exhausted, with scars but also able to make our code a bit safer again.</p>
+  - time: "TBD"
+    speakers: ["InTheNow"]
+    title: "Laws for Free"
+    summary: "Everyone that uses a functional programming library like cats is aware of the methods that each type class adds and also the properties that the methods need to abide by. But in practice, the properties are not always proved, rather testing that the methods behave as expected. This is a problem waiting to happen, as the algebraic properties are not “optional extras” – if your semigroup's combine is not associative ... then it ain't a semigroup, sorry! So in this talk we will quickly review what we mean by a property and a law and show how to use the cats laws that are available. We'll see that they are simple to use and add literally hundreds of scalacheck tests for free. And impress your boss as well, the tests can be “seen” on the screen!"
+  - time: "TBD"
+    speakers: ["propensive"]
+    title: "Lifting Data Structures to the Type-level"
+    summary: "In this talk, I will give a fast-paced tour of how various features of the Scala type system, many of them under-explored, can be harnessed to construct type-level representations of a number of different datatypes in Scala. The type system offers a limited number of “tools”, such as subtyping, least-upper-bound inference, type unification, singleton types and dependent types and (of course) implicit search, which we can compose in interesting ways to implement type-level operations on these type-level data structures. Value-level operations follow naturally from the types, but this is much less interesting."
+  - time: "TBD"
+    speakers: ["stefanschneider"]
+    title: "Non-academic functional Workflows"
+    summary: "In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs.
+We started with the idea of having a possibility to combine the multiple unconnected tools that are typically used to analyze an image acquired by our microscopes. The Free Monad in cats looked to us as the perfect fit to write a domain specific language that provides a lot of the advantages of an a modern functional compiler plus enforcing stack safety of the program, which would ultimately provided by third party users.
+We started developing with a team that had only very little experience in Scala and none with cats. Thanks to the good documentation, the https://www.scala-exercises.org/ and the straightforward mapping to functional principles, known to us from the university, we were able to get a prototype running for a trade show in 6 weeks."
 
 ---
 
