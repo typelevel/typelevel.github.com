@@ -196,7 +196,6 @@ TomasMikula:
 roundcrisis:
   full_name: "Andrea Magnorsky"
   portrait: "/img/media/speakers/andreamagnorsky.jpg"
-  bio: ""
 marina:
   full_name: "Marina Sigaeva"
   portrait: "/img/media/speakers/marinasigaeva.jpg"
@@ -290,3 +289,15 @@ propensive:
 stefanschneider:
   full_name: "Stefan Schneider"
   portrait: "/img/logo-twitter.png"
+itrvd:
+  full_name: "Itamar Ravid"
+  portrait: "/img/media/speakers/itamarravid.jpg"
+  bio: "Itamar is a freelance software engineer and has been working with Scala and functional programming for the last few years. He's been mentoring and helping teams move to functional programming in Scala, and loves finding cool use cases for functional abstractions."
+cameronjoannidis:
+  full_name: "Cameron Joannidis"
+  portrait: "/img/media/speakers/cameronjoannidis.jpg"
+  bio: "Machine Learning / Big Data Engineer working with Scala and Functional Programming. Currently working at Simple Machines, an Australian consultancy specialising in Big Data/Machine Learning/Scala/Functional Programming."
+guillaumebort:
+  full_name: "Guillaume Bort"
+  portrait: "/img/media/speakers/guillaumebort.jpg"
+  bio: "Creator of @playframework - Previously @Inria, @zengularity, @lightbend, @prismicio - Now working on the petabytes of analytics data at @Criteo"

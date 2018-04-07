@@ -43,6 +43,14 @@ sponsors:
 
 schedule:
   - time: "TBD"
+    speakers: ["itrvd"]
+    title: "A Fistful of Functors"
+    summary: "Functors show up everywhere in our day-to-day programming. They're so common, we take them for granted - especially in typed functional programming. Beside being common, they're incredibly useful for code reuse. However, functors have several relatively unknown variants: profunctors, bifunctors, contravariant functors, and so on. And guess what - they're amazingly useful, especially combined with other abstractions in the functional programming toolkit! In this talk, we'll cover the many species of functors and see how they can help us with tasks such as serialization, stream processing, and more."
+  - time: "TBD"
+    speakers: ["cameronjoannidis"]
+    title: "An Intuitive Guide to Combining Free Monad and Free Applicative"
+    summary: "The usage of Free Monads is becoming more well understood, however the lesser known Free Applicative is still somewhat of a mystery to the average Scala developer. In this talk I will explain how you can combine the power of both these constructs in an intuitive and visual manner. You will learn the motivations for using Free Structures in the first place, how we can build up a complex domain, how we can introduce parallelism into our domain and a bunch of other practical tips for designing programs with these structures. This will also give you a deeper understanding of what libraries like Freestyle are doing under the hood and why it is so powerful."
+  - time: "TBD"
     speakers: ["keikonakata"]
     title: "Introducing namespaces into SQL result sets using nested structural types"
     summary: |
@@ -80,9 +88,11 @@ schedule:
   - time: "TBD"
     speakers: ["stefanschneider"]
     title: "Non-academic functional Workflows"
-    summary: "In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs.
-We started with the idea of having a possibility to combine the multiple unconnected tools that are typically used to analyze an image acquired by our microscopes. The Free Monad in cats looked to us as the perfect fit to write a domain specific language that provides a lot of the advantages of an a modern functional compiler plus enforcing stack safety of the program, which would ultimately provided by third party users.
-We started developing with a team that had only very little experience in Scala and none with cats. Thanks to the good documentation, the https://www.scala-exercises.org/ and the straightforward mapping to functional principles, known to us from the university, we were able to get a prototype running for a trade show in 6 weeks."
+    summary: "In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs. We started with the idea of having a possibility to combine the multiple unconnected tools that are typically used to analyze an image acquired by our microscopes. The Free Monad in cats looked to us as the perfect fit to write a domain specific language that provides a lot of the advantages of an a modern functional compiler plus enforcing stack safety of the program, which would ultimately provided by third party users. We started developing with a team that had only very little experience in Scala and none with cats. Thanks to the good documentation, Scala Exercises and the straightforward mapping to functional principles, known to us from the university, we were able to get a prototype running for a trade show in 6 weeks."
+  - time: "TBD"
+    speakers: ["guillaumebort"]
+    title: "Legacy Engineering: Making Criteo Functional"
+    summary: "Criteo uses a lot of Scala in its code-base. Historically for big data stuff using the usual suspects Spark & Scalding, but more and more for application development. A few Typelevel projects started to appear in our code base as developers started to embrase more sophisticated FP practices in their Scala code. Today most of our Scala projects are built around cats, fs2, doobie, algebra, shapeless, etc. In this presentation we will discuss the challenges of introducing more functional code in a large software company as Criteo and how typelevel projects have helped. We'll talk about what's worked well as well as where the dragons lie."
 
 ---
 
