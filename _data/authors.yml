@@ -226,36 +226,34 @@ djspiewak:
   twitter: "djspiewak"
 harrylaou:
   full_name: "Harry Laoulakos"
-  portrait: "https://avatars1.githubusercontent.com/u/3307004?v=3&s=80"
+  portrait: "/img/media/speakers/harrylaoulakos.png"
   bio: "Functional programmer, enjoying programming in Scala, Play framework, Akka, Typelevel stack: cats, shapeless, etc"
 vlovgr:
   full_name: "Viktor Lövgren"
-  portrait: "https://avatars1.githubusercontent.com/u/1163201?v=3&s=240"
+  portrait: "/img/media/speakers/viktorloevgren.png"
   bio: "Viktor is a Software engineer at Ovo Energy in London, working on the platform powering energy meter readings and consumption data. He’s an advocate of strongly typed functional programming, and Scala in particular, which has been his professional focus the past three years."
   twitter: vlovgr
   github: vlovgr
 data_fly:
   full_name: "Zhenhao Li"
-  portrait: "https://avatars0.githubusercontent.com/u/10957195?v=3&s=80"
+  portrait: "/img/media/speakers/zhenhaoli.jpg"
   bio: "Zhenhao Li is a data engineer and data scientist at Connecterra, a data science and IoT startup. He is responsible for making scalable data processing jobs and pipelines and making sure data science insights are generated and delivered in real time. Before joining Connecterra, Zhenhao worked for Accenture in the area of big data and IoT technology consulting, helping major clients to adapt new technologies such as Kafka and Flink, the immutable data paradigm, and functional programming to gain business value faster. He holds a bachelor degree in software engineering and a master degree in logic. He was doing a PhD in mathematical logic at the University of Amsterdam when decided to change his career path to big data and data science. He loves functional programming, and Scala is his primary language for engineering work."
 kailuowang:
   full_name: "Kailuo Wang"
   twitter: "kailuowang"
   github: "kailuowang"
-  portrait: "https://avatars1.githubusercontent.com/u/83257?v=4&s=80"
 lukajcb:
   full_name: "Luka Jacobowitz"
-  portrait: "https://avatars0.githubusercontent.com/u/9531747?s=460&v=4"
   bio: "Luka is a functional programmer in love with finding great abstractions to engineering problems. He’s also a maintainer of several typelevel projects and seeks to make learning of pure functional programming as easy as possible."
   twitter: LukaJacobowitz
   github: LukaJCB
 rossabaker:
   full_name: "Ross Baker"
-  portrait: "https://avatars3.githubusercontent.com/u/142698?s=460&v=4"
+  portrait: "/img/media/speakers/rossbaker.jpg"
   bio: "Ross is a Senior Software Engineer at Takt. He began his open source journey on the Scalatra project in 2009, and has gotten purer, more functional, and more typeful with each passing year. He now contributes to http4s and cats among others, and is a member of Typelevel. He is a co-organizer of IndyScala."
 dordogh:
   full_name: "Dorothy Ordogh"
-  portrait: "https://avatars1.githubusercontent.com/u/28027359?s=400&v=4"
+  portrait: "/img/media/speakers/dorothyordogh.jpg"
   bio: "I’m a member of the Build team at Twitter, meaning it is my full-time job to contribute to Pants. I’ve been working at Twitter for 1.5 years, the first 11 months I spent on a team building integration test frameworks, and then switched to the Build team after realizing how interesting it was. My favorite part is learning how things work under the surface! I broke into computer science in my early twenties after earning a degree in psychology. Chocolate makes the world a better place."
 fabio:
   full_name: "Fabio Labella"
@@ -263,7 +261,7 @@ fabio:
   bio: "I’m a Senior Software Engineer based in Edinburgh, UK, working in Scala in the financial industry. I also actively participate in Open Source (as SystemFw): I’m one of the maintainers of fs2, and a contributor to cats, shapeless, http4s and most of the other libraries in the Scala FP ecosystem. I have a passion for helping people master advanced concepts, so hit me up on Gitter if you have a question!"
 jozic:
   full_name: "Eugene Platonov"
-  portrait: "https://avatars2.githubusercontent.com/u/124249?s=400&v=4"
+  portrait: "/img/media/speakers/eugeneplatonov.jpg"
   bio: "I’m a Scala Dev at eBay Inc, working commercially with Scala as my main programming language since early 2011, Java Dev in my past life. Occasional contributor to variety of Scala related OS projects. Scala evangelist who successfully converted individuals and teams to Scala from Java."
 lucabelli:
   full_name: "Luca Belli"
