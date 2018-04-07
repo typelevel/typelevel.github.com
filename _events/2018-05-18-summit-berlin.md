@@ -88,7 +88,7 @@ We started developing with a team that had only very little experience in Scala 
 
 ## About the Summit
 
-The sixth Typelevel Summit will once again be co-located with **the** Scala conference: <a href="https://eu.scaladays.org/">Scala Days</a>!
+The sixth Typelevel Summit will once again happen after **the** Scala conference: <a href="https://eu.scaladays.org/">Scala Days</a>, in the same city!
 
 The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
