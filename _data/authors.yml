@@ -301,3 +301,7 @@ guillaumebort:
   full_name: "Guillaume Bort"
   portrait: "/img/media/speakers/guillaumebort.jpg"
   bio: "Creator of @playframework - Previously @Inria, @zengularity, @lightbend, @prismicio - Now working on the petabytes of analytics data at @Criteo"
+sasharomijn:
+  full_name: "Sasha Romijn"
+  portrait: "/img/logo-twitter.png"
+  bio: "Sasha is the co-founder and CTO of a small Django development company in Amsterdam. Sasha is deeply involved in the community around Django, a popular Python web framework, being a Django team member, chair of the Dutch Django Association and co-organiser of various conferences. She cares about building communities and conferences in which everyone feels welcome, valued and at home, regardless of their background. Sasha has a specific interest in well-being and ethical issues around communities and development. Some of her side projects are the Less Obvious Conference Checklist, with many less obvious suggestions for event organisers, and Happiness Packets, to spread more gratitude and kindness in open source communities."
