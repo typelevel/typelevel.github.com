@@ -12,7 +12,7 @@ tut:
   binaryScala: "2.12"
   dependencies:
     - org.scala-lang:scala-library:2.12.4
-    - org.typelevel::cats-effect:1.1.0
+    - org.typelevel::cats-core:1.1.0
 
 ---
 
@@ -41,7 +41,7 @@ Well, it turns out there a few instances where it might be useful, but as we'll 
 
 Now before we continue, let's look at the `MonadError` type class in a bit more detail.
 `MonadError` currently comprises two parts, throwing and catching errors.
-To begin let's have a look at the `throw` part:
+To begin let's have a look at the `throw` part, sometimes also called `MonadThrow`:
 
 ```scala
 trait MonadError[F[_], E] extends Monad[F] {
@@ -52,7 +52,7 @@ trait MonadError[F[_], E] extends Monad[F] {
 ```
 
 This looks fine for now, but one thing that strikes me is that the `F` type seems to "swallow" errors.
-If we look at `F[A]` we have no clue that it might actually yield an error of type `A`, that fact is not required to be represented at all.
+If we look at `F[A]` we have no clue that it might actually yield an error of type `E`, that fact is not required to be represented at all.
 However, that's not a really big issue, so now let's look at the `catch` part:
 
 ```scala
@@ -92,7 +92,7 @@ also returns an `F[A]`. This method takes a pure function `E => A` and thus can 
 For `IO`-like types this is somewhat excusable as something like an unexceptional `IO` is still very uncommon, but for simple data types like `Either` or `Some` that function should just return an `A`, since that's the only thing it can be.
 Just like with `attempt`, we can infinitely chain calls to `handleError`, as it will never change the type.
 
-Ideally our type system should stop us from being able to right this nonsensical code and give us a way to show anyone reading the code that we've already handled errors.
+Ideally our type system should stop us from being able to write this nonsensical code and give us a way to show anyone reading the code that we've already handled errors.
 Now I'm not saying that the functions on `MonadError` aren't useful, but only that they could be more constrained and thus more accurate in their representation. 
 
 
@@ -104,7 +104,7 @@ To mitigate the problems with `MonadError` we have a few options, the first one 
 trait MonadBlunder[F[_], G[_], E]
 ```
 
-Our type class now has the shape `(* -> *) -> (* -> *) -> * -> *`, which is quite a handful, but I believe we can justify it's usefulness.
+Our type class now has the shape `(* -> *) -> (* -> *) -> * -> *`, which is quite a handful, but I believe we can justify its usefulness.
 The first type parameter `F[_]` will represent our error-handling type, which will be able to yield values of type `E`.
 The second type parameter `G[_]` will represent a corresponding type that does not allow any errors and can therefore guarantee that computations of the form `G[A]` will always yield a value of type `A`.
 
@@ -145,23 +145,23 @@ Another approach, maybe more obvious to some, might be to require the type const
 Let's see if we can define `raiseError` on top of it:
 
 ```scala
-trait MonadBlunder[F[_, _], E] {
-  def raiseError[A](e: E): F[E, A]
+trait MonadBlunder[F[_, _]] {
+  def raiseError[E, A](e: E): F[E, A]
 
   ...
 }
 ```
 
-This looks pretty familiar to what we already have, though now we have the guarantee that our type doesn't actually "hide" the error-type somewhere.
+This looks pretty similar to what we already have, though now we have the guarantee that our type doesn't actually "hide" the error-type somewhere.
 Next up is `handleErrorWith`. Ideally after we handled the error we should again get back a type that signals that it doesn't have any errors. 
 We can do exactly that by choosing an unhabited type like `Nothing` as our error-type:
 
 
 ```scala
-trait MonadBlunder[F[_, _], E] {
+trait MonadBlunder[F[_, _]] {
   ...
 
-  def handleErrorWith[A](fa: F[E, A])(f: A => F[Nothing, A]): F[Nothing, A]
+  def handleErrorWith[E, A](fa: F[E, A])(f: E => F[Nothing, A]): F[Nothing, A]
 }
 ```
 
@@ -169,8 +169,8 @@ And this approach works as well, however now we've forced the two type parameter
 This means we can very easily define instances for types with two type parameters like `Either`.
 However, one issue might be that it's much easier to fit a type with two type parameters onto a type class that expects a single type constructor `(* -> *)` than to do it the other way around.
 
-For example try to implement the above `MonadBlunder[F[_, _], E]` for the standard `cats.effect.IO`.
-It's not going to be simple, whereas with the current encoding we can easily encode both `Either` and `IO`. 
+For example try to implement the above `MonadBlunder[F[_, _]]` for the standard `cats.effect.IO`.
+It's not going to be simple, whereas with the first encoding we can easily encode both `Either` and `IO`. For this reason, I will continue this article with the first encoding using the two different type constructors.
 
 Next we're going to look at laws we can define to make sense of the behaviour we want.
 The first two laws should be fairly obvious. 
@@ -181,11 +181,11 @@ def raiseErrorStops(e: E, a: A): Boolean =
   F.raiseError[A](e).flatMap(_ => a.pure[F]) === F.raiseError[A](e)
 ```
 
-In the same way, we want values of `G` to never stop propogating, so `flatMap` should always work:
+In the same way, we want values of `G` to never stop propagating, so `flatMap` should always work:
 
 ```scala
 def flatMapAlwaysWorks(ga: G[A], a: A): Boolean =
-  ga.flatMap(_ => a.pure[G]) === a.pure[G]
+  ga.flatMap(_ => a.pure[G]) =!= ga
 ```
 
 Next we're going to formulate a law that states, that raising an error and then immediatly handling it with a given function should be equivalent to just calling that function on the error value:
@@ -195,13 +195,20 @@ def raiseErrorHandleErrorWith(e: E, f: E => G[A]): Boolean =
   raiseError[A](e).handleErrorWith(f) === f(e)
 ```
 
+Another law could state that handling errors for a pure value lifted into the `F` context does nothing and is equal to the pure value in the `G` context:
+
+```
+def handleErrorPureIsPure(a: A, f: E => G[A]): Boolean =
+  a.pure[F].handleErrorWith(f) === a.pure[G]
+```
+
 Those should be good for now, but we'll be able to find more when we add more derived functions to our type class.
 Also note that none of the laws are set in stone, these are just the ones I came up with for now, it's completely possible that we'll need to revise these in the future.
 
 Now let's focus on adding extra functions to our type class. `MonadError` offer us a bunch of derived methods that can be really useful. For most of those however we need access to methods like `flatMap` for both `F` and `G`, so before we figure out derived combinators, let's revisit how exactly we define the type class.
 
 The easiest would be to give both `F` and `G` a `Monad` constraint and move on. 
-But then we'd have two type classes that both define a `raiseError` function extends `Monad`, and we wouldn't be able to use them together, since that would cause ambigiouities and as I've said before, the functions on `MonadError` are useful in some cases.
+But then we'd have two type classes that both define a `raiseError` function extends `Monad`, and we wouldn't be able to use them together, since that would cause ambiguities and as I've said before, the functions on `MonadError` are useful in some cases.
 
 Instead, since I don't really like duplication and the fact that we're not going to deprecate `MonadError` overnight, I decided to extend `MonadBlunder` from `MonadError` for the `F` type, to get access to the `raiseError` function.
 If `raiseError` and `handleErrorWith` were instead separated into separate type classes (as is currently the case in the PureScript prelude), we could extend only the `raiseError` part.
