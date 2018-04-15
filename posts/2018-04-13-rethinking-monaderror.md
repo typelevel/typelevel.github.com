@@ -177,18 +177,9 @@ The first two laws should be fairly obvious.
 If we `flatMap` over a value created by `raiseError` it shouldn't propogate:
 
 ```scala
-def raiseErrorStops(e: E, a: A): Boolean =
-  F.raiseError[A](e).flatMap(_ => a.pure[F]) === F.raiseError[A](e)
+def raiseErrorStops(e: E, f: A => F[A]): Boolean =
+  F.raiseError[A](e).flatMap(f) === F.raiseError[A](e)
 ```
-
-In the same way, we want values of `G` to never stop propagating, so `flatMap` should always work:
-
-```scala
-def flatMapAlwaysWorks(ga: G[A], f: A => G[A]): Boolean =
-  ga.flatMap(f) =!= ga
-```
-
-This law is a bit dodgy as it is very well possible that `ga` just happens to be the same as the one returned by `f`. Thus we might have to reformulate this one at some point.
 
 Next we're going to formulate a law that states, that raising an error and then immediatly handling it with a given function should be equivalent to just calling that function on the error value:
 
@@ -301,6 +292,13 @@ trait MonadBlunder[F[_], G[_], E] {
 ```
 
 This function `accept`, allows us to lift any value without errors into a context where errors might be present.
+
+We can now formulate a law that values in `G` never stop propagating, so `flatMap` should always work, we do this by specifying that calling `handleBlunder` after calling `accept` on any `G[A]`, is never going to actually change the value:
+
+```scala
+def gNeverHasErrors(ga: G[A], f: E => A): Boolean =
+  accept(ga).handleBlunder(f) === ga
+```
 
 Now we can go back to implementing the `absolve` function:
 
