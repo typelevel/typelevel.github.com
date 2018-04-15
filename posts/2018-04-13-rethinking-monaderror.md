@@ -188,6 +188,8 @@ def flatMapAlwaysWorks(ga: G[A], a: A): Boolean =
   ga.flatMap(_ => a.pure[G]) =!= ga
 ```
 
+This law is a bit dodgy as it is very well possible that `ga` contains a valid `A` that just happens to be the same as `a`. Thus we might have to reformulate this one at some point.
+
 Next we're going to formulate a law that states, that raising an error and then immediatly handling it with a given function should be equivalent to just calling that function on the error value:
 
 ```scala
