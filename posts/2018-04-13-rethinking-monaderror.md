@@ -280,7 +280,7 @@ For `MonadError` it turns an `F[Either[E, A]]` back into an `F`, but we're going
 trait MonadBlunder[F[_], G[_], E] {
   ...
 
-  def absolve[A](fa: F[A]): G[Either[E, A]] = ???
+  def absolve[A](fa: G[Either[E, A]]): F[A] = ???
 }
 ```
 
