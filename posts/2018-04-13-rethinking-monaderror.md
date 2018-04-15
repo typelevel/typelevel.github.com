@@ -16,7 +16,7 @@ tut:
 
 ---
 
-`MonadError` is a very old type class, hackage shows me it was originally added in 2001, long before I had ever begun doing functional programming. 
+`MonadError` is a very old type class, hackage shows me it was originally added in 2001, long before I had ever begun doing functional programming, just check the [hackage page](https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-Error-Class.html).
 In this blog post I'd like to rethink the way we use `MonadError` today.
 It's usually used to signal that a type might be capable of error handling and is basically like a type class encoding of `Either`s ability to short circuit.
 That makes it pretty useful for building computations from sequences of values that may fail and then halt the computation or to catch those errors in order to resume the computation.
