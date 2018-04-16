@@ -165,7 +165,7 @@ trait MonadBlunder[F[_, _]] {
 }
 ```
 
-And this approach works as well, however now we've forced the two type parameter shape onto implementors. This `MonadBlunder` has the following kind `(* -> * -> *) -> * -> *`.
+And this approach works as well, however now we've forced the two type parameter shape onto implementors. This `MonadBlunder` has the following kind `(* -> * -> *) -> *`.
 This means we can very easily define instances for types with two type parameters like `Either`.
 However, one issue might be that it's much easier to fit a type with two type parameters onto a type class that expects a single type constructor `(* -> *)` than to do it the other way around.
 
