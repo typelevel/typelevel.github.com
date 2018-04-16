@@ -43,6 +43,10 @@ sponsors:
 
 schedule:
   - time: "TBD"
+    speakers: ["annettebieniusa"]
+    title: "Keynote: Just the right kind of Consistency!"
+    summary: "You need a data store that allows for high throughput and availability, while supporting consistency patterns referential integrity, numerical invariants, or atomic updates? Current designs for data storage forces application developers to decide early in the design cycle, and once and for all, what type of consistency the database should provide. At one extreme, strong consistency requires frequent global coordination; restricting concurrency in this way greatly simplifies application development, but it reduces availability and increases latency. At the opposite extreme, there are systems that provide eventual consistency only: they never sacrifice availability, but application developers must write code to deal with all sorts of concurrency anomalies in order to prevent violation of application invariants. But your system just needs to be consistent enough for the application to be correct! In the talk, I will discuss insights and techniques for analysing the consistency requirements of an application, and show techniques how you can establish them in your system."
+  - time: "TBD"
     speakers: ["itrvd"]
     title: "A Fistful of Functors"
     summary: "Functors show up everywhere in our day-to-day programming. They're so common, we take them for granted - especially in typed functional programming. Beside being common, they're incredibly useful for code reuse. However, functors have several relatively unknown variants: profunctors, bifunctors, contravariant functors, and so on. And guess what - they're amazingly useful, especially combined with other abstractions in the functional programming toolkit! In this talk, we'll cover the many species of functors and see how they can help us with tasks such as serialization, stream processing, and more."
