@@ -190,7 +190,7 @@ def raiseErrorHandleErrorWith(e: E, f: E => G[A]): Boolean =
 
 Another law could state that handling errors for a pure value lifted into the `F` context does nothing and is equal to the pure value in the `G` context:
 
-```
+```scala
 def handleErrorPureIsPure(a: A, f: E => G[A]): Boolean =
   a.pure[F].handleErrorWith(f) === a.pure[G]
 ```
@@ -208,7 +208,7 @@ If `raiseError` and `handleErrorWith` were instead separated into separate type 
 This also allows us to define laws that our counterparts of functions like `attempt` and `ensure` are consistent with the ones defined on `MonadError`.
 So the type signature now looks like this (expressed in Haskell, since it's easier on the eyes):
 ```haskell
-class (MonadError f e, Monad g) => MonadBlunder f g e | f -> e, f -> g, g -> f where
+class (MonadError f e, Monad g) => MonadBlunder f g e | f -> e, f -> g where
   ...
 ```
 
