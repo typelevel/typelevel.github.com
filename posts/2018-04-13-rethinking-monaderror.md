@@ -415,7 +415,7 @@ implicit def catsEndeavorForEitherT[F[_]: Monad, E]: MonadBlunder[EitherT[F, E, 
     def handleBlunderWith[A](fa: EitherT[F, E, A])(f: E => F[A]): F[A] =
       fa.value.flatMap {
         case Left(e) => f(e)
-        case Right(a) => a.pure[G]
+        case Right(a) => a.pure[F]
       }
 
     def accept[A](ga: F[A]): EitherT[F, E, A] =
