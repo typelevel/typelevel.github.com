@@ -361,7 +361,7 @@ That leaves us with the following definition:
 ```scala
 implicit def monadBlunderEither[E]: MonadBlunder[Either[E, ?], Id, E] =
   new MonadBlunder[Either[E, ?], Id, E] {
-    val monadErrorF = MonadError[Either[E, ?, E]]
+    val monadErrorF = MonadError[Either[E, ?], E]
     val monadG = Monad[Id]
 
     def handleBlunderWith[A](fa: Either[E, A])(f: E => A): A = fa match {
