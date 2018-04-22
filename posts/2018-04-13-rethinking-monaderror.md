@@ -262,7 +262,7 @@ trait MonadBlunder[F[_], G[_], E] {
 }
 ```
 
-The implementation is fairly straightforward as well, we just handle all the errors my lifting them into the left side of an `Either` and map successful values to the right side of `Either`.
+The implementation is fairly straightforward as well, we just handle all the errors by lifting them into the left side of an `Either` and map successful values to the right side of `Either`.
 
 Next, let's look at the dual to `attempt`, called `rethrow` in Cats. 
 For `MonadError` it turns an `F[Either[E, A]]` back into an `F`, but we're going to use our unexceptional type again:
@@ -351,7 +351,7 @@ def deriveEnsureOr(ga: G[A])(error: A => E)(predicate: A => Boolean): Boolean =
   ensureOr(accept(ga))(error)(predicate) === assureOr(ga)(error)(predicate)
 ```
 
-Now we have a great base to work with with laws that should guarantee principled and sensible behaviour.
+Now we have a great base to work with laws that should guarantee principled and sensible behaviour.
 Next we'll actually start defining some instances for our type class.
 
 The easiest definitions are for `Either` and `Option`, though I'm not going to cover both, as the instances for `Option` can simply be derived by `Either[Unit, A]`and I'm going to link to the code at the end.
