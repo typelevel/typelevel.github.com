@@ -42,7 +42,13 @@ sponsors:
     height: 80
 
 schedule:
-  - time: "TBD"
+  - time: "8:15"
+    title: "Registration"
+    break: true
+  - time: "9:00"
+    title: "Opening Remarks"
+    break: true
+  - time: "9:05"
     speakers: ["annettebieniusa"]
     title: "Keynote: Just the right kind of Consistency!"
     summary: "You need a data store that allows for high throughput and availability, while supporting consistency patterns referential integrity, numerical invariants, or atomic updates? Current designs for data storage forces application developers to decide early in the design cycle, and once and for all, what type of consistency the database should provide. At one extreme, strong consistency requires frequent global coordination; restricting concurrency in this way greatly simplifies application development, but it reduces availability and increases latency. At the opposite extreme, there are systems that provide eventual consistency only: they never sacrifice availability, but application developers must write code to deal with all sorts of concurrency anomalies in order to prevent violation of application invariants. But your system just needs to be consistent enough for the application to be correct! In the talk, I will discuss insights and techniques for analysing the consistency requirements of an application, and show techniques how you can establish them in your system."
@@ -101,6 +107,9 @@ schedule:
     speakers: ["sasharomijn"]
     title: "Healthy Minds in a Healthy Community"
     summary: "Open source communities attract and boast passionate, idealistic people, and many of us invest copious amounts of time and effort to contribute to our projects and support our communities. This underlying emotional attachment can make us more vulnerable to elevated stress, burnout and conflicts. And then there are those of us who also manage mental illness. More often than not, we suffer these struggles in silence, feeling (and fearing) that we're alone in our trouble. Here, our communities can make a huge difference, by building a positive and safe environment where we can blossom and support ourselves and our peers, and feel included. This talk will take a look at open-source communities through the eyes of various mental well-being issues and struggles, and show various things that some communities already do. With this, we hope to support and inspire more communities to help foster healthy minds in a healthy environment."
+  - time: "17:45"
+    title: "Closing Remarks"
+    break: true
 
 ---
 
@@ -123,13 +132,11 @@ Special thanks go to [Zalando](https://jobs.zalando.com/tech/?utm_source=typelev
 {% include schedule.html %}
 
 
-## Bursaries
+## Venue
 
-Do you want to attend the Summit, but require funding? We award bursaries for travel, accommodation, and tickets. Everyone is welcome to apply!
+This event will take place at Zalando.
 
-If you also want to submit a talk: you can also leave us a note abound funding in the Call for Speakers form (below), and we'll contact you.
-
-<a class="btn large" href="https://docs.google.com/forms/d/e/1FAIpQLSdhS66p9RgW1KQDsTREE8kQRkWge45WKHZXcMLruyl_2lexYg/viewform">Apply for a bursary</a>
+{% include venue_map.html %}
 
 
 ## Co-located Event
@@ -144,7 +151,3 @@ To register interest, please get in touch [via email](mailto:info@typelevel.org)
 We'd like to thank all our sponsors who help to make the Summit happen:
 
 {% include sponsors.html %}
-
-If you would like to talk to us about sponsorship options, please get in touch:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
