@@ -116,7 +116,7 @@ object MemRepository extends ItemRepository[Id, List] {
 }
 ```
 
-That's pretty much it! We managed to abstract over the type return by `findAll` by adding an extra parameter to our algebra.
+That's pretty much it! We managed to abstract over the return type of `findAll` by just adding an extra parameter to our algebra.
 
 ### Source of inspiration
 
@@ -126,7 +126,7 @@ Another great source of inspiration was [this talk](https://www.youtube.com/watc
 
 ### Abstracting over the effect type
 
-One thing you might have noticed in the examples above is that both `PostgreSQL` interpreters are not fixed to `IO` or `Task` or any other effect type but rather requiring a parametric `F[_]` and an implicit instance of `Sync[F]`. This is a quite powerful technique for both library authors and application developers. Well know libraries such as [Http4s](https://http4s.org/), [Monix](https://monix.io/) and [Fs2](https://functional-streams-for-scala.github.io/fs2/) make a heavy use of it.
+One thing you might have noticed in the examples above is that both `ItemRepository` interpreters are not fixed to `IO` or `Task` or any other effect type but rather requiring a parametric `F[_]` and an implicit instance of `Sync[F]`. This is a quite powerful technique for both library authors and application developers. Well know libraries such as [Http4s](https://http4s.org/), [Monix](https://monix.io/) and [Fs2](https://functional-streams-for-scala.github.io/fs2/) make a heavy use of it.
 
 And by requiring a `Sync[F]` instance we are just saying that our implementation will need to suspend synchronous side effects.
 
@@ -152,7 +152,7 @@ Here our `bar` method just returns a pure value in the `F` context, thus we need
 import cats.Monad
 
 def fp[F[_]: Monad]: F[String] =
-  for {
+`  for {
     a <- bar[F]
     b <- bar[F]
   } yield a + b
