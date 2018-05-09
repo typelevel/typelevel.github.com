@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Designing a Tagless Final application
+title: Tagless Final algebras and Streaming
 
 meta:
   nav: blog
