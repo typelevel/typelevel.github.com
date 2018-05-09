@@ -37,7 +37,7 @@ Let's go through each method's definition:
 - `find` might or might not return an Item inside a context: `F[Option[Item]]`.
 - `save` and `remove` will perform some actions without returning any actual value: `F[Unit]`.
 
-Everything is clear and you might have seen this kind of patter before, so let's create an interpreter for it:
+Everything is clear and you might have seen this kind of pattern before, so let's create an interpreter for it:
 
 ```scala
 import cats.effect.Sync
@@ -56,7 +56,7 @@ class PostgreSQLItemRepository[F[_]](implicit F: Sync[F]) extends ItemRepository
 
 Here we have a fake `PostgreSQL` interpreter for the `ItemRepository` algebra, but just pretend that is a real implementation.
 
-One of the most popular DB libraries in the Typelevel ecosystem is [Doobie](http://tpolecat.github.io/doobie/), defined as `A principled JDBC layer for Scala`. And it comes with one super powerful feature: it support `Streaming` results, thanks to [fs2](https://functional-streams-for-scala.github.io/fs2/).
+One of the most popular DB libraries in the Typelevel ecosystem is [Doobie](http://tpolecat.github.io/doobie/), defined as `A principled JDBC layer for Scala`. And it comes with one super powerful feature: it supports `Streaming` results, since it's built on top of [fs2](https://functional-streams-for-scala.github.io/fs2/).
 
 Now it could be very common to have a huge amount of `Item`s in our DB that a `List` will not fit into memory and / or it will be a very expensive operation. So we might want to stream the results of `findAll` instead of have them all in memory on a `List`, making `Doobie` a great candidate for the job. But wait... We have a problem now. Our `ItemRepository` algebra has fixed the definition of `findAll` as `F[List[Item]]` so we won't be able to create an interpreter that returns a streaming result instead.
 
@@ -120,21 +120,21 @@ That's pretty much it! We managed to abstract over the type return by `findAll` 
 
 ### Source of inspiration
 
-I've come up with most of the ideas presenting until now during my work on [Fs2 Rabbit](https://gvolpe.github.io/fs2-rabbit/), a stream based client for `Rabbit MQ`, where I make heavy use of this technique as I originally described in [this blog post](https://partialflow.wordpress.com/2018/02/01/a-tale-of-tagless-final-cats-effect-and-streaming-fs2-rabbit-v0-1/).
+I've come up with most of the ideas presented here during my work on [Fs2 Rabbit](https://gvolpe.github.io/fs2-rabbit/), a stream based client for `Rabbit MQ`, where I make heavy use of this technique as I originally described in [this blog post](https://partialflow.wordpress.com/2018/02/01/a-tale-of-tagless-final-cats-effect-and-streaming-fs2-rabbit-v0-1/).
 
 Another great source of inspiration was [this talk](https://www.youtube.com/watch?v=1h11efA4k8E) given by [Luka Jacobowitz](https://github.com/LukaJCB) at Scale by the Bay.
 
 ### Abstracting over the effect type
 
-One thing you might have noticed on the examples above is that both `PostgreSQL` interpreters are not fixed to `IO` or `Task` or any other effect type. They are just requiring a parametric `F[_]` and an implicit instance of `Sync[F]`. This is a quite powerful technique for both library authors and application developers. Well know libraries such as [Http4s](https://http4s.org/), [Monix](https://monix.io/) and [Fs2](https://functional-streams-for-scala.github.io/fs2/) make a heavy use of it.
+One thing you might have noticed in the examples above is that both `PostgreSQL` interpreters are not fixed to `IO` or `Task` or any other effect type but rather requiring a parametric `F[_]` and an implicit instance of `Sync[F]`. This is a quite powerful technique for both library authors and application developers. Well know libraries such as [Http4s](https://http4s.org/), [Monix](https://monix.io/) and [Fs2](https://functional-streams-for-scala.github.io/fs2/) make a heavy use of it.
 
-By requiring a `Sync[F]` instance we are just saying that our implementation will need to suspend synchronous side effects.
+And by requiring a `Sync[F]` instance we are just saying that our implementation will need to suspend synchronous side effects.
 
-Once at the edge of our program, commonly the main method, we can give the `F[_]` type a concrete implementation. At the moment, there are two options: `cats.effect.IO` and `monix.eval.Task`. And hopefully soon we'll have a `Scalaz 8 IO` implementation if everything goes well.
+Once at the edge of our program, commonly the main method, we can give `F[_]` a concrete type. At the moment, there are two options: `cats.effect.IO` and `monix.eval.Task`. But hopefully soon we'll have a `Scalaz 8 IO` implementation as well (fingers crossed).
 
 ### Principle of least power
 
-Abstracting over the effect type doesn't only mean that we should require `Sync[F]`, `Async[F]` or `Effect[F]`. It also means that we should only require the minimal instance that covers the actual implementation. For example:
+Abstracting over the effect type doesn't only mean that we should require `Sync[F]`, `Async[F]` or `Effect[F]`. It also means that we should only require the minimal typeclass instance that satisfies our predicate. For example:
 
 ```scala
 import cats.Functor
@@ -158,11 +158,11 @@ def fp[F[_]: Monad]: F[String] =
   } yield a + b
 ```
 
-The above implementation makes use of a `for-comprehention` which is a sintactic sugar for `flatMap` and `map`, so all we need is a `Monad[F]` instance because we also need an `Applicative[F]` instance for `bar`, otherwise we could just use a `FlatMap[F]` instance.
+The above implementation makes use of a `for-comprehention` which is a syntactic sugar for `flatMap` and `map`, so all we need is a `Monad[F]` instance because we also need an `Applicative[F]` instance for `bar`, otherwise we could just use a `FlatMap[F]` instance.
 
 ### Final thoughts
 
-I think we got quite far with all these abstractions, giving us the change to write clean and elegant code in a pure functional programming style, but there's more. Other topics that should be worth mention but might require a blog post on their own are:
+I think we got quite far with all these abstractions, giving us the change to write clean and elegant code in a pure functional programming style, but there's more. Other topics worth mentioning that might require a blog post on their own are:
 
 - Dependency Injection
   + Tagless Final + implicits (MTL style) enables DI in an elegant way.
