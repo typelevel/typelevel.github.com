@@ -219,10 +219,10 @@ Where the second type parameter matches the shape of `fs2.Stream`. In this case 
 ```scala
 object MemRepositoryAlt extends ItemRepository[Id, Stream] {
 
-  override def findAll: Stream[Id, Item] = Stream.emits {
+  override def findAll: Stream[Id, Item] = {
     sql"select name, price from items"
       .query[Item]
-      .to[List]
+      .stream
       .transact(xa)
   }
 
