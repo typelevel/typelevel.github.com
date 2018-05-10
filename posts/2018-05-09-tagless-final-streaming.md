@@ -149,9 +149,7 @@ class DiscountProcessor[F[_], G[_]: Functor](repo: ItemRepository[F, G]) {
 }
 ```
 
-First of all, there's a fundamental problem. We are assuming that all the items are a finite number that fit into memory.
-
-Secondly, we have another problem. We managed to apply the discount to all the items in a generic way by having a `Functor` constraint and got back a type `G[Item]`. But now we don't have a generic way to go through all the items and save each of them in the DB. We could be thinking about `Traverse` but as I mentioned before, this abstraction can't represent a stream of items that could be potentially infinite.
+Here we have a problem. We managed to apply the discount to all the items in a generic way by having a `Functor` constraint and got back a type `G[Item]`. But now we don't have a generic way to go through all the items and save each of them in the DB. We could be thinking about `Traverse` but as I mentioned before, this abstraction can't represent a stream of items that could be potentially infinite.
 
 But if we really want to do this, there's something we can do that involves type lambdas and natural transformation (a.k.a. `FunctionK` in the Cats library), which is really out of the scope of this blog post so I won't dive into details:
 
@@ -197,6 +195,7 @@ object ListDiscountInterpreter {
 
 While in this case it was possible to make it generic I don't recommend to do this at home because:
 
+- we are assuming that all the items are a finite number that fit into memory (by doing `stream.compile.toList`).
 - it involves an incredible amount of boilerplate.
 - as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
 - it is less performant.
