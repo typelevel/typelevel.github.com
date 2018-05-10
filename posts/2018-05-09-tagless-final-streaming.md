@@ -20,6 +20,13 @@ There have been a couple of really [nice blog posts](https://typelevel.org/blog/
 
 ### Algebra definition
 
+Given the following data definition:
+
+```scala
+case class ItemName(value: String) extends AnyVal
+case class Item(name: ItemName, price: BigDecimal)
+```
+
 Consider the following algebra:
 
 ```scala
@@ -40,23 +47,27 @@ Let's go through each method's definition:
 Everything is clear and you might have seen this kind of pattern before, so let's create an interpreter for it:
 
 ```scala
+import doobie.implicits._
+import doobie.util.transactor.Transactor
 import cats.effect.Sync
 
-// Pretend this is the real implementation... What matters for the example are the types.
-class PostgreSQLItemRepository[F[_]](implicit F: Sync[F]) extends ItemRepository[F] {
-  private val mockItem = Item(ItemName("laptop"), BigDecimal(1500))
+// Doobie implementation (not fully implemented, what matters here are the types).
+class PostgreSQLItemRepository[F[_]](xa: Transactor[F])
+                                    (implicit F: Sync[F]) extends ItemRepository[F] {
 
-  override def findAll: F[List[Item]] = F.pure(List(mockItem))
-  override def find(name: ItemName): F[Option[Item]] = F.pure(Some(mockItem))
+  override def findAll: F[List[Item]] = sql"select name, price from items"
+                                           .query[Item]
+                                           .to[List]
+                                           .transact(xa)
+
+  override def find(name: ItemName): F[Option[Item]] = F.pure(None)
   override def save(item: Item): F[Unit] = F.unit
   override def remove(name: ItemName): F[Unit] = F.unit
 }
 
 ```
 
-Here we have a fake `PostgreSQL` interpreter for the `ItemRepository` algebra, but just pretend that is a real implementation.
-
-One of the most popular DB libraries in the Typelevel ecosystem is [Doobie](http://tpolecat.github.io/doobie/), defined as `A principled JDBC layer for Scala`. And it comes with one super powerful feature: it supports `Streaming` results, since it's built on top of [fs2](https://functional-streams-for-scala.github.io/fs2/).
+Here we are using [Doobie](http://tpolecat.github.io/doobie/), defined as `A principled JDBC layer for Scala` and one of the most popular DB libraries in the Typelevel ecosystem. And it comes with one super powerful feature: it supports `Streaming` results, since it's built on top of [fs2](https://functional-streams-for-scala.github.io/fs2/).
 
 Now it could be very common to have a huge amount of `Item`s in our DB that a `List` will not fit into memory and / or it will be a very expensive operation. So we might want to stream the results of `findAll` instead of have them all in memory on a `List`, making `Doobie` a great candidate for the job. But wait... We have a problem now. Our `ItemRepository` algebra has fixed the definition of `findAll` as `F[List[Item]]` so we won't be able to create an interpreter that returns a streaming result instead.
 
@@ -82,18 +93,23 @@ Great! This looks good so far.
 Now let's write a new `PostgreSQL` interpreter with streaming support:
 
 ```scala
+import doobie.implicits._
+import doobie.util.transactor.Transactor
 import fs2.Stream
 
-// Pretend this is the real implementation... What matters for the example are the types.
-class StreamingItemRepository[F[_]](implicit F: Sync[F]) extends ItemRepository[F, Stream[F, ?]] {
-  private val mockItem = Item(ItemName("laptop"), BigDecimal(1500))
+// Doobie implementation (not fully implemented, what matters here are the types).
+class StreamingItemRepository[F[_]](xa: Transactor[F])
+                                   (implicit F: Sync[F]) extends ItemRepository[F, Stream[F, ?]] {
 
-  override def findAll: Stream[F, Item] = Stream.eval(F.pure(mockItem))
+  override def findAll: Stream[F, Item] = sql"select name, price from items"
+                                           .query[Item]
+                                           .stream
+                                           .transact(xa)
+
   override def find(name: ItemName): F[Option[Item]] = F.pure(None)
-  override def save(item: Item): F[Unit] = F.unit
-  override def remove(name: ItemName): F[Unit] = F.unit
+  override def save(item: Item): F[Unit] = F.delay(println(s"Saving item: $item"))
+  override def remove(name: ItemName): F[Unit] = F.delay(println(s"Removing item: $item"))
 }
-
 ```
 
 Voilà! We got our streaming implementation of `findAll`.
@@ -117,6 +133,76 @@ object MemRepository extends ItemRepository[Id, List] {
 ```
 
 That's pretty much it! We managed to abstract over the return type of `findAll` by just adding an extra parameter to our algebra.
+
+### About composition
+
+At this point the avid reader might have thought, what if I want to write a generic function that takes all the items (using `findAll`), applies some discounts and writes them back to the DB (using `save`)? Let's try and find out!
+
+```scala
+class DiscountProcessor[F[_], G[_]: Functor](repo: ItemRepository[F, G]) {
+
+  def process(discount: Double): F[Unit] = {
+    val rs: G[Item] = repo.findAll.map(item => item.copy(price = item.price * (1 - discount)))
+    // And now what? repo.save returns F[Unit]
+  }
+
+}
+```
+
+First of all, there's a fundamental problem. We are assuming that all the items are a finite number that fit into memory.
+
+Secondly, we have another problem. We managed to apply the discount to all the items in a generic way by having a `Functor` constraint and got back a type `G[Item]`. But now we don't have a generic way to go through all the items and save each of them in the DB. We could be thinking about `Traverse` but as I mentioned before, this abstraction can't represent a stream of items that could be potentially infinite.
+
+But if we really want to do this, there's something we can do that involves type lambdas and natural transformation (a.k.a. `FunctionK` in the Cats library), which is really out of the scope of this blog post so I won't dive into details:
+
+
+```scala
+class DiscountProcessor[F[_], G[_], H[_]](repo: ItemRepository[F, G])
+                                         (implicit F: Monad[F],
+                                                   G: Functor[G],
+                                                   H: Traverse[H],
+                                                   fk: FunctionK[G, λ[x => F[H[x]]]]) {
+
+  def process(discount: Double): F[Unit] = {
+    val items: G[Item] = repo.findAll.map(item => item.copy(price = item.price * (1 - discount)))
+    val fa: F[H[Item]] = fk.apply(items)
+    fa.flatMap(t => t.traverse(item => repo.save(item)).void)
+  }
+
+}
+
+object StreamingDiscountInterpreter {
+
+  implicit val fk = new FunctionK[Stream[IO, ?], λ[x => IO[List[x]]]] {
+    override def apply[A](fa: Stream[IO, A]): IO[List[A]] = fa.compile.toList
+  }
+
+  val xa = Transactor.fromDriverManager[IO]("org.postgresql.Driver", "jdbc:postgresql:sa", "user", "")
+  val repo = new StreamingItemRepository[IO](xa)
+
+  val processor = new DiscountProcessor[IO, Stream[IO, ?], List](repo)
+
+}
+
+object ListDiscountInterpreter {
+
+  implicit val fk = new FunctionK[List, Lambda[x => Id[List[x]]]] {
+    override def apply[A](list: List[A]): Id[List[A]] = list
+  }
+
+  val processor = new DiscountProcessor[Id, List, List](MemRepository)
+
+}
+```
+
+While in this case it was possible to make it generic I don't recommend to do this at home because:
+
+- it involves an incredible amount of boilerplate.
+- as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
+- it is less performant.
+- you lose the ability to use the `fs2.Stream` DSL which is super convenient.
+
+What I recommend instead, is to write this kind of logic in the streaming interpreter itself. You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
 
 ### Source of inspiration
 
@@ -158,7 +244,7 @@ def fp[F[_]: Monad]: F[String] =
   } yield a + b
 ```
 
-The above implementation makes use of a `for-comprehention` which is a syntactic sugar for `flatMap` and `map`, so all we need is a `Monad[F]` instance because we also need an `Applicative[F]` instance for `bar`, otherwise we could just use a `FlatMap[F]` instance.
+The above implementation makes use of a `for-comprehension` which is a syntactic sugar for `flatMap` and `map`, so all we need is a `Monad[F]` instance because we also need an `Applicative[F]` instance for `bar`, otherwise we could just use a `FlatMap[F]` instance.
 
 ### Final thoughts
 
@@ -167,6 +253,6 @@ I think we got quite far with all these abstractions, giving us the change to wr
 - Dependency Injection
   + Tagless Final + implicits (MTL style) enables DI in an elegant way.
 - Algebras Composition
-  + It is very common to have multiple algebras with a different `F[_]` implementation. In some cases, `FunctionK` (a.k.a. Natural Transformation) could be the solution.
+  + It is very common to have multiple algebras with a different `F[_]` implementation. In some cases, `FunctionK` can be the solution.
 
 What do you think about it? Have you come across a similar design problem? I'd love to hear your thoughts!
