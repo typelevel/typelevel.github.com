@@ -15,7 +15,7 @@ tut:
 
 ---
 
-A somewhat common scala idiom is to make an `abstract` type extend `Product with Serializable`. There isn't an obvious reason to do this, and people have asked me a number of times why I've done this. While I don't think that `Product` or `Serializable` are particularly good abstractions, there's a reason that I extend them.
+A somewhat common Scala idiom is to make an `abstract` type extend `Product with Serializable`. There isn't an obvious reason to do this, and people have asked me a number of times why I've done this. While I don't think that `Product` or `Serializable` are particularly good abstractions, there's a reason that I extend them.
 
 Let's say that I'm writing a simple enum-like `Status` type:
 
