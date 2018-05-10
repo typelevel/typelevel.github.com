@@ -204,6 +204,33 @@ While in this case it was possible to make it generic I don't recommend to do th
 
 What I recommend instead, is to write this kind of logic in the streaming interpreter itself. You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
 
+### Design alternative
+
+Another possible and very interesting alternative suggested by [Michael Pilquist](https://github.com/mpilquist), would be to define our repository as follows:
+
+```scala
+trait ItemRepository[F[_], S[_[_], _]] {
+  def findAll: S[F, Item]
+}
+```
+
+Where the second type parameter matches the shape of `fs2.Stream`. In this case our streaming repository will remain the same (it should just extend `ItemRepository[F, Stream]` instead of `ItemRepository[F, Stream[F, ?]]`) but our in memory interpreter will now rely on `fs2.Stream` instead of a parametric `G[_]`, for example:
+
+```scala
+object MemRepositoryAlt extends ItemRepository[Id, Stream] {
+
+  override def findAll: Stream[Id, Item] = Stream.emits {
+    sql"select name, price from items"
+      .query[Item]
+      .to[List]
+      .transact(xa)
+  }
+
+}
+```
+
+I think it's an alternative worth exploring further that might require a blog post on its own, so I'll leave it here for reference :)
+
 ### Source of inspiration
 
 I've come up with most of the ideas presented here during my work on [Fs2 Rabbit](https://gvolpe.github.io/fs2-rabbit/), a stream based client for `Rabbit MQ`, where I make heavy use of this technique as I originally described in [this blog post](https://partialflow.wordpress.com/2018/02/01/a-tale-of-tagless-final-cats-effect-and-streaming-fs2-rabbit-v0-1/).
