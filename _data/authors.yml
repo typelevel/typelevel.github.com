@@ -309,3 +309,7 @@ annettebieniusa:
   full_name: "Annette Bieniusa"
   portrait: "/img/media/speakers/annettebieniusa.jpg"
   bio: "Annette is a lecturer and senior researcher at the Technische Universität Kaiserslautern. Her research interests include semantics of concurrent and distributed programming, with a focus on replication, synchronization, and how they are reflected on programming language level. Annette was involved in several national and international research projects, most recently the in the EU-Projects “SyncFree: Large-scale Computation without Synchronization” and “Lightkone: Lightweight computation for networks at the edge“."
+ceedubs:
+  full_name: "Cody Allen"
+  twitter: "FouriersTrick"
+  github: "ceedubs"
