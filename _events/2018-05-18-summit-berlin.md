@@ -52,15 +52,25 @@ schedule:
     speakers: ["annettebieniusa"]
     title: "Keynote: Just the right kind of Consistency!"
     summary: "You need a data store that allows for high throughput and availability, while supporting consistency patterns referential integrity, numerical invariants, or atomic updates? Current designs for data storage forces application developers to decide early in the design cycle, and once and for all, what type of consistency the database should provide. At one extreme, strong consistency requires frequent global coordination; restricting concurrency in this way greatly simplifies application development, but it reduces availability and increases latency. At the opposite extreme, there are systems that provide eventual consistency only: they never sacrifice availability, but application developers must write code to deal with all sorts of concurrency anomalies in order to prevent violation of application invariants. But your system just needs to be consistent enough for the application to be correct! In the talk, I will discuss insights and techniques for analysing the consistency requirements of an application, and show techniques how you can establish them in your system."
-  - time: "TBD"
+  - time: "10:00"
+    title: "Break"
+    break: true
+  - time: "10:20"
     speakers: ["itrvd"]
     title: "A Fistful of Functors"
     summary: "Functors show up everywhere in our day-to-day programming. They're so common, we take them for granted - especially in typed functional programming. Beside being common, they're incredibly useful for code reuse. However, functors have several relatively unknown variants: profunctors, bifunctors, contravariant functors, and so on. And guess what - they're amazingly useful, especially combined with other abstractions in the functional programming toolkit! In this talk, we'll cover the many species of functors and see how they can help us with tasks such as serialization, stream processing, and more."
-  - time: "TBD"
-    speakers: ["cameronjoannidis"]
-    title: "An Intuitive Guide to Combining Free Monad and Free Applicative"
-    summary: "The usage of Free Monads is becoming more well understood, however the lesser known Free Applicative is still somewhat of a mystery to the average Scala developer. In this talk I will explain how you can combine the power of both these constructs in an intuitive and visual manner. You will learn the motivations for using Free Structures in the first place, how we can build up a complex domain, how we can introduce parallelism into our domain and a bunch of other practical tips for designing programs with these structures. This will also give you a deeper understanding of what libraries like Freestyle are doing under the hood and why it is so powerful."
-  - time: "TBD"
+  - time: "10:55"
+    speakers: ["alexandru"]
+    title: "Cancelable IO"
+    summary: "Task / IO data types have been ported in Scala, inspired by Haskell's monadic IO and are surging in popularity due to the need in functional programming for referential transparency, but also because controlling side effects by means of lawful, FP abstractions makes reasoning about asynchrony and concurrency so much easier. But concurrency brings with it race conditions, i.e. the ability to execute multiple tasks at the same time, possibly interrupting the losers and cleaning up resources afterwards and thus we end up reasoning about preemption. This talk describes the design of Monix's Task for cancelability and preemption, a design that has slowly transpired in cats-effect, first bringing serious performance benefits and now a sane design for cancelation. Topics include how cancelable tasks can be described, along with examples of race conditions that people can relate to, highlighting the challenges faced when people use an IO/Task data type that cannot be interrupted."
+  - time: "11:30"
+    title: "Break"
+    break: true
+  - time: "11:50"
+    speakers: ["guillaumebort"]
+    title: "Legacy Engineering: Making Criteo Functional"
+    summary: "Criteo uses a lot of Scala in its code-base. Historically for big data stuff using the usual suspects Spark & Scalding, but more and more for application development. A few Typelevel projects started to appear in our code base as developers started to embrase more sophisticated FP practices in their Scala code. Today most of our Scala projects are built around cats, fs2, doobie, algebra, shapeless, etc. In this presentation we will discuss the challenges of introducing more functional code in a large software company as Criteo and how typelevel projects have helped. We'll talk about what's worked well as well as where the dragons lie."
+  - time: "12:10"
     speakers: ["keikonakata"]
     title: "Introducing namespaces into SQL result sets using nested structural types"
     summary: |
@@ -74,11 +84,14 @@ schedule:
       </pre></p>
 
       <p>We implement the above as operation using the whitebox macro. We rely on Scala's type system's ability to compute Greatest Lower Bounds (GLBs) and Least Upper Bounds (LUBs) of structural types, to enable polymorphic and compositional query creation. To enable GLB and LUB computation for nested structured types, we have patched the Scala compiler.</p>
-  - time: "TBD"
-    speakers: ["alexandru"]
-    title: "Cancelable IO"
-    summary: "Task / IO data types have been ported in Scala, inspired by Haskell's monadic IO and are surging in popularity due to the need in functional programming for referential transparency, but also because controlling side effects by means of lawful, FP abstractions makes reasoning about asynchrony and concurrency so much easier. But concurrency brings with it race conditions, i.e. the ability to execute multiple tasks at the same time, possibly interrupting the losers and cleaning up resources afterwards and thus we end up reasoning about preemption. This talk describes the design of Monix's Task for cancelability and preemption, a design that has slowly transpired in cats-effect, first bringing serious performance benefits and now a sane design for cancelation. Topics include how cancelable tasks can be described, along with examples of race conditions that people can relate to, highlighting the challenges faced when people use an IO/Task data type that cannot be interrupted."
-  - time: "TBD"
+  - time: "12:45"
+    title: "Lunch Break"
+    break: true
+  - time: "14:15"
+    speakers: ["sasharomijn"]
+    title: "Healthy Minds in a Healthy Community"
+    summary: "Open source communities attract and boast passionate, idealistic people, and many of us invest copious amounts of time and effort to contribute to our projects and support our communities. This underlying emotional attachment can make us more vulnerable to elevated stress, burnout and conflicts. And then there are those of us who also manage mental illness. More often than not, we suffer these struggles in silence, feeling (and fearing) that we're alone in our trouble. Here, our communities can make a huge difference, by building a positive and safe environment where we can blossom and support ourselves and our peers, and feel included. This talk will take a look at open-source communities through the eyes of various mental well-being issues and struggles, and show various things that some communities already do. With this, we hope to support and inspire more communities to help foster healthy minds in a healthy environment."
+  - time: "14:50"
     speakers: ["pheymann"]
     title: "Typedapi: Define your API on the type level"
     summary: |
@@ -87,27 +100,29 @@ schedule:
       <p>I will tell you a short story about excitement, pain and hate peaking in a climax of type-driven enlightenment. I will tell you my journey of developing Typedapi, a library for building typesafe APIs which moves as many computations to the type level as possible.</p>
 
       <p>We will fight many a beast on our way from Scala’s desugaring to folds working just on types. But eventually, we will arrive at our destination, exhausted, with scars but also able to make our code a bit safer again.</p>
-  - time: "TBD"
+  - time: "15:10"
+    title: "Break"
+    break: true
+  - time: "15:30"
+    speakers: ["cameronjoannidis"]
+    title: "An Intuitive Guide to Combining Free Monad and Free Applicative"
+    summary: "The usage of Free Monads is becoming more well understood, however the lesser known Free Applicative is still somewhat of a mystery to the average Scala developer. In this talk I will explain how you can combine the power of both these constructs in an intuitive and visual manner. You will learn the motivations for using Free Structures in the first place, how we can build up a complex domain, how we can introduce parallelism into our domain and a bunch of other practical tips for designing programs with these structures. This will also give you a deeper understanding of what libraries like Freestyle are doing under the hood and why it is so powerful."
+  - time: "16:05"
     speakers: ["InTheNow"]
     title: "Laws for Free"
     summary: "Everyone that uses a functional programming library like cats is aware of the methods that each type class adds and also the properties that the methods need to abide by. But in practice, the properties are not always proved, rather testing that the methods behave as expected. This is a problem waiting to happen, as the algebraic properties are not “optional extras” – if your semigroup's combine is not associative ... then it ain't a semigroup, sorry! So in this talk we will quickly review what we mean by a property and a law and show how to use the cats laws that are available. We'll see that they are simple to use and add literally hundreds of scalacheck tests for free. And impress your boss as well, the tests can be “seen” on the screen!"
-  - time: "TBD"
+  - time: "16:25"
+    title: "Break"
+    break: true
+  - time: "16:45"
     speakers: ["propensive"]
     title: "Lifting Data Structures to the Type-level"
     summary: "In this talk, I will give a fast-paced tour of how various features of the Scala type system, many of them under-explored, can be harnessed to construct type-level representations of a number of different datatypes in Scala. The type system offers a limited number of “tools”, such as subtyping, least-upper-bound inference, type unification, singleton types and dependent types and (of course) implicit search, which we can compose in interesting ways to implement type-level operations on these type-level data structures. Value-level operations follow naturally from the types, but this is much less interesting."
-  - time: "TBD"
+  - time: "17:20"
     speakers: ["stefanschneider"]
     title: "Non-academic functional Workflows"
     summary: "In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs. We started with the idea of having a possibility to combine the multiple unconnected tools that are typically used to analyze an image acquired by our microscopes. The Free Monad in cats looked to us as the perfect fit to write a domain specific language that provides a lot of the advantages of an a modern functional compiler plus enforcing stack safety of the program, which would ultimately provided by third party users. We started developing with a team that had only very little experience in Scala and none with cats. Thanks to the good documentation, Scala Exercises and the straightforward mapping to functional principles, known to us from the university, we were able to get a prototype running for a trade show in 6 weeks."
-  - time: "TBD"
-    speakers: ["guillaumebort"]
-    title: "Legacy Engineering: Making Criteo Functional"
-    summary: "Criteo uses a lot of Scala in its code-base. Historically for big data stuff using the usual suspects Spark & Scalding, but more and more for application development. A few Typelevel projects started to appear in our code base as developers started to embrase more sophisticated FP practices in their Scala code. Today most of our Scala projects are built around cats, fs2, doobie, algebra, shapeless, etc. In this presentation we will discuss the challenges of introducing more functional code in a large software company as Criteo and how typelevel projects have helped. We'll talk about what's worked well as well as where the dragons lie."
-  - time: "TBD"
-    speakers: ["sasharomijn"]
-    title: "Healthy Minds in a Healthy Community"
-    summary: "Open source communities attract and boast passionate, idealistic people, and many of us invest copious amounts of time and effort to contribute to our projects and support our communities. This underlying emotional attachment can make us more vulnerable to elevated stress, burnout and conflicts. And then there are those of us who also manage mental illness. More often than not, we suffer these struggles in silence, feeling (and fearing) that we're alone in our trouble. Here, our communities can make a huge difference, by building a positive and safe environment where we can blossom and support ourselves and our peers, and feel included. This talk will take a look at open-source communities through the eyes of various mental well-being issues and struggles, and show various things that some communities already do. With this, we hope to support and inspire more communities to help foster healthy minds in a healthy environment."
-  - time: "17:45"
+  - time: "17:40"
     title: "Closing Remarks"
     break: true
 
