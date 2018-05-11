@@ -136,7 +136,9 @@ That's pretty much it! We managed to abstract over the return type of `findAll` 
 
 ### About composition
 
-At this point the avid reader might have thought, what if I want to write a generic function that takes all the items (using `findAll`), applies some discounts and writes them back to the DB (using `save`)? Let's try and find out!
+At this point the avid reader might have thought, what if I want to write a generic function that takes all the items (using `findAll`), applies some discounts and writes them back to the DB (using `save`)?
+
+Short answer is, you might want to define a different algebra where `findAll` and `save` have the same types (eg: both of them are streams) but in case you find yourself wanting to make this work with the current types then let's try and find out!
 
 ```scala
 class DiscountProcessor[F[_], G[_]: Functor](repo: ItemRepository[F, G]) {
@@ -195,13 +197,13 @@ object ListDiscountInterpreter {
 
 While in this case it was possible to make it generic I don't recommend to do this at home because:
 
-- we are assuming that all the items are a finite number that fit into memory (by doing `stream.compile.toList`).
-- it involves an incredible amount of boilerplate.
-- as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
-- it is less performant.
-- you lose the ability to use the `fs2.Stream` DSL which is super convenient.
+1. we are assuming that all the items are a finite number that fit into memory (by doing `stream.compile.toList`).
+2. it involves an incredible amount of boilerplate.
+3. as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
+4. it is less performant.
+5. you lose the ability to use the `fs2.Stream` DSL which is super convenient.
 
-What I recommend instead, is to write this kind of logic in the streaming interpreter itself. You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
+What I recommend instead, is to write this kind of logic in the streaming interpreter itself (point 1 still holds here but you could use `Stream.take` for example). You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
 
 ### Design alternative
 
