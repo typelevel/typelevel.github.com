@@ -314,4 +314,7 @@ gvolpe:
   portrait: "/img/media/speakers/gvolpe.jpg"
   github: "gvolpe"
   twitter: "volpegabriel87"
-
+ceedubs:
+  full_name: "Cody Allen"
+  twitter: "FouriersTrick"
+  github: "ceedubs"
