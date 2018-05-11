@@ -252,11 +252,11 @@ The above implementation makes use of a `for-comprehension` which is a syntactic
 
 ### Final thoughts
 
-I think we got quite far with all these abstractions, giving us the change to write clean and elegant code in a pure functional programming style, but there's more. Other topics worth mentioning that might require a blog post on their own are:
+I think we got quite far with all these abstractions, giving us the chance to write clean and elegant code in a pure functional programming style, and there's even more! Other topics worth mentioning that might require a blog post on their own are:
 
 - Dependency Injection
   + Tagless Final + implicits (MTL style) enables DI in an elegant way.
 - Algebras Composition
-  + It is very common to have multiple algebras with a different `F[_]` implementation. In some cases, `FunctionK` can be the solution.
+  + It is very common to have multiple algebras with a different `F[_]` implementation. In some cases, `FunctionK` (a.k.a. natural transformation) can be the solution.
 
 What do you think about it? Have you come across a similar design problem? I'd love to hear your thoughts!
