@@ -141,69 +141,45 @@ At this point the avid reader might have thought, what if I want to write a gene
 Short answer is, you might want to define a different algebra where `findAll` and `save` have the same types (eg: both of them are streams) but in case you find yourself wanting to make this work with the current types then let's try and find out!
 
 ```scala
-class DiscountProcessor[F[_], G[_]: Functor](repo: ItemRepository[F, G]) {
-
-  def process(discount: Double): F[Unit] = {
-    val rs: G[Item] = repo.findAll.map(item => item.copy(price = item.price * (1 - discount)))
-    // And now what? repo.save returns F[Unit]
-  }
-
-}
-```
-
-Here we have a problem. We managed to apply the discount to all the items in a generic way by having a `Functor` constraint and got back a type `G[Item]`. But now we don't have a generic way to go through all the items and save each of them in the DB. We could be thinking about `Traverse` but as I mentioned before, this abstraction can't represent a stream of items that could be potentially infinite.
-
-But if we really want to do this, there's something we can do that involves type lambdas and natural transformation (a.k.a. `FunctionK` in the Cats library), which is really out of the scope of this blog post so I won't dive into details:
-
-
-```scala
-class DiscountProcessor[F[_], G[_], H[_]](repo: ItemRepository[F, G])
-                                         (implicit F: Monad[F],
-                                                   G: Functor[G],
-                                                   H: Traverse[H],
-                                                   fk: FunctionK[G, λ[x => F[H[x]]]]) {
+class DiscountProcessor[F[_], G[_]: Functor](repo: ItemRepository[F, G], join: G[F[Unit]] => F[Unit]) {
 
   def process(discount: Double): F[Unit] = {
     val items: G[Item] = repo.findAll.map(item => item.copy(price = item.price * (1 - discount)))
-    val fa: F[H[Item]] = fk.apply(items)
-    fa.flatMap(t => t.traverse(item => repo.save(item)).void)
+    val saved: G[F[Unit]] = items.map(repo.save)
+    join(saved)
   }
-
 }
+```
 
+We defined a `join` function responsible for evaluating the effects and flatten the result to `F[Unit]`. As you can see below, this works for both a streaming interpreter and a list interpreter (shout out to [fthomas](https://github.com/fthomas) for proposing this solution):
+
+```scala
 object StreamingDiscountInterpreter {
 
-  implicit val fk = new FunctionK[Stream[IO, ?], λ[x => IO[List[x]]]] {
-    override def apply[A](fa: Stream[IO, A]): IO[List[A]] = fa.compile.toList
-  }
+  private val join: Stream[IO, IO[Unit]] => IO[Unit] = _.evalMap(identity).compile.drain
 
-  val xa = Transactor.fromDriverManager[IO]("org.postgresql.Driver", "jdbc:postgresql:sa", "user", "")
-  val repo = new StreamingItemRepository[IO](xa)
-
-  val processor = new DiscountProcessor[IO, Stream[IO, ?], List](repo)
+  def apply(repo: ItemRepository[IO, Stream[IO, ?]]): DiscountProcessor[IO, Stream[IO, ?]] =
+    new DiscountProcessor[IO, Stream[IO, ?]](repo, join)
 
 }
 
 object ListDiscountInterpreter {
 
-  implicit val fk = new FunctionK[List, Lambda[x => Id[List[x]]]] {
-    override def apply[A](list: List[A]): Id[List[A]] = list
-  }
+  private val join: List[IO[Unit]] => IO[Unit] = list => Traverse[List].sequence(list).void
 
-  val processor = new DiscountProcessor[Id, List, List](MemRepository)
+  def apply(repo: ItemRepository[IO, List]): DiscountProcessor[IO, List] =
+    new DiscountProcessor[IO, List](repo, join)
 
 }
 ```
 
 While in this case it was possible to make it generic I don't recommend to do this at home because:
 
-1. we are assuming that all the items are a finite number that fit into memory (by doing `stream.compile.toList`).
-2. it involves an incredible amount of boilerplate.
-3. as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
-4. it is less performant.
-5. you lose the ability to use the `fs2.Stream` DSL which is super convenient.
+1. it involves some extra boilerplate and the code becomes harder to understand / maintain.
+2. as soon as the logic gets more complicated you might run out of options to make it work in a generic way.
+3. you lose the ability to use the `fs2 DSL` which is super convenient.
 
-What I recommend instead, is to write this kind of logic in the streaming interpreter itself (point 1 still holds here but you could use `Stream.take` for example). You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
+What I recommend instead, is to write this kind of logic in the streaming interpreter itself. You could also write a generic program that implements the parts that can be abstracted (eg. applying a discount to an item `f: Item => Item`) and leave the other parts to the interpreter.
 
 ### Design alternative
 
