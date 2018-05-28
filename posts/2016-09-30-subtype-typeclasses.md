@@ -14,6 +14,11 @@ tut:
     - org.typelevel::cats-core:0.7.2
 ---
 
+_Update: A comprehensive version of this blog post was published at the
+[2017 Scala Symposium][scalaSite] and is available [for free][scalaProc]
+through the ACM OpenTOC service. The corresponding talk can be found
+[here][scalaTalk]._
+
 The common encoding of type classes in Scala relies on subtyping. This singular
 fact gives us a certain cleanliness in the code, but at what cost?
 
@@ -381,5 +386,8 @@ the Scato encoding for Scalaz 8 can be found [here][scatoScalaz].
 [scalaz8]: https://github.com/scalaz/scalaz/tree/series/8.0.x "Scalaz 8"
 [scato]: https://github.com/aloiscochard/scato "Scato"
 [scatoScalaz]: https://github.com/scalaz/scalaz/issues/1084 "[scalaz8] Subtyping-free encoding for typeclasses"
+[scalaProc]: http://www.sigplan.org/OpenTOC/scala17.html
+[scalaSite]: https://conf.researchr.org/track/scala-2017/scala-2017-papers<Paste>
+[scalaTalk]: https://www.youtube.com/watch?v=BGoTXO1V0HM&list=PL6KWJEIH5ulcNeQ92iKFN2k-UIV9QHExH&index=3
 [tut]: https://github.com/tpolecat/tut "tut: doc/tutorial generator for scala"
 [tcVsWorld]: https://www.youtube.com/watch?v=hIZxTQP1ifo "Edward Kmett - Type Classes vs. the World"
