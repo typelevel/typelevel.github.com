@@ -16,49 +16,9 @@ tut:
 
 ---
 
-Newcomers to Functional Programming are often very confused about the proper way to share state without breaking purity and end up having a mix of pure and impure code that defeats the purpose of having pure FP code in the first place.
+Newcomers to functional programming (FP) are often very confused about the proper way to share state without breaking purity and end up having a mix of pure and impure code that [defeats the purpose](https://queue.acm.org/detail.cfm?id=2611829) of having pure FP code in the first place.
 
 This is the reason that has motivated me to write a beginner friendly guide :)
-
-## Referential Transparency
-
-I think this is the key to understanding the benefits of Functional Programming. Without it, it'll be hard to understand other deeper concepts, such as `Shared State`. So let's start this guide by refreshing our knowledge about it:
-
-##### What is Referential Transparency?
-
-Being able to substitute an expression by its bound value without changing the meaning of the program.
-
-##### What does this mean?
-
-An example is worth thousand words. Consider this:
-
-```scala
-val expr = 123
-(expr, expr)
-```
-
-If we now substitute the expression by its bound value, does the meaning of the program change?
-
-```
-(123, 123)
-```
-
-No! The program remains the same. We call this property *Referential Transparency*. How about this?
-
-```scala
-val expr = println("hey")
-(expr, expr)
-```
-
-Let's perform susbtitution once again:
-
-```scala
-(println("hey"), println("hey"))
-```
-
-M'kay... The meaning of the program has now changed. The first program prints "hey" once whereas the second program prints "hey" twice. This is not `Referential Transparent`.
-
-So having this knowledge, let's now move onto the next section!
 
 ## Use Case
 
@@ -288,7 +248,7 @@ object sharedstate extends IOApp {
 
 As I mentioned in one of the sections above, the creation of `Ref[F, A]` is side-effectful. So what does this mean? Does it write to disk? Does it perform HTTP Requests? Not exactly.
 
-It all comes down to wanting to keep the property of *Referential Transparency* while sharing and mutating state. So let's again put up an example to follow up along with some explanation:
+It all comes down to wanting to keep the property of *referential transparency* while sharing and mutating state. So let's again put up an example to follow up along with some explanation:
 
 ```scala
 var a = 0
@@ -332,7 +292,7 @@ We have now regained purity. So whenever you create an `IORef` you'll get an `IO
 
 ## Applying the technique in other libraries
 
-Although in the example above we only see how it's done with the `Cats Effect` library, this principle expands to other FP libraries as well.
+Although in the example above we only see how it's done with the `cats-effect` library, this principle expands to other FP libraries as well.
 
 For example, when writing an `http4s` application you might need to create an `HttpClient` that needs to be used by more than one of your services. So again, create it at startup and `flatMap` it once:
 
@@ -369,4 +329,4 @@ To conclude this post I would like to give a big shout out to [@SystemFW](https:
 
 > In the specific case of state sharing, this gives rise to a really nice property: since the only way to share is passing things as an argument, *the regions of sharing are exactly the same of your call graph*, so you transform an important aspect of the behaviour ("who shares this state?") into a straightforward syntactical property ("what methods take this argument"?). This makes shared state in pure FP a lot easier to reason about than its side-effectful counterpart imho.
 
-In simple terms, remind yourself about this: **"FlatMap once and pass the reference as an argument!"**
+In simple terms, remind yourself about this: **"flatMap once and pass the reference as an argument!"**
