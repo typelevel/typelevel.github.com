@@ -7,13 +7,6 @@ meta:
   author: gvolpe
   pygments: true
 
-tut:
-  scala: 2.12.4
-  binaryScala: "2.12"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.4
-    - org.typelevel::cats-core:1.1.0
-
 ---
 
 There have been a couple of really [nice blog posts](https://typelevel.org/blog/2017/12/27/optimizing-final-tagless.html) about `Tagless Final` and some related topics. However, I have faced some design problems when writing some algebras and haven't seen anybody talking about. So please let me introduce this problem to you.
