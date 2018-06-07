@@ -8,11 +8,12 @@ meta:
   pygments: true
 
 tut:
-  scala: 2.12.4
+  scala: 2.12.6
   binaryScala: "2.12"
   dependencies:
-    - org.scala-lang:scala-library:2.12.4
+    - org.scala-lang:scala-library:2.12.6
     - org.typelevel::cats-core:1.1.0
+    - org.typelevel::cats-effect:1.0.0-RC2
 
 ---
 
@@ -46,7 +47,7 @@ We'll use the concurrency primitive [`Ref[IO, List[String]]`](https://typelevel.
 
 So this is how we might decide to start writing our code having some knowledge about [`cats.effect.IO`](https://typelevel.org/cats-effect/datatypes/io.html):
 
-```scala
+```tut:silent
 import cats.effect._
 import cats.effect.concurrent.Ref
 import cats.instances.list._
@@ -133,7 +134,7 @@ Okay, can we do better? Of course we do and you wouldn't believe how simple it i
 
 Let's get started by getting rid of that ugly `var myState` initialized to `null` and pass it as parameter to the processes that need to access it:
 
-```scala
+```tut:book:silent
 import cats.effect._
 import cats.effect.concurrent.Ref
 import cats.instances.list._
@@ -199,7 +200,7 @@ You only need to call `flatMap` once up in the call chain where you call the pro
 
 We now have a purely functional code that shares state in a simple and pure fashion. Here's the entire FP program:
 
-```scala
+```tut:book:silent
 import cats.effect._
 import cats.effect.concurrent.Ref
 import cats.instances.list._
@@ -250,7 +251,7 @@ As I mentioned in one of the sections above, the creation of `Ref[F, A]` is side
 
 It all comes down to wanting to keep the property of *referential transparency* while sharing and mutating state. So let's again put up an example to follow up along with some explanation:
 
-```scala
+```tut:silent
 var a = 0
 def set(n: Int) = a = n
 def get: Int = a
@@ -258,17 +259,17 @@ def get: Int = a
 
 Here we have imperative and impure code that mutates state. So we can try wrapping things in `IO` to keep side effects under control:
 
-```scala
+```tut:book:silent
 class IORef {
   var a: Int = 0
-  def set(n: Int) = IO(a = n)
-  def get: Int = IO(a)
+  def set(n: Int): IO[Unit] = IO(a = n)
+  def get: IO[Int] = IO.pure(a)
 }
 ```
 
 This is way better since now the mutation is encapsulated within `IORef` but we are now pushing some resposibility to whoever creates an `IORef`. Consider this:
 
-```scala
+```tut:book:silent
 val ref = new IORef()
 ```
 
@@ -277,8 +278,8 @@ If we have two or more references to `ref` in our code, they will be referring t
 ```scala
 private class IORef {
   var a: Int = 0
-  def set(n: Int) = IO(a = n)
-  def get: Int = IO(a)
+  def set(n: Int): IO[Unit] = IO(a = n)
+  def get: IO[Int] = IO.pure(a)
 }
 
 object IORef {
