@@ -40,11 +40,11 @@ Done #3
 List(#2, #1, #3)
 ```
 
-We'll use the concurrency primitive `Ref[IO, List[String]]` to represent our internal state because it's a great fit.
+We'll use the concurrency primitive [`Ref[IO, List[String]]`](https://typelevel.org/cats-effect/concurrency/ref.html) to represent our internal state because it's a great fit.
 
 ### Getting started
 
-So this is how we might decide to start writing our code:
+So this is how we might decide to start writing our code having some knowledge about [`cats.effect.IO`](https://typelevel.org/cats-effect/datatypes/io.html):
 
 ```scala
 import cats.effect._
