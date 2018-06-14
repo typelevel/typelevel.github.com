@@ -278,6 +278,7 @@ pheymann:
   full_name: "Paul Heymann"
   portrait: "/img/media/speakers/paulheymann.jpg"
   bio: "Paul entered the realm of functional and type-level programming three years ago when he was caught by a Scala meetup. After that, he started doing Scala professionally as a Data Engineer for the social network XING. There he works on recommender systems and the ontology infrastructure which are serving requests of millions of users every day."
+  github: "pheymann"
 keikonakata:
   full_name: "Keiko Nakata"
   portrait: "/img/logo-twitter.png"
