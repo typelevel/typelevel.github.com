@@ -16,7 +16,7 @@ extensions:
     link: "https://github.com/stew/dogs"
   - title: "Alleycats"
     description: "Lawless classes & illegal instances"
-    link: "https://github.com/non/alleycats"
+    link: "https://github.com/typelevel/cats"
   - title: "Kittens"
     description: "Automatic type class derivation"
     link: "https://github.com/milessabin/kittens"
