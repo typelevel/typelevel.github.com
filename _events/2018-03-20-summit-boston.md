@@ -10,8 +10,6 @@ description: "One day of recorded talks and one day of unconference, co-located 
 poster_hero: "/img/media/cambridge.jpg"
 poster_thumb: "/img/media/cambridge-thumb.jpg"
 
-featured: true
-
 sponsors_section: true
 
 sponsors:

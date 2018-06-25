@@ -10,8 +10,6 @@ description: "One day of recorded talks after Scala Days."
 poster_hero: "/img/media/berlin.jpg"
 poster_thumb: "/img/media/berlin-thumb.jpg"
 
-featured: true
-
 sponsors_section: true
 
 sponsors:
