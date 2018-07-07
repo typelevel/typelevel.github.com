@@ -10,7 +10,7 @@ meta:
 ---
 
 
-In our previous post on optimizing tagless final programs we learned how we could use the [sphynx library](https://github.com/LukaJCB/sphynx) to derive some optimization schemes for your tagless final code. In case you missed it and want to read up on it, you can find it [right here](https://typelevel.org/blog/2017/12/27/optimizing-final-tagless.html) or you can watch my presentation on the topic [here.](https://www.youtube.com/watch?time_continue=1279&v=E9iRYNuTIYA)
+In our previous post on optimizing tagless final programs we learned how we could use the [sphynx library](https://github.com/LukaJCB/sphynx) to derive some optimization schemes for your tagless final code. In case you missed it and want to read up on it, you can find it [right here](https://typelevel.org/blog/2017/12/27/optimizing-final-tagless.html) or you can watch my presentation on the topic [here](https://www.youtube.com/watch?v=E9iRYNuTIYA), but you should be able to follow this blog post without going through it all in detail.
 
 ## Optimizing monadic programs
 
@@ -24,7 +24,7 @@ They can be seen as a sequence of instructions that we can fold down to a single
 We then used that monoid to recreate a new interpreter that can take this extra information into account.
 
 With monadic programs, we do not have such luxury.
-We can only step through each of our instructions one at a time, because every instruction depends on the prior one.
+We can only step through each of our instructions one at a time, because every instruction depends on the results of the prior one.
 This means that we cannot extract any information beyond the very first instruction we have.
 That might seem like a deal breaker, but there's still a few things we can do.
 We could, for example, build up our monoid `M` dynamically, after each monadic instruction.
@@ -79,18 +79,20 @@ So how can we get there? It seems like we want to thread a bunch of state throug
 If you're familiar with FP folklore you might recognize that that description fits almost exactly to the `State` monad.
 Furthermore, because we know that our `F[_]` is a monad, that means the `StateT` monad transformer over `F` will also be a monad.
 
-Okay with that said, let's try to develop function that turns any interpreter `Alg[F]` into an interpreter into `StateT[F, M, A]`, so an `Alg[StateT[F, M, ?]]`, where `M` is the monoid we use to accumulate our extracted information.
+Okay with that said, let's try to develop function that turns any interpreter `KVStore[F]` into an interpreter into `StateT[F, M, A]`, so an `KVStore[StateT[F, M, ?]]`, where `M` is the monoid we use to accumulate our extracted information.
 We'll start with the `put` operation.
-For `put`, we'll want to call the interpreter to perform the action and then modify the state by adding the retrieved value into our cache 
+For `put`, we'll want to call the interpreter to perform the action and then modify the state by adding the retrieved value into our cache.
+To make the code a bit more legible we'll also define a few type aliases.
 
 ```scala
 type Cache = Map[String, String]
+type CachedAction[A] = StateT[F, Cache, A]
 
-def transform(interp: KVStore[F]): KVStore[StateT[F, Cache, ?]] = new KVStore[StateT[F, Cache, ?]] {
-  def put(key: String, a: String): StateT[F, Cache, Unit] =
-    StateT.liftF[F, Cache, Unit](interp.put(key, a)) *> StateT.modify(_.updated(key, a))
+def transform(interp: KVStore[F]): KVStore[CachedAction] = new KVStore[CachedAction] {
+  def put(key: String, v: String): CachedAction[Unit] =
+    StateT.liftF[F, Cache, Unit](interp.put(key, v)) *> StateT.modify(_.updated(key, v))
 
-  def get(key: String): StateT[F, Cache, Option[String]] = ???
+  def get(key: String): CachedAction[Option[String]] = ???
 }
 ```
 
@@ -99,26 +101,31 @@ It's a bit more complex, because we want to read from the cache, as well as writ
 What we have to do is, get our current state, then check if the key is included, if so, just return it, otherwise call the interpreter to perform the `get` action and then write that into the cache.
 
 ```scala
-def get(key: String): StateT[F, Cache, Option[String]] = for {
+def get(key: String): CachedAction[Option[String]] = for {
   cache <- StateT.get[F, Cache]
   result <- cache.get(key) match {
-              case s @ Some(_) => s.pure[StateT[F, Cache, ?]]
-              case None => StateT.liftF[F, Cache, Option[String]](interp.get(key)).flatTap(ov => 
-                 ov.fold(().pure[StateT[F, Cache, ?]])(v => StateT.modify(_.updated(key, v))))
+              case s @ Some(_) => s.pure[CachedAction]
+              case None => StateT.liftF[F, Cache, Option[String]](interp.get(key))
+                             .flatTap(updateCache(key))
             }
 } yield result
+
+def updateCache(key: String)(ov: Option[String]): CachedAction[Unit] = ov match {
+  case Some(v) => StateT.modify(_.updated(key, v))
+  case None => ().pure[CachedAction]
+}
 ```
 
 This is quite something, so let's try to walk through it step by step.
 First we get the cache using `StateT.get`, so far so good.
 Now, we check if the key is in the cache using `cache.get(key)`.
 The result of that is an `Option[String]`, which we can pattern match to see if it did include the key.
-If it did, then we can just return that `Option[String]` by lifting it into `StateT` using `pure`.
+If it did, then we can just return that `Option[String]` by lifting it into `CachedAction` using `pure`.
 If it wasn't in the cache, things are a bit more tricky.
-First, we lift the interpreter action into `StateT` using `liftF`, that gives us a `StateT[F, Cache, Option[String]]`, which is already the return type we need and we could return it right there, but we still need to update the cache.
+First, we lift the interpreter action into `CachedAction` using `StateT.liftF`, that gives us a `CachedAction[Option[String]]`, which is already the return type we need and we could return it right there, but we still need to update the cache.
 Because we already have the return type we need, we can use the `flatTap` combinator.
-We then take the result of our interpreter, which is again an `Option[String]`, and update the cache if the value is present. 
-If it's empty, we don't want to do anything at all, so we just lift unit into `StateT`.
+Then inside the `updateCache` function, we take the result of our interpreter, which is again an `Option[String]`, and update the cache if the value is present.
+If it's empty, we don't want to do anything at all, so we just lift unit into `CachedAction`.
 
 In case you're wondering `flatTap` works just like `flatMap`, but will then `map` the result type back to the original one, making it a bit similar to a monadic version of the left shark (`<*`) operator, making it very useful for these "fire-and-forget" operations.
 It's defined like this:
@@ -159,7 +166,8 @@ Nice! We could end this blog post right here, but there's still a couple of thin
 
 ### Refining the API
 
-As you were able to tell the implementation of our transformation from the standard interpreter to the optimized interpreter is already quite complex and that is for a very very simple algebra that doesn't do a lot and even then, I initially wrote an implementation that packs everything in a single `StateT` constructor to avoid the overhead of multiple calls to `flatMap`, but considered the version I showed here more easily understandable.
+As you were able to tell the implementation of our transformation from the standard interpreter to the optimized interpreter is already quite complex and that is for a very very simple algebra that doesn't do a lot.
+Even then, I initially wrote an implementation that packs everything in a single `StateT` constructor to avoid the overhead of multiple calls to `flatMap`, but considered the version I showed here more easily understandable.
 For more involved algebras and more complex programs, all of this will become a lot more difficult to manage.
 In our last blog post we were able to clearly separate the extraction of our information from the rebuilding of our interpreter with that information.
 Let's have a look at if we can do the same thing here.
@@ -189,11 +197,10 @@ Whenever we get an `Option[String]` after using `get`, we can then turn that int
 The same goes for `put`, where we'll create a Map using the key-value pair.
 We now have a way to turn the results of our algebra operations into our information `M`, so far so good!
 
-Now if you've paid attention and now your way around the types, you might've noticed that `? => M` cannot possibly be a `Monad`, not even a `Functor`, because it's contravariant, so there's no way to run a monadic program with an interpreter into `? => M`, but I'll show you shortly why that actually won't matter.
-
 Next, we'll need a way to rebuild our operations using that extracted information.
 For that, let's consider what that actually means.
-For applicative programs that meant a function from our state `M`, the naive interpreter `Alg[F]` to a new algebra that had access to precomputed values using the `F`  effect, so in types `(M, Alg[F]) => F[Alg[F]]`.
+For applicative programs this meant a function that given a state `M` and an interpreter `Alg[F]`, gave a  reconstructed interpreter inside the `F` context `F[Alg[F]]`.
+So a function `(M, Alg[F]) => F[Alg[F]]`.
 
 For monadic programs, there's no need to precompute any values, as we're dealing with fully sequential computations that can potentially update the state after every evaluation.
 So we're left with a function `(M, Alg[F]) => Alg[F]`.
@@ -326,11 +333,11 @@ So what can we do about this?
 Well, we could be a bit more honest about our types:
 
 ```scala
-def rebuild(interp: Alg[F]): Alg[M => F[?]]
+type FunctionM[A] = M => F[A]
+def rebuild(interp: Alg[F]): Alg[FunctionM]
 ```
 
-Hey, now we're getting there. This doesn't compile though, we actually need something a tiny bit different.
-The attentive readers will again see, that this is just `Kleisli` or `ReaderT`, so our `rebuild` should actually look like this:
+Hey, now we're getting there. This works, but if we look into some of the data types provided by `Cats` we can acutally see that this is just `Kleisli` or `ReaderT`, so our `rebuild` should actually look like this:
 
 ```scala
 def rebuild(interp: Alg[F]): Alg[Kleisli[F, M, ?]]
