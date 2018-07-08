@@ -291,7 +291,7 @@ type Tuple2K[F[_], G[_], A] = (F[A], G[A])
 
 Unfortunately `Mainecoon` doesn't have an `ApplyK` type class that gives us this `map2K` operation, but it gives the next best thing! 
 A higher-kinded `Semigroupal`, which when combined with the higher kinded `Functor` gives us that higher kinded `Apply` type class.
-It's called `CartesianK` (because cats `Semigroupal` used to be called `Cartesian`) and looks like this:
+It's called `CartesianK` (because cats `Semigroupal` used to be called `Cartesian`, but is renamed to `SemigroupalK` in the next version) and looks like this:
 
 ```scala
 @typeclass 
@@ -347,8 +347,8 @@ And now, we can easily implement a correct version of that natural transformatio
 
 ```scala
 new (Tuple2K[Kleisli[F, M, ?], ? => M, ?] ~> StateT[F, M, ?]) {
-  def apply[A](fa: Tuple2K[Kleisli[F, M, ?], ? => M, ?]): StateT[F, M, A] =
-    StateT(m => F.map(fa.first.run(m))(a => M.combine(fa.second(a), m) -> a))
+  def apply[A](fa: Tuple2K[Kleisli[F, M, A], ? => M, ?]): StateT[F, M, A] =
+    StateT(m => F.map(fa.first.run(m))(a => (fa.second(a) |+| m) -> a))
 }
 ```
 
@@ -359,7 +359,7 @@ def rebuild(interp: KVStore[F]): KVStore[Kleisli[F, M, ?]] = new KVStore[Kleisli
   def get(key: String): Kleisli[F, Cache, Option[String]] = Kleisli(m => m.get(key) match {
     case o @ Some(_) => Monad[F].pure(o)
     case None => interp.get(key)
-  }
+  })
 
   def put(key: String, a: String): Kleisli[F, Cache, Unit] =
     Kleisli(m => interp.put(key, a))
@@ -377,8 +377,8 @@ def optimize[Alg[_[_]]: FunctorK: CartesianK, F[_]: Monad, M: Monoid, A]
   (rebuild: Alg[F] => Alg[Kleisli[F, M, ?]]): Alg[F] => F[A] = { interpreter =>
   
     val tupleToState = new (Tuple2K[Kleisli[F, M, ?], ? => M, ?] ~> StateT[F, M, ?]) {
-      def apply[A](fa: Tuple2K[Kleisli[F, M, ?], ? => M, A]): StateT[F, M, A] =
-        StateT(m => F.map(fa.first.run(m))(a => M.combine(fa.second(a), m) -> a))
+      def apply[A](fa: Tuple2K[Kleisli[F, M, A], ? => M, A]): StateT[F, M, A] =
+        StateT(m => F.map(fa.first.run(m))(a => (fa.second(a) |+| m) -> a))
     }
 
     val withState: Alg[StateT[F, M, ?]] =
