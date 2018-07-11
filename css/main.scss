@@ -87,12 +87,6 @@ a {
   color: inherit;
 }
 
-b,
-strong {
-  font-weight: normal;
-  color: $black;
-}
-
 em {
   font-family: $italic;
   font-style: normal; // because webfont
@@ -207,7 +201,7 @@ blockquote {
 
   p,
   li {
-    color: rgba($black, .6);
+    color: rgba($black, .8);
     line-height: 1.5;
   }
 
