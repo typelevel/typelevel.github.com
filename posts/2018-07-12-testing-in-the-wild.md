@@ -20,8 +20,8 @@ meta:
  The system-du-jour is called "Panda" (we have animal names for many of our services in my team) and is tasked with the creation of articles
  on our legacy platform. An article is already a complicated beast. We have 3 levels of descriptions:
 
-  - Model: the description for a pair of Adidas shoes, with the brand, the gender it applies to, the size chart it uses and so on
-  - Config: the description for a specific combination of colours - black adidas -, images, material,... There can be several configs per model
+  - Model: the description for a pair of RunFast shoes, with the brand, the gender it applies to, the size chart it uses and so on
+  - Config: the description for a specific combination of colours - black RunFast -, images, material,... There can be several configs per model
   - Simple: the description of a specific size - 37, 38, 39 -, price, stock, EAN (European Article Number),... There can be several simples
   per config
 
@@ -37,7 +37,7 @@ meta:
    2. the articles sent by a merchant can be created incrementally, so some parts of the model/config/simple might have been already created
       in a previous call
 
-   3. we are not the only one creating articles in the system! Indeed, our team creates articles coming from external merchants but there is
+   3. we are not the only ones creating articles in the system! Indeed, our team creates articles coming from external merchants but there is
       also an internal "wholesale" department buying their own articles and creating them in the catalog. In that case a merchant might add
       a new config to an existing model or some simples to an existing config
 
