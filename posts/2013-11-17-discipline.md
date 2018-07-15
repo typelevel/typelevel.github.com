@@ -18,7 +18,7 @@ The main goal was to make it easy to check that instances of Spire's type classe
 [Scalaz](https://github.com/scalaz/scalaz) also has such an infrastructure, so why not take that one?
 The problem is that in Spire, the hierarchy of type classes is a little bit more complex:
 
-One one hand, there is a "generic" tower of type classes including `Semigroup`, `Monoid` and the like, where each successive type extends its predecessor.
+On the one hand, there is a "generic" tower of type classes including `Semigroup`, `Monoid` and the like, where each successive type extends its predecessor.
 On the other hand, this tower is replicated *twice* for their "additive" and "multiplicative" counterparts.
 These classes are isomorphic, up to the semantics, and hence naming of their operations.
 
