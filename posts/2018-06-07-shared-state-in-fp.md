@@ -267,7 +267,7 @@ class IORef {
 }
 ```
 
-This is way better since now the mutation is encapsulated within `IORef` but we are now pushing some resposibility to whoever creates an `IORef`. Consider this:
+This is way better since now the mutation is encapsulated within `IORef` but we are now pushing some responsibility to whoever creates an `IORef`. Consider this:
 
 ```tut:book:silent
 val ref = new IORef()
