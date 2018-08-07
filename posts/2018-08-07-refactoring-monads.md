@@ -36,6 +36,10 @@ object DB {
   def queryUnique[F[_]](q: Sql)(implicit me: MonadError[F, Throwable]): F[Row] = ???
 
 }
+
+implicit class SqlHelper(private val sc: StringContext) extends AnyVal {
+  def sql(args: Any*): Sql = Sql(args.mkString)
+}
 ```
 
 I was recently cleaning up some Scala code I'd written a few months
@@ -48,7 +52,7 @@ don't always get guidance on how to achieve that. In the presence of
 error handling and nested data structures, the problem gets even
 harder.
 
-## How to break up code into smaller pieces
+### Breaking up code into smaller pieces
 The goal of this blog post is to describe a concrete strategy for
 structuring code so that the overall flow of control is clear to the
 reader, even months later; and so the smaller pieces are both
@@ -63,12 +67,12 @@ wrap smaller pieces and ultimately, compose them into an
 understandable sequence of computations.
 
 ### Example domain: reading a catalog
-Let's not worry about MonadError yet, but instead look at some example
-code. Suppose we need to read an object from a relational database.
-Unfortunately, rows in the table may represent objects of a variety of
-types so we have to read the row and build up the object graph. This
-is the boundary between the weakly typed wilderness and the strongly
-typed world within our program.
+Let's not worry about `MonadError` yet, but instead look at some
+example code. Suppose we need to read an object from a relational
+database. Unfortunately, rows in the table may represent objects of a
+variety of types so we have to read the row and build up the object
+graph. This is the boundary between the weakly typed wilderness and
+the strongly typed world within our program.
 
 Say our database table represents a library catalog, which might have
 print books and ebooks. We'd like to look up a book by ID and get back
@@ -127,7 +131,7 @@ case class ParseError(str: String) extends Exception(str)
 
 ```
 
-We want to be able to define something akin to
+We want to be able to define a method such as:
 
 ```scala
 def findBookById(id: Int): Try[Book] = ???
@@ -137,6 +141,8 @@ def findBookById(id: Int): Try[Book] = ???
 One trivial definition of `findBookById` might be:
 
 ```tut:silent
+import scala.util.{Failure, Success, Try}
+
 def findBookById(id: Int): Try[Book] = {
   // unsafeQueryUnique returns a `Try[Row]`
   DB.unsafeQueryUnique(sql"""select * from catalog where id = $id""").flatMap { row =>
@@ -187,29 +193,7 @@ they will ignore except to pass deeper into the call chain. Let's take
 a look at an example refactoring:
 
 ```tut:silent
-def findBookById(id: Int): Try[Book] =
-  DB.unsafeQueryUnique(sql"""select * from catalog where id = $id""").flatMap { row =>
-    val id = row[Int]("id")
-    val title = row[String]("title")
-    val author = row[String]("author")
-    val formatStr = row[String]("format")
-    val downloadTypeStr = row[Option[String]]("download_type")
-    extractBook(id, title, author, formatStr, downloadTypeStr)
-  }
-
-def extractBook(
-    id: Int,
-    title: String,
-    author: String,
-    formatStr: String,
-    downloadTypeStrOpt: Option[String]): Try[Book] =
-  Format.fromString(formatStr) match {
-    case None => Failure(new ParseError(formatStr))
-    case Some(Print) =>
-      Success(PrintBook(id, title, author))
-    case Some(Digital) =>
-      extractEBook(id, title, author, downloadTypeStrOpt)
-  }
+import scala.util.{Failure, Success, Try}
 
 def extractEBook(
     id: Int,
@@ -226,6 +210,30 @@ def extractEBook(
           Success(EBook(id, title, author, dt))
       }
   }
+
+def extractBook(
+    id: Int,
+    title: String,
+    author: String,
+    formatStr: String,
+    downloadTypeStrOpt: Option[String]): Try[Book] =
+  Format.fromString(formatStr) match {
+    case None => Failure(new ParseError(formatStr))
+    case Some(Print) =>
+      Success(PrintBook(id, title, author))
+    case Some(Digital) =>
+      extractEBook(id, title, author, downloadTypeStrOpt)
+  }
+
+def findBookById(id: Int): Try[Book] =
+  DB.unsafeQueryUnique(sql"""select * from catalog where id = $id""").flatMap { row =>
+    val id = row[Int]("id")
+    val title = row[String]("title")
+    val author = row[String]("author")
+    val formatStr = row[String]("format")
+    val downloadTypeStr = row[Option[String]]("download_type")
+    extractBook(id, title, author, formatStr, downloadTypeStr)
+  }
 ```
 
 As you can see, this form has more manageably-sized functions,
@@ -235,7 +243,6 @@ understanding the logic enough to modify or test it requires
 understanding all three functions both individually and as a whole. To
 follow the logic, we must trace the functions like a recursive descent
 parser.
-
 
 ### Refactoring with Monads
 Without throwing exceptions and catching them at the top, it's going
@@ -249,6 +256,21 @@ Let's try to factor out smaller functions, each returning `Try`, and
 then use a for-comprehension to specify the sequence of operations:
 
 ```tut:silent
+import scala.util.{Failure, Success, Try}
+
+def tryParse[A](s: String, parse: String => Option[A]): Try[A] = {
+  parse(s)
+    .map(Success(_))
+    .getOrElse(Failure(new ParseError(s)))
+}
+
+def parseFormat(s: String): Try[Format] = tryParse(s, Format.fromString)
+
+def parseDownloadType(o: Option[String], id: Int): Try[DownloadType] = {
+  o.map(tryParse(_, DownloadType.fromString))
+    .getOrElse(Failure(new AssertionError(s"download type not provided for digital book $id")))
+}
+
 def findBookById(id: Int): Try[Book] =
   for {
     row <- DB.unsafeQueryUnique(sql"""select * from catalog where id = $id""")
@@ -262,17 +284,6 @@ def findBookById(id: Int): Try[Book] =
           .map(EBook(id, title, author, _))
     }
   } yield book
-
-def parseFormat(s: String): Try[Format] = tryParse(s, Format.fromString)
-
-def parseDownloadType(o: Option[String], id: Int): Try[DownloadType] =
-  o.map(tryParse(_, DownloadType.fromString))
-    .getOrElse(Failure(new AssertionError(s"download type not provided for digital book $id")))
-
-def tryParse[A](s: String, parse: String => Option[A]): Try[A] =
-  parse(s)
-    .map(Success(_))
-    .getOrElse(Failure(new ParseError(s)))
 ```
 
 It's less code, the functions are smaller, and the top-level function
@@ -302,6 +313,28 @@ describing interpreters here).
 Here we go:
 
 ```tut:silent
+import cats.MonadError
+import cats.implicits._
+
+import scala.util.{Failure, Success, Try}
+
+def tryParse[F[_], A](s: String, parse: String => Option[A])(
+    implicit me: MonadError[F, Throwable]): F[A] = {
+  parse(s)
+    .map(me.pure)
+    .getOrElse(me.raiseError(new ParseError(s)))
+}    
+
+def parseFormat[F[_]](s: String)(implicit me: MonadError[F, Throwable]): F[Format] =
+  tryParse[F, Format](s, Format.fromString)
+
+def parseDownloadType[F[_]](o: Option[String], id: Int)(
+    implicit me: MonadError[F, Throwable]): F[DownloadType] = {
+  o.map(tryParse[F, DownloadType](_, DownloadType.fromString))
+    .getOrElse(
+      me.raiseError(new AssertionError(s"download type not provided for digital book $id")))
+}      
+
 def findBookById[F[_]](id: Int)(implicit me: MonadError[F, Throwable]): F[Book] =
   for {
     row <- DB.queryUnique[F](sql"""select * from catalog where id = $id""")
@@ -315,21 +348,6 @@ def findBookById[F[_]](id: Int)(implicit me: MonadError[F, Throwable]): F[Book] 
           .map(EBook(id, title, author, _))
     }
   } yield book
-
-def parseFormat[F[_]](s: String)(implicit me: MonadError[F, Throwable]): F[Format] =
-  tryParse[F, Format](s, Format.fromString)
-
-def parseDownloadType[F[_]](o: Option[String], id: Int)(
-    implicit me: MonadError[F, Throwable]): F[DownloadType] =
-  o.map(tryParse[F, DownloadType](_, DownloadType.fromString))
-    .getOrElse(
-      me.raiseError(new AssertionError(s"download type not provided for digital book $id")))
-
-def tryParse[F[_], A](s: String, parse: String => Option[A])(
-    implicit me: MonadError[F, Throwable]): F[A] =
-  parse(s)
-    .map(me.pure)
-    .getOrElse(me.raiseError(new ParseError(s)))
 ```
 
 The code isn't much more complicated than the version using `Try` but
@@ -368,8 +386,3 @@ also demonstrated that we can do this in many cases without needing to
 specify the monad in use _a priori_. As a result, we gain the
 flexibility to choose the appropriate monad for our application,
 independently of the program logic.
-
-### Licensing
-Unless otherwise noted, all content is licensed under a [Creative
-Commons Attribution 3.0 Unported
-License](https://creativecommons.org/licenses/by/3.0/deed.en_US).
