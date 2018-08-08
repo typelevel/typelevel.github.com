@@ -360,21 +360,22 @@ as `IO` or `Task` as the effect type and delaying the evaluation of
 the database call until "the end of the universe".
 
 ### Refactoring strategy
+
 When faced with a similar refactoring problem, consider whether you
 can break the problem into a sequence of independently executable
 steps, each of which can be wrapped in a monad. If so, begin by
-describing your function with a monadic for-comprehension. Hopefully
-you will find it easy to express the overall flow of logic this way.
+describing the control flow in your refactored function with a monadic
+for-comprehension. Don't define the individual functions that comprise
+the steps of the for-comprehension until you have filled in the
+`yield` at the end. You can use pseudocode or stubs to minimize the
+amount of code churn at the beginning. This is a great time to shuffle
+steps around and work out exactly what arguments are needed and when,
+as well as where they are coming from.
 
-I suggest starting with the for-comprehension and writing pseudocode.
-Don't define the individual functions that comprise the steps of the
-for-comprehension until you have filled in the `yield` at the end.
-This is a great time to shuffle steps around and work out exactly what
-arguments are needed and when, and where they are coming from.
-
-Once the top level function and looks plausible, begin refactoring
-away the individual steps into small, simple functions. Remember that
-for simple operations you can
+Once the top level function looks plausible, begin filling in the
+steps of the for-comprehension. Replace the stubs or pseudocode you
+wrote by refactoring away the individual steps into small, simple
+functions. Remember that for simple operations you can
 [lift](https://typelevel.org/cats/api/cats/Monad.html#lift[A,B](f:A=%3EB):F[A]=%3EF[B])
 a function `A => B` to `F[A] => F[B]` (thanks,
 [Functor](https://typelevel.org/cats/typeclasses/functor.html)!). This
