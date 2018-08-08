@@ -49,7 +49,6 @@ don't always get guidance on how to achieve that. In the presence of
 error handling and nested data structures, the problem gets even
 harder.
 
-### Breaking up code into smaller pieces
 The goal of this blog post is to describe a concrete strategy for
 structuring code so that the overall flow of control is clear to the
 reader, even months later; and so the smaller pieces are both
@@ -64,12 +63,19 @@ wrap smaller pieces and ultimately, compose them into an
 understandable sequence of computations.
 
 ### Example domain: reading a catalog
+
 Let's not worry about `MonadError` yet, but instead look at some
-example code. Suppose we need to read an object from a relational
-database. Unfortunately, rows in the table may represent objects of a
-variety of types so we have to read the row and build up the object
-graph. This is the boundary between the weakly typed wilderness and
-the strongly typed world within our program.
+example code. Consider a situation where you need to translate data
+from one domain model to another one with different restrictions, and
+controlled vocabularies. This can happen in a number of places in a
+program, for instance reading a database or an HTTP request to
+construct a domain object.
+
+Suppose we need to read an object from a relational database.
+Unfortunately, rows in the table may represent objects of a variety of
+types so we have to read the row and build up the object graph
+accordingly. This is the boundary between the weakly typed wilderness
+and the strongly typed world within our program.
 
 Say our database table represents a library catalog, which might have
 print books and ebooks. We'd like to look up a book by ID and get back
@@ -312,8 +318,6 @@ Here we go:
 ```tut:silent
 import cats.MonadError
 import cats.implicits._
-
-import scala.util.{Failure, Success, Try}
 
 def tryParse[F[_], A](s: String, parse: String => Option[A])(
     implicit me: MonadError[F, Throwable]): F[A] = {
