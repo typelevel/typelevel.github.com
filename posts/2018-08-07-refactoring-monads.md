@@ -372,12 +372,13 @@ amount of code churn at the beginning. This is a great time to shuffle
 steps around and work out exactly what arguments are needed and when,
 as well as where they are coming from.
 
-Once the top level function looks plausible, begin filling in the
-steps of the for-comprehension. Replace the stubs or pseudocode you
-wrote by refactoring away the individual steps into small, simple
-functions. Remember that for simple operations you can
+Once the top level function looks plausible, begin implenting the
+steps of the for-comprehension. You can replace the stubs or
+pseudocode you wrote by refactoring code from your original function.
+If the original code did not operate in a monadic context, recall that
+you can convert a simple function `A => B` to `F[A] => F[B]` using
 [lift](https://typelevel.org/cats/api/cats/Monad.html#lift[A,B](f:A=%3EB):F[A]=%3EF[B])
-a function `A => B` to `F[A] => F[B]` (thanks,
+(thanks,
 [Functor](https://typelevel.org/cats/typeclasses/functor.html)!). This
 makes converting your existing code even easier.
 
