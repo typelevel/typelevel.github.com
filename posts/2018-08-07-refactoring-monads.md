@@ -260,7 +260,9 @@ def findBookById(id: Int): Try[Book] =
   for {
     row <- DB.unsafeQueryUnique(sql"""select * from catalog where id = $id""")
     format <- Format.fromString(row[String]("format"))
-    (id, title, author) = (row[Int]("id"), row[String]("title"), row[String]("author"))
+    id = row[Int]("id")
+    title = row[String]("title")
+    author = row[String]("author")
     book <- format match {
       case Print =>
         Success(PrintBook(id, title, author))
@@ -311,7 +313,9 @@ def findBookById[F[_]](id: Int)(implicit me: MonadError[F, Throwable]): F[Book] 
   for {
     row <- DB.queryUnique[F](sql"""select * from catalog where id = $id""")
     format <- me.fromTry(Format.fromString(row[String]("format")))
-    (id, title, author) = (row[Int]("id"), row[String]("title"), row[String]("author"))
+    id = row[Int]("id")
+    title = row[String]("title")
+    author = row[String]("author")
     book <- format match {
       case Print =>
         me.pure(PrintBook(id, title, author))
