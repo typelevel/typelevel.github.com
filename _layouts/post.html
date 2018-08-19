@@ -2,20 +2,20 @@
 layout: default
 ---
 
-<div class="content js-fade-in">
+<div class="content post js-fade-in">
   <h2>{{ page.title }}</h2>
 
   {{ content }}
 
 {% include license.html %}
- 
+
   <div class="post__author js-fade-in">
     {% assign author = site.data.authors[page.meta.author] %}
     {% if author %}
       {% if author.portrait %}
         <img class="portrait" src="{{ author.portrait }}" />
       {% endif %}
-      <p>by {{ author.full_name }} 
+      <p>by {{ author.full_name }}
     {% endif %}
     on {{ page.date | date: "%b %d, %Y" }}</p>
 
