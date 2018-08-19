@@ -1042,6 +1042,11 @@ blockquote {
   }
 }
 
+table.schedule {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 .schedule {
   width: 100%;
   border: 1px solid $border;
@@ -1329,6 +1334,14 @@ img {
     display: block;
     margin-top: $spacing-unit / 2;
     clear: left;
+  }
+}
+
+.post {
+  td,
+  th {
+    border: 1px solid #c0c0c0;
+    padding: 2px;
   }
 }
 
