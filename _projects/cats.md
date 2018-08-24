@@ -11,9 +11,6 @@ extensions:
   - title: Cats-Effect
     description: "The IO Monad for Scala, plus type classes for general effect types."
     link: "https://typelevel.org/cats-effect/"
-  - title: "Dogs"
-    description: "Functional data structures"
-    link: "https://github.com/stew/dogs"
   - title: "Alleycats"
     description: "Lawless classes & illegal instances"
     link: "https://github.com/typelevel/cats"

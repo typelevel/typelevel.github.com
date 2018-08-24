@@ -113,9 +113,6 @@ To add companions or extensions to these projects, use the front matter, too:
 
 ```yml
 extensions:
-  - title: "Dogs"
-    description: "Functional data structures"
-    github: "https://github.com/stew/dogs"
   - title: "Alleycats"
     description: "Lawless classes & illegal instances"
     github: "https://github.com/non/alleycats"
