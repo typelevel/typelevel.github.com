@@ -44,7 +44,7 @@ trait UserAlgebra[F[_]] {
 }
 ```
 
-And also and ADT of the possible errors that may arise. I'll explain later in this post why it extends `Throwable`.
+And also an ADT of the possible errors that may arise. I'll explain later in this post why it extends `Throwable`.
 
 ```tut:book:silent
 sealed trait UserError extends Throwable
@@ -194,7 +194,7 @@ I heard sometime ago about `Classy Optics` (Lenses, Prisms, etc) when I was lear
 
 Well first, let me give you a quick definition of `Lenses` and `Prisms`. In a few words we can define:
 
-- `Lenses` as getters and setters that compose making easy accessing fields of nested data structures.
+- `Lenses` as getters and setters that compose making the accessing of nested data structure's fields quite easy.
 - `Prisms` as first-class pattern matching that let us access branches of an ADT and that also compose.
 
 And the idea of `Classy Optics` is to "associate each type a typeclass full of optics for that type".
