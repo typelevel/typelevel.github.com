@@ -103,9 +103,10 @@ The following implementation of `UserRoutes` applies the tagless final encoding 
 
 ```tut:book:silent
 import io.circe.generic.auto._
+import io.circe.syntax._
 import org.http4s.{ HttpRoutes, Response }
 import org.http4s.circe._
-import org.http4s.circe.CirceEntityCodec._
+import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.dsl.Http4sDsl
 
 class UserRoutes[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
@@ -114,18 +115,18 @@ class UserRoutes[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
-        case Some(user) => Ok(user)
-        case None => NotFound()
+        case Some(user) => Ok(user.asJson)
+        case None => NotFound(username.asJson)
       }
 
     case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
-        userAlgebra.save(user) *> Created()
+        userAlgebra.save(user) *> Created(user.username.asJson)
       }
 
     case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
-        userAlgebra.updateAge(username, userUpdate.age) *> Ok()
+        userAlgebra.updateAge(username, userUpdate.age) *> Ok(username)
       }
   }
 
@@ -147,22 +148,22 @@ class UserRoutesAlt[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
-        case Some(user) => Ok(user)
-        case None => NotFound()
+        case Some(user) => Ok(user.asJson)
+        case None => NotFound(username.asJson)
       }
 
     case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
-        userAlgebra.save(user) *> Created()
+        userAlgebra.save(user) *> Created(user.username.asJson)
       }.handleErrorWith {
-        case UserAlreadyExists(username) => Conflict()
+        case UserAlreadyExists(username) => Conflict(username.asJson)
       }
 
     case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
-        userAlgebra.updateAge(username, userUpdate.age) *> Ok()
+        userAlgebra.updateAge(username, userUpdate.age) *> Ok(username.asJson)
       }.handleErrorWith {
-        case InvalidUserAge(age) => BadRequest()
+        case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
       }
   }
 
@@ -254,18 +255,18 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit ev: HttpEr
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
-        case Some(user) => Ok(user)
-        case None => NotFound()
+        case Some(user) => Ok(user.asJson)
+        case None => NotFound(username.asJson)
       }.handleHttpErrorResponse
 
     case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
-        userAlgebra.save(user) *> Created()
+        userAlgebra.save(user) *> Created(user.username.asJson)
       }.handleHttpErrorResponse
 
     case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
-        userAlgebra.updateAge(username, userUpdate.age) *> Created()
+        userAlgebra.updateAge(username, userUpdate.age) *> Created(username.asJson)
       }.handleHttpErrorResponse
   }
 
@@ -280,9 +281,9 @@ We also need an implementation for this algebra in order to handle errors of typ
 class UserHttpErrorHandler[F[_]](implicit M: MonadError[F, UserError]) extends HttpErrorHandler[F, UserError] with Http4sDsl[F] {
   override def handle(fa: F[Response[F]]): F[Response[F]] =
     fa.handleErrorWith {
-      case InvalidUserAge(age) => BadRequest()
-      case UserAlreadyExists(username) => Conflict()
-      case UserNotFound(username) => NotFound()
+      case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
+      case UserAlreadyExists(username) => Conflict(username.asJson)
+      case UserNotFound(username) => NotFound(username.asJson)
     }
 }
 ```
