@@ -45,10 +45,10 @@ trait UserAlgebra[F[_]] {
 }
 ```
 
-And also an ADT of the possible errors that may arise. I'll explain later in this post why it extends `Throwable`.
+And also an ADT of the possible errors that may arise. I'll explain later in this post why it extends `Exception`.
 
 ```tut:book:silent
-sealed trait UserError extends Throwable
+sealed trait UserError extends Exception
 case class UserAlreadyExists(username: String) extends UserError
 case class UserNotFound(username: String) extends UserError
 case class InvalidUserAge(age: Int) extends UserError
@@ -182,23 +182,23 @@ I heard sometime ago about Classy Optics (Lenses, Prisms, etc) when I was learni
 
 Well first, let me give you a quick definition of `Lens`es and `Prism`s. In a few words we can define:
 
-- `Lenses` as getters and setters that compose making the accessing of nested data structure's fields quite easy.
-- `Prisms` as first-class pattern matching that let us access branches of an ADT and that also compose.
+- `Lens`es as getters and setters that compose making the accessing of nested data structure's fields quite easy.
+- `Prism`s as first-class pattern matching that let us access branches of an ADT and that also compose.
 
 And `Classy Optics` as the idea of "associate with each type a typeclass full of optics for that type".
 
 ***So what am I talking about and how can these concepts help us solving the http error handling problem?***
 
-Remember that I defined the `UserError` ADT by extending `Throwable`?
+Remember that I defined the `UserError` ADT by extending `Exception`?
 
 ```scala
-sealed trait UserError extends Throwable
+sealed trait UserError extends Exception
 case class UserAlreadyExists(username: String) extends UserError
 case class UserNotFound(username: String) extends UserError
 case class InvalidUserAge(age: Int) extends UserError
 ```
 
-Well there's a reason! By making `UserError` a subtype of `Throwable` we can take advantage of `Prisms` by going back and forth in the types. See what I'm going yet?
+Well there's a reason! By making `UserError` a subtype of `Exception` (and by default of `Throwable`) we can take advantage of `Prisms` by going back and forth in the types. See what I'm going yet?
 
 `UserRoute` has a `Sync[F]` constraint, meaning that we have available a `MonadError[F, Throwable]` instance, but we would like to have `MonadError[F, UserError]` instead to leverage the Scala compiler. The caveat is that the error types need to be of the same family so we can derive a `Prism` that can navigate the errors types in one direction or another. But how do we derive it?
 
