@@ -104,7 +104,7 @@ The following implementation of `UserRoutes` applies the tagless final encoding 
 ```tut:book:silent
 import io.circe.generic.auto._
 import io.circe.syntax._
-import org.http4s.{ HttpRoutes, Response }
+import org.http4s._
 import org.http4s.circe._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.dsl.Http4sDsl
@@ -229,7 +229,7 @@ Now back to our use case. We can't have a `MonadError[F, UserError]` constraint 
 
 ```tut:book:silent
 trait HttpErrorHandler[F[_], E <: Throwable] {
-  def handle(fa: F[Response[F]]): F[Response[F]]
+  def handle(routes: HttpRoutes[F]): HttpRoutes[F]
 }
 
 object HttpErrorHandler {
@@ -237,9 +237,9 @@ object HttpErrorHandler {
 }
 
 object syntax {
-  implicit class HttpErrorHandlerOps[F[_], E <: Throwable](fa: F[Response[F]]) {
-    def handleHttpErrorResponse(implicit H: HttpErrorHandler[F, E]): F[Response[F]] =
-      H.handle(fa)
+  implicit class HttpErrorHandlerOps[F[_], E <: Throwable](routes: HttpRoutes[F]) {
+    def handleHttpErrorResponse(implicit H: HttpErrorHandler[F, E]): HttpRoutes[F] =
+      H.handle(routes)
   }
 }
 ```
@@ -251,41 +251,60 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit ev: HttpEr
 
   import syntax._
 
-  val routes: HttpRoutes[F] = HttpRoutes.of[F] {
+  private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
         case Some(user) => Ok(user.asJson)
         case None => NotFound(username.asJson)
-      }.handleHttpErrorResponse
+      }
 
     case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
         userAlgebra.save(user) *> Created(user.username.asJson)
-      }.handleHttpErrorResponse
+      }
 
     case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
         userAlgebra.updateAge(username, userUpdate.age) *> Created(username.asJson)
-      }.handleHttpErrorResponse
+      }
   }
+
+  val routes: HttpRoutes[F] = httpRoutes.handleHttpErrorResponse
 
 }
 ```
 
 We are basically delegating the error handling (AKA mapping business errors to appropiate http responses) to a specific algebra by making use of the syntax we have previously introduced.
 
-We also need an implementation for this algebra in order to handle errors of type `UserError`.
+We also need an implementation for this algebra in order to handle errors of type `UserError` but first we can introduce a `RoutesHttpErrorHandler` object that encapsulates the repetitive task of handling errors given an `HttpRoutes[F]` to generalize things a bit more :)
+
+```tut:book:silent
+import cats.data.{Kleisli, OptionT}
+
+object RoutesHttpErrorHandler {
+  def apply[F[_], E <: Throwable](routes: HttpRoutes[F])(handler: E => F[Response[F]])(implicit M: MonadError[F, E]): HttpRoutes[F] =
+    Kleisli { req: Request[F] =>
+      OptionT {
+        routes.run(req).value.handleErrorWith { e => handler(e).map(Option(_)) }
+      }
+    }
+}
+```
+
+And our implementation:
 
 ```tut:book:silent
 class UserHttpErrorHandler[F[_]](implicit M: MonadError[F, UserError]) extends HttpErrorHandler[F, UserError] with Http4sDsl[F] {
-  override def handle(fa: F[Response[F]]): F[Response[F]] =
-    fa.handleErrorWith {
-      case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
-      case UserAlreadyExists(username) => Conflict(username.asJson)
-      case UserNotFound(username) => NotFound(username.asJson)
-    }
-}
+  private val handler: UserError => F[Response[F]] = {
+    case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
+    case UserAlreadyExists(username) => Conflict(username.asJson)
+    case UserNotFound(username) => NotFound(username.asJson)
+  }
+
+  override def handle(routes: HttpRoutes[F]): HttpRoutes[F] =
+    RoutesHttpErrorHandler(routes)(handler)
+  }
 ```
 
 If we forget to handle some errors the compiler will shout at us ***"match may not be exhaustive!"*** That's fantastic :)
