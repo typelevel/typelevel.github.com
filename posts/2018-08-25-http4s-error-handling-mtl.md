@@ -277,9 +277,9 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit ev: HttpEr
 
 We are basically delegating the error handling (AKA mapping business errors to appropiate http responses) to a specific algebra by making use of the syntax we have previously introduced.
 
-We also need an implementation for this algebra in order to handle errors of type `UserError` but first we can introduce a `RoutesHttpErrorHandler` object that encapsulates the repetitive task of handling errors given an `HttpRoutes[F]` to generalize things a bit more :)
+We also need an implementation for this algebra in order to handle errors of type `UserError` but first we can introduce a `RoutesHttpErrorHandler` object that encapsulates the repetitive task of handling errors given an `HttpRoutes[F]`:
 
-```tut:book:silent
+```scala
 import cats.data.{Kleisli, OptionT}
 
 object RoutesHttpErrorHandler {
@@ -294,7 +294,7 @@ object RoutesHttpErrorHandler {
 
 And our implementation:
 
-```tut:book:silent
+```scala
 class UserHttpErrorHandler[F[_]](implicit M: MonadError[F, UserError]) extends HttpErrorHandler[F, UserError] with Http4sDsl[F] {
   private val handler: UserError => F[Response[F]] = {
     case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
@@ -313,7 +313,7 @@ If we forget to handle some errors the compiler will shout at us ***"match may n
 
 And the last part will be the wiring of all these components where we need to include the `meow-mtl` import to figure out the derivation of the instances we need in order to make this work. It'll look something like this if using `cats.effect.IO`:
 
-```tut:book:silent
+```scala
 import com.olegpy.meow.hierarchy._
 
 implicit val userHttpErrorHandler: HttpErrorHandler[IO, UserError] = new UserHttpErrorHandler[IO]
