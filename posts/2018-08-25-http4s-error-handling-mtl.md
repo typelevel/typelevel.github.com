@@ -235,21 +235,12 @@ trait HttpErrorHandler[F[_], E <: Throwable] {
 object HttpErrorHandler {
   def apply[F[_], E <: Throwable](implicit ev: HttpErrorHandler[F, E]) = ev
 }
-
-object syntax {
-  implicit class HttpErrorHandlerOps[F[_], E <: Throwable](routes: HttpRoutes[F]) {
-    def handleHttpErrorResponse(implicit H: HttpErrorHandler[F, E]): HttpRoutes[F] =
-      H.handle(routes)
-  }
-}
 ```
 
 `UserRoutes` can now have an additional constraint of type `HttpErrorHandler[F, UserError]` so we clearly know what kind of errors we are dealing with and can have the Scala compiler on our side.
 
 ```tut:book:silent
-class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit ev: HttpErrorHandler[F, UserError]) extends Http4sDsl[F] {
-
-  import syntax._
+class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit H: HttpErrorHandler[F, UserError]) extends Http4sDsl[F] {
 
   private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
 
@@ -270,20 +261,21 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit ev: HttpEr
       }
   }
 
-  val routes: HttpRoutes[F] = httpRoutes.handleHttpErrorResponse
+  val routes: HttpRoutes[F] = H.handle(httpRoutes)
 
 }
 ```
 
-We are basically delegating the error handling (AKA mapping business errors to appropiate http responses) to a specific algebra by making use of the syntax we have previously introduced.
+We are basically delegating the error handling (AKA mapping business errors to appropiate http responses) to a specific algebra.
 
 We also need an implementation for this algebra in order to handle errors of type `UserError` but first we can introduce a `RoutesHttpErrorHandler` object that encapsulates the repetitive task of handling errors given an `HttpRoutes[F]`:
 
 ```scala
+import cats.ApplicativeError
 import cats.data.{Kleisli, OptionT}
 
 object RoutesHttpErrorHandler {
-  def apply[F[_], E <: Throwable](routes: HttpRoutes[F])(handler: E => F[Response[F]])(implicit M: MonadError[F, E]): HttpRoutes[F] =
+  def apply[F[_], E <: Throwable](routes: HttpRoutes[F])(handler: E => F[Response[F]])(implicit ev: ApplicativeError[F, E]): HttpRoutes[F] =
     Kleisli { req: Request[F] =>
       OptionT {
         routes.run(req).value.handleErrorWith { e => handler(e).map(Option(_)) }
