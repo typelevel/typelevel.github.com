@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PSA – Don't use the List monoid
+title: Chain – Replacing the List Monoid
 
 meta:
   nav: blog
