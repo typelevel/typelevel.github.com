@@ -12,7 +12,7 @@ meta:
 `List` is a great data type, it is very simple and easy to understand.
 It has very low overhead for the most important functions such as `fold` and `map` and also supports prepending a single element in constant time.
 
-Traversing a data structure with something like `Writer[List[Log], A]` or `ValidatedNel[Error, A]`, is really powerful and allows us to very precisely specify what kind of iteration we want to do while remaining very succint.
+Traversing a data structure with something like `Writer[List[Log], A]` or `ValidatedNel[Error, A]` is  powerful and allows us to precisely specify what kind of iteration we want to do while remaining succint.
 However, in terms of efficiency it's a whole different story unfortunately.
 That is because both of these traversals make use of the `List` monoid (or the `NonEmptyList` semigroup), which by the nature of `List` is very inefficient.
 If you use `traverse` with a data structure with `n` elements and `Writer` or `Validated` as the `Applicative` type, you will end up with a runtime of `O(n^2)`.
@@ -25,11 +25,11 @@ Well, `Vector` has its own problems and in this case it's unfortunately not all 
 Because of this, it's now time to welcome a new data structure to Cats.
 Meet `Chain` and it's non-empty counterpart `NonEmptyChain`. 
 
-Available in the newest Cats 1.3.0 release, `Chain` is somewhat derived from what used to be `fs2.Catenable` and Erik Osheim's [Chain](https://github.com/non/chain ) library.
-Similar to `List` it is also a very simple data structure, but unlike `List` it supports both constant time `append` and `prepend`.
+Available in the newest Cats 1.3.0 release, `Chain` evolved from what used to be `fs2.Catenable` and Erik Osheim's [Chain](https://github.com/non/chain ) library.
+Similar to `List` it is also a very simple data structure, but unlike `List` it supports both constant O(1) time `append` and `prepend`.
 This makes its `Monoid` instance super performant and a much better fit for usage with `Validated`,`Writer`, `Ior` or `Const`.
 
-To utilize this, we've added a bunch of shorthands in Cats 1.3 that previously used `NonEmptyList` to use `NonEmptyChain` instead. These include type aliases like `ValidatedNec` or `IorNec` as well as helper functions like `groupByNec` or `Validated.invalidNec`.
+To utilize this, we've added a bunch of `NonEmptyChain` shorthands in Cats 1.3 that mirror those that used `NonEmptyList` in earlier versions. These include type aliases like `ValidatedNec` or `IorNec` as well as helper functions like `groupByNec` or `Validated.invalidNec`.
 We hope that these make it easy for you to upgrade to the more efficient data structure and enjoy those benefits as soon as possible.
 
 To get a good idea of the performance improvements, here are some benchmarks that test monoidal append to convince you of its efficiency (higher score is better):
