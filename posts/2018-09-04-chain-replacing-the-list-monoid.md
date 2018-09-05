@@ -20,19 +20,19 @@ This is because, with `List`, appending a single element requires iterating over
 
 So `List` isn't all that great for this use case, so let's use `Vector` or `NonEmptyVector` instead, right?
 
-Well, `Vector` has its own problems and in this case it's unfortunately not all that faster than `List` at all. You can check [this blog post](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html#vectors-are-ok) by Li Haoyi for some deeper insight into `Vector`s issues.
+Well, `Vector` has its own problems and in this case it's unfortunately not that much faster than `List` at all. You can check [this blog post](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html#vectors-are-ok) by Li Haoyi for some deeper insight into `Vector`s issues.
 
 Because of this, it's now time to welcome a new data structure to Cats.
-Meet `Chain` and it's non-empty counterpart `NonEmptyChain`. 
+Meet `Chain` and it's non-empty counterpart, `NonEmptyChain`.
 
 Available in the newest Cats 1.3.0 release, `Chain` evolved from what used to be `fs2.Catenable` and Erik Osheim's [Chain](https://github.com/non/chain ) library.
-Similar to `List` it is also a very simple data structure, but unlike `List` it supports both constant O(1) time `append` and `prepend`.
+Similar to `List`, it is also a very simple data structure, but unlike `List` it supports both constant O(1) time `append` and `prepend`.
 This makes its `Monoid` instance super performant and a much better fit for usage with `Validated`,`Writer`, `Ior` or `Const`.
 
 To utilize this, we've added a bunch of `NonEmptyChain` shorthands in Cats 1.3 that mirror those that used `NonEmptyList` in earlier versions. These include type aliases like `ValidatedNec` or `IorNec` as well as helper functions like `groupByNec` or `Validated.invalidNec`.
 We hope that these make it easy for you to upgrade to the more efficient data structure and enjoy those benefits as soon as possible.
 
-To get a good idea of the performance improvements, here are some benchmarks that test monoidal append to convince you of its efficiency (higher score is better):
+To get a good idea of the performance improvements, here are some benchmarks that test monoidal append (higher score is better):
 
 ```
 [info] Benchmark                                  Mode  Cnt   Score   Error  Units
@@ -42,7 +42,7 @@ To get a good idea of the performance improvements, here are some benchmarks tha
 ```
 
 As you can see accumulating things with `Chain` is more than 7 times faster than `List` and over 8 times faster than `Vector`.
-So appending seems to be a lot more performant than the standard library collections, but what about operations like `map` or `fold`?
+So appending is a lot more performant than the standard library collections, but what about operations like `map` or `fold`?
 Fortunately we've also benchmarked these (again, higher score is better):
 
 ```
@@ -56,9 +56,9 @@ Fortunately we've also benchmarked these (again, higher score is better):
 [info] ChainBench.mapLargeVector          thrpt   20         61.374 ±       2.004  ops/s
 ```
 
-While not as dominant, `Chain` can still hold its ground fairly well. 
-It won't have the random access performance of something like `Vector`, but in almost all other cases, `Chain` seems to outperform it quite handily.
-So if you don't perform a lot of random access on your data structure (I certainly don't), then you should be fine using `Chain` extensively instead.
+While not as dominant, `Chain` holds its ground fairly well.
+It won't have the random access performance of something like `Vector`, but in a lot of other cases, `Chain` seems to outperform it quite handily.
+So if you don't perform a lot of random access on your data structure, then you should be fine using `Chain` extensively instead.
 
 So next time you write any code that uses `List` or `Vector` as a `Monoid`, be sure to use `Chain` instead!
 
