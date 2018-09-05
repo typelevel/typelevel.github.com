@@ -10,11 +10,11 @@ meta:
 ---
 
 `List` is a great data type, it is very simple and easy to understand.
-It has very low overhead for the most important functions such as `fold` and `map` and also supports prepending in constant time.
+It has very low overhead for the most important functions such as `fold` and `map` and also supports prepending a single element in constant time.
 
 Traversing a data structure with something like `Writer[List[Log], A]` or `ValidatedNel[Error, A]`, is really powerful and allows us to very precisely specify what kind of iteration we want to do while remaining very succint.
 However, in terms of efficiency it's a whole different story unfortunately.
-That is because both of these traversals make use of the `List` monoid (or the `NonEmptyList` semigroup), which by the nature of `List` is very ineffecient.
+That is because both of these traversals make use of the `List` monoid (or the `NonEmptyList` semigroup), which by the nature of `List` is very inefficient.
 If you use `traverse` with a data structure with `n` elements and `Writer` or `Validated` as the `Applicative` type, you will end up with a runtime of `O(n^2)`.
 This is because, with `List`, appending a single element requires iterating over the entire data structure and therefore takes linear time.
 
@@ -25,14 +25,14 @@ Well, `Vector` has its own problems and in this case it's unfortunately not all 
 Because of this, it's now time to welcome a new data structure to Cats.
 Meet `Chain` and it's non-empty counterpart `NonEmptyChain`. 
 
-Available in the newest Cats 1.3.0 release, `Chain` is somewhat derived from what used to be `fs2.Catenable` and Erik Osheim's `Chain` library.
+Available in the newest Cats 1.3.0 release, `Chain` is somewhat derived from what used to be `fs2.Catenable` and Erik Osheim's [Chain](https://github.com/non/chain ) library.
 Similar to `List` it is also a very simple data structure, but unlike `List` it supports both constant time `append` and `prepend`.
-This makes it's `Monoid` instance super performant and a much better fit for usage with `Validated`,`Writer`, `Ior` or `Const`.
+This makes its `Monoid` instance super performant and a much better fit for usage with `Validated`,`Writer`, `Ior` or `Const`.
 
 To utilize this, we've added a bunch of shorthands in Cats 1.3 that previously used `NonEmptyList` to use `NonEmptyChain` instead. These include type aliases like `ValidatedNec` or `IorNec` as well as helper functions like `groupByNec` or `Validated.invalidNec`.
 We hope that these make it easy for you to upgrade to the more efficient data structure and enjoy those benefits as soon as possible.
 
-To get a good idea of the performance improvements, here are some benchmarks that test monoidal append to convince you of its efficiency.
+To get a good idea of the performance improvements, here are some benchmarks that test monoidal append to convince you of its efficiency (higher score is better):
 
 ```
 [info] Benchmark                                  Mode  Cnt   Score   Error  Units
@@ -42,8 +42,8 @@ To get a good idea of the performance improvements, here are some benchmarks tha
 ```
 
 As you can see accumulating things with `Chain` is more than 7 times faster than `List` and over 8 times faster than `Vector`.
-So appending seems to be a lot more performant than the standard library collections, but what about operations like `map` or `fold`.
-Fortunately we've also benchmarked these:
+So appending seems to be a lot more performant than the standard library collections, but what about operations like `map` or `fold`?
+Fortunately we've also benchmarked these (again, higher score is better):
 
 ```
 [info] Benchmark                           Mode  Cnt          Score         Error  Units
@@ -62,5 +62,5 @@ So if you don't perform a lot of random access on your data structure (I certain
 
 So next time you write any code that uses `List` or `Vector` as a `Monoid`, be sure to use `Chain` instead!
 
-The whole code for `Chain` and `NonEmptyChain` can be found [here](https://github.com/typelevel/cats/blob/master/core/src/main/scala/cats/data/Chain.scala) and [here](https://github.com/typelevel/cats/blob/master/core/src/main/scala/cats/data/NonEmptyChain.scala).
-You can also check out the benchmarks [here](https://github.com/typelevel/cats/tree/master/bench/src/main/scala/cats/bench).
+The whole code for `Chain` and `NonEmptyChain` can be found [here](https://github.com/typelevel/cats/blob/v1.3.0/core/src/main/scala/cats/data/Chain.scala) and [here](https://github.com/typelevel/cats/blob/v1.3.0/core/src/main/scala/cats/data/NonEmptyChain.scala).
+You can also check out the benchmarks [here](https://github.com/typelevel/cats/blob/v1.3.0/bench/src/main/scala/cats/bench).
