@@ -15,7 +15,7 @@ kramdown:
   hard_wrap: false
 highlighter: rouge
 exclude: ["README.md", "vendor", "src", "project/", "build.sbt", "posts", "Rakefile", "sbt", "gh-pages"]
-include: ["_redirects", "_posts", ".gitignore"]
+include: ["_redirects", "_posts"]
 permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "/blog/:num/"

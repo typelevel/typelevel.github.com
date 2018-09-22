@@ -1,21 +1,29 @@
 sudo: false
-language: ruby
-rvm: 2.2
-
+language: scala
 jdk:
   - oraclejdk8
 
 script:
-  - rake build
+  - sbt run
 
 cache:
   directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt/boot"
 before_cache:
   - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
   - find $HOME/.sbt -name "*.lock" -delete
-
 branches:
   except:
     - master
+
+deploy:
+  - provider: script
+    script: "./deploy.sh"
+    skip_cleanup: true
+    on:
+      branch: development
+
+env:
+  global:
+    secure: MuRYOzA0LCcqi04Zpx8f7WNuvfazsxSiXjMRuA+KRo0sRdSi24K/8ZwYqCsU24t1/LADKyv+mGYpniOQQEOGM+bzmyKPMMs4bTzDZDNo9GH2LZNErEsep5u65WSlObBx9h1u3lwQByj+VwK2qSuoXrfeKk3TCJ0rnBgEB0aBERc=
