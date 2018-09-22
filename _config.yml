@@ -1,4 +1,5 @@
 name: Typelevel.scala
+title: Typelevel.scala
 description: Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.
 twitter: typelevel
 email: info@typelevel.org
