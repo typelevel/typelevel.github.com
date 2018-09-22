@@ -1,237 +1,37 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Typelevel.scala | Blog</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
-
-
-    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
-    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
-    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/main.css">
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
-
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
-  </head>
-  <body class="no-js ">
-    <div class="header">
-      <div class="wrapper">
-        <a href="/">
-          <div class="header__logo">
-            Typelevel.scala
-          </div>
-        </a>
-        <a href="#" class="header__menu">
-          Menu
-        </a>
-        <ul class="navigation" role="navigation">
-          <li >
-            <a href="/projects/">Projects</a>
-          </li>
-          <li >
-            <a href="/events/">Events</a>
-          </li>
-          <li  class="active" >
-            <a href="/blog/">Blog</a>
-          </li>
-          <li >
-            <a href="/about.html">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="wrapper">
-      <div class="content content-small pull-left">
+---
+layout: default
+title: Blog
+---
+<div class="content content-small pull-left">
   <div class="posts">
-    
+    {% for post in paginator.posts %}
     <div class="post js-fade-in">
       <h2>
-        <a href="/blog/2018/09/04/chain-replacing-the-list-monoid.html">Chain – Replacing the List Monoid</a>
+        <a href="{{ post.url }}">{{ post.title }}</a>
       </h2>
-      <p>List is a great data type, it is very simple and easy to understand. It has very low overhead for the most important functions such as fold and map and also supports prepending a single element in constant time. Traversing a data structure with something like Writer[List[Log], A] or ValidatedNel[Error,...</p>
+      <p>{{post.content | strip_html | truncatewords: 50}}</p>
       <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/lukajacobowitz.jpg" />
+        {% assign author = site.data.authors[post.meta.author] %}
+        {% if author %}
+          {% if author.portrait %}
+            <img class="portrait" src="{{ author.portrait }}" />
             <p>
-          
-            by Luka Jacobowitz 
-        
-        on Sep 04, 2018</p>
+          {% endif %}
+            by {{ author.full_name }} 
+        {% endif %}
+        on {{ post.date | date: "%b %d, %Y" }}</p>
       </div>
     </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/08/25/http4s-error-handling-mtl.html">Http4s error handling with Cats Meow MTL</a>
-      </h2>
-      <p>As a longtime http4s user I keep on learning new things and I’m always trying to come up with the best practices for writing http applications. This time I want to talk about my latest achievements in error handling within the context of an http application where it basically means...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/gvolpe.jpg" />
-            <p>
-          
-            by Gabriel Volpe 
-        
-        on Aug 25, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/08/07/refactoring-monads.html">Refactoring with Monads</a>
-      </h2>
-      <p>I was recently cleaning up some Scala code I’d written a few months ago when I realized I had been structuring code in a very confusing way for a very long time. At work, we’ve been trying to untangle the knots of code that get written by different authors at...</p>
-      <div class="post__meta">
-        
-        
-          
-            by Mark Tomko 
-        
-        on Aug 07, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/07/12/testing-in-the-wild.html">Testing in the wild</a>
-      </h2>
-      <p>Writing tests seems like a wonderful idea in theory but real systems can be a real pain to test. Today I want to show a few tips on how to use specs2 + ScalaCheck to make some real-world testing somewhat bearable. I am currently refactoring a big piece of code....</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/etorreborre.jpg" />
-            <p>
-          
-            by Eric Torreborre 
-        
-        on Jul 12, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/06/27/optimizing-tagless-final-2.html">Optimizing Tagless Final – Part 2 – Monadic programs</a>
-      </h2>
-      <p>In our previous post on optimizing tagless final programs we learned how we could use the sphynx library to derive some optimization schemes for your tagless final code. In case you missed it and want to read up on it, you can find it right here or you can watch...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/lukajacobowitz.jpg" />
-            <p>
-          
-            by Luka Jacobowitz 
-        
-        on Jun 27, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/06/15/typedapi.html">Typedapi or how to derive your clients and servers from types</a>
-      </h2>
-      <p>In this blog post, I will show you how to leverage Scala’s type system to derive an HTTP client function from a single type. This will also be the story of how I started to work on Typedapi which is basically the attempt to bring Haskell’s Servant to Scala. Servant...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/paulheymann.jpg" />
-            <p>
-          
-            by Paul Heymann 
-        
-        on Jun 15, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/06/07/shared-state-in-fp.html">Shared State in Functional Programming</a>
-      </h2>
-      <p>Newcomers to functional programming (FP) are often very confused about the proper way to share state without breaking purity and end up having a mix of pure and impure code that defeats the purpose of having pure FP code in the first place. This is the reason that has motivated...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/gvolpe.jpg" />
-            <p>
-          
-            by Gabriel Volpe 
-        
-        on Jun 07, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/05/09/tagless-final-streaming.html">Tagless Final algebras and Streaming</a>
-      </h2>
-      <p>There have been a couple of really nice blog posts about Tagless Final and some related topics. However, I have faced some design problems when writing some algebras and haven’t seen anybody talking about. So please let me introduce this problem to you. Algebra definition Given the following data definition:...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/gvolpe.jpg" />
-            <p>
-          
-            by Gabriel Volpe 
-        
-        on May 09, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/05/09/product-with-serializable.html">Product with Serializable</a>
-      </h2>
-      <p>A somewhat common Scala idiom is to make an abstract type extend Product with Serializable. There isn’t an obvious reason to do this, and people have asked me a number of times why I’ve done this. While I don’t think that Product or Serializable are particularly good abstractions, there’s a...</p>
-      <div class="post__meta">
-        
-        
-          
-            by Cody Allen 
-        
-        on May 09, 2018</p>
-      </div>
-    </div>
-    
-    <div class="post js-fade-in">
-      <h2>
-        <a href="/blog/2018/04/13/rethinking-monaderror.html">Rethinking MonadError</a>
-      </h2>
-      <p>MonadError is a very old type class, hackage shows me it was originally added in 2001, long before I had ever begun doing functional programming, just check the hackage page. In this blog post I’d like to rethink the way we use MonadError today. It’s usually used to signal that...</p>
-      <div class="post__meta">
-        
-        
-          
-            <img class="portrait" src="/img/media/speakers/lukajacobowitz.jpg" />
-            <p>
-          
-            by Luka Jacobowitz 
-        
-        on Apr 13, 2018</p>
-      </div>
-    </div>
-    
+    {% endfor %}
 
     <!-- Pagination links -->
     <div class="pagination js-fade-in">
-      
-      
-        <a href="/blog/2/" class="btn text next">Next</a>
-      
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path }}" class="btn text prev">Previous</a>
+      {% endif %}
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path }}" class="btn text next">Next</a>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -253,25 +53,5 @@
 
   <h4>Follow Us</h4>
   <a class="btn text" href="/blog/feed.rss">Subscribe via RSS</a>
-  <a class="btn text" href="//twitter.com/typelevel">Follow us on Twitter</a>
+  <a class="btn text" href="//twitter.com/{{ site.twitter }}">Follow us on Twitter</a>
 </div>
-
-    </div>
-
-    <div class="footer">
-      <div class="wrapper">
-        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
-        <ul class="navigation">
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-        </ul>
-      </div>
-    </div>
-    
-  <!-- Salvattore.js for the masonry layout -->
-  <script type="text/javascript" src="/js/salvattore.min.js"></script>
-  <!-- Salvattore.js for the masonry layout -->
-  </body>
-</html>

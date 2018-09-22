@@ -1,58 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Typelevel.scala | Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+---
+layout: default
+title: Home
+class: home
+---
 
-
-    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
-    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
-    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/main.css">
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
-
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
-  </head>
-  <body class="no-js  home ">
-    <div class="header">
-      <div class="wrapper">
-        <a href="/">
-          <div class="header__logo">
-            Typelevel.scala
-          </div>
-        </a>
-        <a href="#" class="header__menu">
-          Menu
-        </a>
-        <ul class="navigation" role="navigation">
-          <li >
-            <a href="/projects/">Projects</a>
-          </li>
-          <li >
-            <a href="/events/">Events</a>
-          </li>
-          <li >
-            <a href="/blog/">Blog</a>
-          </li>
-          <li >
-            <a href="/about.html">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="wrapper">
-      </div> <!-- Closing the wrapper -->
+</div> <!-- Closing the wrapper -->
 
 <div class="hero">
-  <h1>Typelevel.scala</h1>
-  <p class="hero__lead">Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
+  <h1>{{ site.name }}</h1>
+  <p class="hero__lead">{{site.description}}</p>
 </div>
 
 <div class="wrapper">
@@ -65,43 +21,20 @@
     but please check back here for future announcements about our
     community-based events.</p>
 
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
-    
-  
+  {% for event in site.events %}
+    {% if event.featured %}
+      <div class="events__event">
+        <div class="events__event-poster" style="background-image: url({{ event.poster_thumb }})"></div>
+        <h3>{{ event.title }}</h3>
+        <span class="meta">{{ event.date_string }}</span>
+        <p>
+         {{ event.description }}
+         {% if event.papers_section %}<a class="btn text" href="{{ event.url | append:'#call-for-speakers' }}">Call for Speakers</a> now open.{% endif %}
+        </p>
+        <a class="btn large center" href="{{ event.url }}">Learn More</a>
+      </div>
+    {% endif %}
+  {% endfor %}
 </div>
 
 <div class="section projects js-fade-in">
@@ -109,143 +42,27 @@
   <p>Our projects cover a wide range of domains, from general functional programming to tooling.</p>
   
   <div class="projects__container" data-columns>
-    
-      
-    
-      
-    
-      
+    {% for project in site.projects %}
+      {% if project.core %}
         <div class="projects__project expandable">
           <div class="projects__project-header">
-            <a href="https://github.com/typelevel/cats">
-              <h4><span class="ico-repo"></span>Cats</h4>
+            <a href="{{ project.github }}">
+              <h4><span class="ico-repo"></span>{{ project.title }}</h4>
             </a>
-            
-              <a class="btn pull-right" href="https://typelevel.org/cats/">More</a>
-            
+            {% if project.permalink %}
+              <a class="btn pull-right" href="{{ project.permalink }}">More</a>
+            {% endif %}
           </div>
             <div class="projects__project-body">
-              <span class="tag">Functional Programming</span>
-              <p>A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency.</p>
+              <span class="tag">{{ project.category }}</span>
+              <p>{{ project.description }}</p>
             </div>
         </div>
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-        <div class="projects__project expandable">
-          <div class="projects__project-header">
-            <a href="https://github.com/milessabin/shapeless">
-              <h4><span class="ico-repo"></span>Shapeless</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Generic Programming</span>
-              <p>Shapeless is a generic programming library. Starting with implementations of Scrap your boilerplate and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes.</p>
-            </div>
-        </div>
-      
-    
-      
-    
-      
-        <div class="projects__project expandable">
-          <div class="projects__project-header">
-            <a href="https://github.com/non/spire">
-              <h4><span class="ico-repo"></span>spire</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Numeric abstractions</span>
-              <p>Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs.</p>
-            </div>
-        </div>
-      
-    
-      
-    
-      
-    
+      {% endif %}
+    {% endfor %}
   </div>
 
   <a class="btn large center" href="/projects">More Projects</a>
 </div>
 
-<div class="section about-us js-fade-in">
-  <h2>About typelevel.scala</h2>
-  <p>These are the core goals we're striving to achieve.</p>
-
-  <dl class="about-us-dl about-us-dl--open-source">
-    <dt>Open Source</dt>
-    <dd>Independent, <a href="http://www.gnu.org/philosophy/free-sw.en.html">free/libre</a> and open-source software</dd>
-  </dl>
-
-  <dl class="about-us-dl about-us-dl--functional">
-    <dt>Functional</dt>
-    <dd>Pure, typeful, functional programming in Scala</dd>
-  </dl>
-
-  <dl class="about-us-dl about-us-dl--shared">
-    <dt>Shared</dt>
-    <dd>A desire to share ideas and code</dd>
-  </dl>
-
-  <dl class="about-us-dl about-us-dl--resources">
-    <dt>Resources</dt>
-    <dd>Accessible and idiomatic learning resources</dd>
-  </dl>
-
-  <dl class="about-us-dl about-us-dl--friendly">
-    <dt>Friendly</dt>
-    <dd>An inclusive, welcoming and safe environment</dd>
-  </dl>
-
-  <dl class="about-us-dl about-us-dl--modular">
-    <dt>Modular</dt>
-    <dd>Focused, separate modules designed to work together</dd>
-  </dl>
-</div>
-
-
-    </div>
-
-    <div class="footer">
-      <div class="wrapper">
-        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
-        <ul class="navigation">
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-        </ul>
-      </div>
-    </div>
-    
-  <!-- Salvattore.js for the masonry layout -->
-  <script type="text/javascript" src="/js/salvattore.min.js"></script>
-  <!-- Salvattore.js for the masonry layout -->
-  </body>
-</html>
+{% include principles.html %}

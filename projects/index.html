@@ -1,485 +1,72 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Typelevel.scala | Projects</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+---
+layout: default
+title: Projects
+class: projects-page
+---
 
-
-    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
-    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
-    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/main.css">
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
-
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
-  </head>
-  <body class="no-js  projects-page ">
-    <div class="header">
-      <div class="wrapper">
-        <a href="/">
-          <div class="header__logo">
-            Typelevel.scala
-          </div>
-        </a>
-        <a href="#" class="header__menu">
-          Menu
-        </a>
-        <ul class="navigation" role="navigation">
-          <li  class="active" >
-            <a href="/projects/">Projects</a>
-          </li>
-          <li >
-            <a href="/events/">Events</a>
-          </li>
-          <li >
-            <a href="/blog/">Blog</a>
-          </li>
-          <li >
-            <a href="/about.html">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="wrapper">
-      <div class="section projects-core js-fade-in">
+<div class="section projects-core js-fade-in">
   <h2>Libraries</h2>
   <p>Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
   
-  
+  {% for project in site.projects %}
     <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
+    {% if project.core %}
       <div class="projects__project expandable-core">
         <div class="projects__project-header">
-          <a href="https://github.com/typelevel/cats">
-            <h4 id="cats">
+          <a href="{{ project.github }}">
+            <h4 id="{{ project.title | slugify: 'raw' }}">
               <span class="ico-repo"></span>
-              Cats
+              {{ project.title }}
             </h4>
           </a>
-          
-            <a class="btn pull-right" href="https://typelevel.org/cats/">More</a>
-          
+          {% if project.permalink %}
+            <a class="btn pull-right" href="{{ project.permalink }}">More</a>
+          {% endif %}
         </div>
         <div class="projects__project-body">
-          <span class="tag">Functional Programming</span>
-          <p class="projects__project-body-description">A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency.</p>
-          
+          <span class="tag">{{ project.category }}</span>
+          <p class="projects__project-body-description">{{ project.description }}</p>
+          {% if project.extensions %}
           <div class="projects__project-body-extensions">
-            <p>Extensions and companions for <strong>Cats</strong></p>
+            <p>Extensions and companions for <strong>{{ project.title }}</strong></p>
             <div class="list">
-              
+              {% for extension in project.extensions %}
                 <div class="list__item">
-                  <a href="https://typelevel.org/cats-effect/">
-                    <span class="ico-repo"></span><h6>Cats-Effect</h6>
+                  <a href="{{ extension.link }}">
+                    <span class="ico-repo"></span><h6>{{ extension.title }}</h6>
                   </a>
-                  <span class="list__item-slug">The IO Monad for Scala, plus type classes for general effect types.</span>
+                  <span class="list__item-slug">{{ extension.description }}</span>
                 </div>
-              
-                <div class="list__item">
-                  <a href="https://github.com/typelevel/cats">
-                    <span class="ico-repo"></span><h6>Alleycats</h6>
-                  </a>
-                  <span class="list__item-slug">Lawless classes & illegal instances</span>
-                </div>
-              
-                <div class="list__item">
-                  <a href="https://github.com/milessabin/kittens">
-                    <span class="ico-repo"></span><h6>Kittens</h6>
-                  </a>
-                  <span class="list__item-slug">Automatic type class derivation</span>
-                </div>
-              
+              {% endfor %}
             </div>
           </div>
-          
+          {% endif %}
         </div>
       </div>
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-      <div class="projects__project expandable-core">
-        <div class="projects__project-header">
-          <a href="https://github.com/milessabin/shapeless">
-            <h4 id="shapeless">
-              <span class="ico-repo"></span>
-              Shapeless
-            </h4>
-          </a>
-          
-        </div>
-        <div class="projects__project-body">
-          <span class="tag">Generic Programming</span>
-          <p class="projects__project-body-description">Shapeless is a generic programming library. Starting with implementations of Scrap your boilerplate and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes.</p>
-          
-          <div class="projects__project-body-extensions">
-            <p>Extensions and companions for <strong>Shapeless</strong></p>
-            <div class="list">
-              
-                <div class="list__item">
-                  <a href="https://github.com/alexarchambault/argonaut-shapeless">
-                    <span class="ico-repo"></span><h6>argonaut-shapeless</h6>
-                  </a>
-                  <span class="list__item-slug">Automatic derivation for argonaut</span>
-                </div>
-              
-                <div class="list__item">
-                  <a href="https://github.com/alexarchambault/scalacheck-shapeless">
-                    <span class="ico-repo"></span><h6>scalacheck-shapeless</h6>
-                  </a>
-                  <span class="list__item-slug">Automatic derivation for ScalaCheck</span>
-                </div>
-              
-                <div class="list__item">
-                  <a href="https://github.com/typelevel/shapeless-contrib">
-                    <span class="ico-repo"></span><h6>shapeless-contrib</h6>
-                  </a>
-                  <span class="list__item-slug">Various bindings for third-party libraries</span>
-                </div>
-              
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-      <div class="projects__project expandable-core">
-        <div class="projects__project-header">
-          <a href="https://github.com/non/spire">
-            <h4 id="spire">
-              <span class="ico-repo"></span>
-              spire
-            </h4>
-          </a>
-          
-        </div>
-        <div class="projects__project-body">
-          <span class="tag">Numeric abstractions</span>
-          <p class="projects__project-body-description">Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs.</p>
-          
-        </div>
-      </div>
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
-    <!-- Core Projects / Featured (have the option core: true) -->
-    
-  
+    {% endif %}
+  {% endfor %}
 </div>
 
 <div class="section projects">
   <div class="projects__container" data-columns>
-    
-      
+    {% for project in site.projects %}
+      {% unless project.core %}
         <div class="projects__project expandable js-fade-in">
           <div class="projects__project-header">
-            <a href="https://github.com/non/algebra">
-              <h4 id="algebra"><span class="ico-repo"></span>algebra</h4>
+            <a href="{{ project.github }}">
+              <h4 id="{{ project.title | slugify: 'raw' }}"><span class="ico-repo"></span>{{ project.title }}</h4>
             </a>
-            
+            {% if project.permalink %}
+              <a class="btn pull-right" href="{{ project.permalink }}">More</a>
+            {% endif %}
           </div>
             <div class="projects__project-body">
-              <span class="tag">Basic type classes</span>
-              <p>A solid foundation of basic algebra type classes such as groups and rings aiming to serve as a consistent foundation for multiple libraries.</p>
+              <span class="tag">{{ project.category }}</span>
+              <p>{{ project.description }}</p>
             </div>
         </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/typelevel/catalysts">
-              <h4 id="catalysts"><span class="ico-repo"></span>catalysts</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Project building blocks</span>
-              <p>A small library of building blocks to help build platform independent Scala projects with SBT.</p>
-            </div>
-        </div>
-      
-    
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/travisbrown/circe">
-              <h4 id="circe"><span class="ico-repo"></span>circe</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Principled JSON processing</span>
-              <p>Yet another JSON library for Scala which integrates with cats, shapeless and Monocle.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/typelevel/discipline">
-              <h4 id="discipline"><span class="ico-repo"></span>discipline</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Flexible law checking</span>
-              <p>Originally intended for internal use in spire, this library helps libraries declaring type classes to precisely state the laws which instances need to satisfy, and takes care of not checking derived laws multiple times.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/tpolecat/doobie">
-              <h4 id="doobie"><span class="ico-repo"></span>doobie</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Principled database access</span>
-              <p>A pure functional JDBC layer for Scala. It is not an ORM, nor is it a relational algebra; it just provides a principled way to construct programs (and higher-level libraries) that use JDBC.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/atnos-org/eff">
-              <h4 id="eff"><span class="ico-repo"></span>eff</h4>
-            </a>
-            
-              <a class="btn pull-right" href="http://atnos-org.github.io/eff">More</a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">effects</span>
-              <p>Extensible effects are an alternative to monad transformers for computing with effects in a functional way. This library is based on the “free-er” monad and an “open union” of effects described by Oleg Kiselyov in “Freer monads, more extensible effects”</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/typelevel/frameless">
-              <h4 id="frameless"><span class="ico-repo"></span>Frameless</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Typeful Spark</span>
-              <p>Frameless is a library for working with Spark using more expressive types.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/monix/monix">
-              <h4 id="monix"><span class="ico-repo"></span>Monix</h4>
-            </a>
-            
-              <a class="btn pull-right" href="https://monix.io">More</a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Asynchronous, Reactive Programming</span>
-              <p>High-performance library for composing asynchronous, event-based programs, exposing a Reactive Streams implementation along with primitives for dealing with concurrency and side-effects.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/julien-truffaut/Monocle">
-              <h4 id="monocle"><span class="ico-repo"></span>Monocle</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Lenses for Scala</span>
-              <p>Strongly inspired by Haskell's lens library, Monocle is an Optics library where Optics gather the concepts of Lens, Traversal, Optional, Prism and Iso.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/fthomas/refined">
-              <h4 id="refined"><span class="ico-repo"></span>refined</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Constraints on types</span>
-              <p>Tools for refining types with type-level predicates which constrain the set of values described by the refined type, for example restricting to positive or negative numbers.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/typelevel/scala">
-              <h4 id="scala"><span class="ico-repo"></span>Scala</h4>
-            </a>
-            
-              <a class="btn pull-right" href="https://typelevel.org/scala/">More</a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Our fork of the Scala compiler</span>
-              <p>We wish to work with all stakeholders in the Scala ecosystem to safeguard the interests of the entire Scala community.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/rickynils/scalacheck">
-              <h4 id="scalacheck"><span class="ico-repo"></span>ScalaCheck</h4>
-            </a>
-            
-              <a class="btn pull-right" href="http://scalacheck.org/">More</a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Property checking</span>
-              <p>ScalaCheck is a library for automated property-based testing. It contains generators for randomized test data and combinators for properties.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/scodec/scodec">
-              <h4 id="scodec"><span class="ico-repo"></span>scodec</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Binary serialization</span>
-              <p>scodec is a combinator library for working with binary data. It focuses on contract-first and pure functional encoding and decoding of binary data and provides integration into scalaz and shapeless.</p>
-            </div>
-        </div>
-      
-    
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/etorreborre/specs2">
-              <h4 id="specs2"><span class="ico-repo"></span>specs2</h4>
-            </a>
-            
-              <a class="btn pull-right" href="http://specs2.org/">More</a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Expressive specifications</span>
-              <p>specs2 is a library for writing executable software specifications, aiming for conciseness, readability and extensibility.</p>
-            </div>
-        </div>
-      
-    
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/mpilquist/structures">
-              <h4 id="structures"><span class="ico-repo"></span>structures</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Functional type classes</span>
-              <p>Zero-dependency Scala library that defines commonly used type classes for functional programming.</p>
-            </div>
-        </div>
-      
-    
-      
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="https://github.com/tpolecat/tut">
-              <h4 id="tut"><span class="ico-repo"></span>tut</h4>
-            </a>
-            
-          </div>
-            <div class="projects__project-body">
-              <span class="tag">Checked documentation</span>
-              <p>A very simple documentation tool for Scala that reads Markdown files and interprets Scala code in tut sheds, allowing you to write documentation that is typechecked and run as part of your build.</p>
-            </div>
-        </div>
-      
-    
+      {% endunless %}
+    {% endfor %}
   </div>
 </div>
 
@@ -491,168 +78,14 @@
     <div class="projects__project-body">
       <span class="tag">Newly joined projects</span>
       <div class="list">
-        
-          <div id="banana-rdf" class="list__item">
-            <a href="https://github.com/banana-rdf/banana-rdf">
-              <span class="ico-repo"></span><h6>banana-rdf</h6>
+        {% for incubator in site.data.incubator %}
+          <div id="{{ incubator.title | slugify: 'raw' }}" class="list__item">
+            <a href="{{ incubator.github }}">
+              <span class="ico-repo"></span><h6>{{ incubator.title }}</h6>
             </a>
-            <span class="list__item-slug">RDF, SPARQL and Linked Data technologies</span>
+            <span class="list__item-slug">{{ incubator.description }}</span>
           </div>
-        
-          <div id="cats-scalatest" class="list__item">
-            <a href="https://github.com/IronCoreLabs/cats-scalatest">
-              <span class="ico-repo"></span><h6>cats-scalatest</h6>
-            </a>
-            <span class="list__item-slug">Scalatest bindings for Cats.</span>
-          </div>
-        
-          <div id="extruder" class="list__item">
-            <a href="https://github.com/janstenpickle/extruder">
-              <span class="ico-repo"></span><h6>Extruder</h6>
-            </a>
-            <span class="list__item-slug">Populate case classes from any configuration source</span>
-          </div>
-        
-          <div id="fetch" class="list__item">
-            <a href="https://github.com/47deg/fetch">
-              <span class="ico-repo"></span><h6>Fetch</h6>
-            </a>
-            <span class="list__item-slug">Library built on top of Cats that provides efficient data access from heterogeneous datasources</span>
-          </div>
-        
-          <div id="finch" class="list__item">
-            <a href="https://github.com/finagle/finch">
-              <span class="ico-repo"></span><h6>Finch</h6>
-            </a>
-            <span class="list__item-slug">Purely functional basic blocks atop of Finagle for building composable HTTP APIs</span>
-          </div>
-        
-          <div id="http4s" class="list__item">
-            <a href="https://github.com/http4s/http4s">
-              <span class="ico-repo"></span><h6>http4s</h6>
-            </a>
-            <span class="list__item-slug">A typeful, purely functional HTTP library for client and server applications</span>
-          </div>
-        
-          <div id="mainecoon" class="list__item">
-            <a href="https://github.com/kailuowang/mainecoon">
-              <span class="ico-repo"></span><h6>Mainecoon</h6>
-            </a>
-            <span class="list__item-slug">A library for transforming and composing tagless final algebras</span>
-          </div>
-        
-          <div id="mouse" class="list__item">
-            <a href="https://github.com/typelevel/mouse">
-              <span class="ico-repo"></span><h6>Mouse</h6>
-            </a>
-            <span class="list__item-slug">Small companion library to cats providing enrichments to std lib classes to ease functional programming and/or ease source compatibility with scalaz</span>
-          </div>
-        
-          <div id="outwatch" class="list__item">
-            <a href="https://github.com/OutWatch/outwatch">
-              <span class="ico-repo"></span><h6>OutWatch</h6>
-            </a>
-            <span class="list__item-slug">A functional and reactive UI framework for more predictable code</span>
-          </div>
-        
-          <div id="scala-exercises" class="list__item">
-            <a href="https://github.com/scala-exercises/scala-exercises">
-              <span class="ico-repo"></span><h6>Scala Exercises</h6>
-            </a>
-            <span class="list__item-slug">Platform and framework for Scala devs to learn about Scala libraries</span>
-          </div>
-        
-          <div id="scoverage" class="list__item">
-            <a href="https://github.com/scoverage/scalac-scoverage-plugin">
-              <span class="ico-repo"></span><h6>Scoverage</h6>
-            </a>
-            <span class="list__item-slug">Code coverage tool for Scala</span>
-          </div>
-        
-          <div id="squants" class="list__item">
-            <a href="https://github.com/garyKeorkunian/squants">
-              <span class="ico-repo"></span><h6>Squants</h6>
-            </a>
-            <span class="list__item-slug">The Scala API for Quantities, Units of Measure and Dimensional Analysis</span>
-          </div>
-        
-          <div id="twotails" class="list__item">
-            <a href="https://github.com/wheaties/TwoTails">
-              <span class="ico-repo"></span><h6>TwoTails</h6>
-            </a>
-            <span class="list__item-slug">A compiler plugin adding support for mutual tail recursion</span>
-          </div>
-        
-          <div id="libisabelle" class="list__item">
-            <a href="https://github.com/larsrh/libisabelle">
-              <span class="ico-repo"></span><h6>libisabelle</h6>
-            </a>
-            <span class="list__item-slug">A Scala library which talks to Isabelle</span>
-          </div>
-        
-          <div id="singleton-ops" class="list__item">
-            <a href="https://github.com/fthomas/singleton-ops">
-              <span class="ico-repo"></span><h6>singleton-ops</h6>
-            </a>
-            <span class="list__item-slug">Operations for primitive and String singleton types</span>
-          </div>
-        
-          <div id="pureconfig" class="list__item">
-            <a href="https://github.com/pureconfig/pureconfig">
-              <span class="ico-repo"></span><h6>PureConfig</h6>
-            </a>
-            <span class="list__item-slug">A boilerplate-free library for loading configuration files</span>
-          </div>
-        
-          <div id="case-classy" class="list__item">
-            <a href="https://github.com/47deg/case-classy">
-              <span class="ico-repo"></span><h6>Case Classy</h6>
-            </a>
-            <span class="list__item-slug">Data decoding and validation to make configuration easy</span>
-          </div>
-        
-          <div id="hammock" class="list__item">
-            <a href="https://github.com/pepegar/hammock">
-              <span class="ico-repo"></span><h6>Hammock</h6>
-            </a>
-            <span class="list__item-slug">Purely functional HTTP client</span>
-          </div>
-        
-          <div id="libra" class="list__item">
-            <a href="https://github.com/to-ithaca/libra">
-              <span class="ico-repo"></span><h6>Libra</h6>
-            </a>
-            <span class="list__item-slug">Compile time dimensional analysis for any problem domain</span>
-          </div>
-        
-          <div id="sonic" class="list__item">
-            <a href="https://github.com/melrief/sonic">
-              <span class="ico-repo"></span><h6>sonic</h6>
-            </a>
-            <span class="list__item-slug">Property-based testing with integrated shrinking</span>
-          </div>
-        
-          <div id="coulomb" class="list__item">
-            <a href="https://github.com/erikerlandson/coulomb">
-              <span class="ico-repo"></span><h6>coulomb</h6>
-            </a>
-            <span class="list__item-slug">A statically typed unit analysis library for Scala</span>
-          </div>
-        
-          <div id="ciris" class="list__item">
-            <a href="https://github.com/vlovgr/ciris">
-              <span class="ico-repo"></span><h6>Ciris</h6>
-            </a>
-            <span class="list__item-slug">Lightweight, extensible, and validated configuration loading in Scala</span>
-          </div>
-        
-          <div id="decline" class="list__item">
-            <a href="https://github.com/bkirwi/decline">
-              <span class="ico-repo"></span><h6>decline</h6>
-            </a>
-            <span class="list__item-slug">A composable command-line parser for Scala</span>
-          </div>
-        
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -666,77 +99,15 @@
     <div class="projects__project-body">
       <span class="tag">Extending the language</span>
       <div class="list">
-        
-          <div id="export-hook" class="list__item">
-            <a href="https://github.com/milessabin/export-hook">
-              <span class="ico-repo"></span><h6>export-hook</h6>
+        {% for macro in site.data.macros %}
+          <div id="{{ macro.title | slugify: 'raw' }}" class="list__item">
+            <a href="{{ macro.github }}">
+              <span class="ico-repo"></span><h6>{{ macro.title }}</h6>
             </a>
-            <span class="list__item-slug">Support for expanding implicit scope</span>
+            <span class="list__item-slug">{{ macro.description }}</span>
           </div>
-        
-          <div id="imp" class="list__item">
-            <a href="https://github.com/non/imp">
-              <span class="ico-repo"></span><h6>imp</h6>
-            </a>
-            <span class="list__item-slug">Summoning implicit values</span>
-          </div>
-        
-          <div id="kind-projector" class="list__item">
-            <a href="https://github.com/non/kind-projector">
-              <span class="ico-repo"></span><h6>kind-projector</h6>
-            </a>
-            <span class="list__item-slug">Plugin for nicer type-lambda syntax</span>
-          </div>
-        
-          <div id="local-implicits" class="list__item">
-            <a href="https://github.com/mpilquist/local-implicits">
-              <span class="ico-repo"></span><h6>local-implicits</h6>
-            </a>
-            <span class="list__item-slug">Plugin for locally-scoped implicit values</span>
-          </div>
-        
-          <div id="machinist" class="list__item">
-            <a href="https://github.com/typelevel/machinist">
-              <span class="ico-repo"></span><h6>machinist</h6>
-            </a>
-            <span class="list__item-slug">Zero-cost operator enrichment</span>
-          </div>
-        
-          <div id="macro-compat" class="list__item">
-            <a href="https://github.com/milessabin/macro-compat">
-              <span class="ico-repo"></span><h6>macro-compat</h6>
-            </a>
-            <span class="list__item-slug">Cross-version macro support</span>
-          </div>
-        
-          <div id="simulacrum" class="list__item">
-            <a href="https://github.com/mpilquist/simulacrum">
-              <span class="ico-repo"></span><h6>simulacrum</h6>
-            </a>
-            <span class="list__item-slug">First-class syntax for type classes</span>
-          </div>
-        
+        {% endfor %}
       </div>
     </div>
   </div>
 </div>
-
-    </div>
-
-    <div class="footer">
-      <div class="wrapper">
-        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
-        <ul class="navigation">
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-        </ul>
-      </div>
-    </div>
-    
-  <!-- Salvattore.js for the masonry layout -->
-  <script type="text/javascript" src="/js/salvattore.min.js"></script>
-  <!-- Salvattore.js for the masonry layout -->
-  </body>
-</html>
