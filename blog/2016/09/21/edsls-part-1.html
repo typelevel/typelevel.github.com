@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | It's programs all the way down</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>It's programs all the way down</h2>
+
+  <p><em>This is the first of a series of articles on “Monadic EDSLs in Scala.”</em></p>
+
+<p>Embedded domain specific languages (EDSLs) are a powerful tool for
+abstracting complexities such as effects and business logic from our
+programs. Instead of mixing ad-hoc error handling, database access, and web
+calls through our code, we isolate each domain into a little language. These
+little languages can then be used to write “mini-programs” describing, for
+example, how to create a web page for a user.</p>
+
+<p>Our program then becomes a composition of mini-programs, and running our
+program becomes interpreting these mini-programs into actions. This is
+analogous to running an interpreter, itself a program, which turns code
+into actions.</p>
+
+<p>The following illustrates what an EDSL might look like in Scala.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// An embedded program for fetching data for a user
+</span><span class="k">def</span> <span class="n">process</span><span class="o">(</span><span class="n">id</span><span class="k">:</span> <span class="kt">UserId</span><span class="o">)</span><span class="k">:</span> <span class="kt">Program</span><span class="o">[</span><span class="kt">Page</span><span class="o">]</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">bio</span>  <span class="k">&lt;-</span> <span class="n">getBio</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+  <span class="n">feed</span> <span class="k">&lt;-</span> <span class="n">getFeed</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+  <span class="n">page</span> <span class="k">&lt;-</span> <span class="n">createPage</span><span class="o">(</span><span class="n">bio</span><span class="o">,</span> <span class="n">feed</span><span class="o">)</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">page</span>
+
+<span class="k">def</span> <span class="n">interpretProgram</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">page</span><span class="k">:</span> <span class="kt">Program</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">page</span><span class="o">.</span><span class="n">interpret</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">GetBio</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>            <span class="k">=&gt;</span> <span class="o">...</span>
+  <span class="k">case</span> <span class="nc">GetFeed</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>           <span class="k">=&gt;</span> <span class="o">...</span>
+  <span class="k">case</span> <span class="nc">CreatePage</span><span class="o">(</span><span class="n">bio</span><span class="o">,</span> <span class="n">feed</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here <code class="highlighter-rouge">process</code> defines a program in our embedded language.
+No action has actually been performed yet, that happens when it gets
+interpreted by <code class="highlighter-rouge">interpretProgram</code> and run at runtime.</p>
+
+<p>In many situations a program in one EDSL is translated into another EDSL,
+much like a compiler (again another program).</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Translate each term of the program into a database call
+</span><span class="k">def</span> <span class="n">compile</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">program</span><span class="k">:</span> <span class="kt">Program</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Database</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">program</span><span class="o">.</span><span class="n">interpret</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">GetBio</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>            <span class="k">=&gt;</span> <span class="o">...</span>
+  <span class="k">case</span> <span class="nc">GetFeed</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>           <span class="k">=&gt;</span> <span class="o">...</span>
+  <span class="k">case</span> <span class="nc">CreatePage</span><span class="o">(</span><span class="n">bio</span><span class="o">,</span> <span class="n">feed</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">...</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">interpretDatabase</span><span class="o">(</span><span class="n">db</span><span class="k">:</span> <span class="kt">Database</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">db</span><span class="o">.</span><span class="n">interpret</span> <span class="o">{</span> <span class="o">...</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Sometimes you can even optimize programs in an EDSL, much like an optimizing
+compiler. In the above example, <code class="highlighter-rouge">interpretDatabase</code> could deduplicate identical
+requests and batch requests to the same table.</p>
+
+<p>In this series of articles we will explore a couple approaches to embedding
+such DSLs in Scala. These techniques will be evaluated against the following
+axes:</p>
+
+<ul>
+  <li>
+    <p>Abstraction: Separation of <strong>structure</strong> from <strong>interpretation</strong>. Programs
+describe only the structure of a computation, to be interpreted later on.
+A common use case is to have a live interpreter that queries databases and
+API endpoints and a test interpreter that works with in-memory stores.</p>
+  </li>
+  <li>
+    <p>Composition: Given two or more EDSLs, how simple is it to compose them?
+Given EDSLs for database access and RPC, can we query for data and send
+it over the wire while maintaining the abstraction requirement?</p>
+  </li>
+  <li>
+    <p>Performance: At the end of the day we must run our programs and therefore
+interpret our mini-programs. How EDSLs are encoded will affect
+how they perform and therefore affect any downstream consumers of our
+programs, be it other programs or end users.</p>
+  </li>
+</ul>
+
+<p>In the <a href="/blog/2016/10/26/edsls-part-2.html">next post</a> we’ll take a look
+at the first of these approaches.</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/adelbertchang.jpeg" />
+      
+      <p>by Adelbert Chang
+    
+    on Sep 21, 2016</p>
+
+    
+  <a href="https://twitter.com/adelbertchang" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @adelbertchang</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/adelbertc" aria-label="Follow @adelbertc on GitHub">Follow @adelbertc</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

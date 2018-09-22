@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Type projection isn't that specific</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Type projection isn't that specific</h2>
+
+  <p><em>This is the fourth of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+<a href="/blog/2015/07/13/type-members-parameters.html">start at the beginning</a>,
+which introduces code we refer to throughout this article without
+further ado.</em></p>
+
+<p>In the absence of the <code class="highlighter-rouge">Aux</code> trick presented at the end of
+<a href="/blog/2015/07/19/forget-refinement-aux.html#why-t0-what%E2%80%99s-aux">the previous article</a>,
+the continuous use of structural refinement to accomplish basic tasks
+admittedly imposes a high cognitive load.  That is to say, it’s a lot
+of work to say something that ought to be very simple.</p>
+
+<p>Some people go looking for a solution, and find something that almost
+seems to make sense:
+<a href="http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#type-projection">type projection</a>,
+or <code class="highlighter-rouge">MList#T</code> in terms of
+<a href="/blog/2015/07/13/type-members-parameters.html#two-lists-all-alike">our ongoing example</a>.
+But <strong>type projection is, in almost all cases, too vague to really
+solve problems you have using type members</strong>.</p>
+
+<h2 id="a-good-reason-to-use-type-members">A good reason to use type members</h2>
+
+<p>Let’s see a simple example.  Here’s a sort of “value emitter”, that
+operates in the space of some state, emitting a new value with each
+step.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">S</span>
+  <span class="k">def</span> <span class="n">init</span><span class="k">:</span> <span class="kt">S</span>            <span class="c1">// create the initial state
+</span>  <span class="k">def</span> <span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">S</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">S</span><span class="o">)</span> <span class="c1">// emit a value, and update state
+</span><span class="o">}</span>
+
+<span class="k">object</span> <span class="nc">StSource</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">S0</span><span class="o">]</span> <span class="k">=</span> <span class="nc">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span><span class="k">type</span> <span class="kt">S</span> <span class="o">=</span> <span class="n">S0</span><span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">apply</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">S0</span><span class="o">](</span><span class="n">i</span><span class="k">:</span> <span class="kt">S0</span><span class="o">)(</span><span class="n">f</span><span class="k">:</span> <span class="kt">S0</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">A</span><span class="o">,</span> <span class="n">S0</span><span class="o">))</span><span class="k">:</span> <span class="kt">Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">S0</span><span class="o">]</span> <span class="k">=</span>
+    <span class="k">new</span> <span class="nc">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+      <span class="k">type</span> <span class="kt">S</span> <span class="o">=</span> <span class="n">S0</span>
+      <span class="k">def</span> <span class="n">init</span> <span class="k">=</span> <span class="n">i</span>
+      <span class="k">def</span> <span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">S0</span><span class="o">)</span> <span class="k">=</span> <span class="n">f</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Unlike <code class="highlighter-rouge">MList</code>, there are actually good reasons to use type members
+for the “state” in this sort of type definition; i.e. there are
+reasonable designs in which you want to use member <code class="highlighter-rouge">S</code> existentially.
+Thus, depending on how we intend to use it, it seems to meet our first
+rule of thumb about when to use type members, as described in
+<a href="/blog/2015/07/13/type-members-parameters.html#when-is-existential-ok">the first article of this series</a>.</p>
+
+<h2 id="a-failed-attempt-at-simplified-emitting">A failed attempt at simplified emitting</h2>
+
+<p>So, under this theory, you’ve got some values of type <code class="highlighter-rouge">StSource[A]</code>
+lying around.  And you want a simple function to take a source and its
+state, and return the “next” value and the new state.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">runStSource</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">ss</span><span class="k">:</span> <span class="kt">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">s</span><span class="k">:</span> <span class="kt">??</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">??</span><span class="o">)</span> <span class="k">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>But what do you put where the <code class="highlighter-rouge">??</code> is?  The surprising guess is often
+<code class="highlighter-rouge">StSource[A]#S</code>.  After all, it means “the <code class="highlighter-rouge">StSource</code>’s <code class="highlighter-rouge">S</code>”, and
+we’re trying to talk about an <code class="highlighter-rouge">StSource</code>’s <code class="highlighter-rouge">S</code>, right?</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">runStSource</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">ss</span><span class="k">:</span> <span class="kt">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">s</span><span class="k">:</span> <span class="kt">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">#</span><span class="n">S</span><span class="o">)</span>
+  <span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">#</span><span class="n">S</span><span class="o">)</span> <span class="k">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+
+<span class="nc">TmTp4</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">22</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">s.</span><span class="k">type</span> <span class="o">(</span><span class="kt">with</span> <span class="kt">underlying</span> <span class="k">type</span> <span class="kt">tmtp4.StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">#</span><span class="kt">S</span><span class="o">)</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">ss.S</span>
+  <span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">StSource</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">#</span><span class="n">S</span><span class="o">)</span> <span class="k">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+                                 <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Setting aside that it won’t compile with the above signature—the usual
+outcome of experiments with type projection, that the types aren’t
+strong enough to be workable without cheating by casting—the reality
+<em>sounds</em> so close to the above that it is understandable that type
+projection is often confused with something useful.</p>
+
+<div class="side-note">
+  There <em>are</em> uses for type projection.  But they are so rare, so
+  exotic (they look
+  <a href="https://github.com/scalaz/scalaz/blob/bdd6d5653313b10af08efdc6884cbbefe41051a2/core/src/main/scala/scalaz/Unapply.scala#L404-L409">like this</a>),
+  and even the legitimate ones better off rewritten to avoid them,
+  that the safer assumption is that you’ve gone down the wrong path if
+  you’re trying to use them at all.  My suggestion can usually be
+  phrased something like “move it to a companion object”.
+</div>
+
+<p>In reality, <code class="highlighter-rouge">StSource[A]#S</code> means <em>some</em> <code class="highlighter-rouge">StSource</code>’s <code class="highlighter-rouge">S</code>.  Not the
+one you gave, just any particular one.  It’s the supertype of all
+possible <code class="highlighter-rouge">S</code> choices.  So, the failure of the above signature is like
+the failure of <code class="highlighter-rouge">mdropFirstE</code> from
+<a href="/blog/2015/07/16/method-equiv.html#when-are-two-methods-less-alike">the second post of this series</a>:
+a failure to relate types strongly enough.  The problem with
+<code class="highlighter-rouge">mdropFirstE</code> was failure to relate the result type to argument type,
+whereas the problem with <code class="highlighter-rouge">runStSource</code> is to fail to relate the two
+arguments’ types to each other.</p>
+
+<h2 id="type-parameters-see-existentially">Type parameters see existentially</h2>
+
+<p>As with <code class="highlighter-rouge">mdropFirstE</code>, one correct solution here is, again, lifting the
+member to a method type parameter.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">runStSource</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">S</span><span class="o">](</span><span class="n">ss</span><span class="k">:</span> <span class="kt">StSource.Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">S</span><span class="o">],</span> <span class="n">s</span><span class="k">:</span> <span class="kt">S</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">S</span><span class="o">)</span> <span class="k">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">emit</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>The surprising feature of this sort of signature is that it can be
+invoked on <code class="highlighter-rouge">ss</code> arguments of type <code class="highlighter-rouge">StSource[A]</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scala&gt; val ss: StSource[Int] = StSource(0){i: Int =&gt; (i, i)}
+ss: tmtp4.StSource[Int] = tmtp4.StSource$$anon$1@300b5011
+
+scala&gt; runStSource(ss, ss.init)
+res0: (Int, ss.S) = (0,0)
+</code></pre></div></div>
+
+<p>In other words, <strong>methods can assign names to unspecified, existential
+type members</strong>.  So even though we have a value whose type doesn’t
+refine <code class="highlighter-rouge">S</code>, Scala still infers this type as the <code class="highlighter-rouge">S</code> argument to pass
+to <code class="highlighter-rouge">runStSource</code>.</p>
+
+<p>By analogy with type parameters, though, this isn’t too surprising.
+<a href="/blog/2015/07/16/method-equiv.html">We’ve already seen</a>
+that <code class="highlighter-rouge">copyToZeroE</code> inferred its argument’s existential parameter to
+pass along to the named parameter to <code class="highlighter-rouge">copyToZeroP</code>, in the second part
+of this series.  We even saw it apply directly to type members when
+<code class="highlighter-rouge">mdropFirstE</code> was able to invoke <code class="highlighter-rouge">mdropFirstT</code>.  However, for whatever
+reason, we’re used to existential parameters being able to do this;
+even Java manages the task.  But it just seems <em>odder</em> that merely
+calling a method can create a whole refinement <code class="highlighter-rouge">{...}</code> raincloud, from
+scratch, filling in the blanks with sensible types along the way.</p>
+
+<p>It’s completely sound, though.  An <code class="highlighter-rouge">StSource</code> [that exists as a value]
+<em>must</em> have an <code class="highlighter-rouge">S</code>, even if we existentialized it away.  So, as with
+<code class="highlighter-rouge">_</code>s, let’s just give it a name to pass as the inferred type
+parameter.  It makes a whole lot more sense than supposing
+<code class="highlighter-rouge">StSource[A]#S</code> will just do what I mean.</p>
+
+<p>In a future post, we’ll use this “infer the whole refinement” feature
+to demonstrate that some of the most magical-seeming Scala type system
+features aren’t really so magical.  But before we get to that, we need
+to see just why existentials are anything but “wildcards”, and why it
+doesn’t <em>always</em> make sense to be able to lift existentials like <code class="highlighter-rouge">S</code>
+to type parameters.  That’s coming in
+<a href="/blog/2015/07/27/nested-existentials.html">the next post, “Nested existentials”</a>.</p>
+
+<p><em>This article was tested with Scala 2.11.7.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Jul 23, 2015</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Berlin Summit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li  class="active" >
+            <a href="/events/">Events</a>
+          </li>
+          <li >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      </div> <!-- close wrapper -->
+
+<div class="event__hero" style="background-image: url(/img/media/berlin.jpg);">
+  <div class="wrapper">
+    <div class="event__header js-fade-in">
+      <div class="wrapper">
+        <p>Berlin Summit</p>
+        <ul class="navigation">
+          <li><a href="#about">About the event</a></li>
+          
+          
+            <li><a href="#speakers-and-schedule">Speakers and Schedule</a></li>
+          
+          
+          
+          
+            <li><a href="#sponsors">Sponsors</a></li>
+          
+        </ul>
+      </div>
+    </div>
+    <h1 class="js-fade-in">Typelevel Summit Berlin</h1>
+    <p class="hero__lead js-fade-in">
+      <strong>May 18, 2018</strong>
+      at Zalando, Zeughofstraße 1, Berlin
+    </p>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="content content-small js-fade-in" id="about">
+    <h2 id="about-the-summit">About the Summit</h2>
+
+<p>The sixth Typelevel Summit will once again happen after <strong>the</strong> Scala conference: <a href="https://eu.scaladays.org/">Scala Days</a>, in the same city!</p>
+
+<p>The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
+Whilst many of the Typelevel projects use somewhat “advanced” Scala, they are a lot more approachable than many people think, and a major part of Typelevel’s mission is to make the ideas they embody much more widely accessible.
+If you’re interested in types and pure functional programming we’d love to see you here!</p>
+
+<p>This is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the <a href="/conduct.html">Typelevel Code of Conduct</a>.</p>
+
+<p>Special thanks go to <a href="https://jobs.zalando.com/tech/?utm_source=typelevel&amp;utm_medium=event-page-organic-b&amp;utm_campaign=2018-css&amp;utm_content=01-typelevel-summit">Zalando</a> who kindly provide the venue.</p>
+
+<h2 id="speakers-and-schedule">Speakers and Schedule</h2>
+
+<table class="schedule">
+  <tr>
+    <th>Time</th>
+    <th>Talk</th>
+  </tr>
+
+  
+    
+      <tr>
+        <td>8:15</td>
+        <td>
+          <h5>Registration</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:00</td>
+        <td>
+          <h5>Opening Remarks</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:05</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/annettebieniusa.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Keynote: Just the right kind of Consistency!</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Annette Bieniusa</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            You need a data store that allows for high throughput and availability, while supporting consistency patterns referential integrity, numerical invariants, or atomic updates? Current designs for data storage forces application developers to decide ...
+          </p>
+          <span class="btn text js-open-popup" data-id="keynote-just-the-right-kind-of-consistency">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:00</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:20</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/itamarravid.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>A Fistful of Functors</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Itamar Ravid</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Functors show up everywhere in our day-to-day programming. They're so common, we take them for granted - especially in typed functional programming. Beside being common, they're incredibly useful for code reuse. However, functors have several rela...
+          </p>
+          <span class="btn text js-open-popup" data-id="a-fistful-of-functors">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:55</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alexandrunedelcu.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Cancelable IO</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Alexandru Nedelcu</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Task / IO data types have been ported in Scala, inspired by Haskell's monadic IO and are surging in popularity due to the need in functional programming for referential transparency, but also because controlling side effects by means of lawful, FP...
+          </p>
+          <span class="btn text js-open-popup" data-id="cancelable-io">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:30</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:50</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/guillaumebort.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Legacy Engineering: Making Criteo Functional</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Guillaume Bort</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Criteo uses a lot of Scala in its code-base. Historically for big data stuff using the usual suspects Spark &amp; Scalding, but more and more for application development. A few Typelevel projects started to appear in our code base as developers starte...
+          </p>
+          <span class="btn text js-open-popup" data-id="legacy-engineering-making-criteo-functional">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>12:10</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Introducing namespaces into SQL result sets using nested structural types</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Keiko Nakata</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Many modern programming languages support decent namespaces. Namespaces are commonly structured hierarchies.  We bring this power to a database query language, using nested structural types.
+
+For this purpose, we hijack table aliases: given a tabl...
+          </p>
+          <span class="btn text js-open-popup" data-id="introducing-namespaces-into-sql-result-sets-using-nested-structural-types">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>12:45</td>
+        <td>
+          <h5>Lunch Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:15</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/sasharomijn.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Healthy Minds in a Healthy Community</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Sasha Romijn</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Open source communities attract and boast passionate, idealistic people, and many of us invest copious amounts of time and effort to contribute to our projects and support our communities. This underlying emotional attachment can make us more vuln...
+          </p>
+          <span class="btn text js-open-popup" data-id="healthy-minds-in-a-healthy-community">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:50</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/paulheymann.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Typedapi: Define your API on the type level</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Paul Heymann</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Have you ever thought “I really like Haskell’s Servant. Why don’t we have something like that in Scala?” or “Why can't I just define my APIs as types and Scala does the heavy lifting?”? If so, this talk is made for you.
+
+I will tell you a short st...
+          </p>
+          <span class="btn text js-open-popup" data-id="typedapi-define-your-api-on-the-type-level">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:10</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:30</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/cameronjoannidis.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>An Intuitive Guide to Combining Free Monad and Free Applicative</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Cameron Joannidis</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            The usage of Free Monads is becoming more well understood, however the lesser known Free Applicative is still somewhat of a mystery to the average Scala developer. In this talk I will explain how you can combine the power of both these constructs ...
+          </p>
+          <span class="btn text js-open-popup" data-id="an-intuitive-guide-to-combining-free-monad-and-free-applicative">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:05</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Laws for Free</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Alistair Johnson</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Everyone that uses a functional programming library like cats is aware of the methods that each type class adds and also the properties that the methods need to abide by. But in practice, the properties are not always proved, rather testing that t...
+          </p>
+          <span class="btn text js-open-popup" data-id="laws-for-free">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:25</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:45</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/jonpretty.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Lifting Data Structures to the Type-level</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Jon Pretty</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            In this talk, I will give a fast-paced tour of how various features of the Scala type system, many of them under-explored, can be harnessed to construct type-level representations of a number of different datatypes in Scala. The type system offers...
+          </p>
+          <span class="btn text js-open-popup" data-id="lifting-data-structures-to-the-type-level">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>17:20</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/stefanschneider.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Non-academic functional Workflows</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Stefan Schneider</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs. We started with the idea of having a possibility to combine the multiple unconnected tool...
+          </p>
+          <span class="btn text js-open-popup" data-id="non-academic-functional-workflows">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>17:40</td>
+        <td>
+          <h5>Closing Remarks</h5>
+        </td>
+      </tr>
+    
+  
+
+</table>
+
+<!--- All speaker popups -->
+<div class="speakers js-close-popup">
+  
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="keynote-just-the-right-kind-of-consistency">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Keynote: Just the right kind of Consistency!</h3>
+          <h4>at 9:05</h4>
+          <p>You need a data store that allows for high throughput and availability, while supporting consistency patterns referential integrity, numerical invariants, or atomic updates? Current designs for data storage forces application developers to decide early in the design cycle, and once and for all, what type of consistency the database should provide. At one extreme, strong consistency requires frequent global coordination; restricting concurrency in this way greatly simplifies application development, but it reduces availability and increases latency. At the opposite extreme, there are systems that provide eventual consistency only: they never sacrifice availability, but application developers must write code to deal with all sorts of concurrency anomalies in order to prevent violation of application invariants. But your system just needs to be consistent enough for the application to be correct! In the talk, I will discuss insights and techniques for analysing the consistency requirements of an application, and show techniques how you can establish them in your system.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/annettebieniusa.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Annette Bieniusa</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Annette is a lecturer and senior researcher at the Technische Universität Kaiserslautern. Her research interests include semantics of concurrent and distributed programming, with a focus on replication, synchronization, and how they are reflected on programming language level. Annette was involved in several national and international research projects, most recently the in the EU-Projects “SyncFree: Large-scale Computation without Synchronization” and “Lightkone: Lightweight computation for networks at the edge“.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="a-fistful-of-functors">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>A Fistful of Functors</h3>
+          <h4>at 10:20</h4>
+          <p>Functors show up everywhere in our day-to-day programming. They're so common, we take them for granted - especially in typed functional programming. Beside being common, they're incredibly useful for code reuse. However, functors have several relatively unknown variants: profunctors, bifunctors, contravariant functors, and so on. And guess what - they're amazingly useful, especially combined with other abstractions in the functional programming toolkit! In this talk, we'll cover the many species of functors and see how they can help us with tasks such as serialization, stream processing, and more.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/itamarravid.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Itamar Ravid</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Itamar is a freelance software engineer and has been working with Scala and functional programming for the last few years. He's been mentoring and helping teams move to functional programming in Scala, and loves finding cool use cases for functional abstractions.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="cancelable-io">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Cancelable IO</h3>
+          <h4>at 10:55</h4>
+          <p>Task / IO data types have been ported in Scala, inspired by Haskell's monadic IO and are surging in popularity due to the need in functional programming for referential transparency, but also because controlling side effects by means of lawful, FP abstractions makes reasoning about asynchrony and concurrency so much easier. But concurrency brings with it race conditions, i.e. the ability to execute multiple tasks at the same time, possibly interrupting the losers and cleaning up resources afterwards and thus we end up reasoning about preemption. This talk describes the design of Monix's Task for cancelability and preemption, a design that has slowly transpired in cats-effect, first bringing serious performance benefits and now a sane design for cancelation. Topics include how cancelable tasks can be described, along with examples of race conditions that people can relate to, highlighting the challenges faced when people use an IO/Task data type that cannot be interrupted.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alexandrunedelcu.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Alexandru Nedelcu</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Alexandru is a software developer living in Bucharest, Romania. A startup guy, he's dividing his time between work, family and his personal projects, fueled by his work on the Monix project and his increased contributions to Typelevel Cats. He's also a proud father, husband, has a very unhealthy sleep schedule and appreciates talking about programming over coffee. Sometimes he blogs at: https://alexn.org</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="legacy-engineering-making-criteo-functional">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Legacy Engineering: Making Criteo Functional</h3>
+          <h4>at 11:50</h4>
+          <p>Criteo uses a lot of Scala in its code-base. Historically for big data stuff using the usual suspects Spark &amp; Scalding, but more and more for application development. A few Typelevel projects started to appear in our code base as developers started to embrase more sophisticated FP practices in their Scala code. Today most of our Scala projects are built around cats, fs2, doobie, algebra, shapeless, etc. In this presentation we will discuss the challenges of introducing more functional code in a large software company as Criteo and how typelevel projects have helped. We'll talk about what's worked well as well as where the dragons lie.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/guillaumebort.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Guillaume Bort</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Creator of @playframework - Previously @Inria, @zengularity, @lightbend, @prismicio - Now working on the petabytes of analytics data at @Criteo</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="introducing-namespaces-into-sql-result-sets-using-nested-structural-types">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Introducing namespaces into SQL result sets using nested structural types</h3>
+          <h4>at 12:10</h4>
+          <p><p>Many modern programming languages support decent namespaces. Namespaces are commonly structured hierarchies.  We bring this power to a database query language, using nested structural types.</p>
+
+<p>For this purpose, we hijack table aliases: given a table T containing two columns C of type String and D of type Int, a table &quot;T as S&quot; is a new table containing two columns S.C of type String and S.D of type Int. In Scala, this is neatly expressed as
+<pre>
+  T : AnyRef { def C : String, def D: Int }
+
+  T as S : AnyRef { def S: { def C: String, def D: Int } }
+</pre></p>
+
+<p>We implement the above as operation using the whitebox macro. We rely on Scala's type system's ability to compute Greatest Lower Bounds (GLBs) and Least Upper Bounds (LUBs) of structural types, to enable polymorphic and compositional query creation. To enable GLB and LUB computation for nested structured types, we have patched the Scala compiler.</p>
+</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Keiko Nakata</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Keiko Nakata works at SAP Innovation Center Network as a Scala programmer. She holds a PhD in computer science from Kyoto University, Japan. She has served on numerous program committees for international conferences and workshops on programming languages, and currently chairs a working group “Types for Verification” at an EU COST Action EUTypes. She loves topology and intuitionistic logics and their application to programming languages.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="healthy-minds-in-a-healthy-community">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Healthy Minds in a Healthy Community</h3>
+          <h4>at 14:15</h4>
+          <p>Open source communities attract and boast passionate, idealistic people, and many of us invest copious amounts of time and effort to contribute to our projects and support our communities. This underlying emotional attachment can make us more vulnerable to elevated stress, burnout and conflicts. And then there are those of us who also manage mental illness. More often than not, we suffer these struggles in silence, feeling (and fearing) that we're alone in our trouble. Here, our communities can make a huge difference, by building a positive and safe environment where we can blossom and support ourselves and our peers, and feel included. This talk will take a look at open-source communities through the eyes of various mental well-being issues and struggles, and show various things that some communities already do. With this, we hope to support and inspire more communities to help foster healthy minds in a healthy environment.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/sasharomijn.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Sasha Romijn</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Sasha is the co-founder and CTO of a small Django development company in Amsterdam. Sasha is deeply involved in the community around Django, a popular Python web framework, being a Django team member, chair of the Dutch Django Association and co-organiser of various conferences. She cares about building communities and conferences in which everyone feels welcome, valued and at home, regardless of their background. Sasha has a specific interest in well-being and ethical issues around communities and development. Some of her side projects are the Less Obvious Conference Checklist, with many less obvious suggestions for event organisers, and Happiness Packets, to spread more gratitude and kindness in open source communities.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="typedapi-define-your-api-on-the-type-level">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Typedapi: Define your API on the type level</h3>
+          <h4>at 14:50</h4>
+          <p><p>Have you ever thought “I really like Haskell’s Servant. Why don’t we have something like that in Scala?” or “Why can't I just define my APIs as types and Scala does the heavy lifting?”? If so, this talk is made for you.</p>
+
+<p>I will tell you a short story about excitement, pain and hate peaking in a climax of type-driven enlightenment. I will tell you my journey of developing Typedapi, a library for building typesafe APIs which moves as many computations to the type level as possible.</p>
+
+<p>We will fight many a beast on our way from Scala’s desugaring to folds working just on types. But eventually, we will arrive at our destination, exhausted, with scars but also able to make our code a bit safer again.</p>
+</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/paulheymann.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Paul Heymann</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Paul entered the realm of functional and type-level programming three years ago when he was caught by a Scala meetup. After that, he started doing Scala professionally as a Data Engineer for the social network XING. There he works on recommender systems and the ontology infrastructure which are serving requests of millions of users every day.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="an-intuitive-guide-to-combining-free-monad-and-free-applicative">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>An Intuitive Guide to Combining Free Monad and Free Applicative</h3>
+          <h4>at 15:30</h4>
+          <p>The usage of Free Monads is becoming more well understood, however the lesser known Free Applicative is still somewhat of a mystery to the average Scala developer. In this talk I will explain how you can combine the power of both these constructs in an intuitive and visual manner. You will learn the motivations for using Free Structures in the first place, how we can build up a complex domain, how we can introduce parallelism into our domain and a bunch of other practical tips for designing programs with these structures. This will also give you a deeper understanding of what libraries like Freestyle are doing under the hood and why it is so powerful.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/cameronjoannidis.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Cameron Joannidis</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Machine Learning / Big Data Engineer working with Scala and Functional Programming. Currently working at Simple Machines, an Australian consultancy specialising in Big Data/Machine Learning/Scala/Functional Programming.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="laws-for-free">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Laws for Free</h3>
+          <h4>at 16:05</h4>
+          <p>Everyone that uses a functional programming library like cats is aware of the methods that each type class adds and also the properties that the methods need to abide by. But in practice, the properties are not always proved, rather testing that the methods behave as expected. This is a problem waiting to happen, as the algebraic properties are not “optional extras” – if your semigroup's combine is not associative ... then it ain't a semigroup, sorry! So in this talk we will quickly review what we mean by a property and a law and show how to use the cats laws that are available. We'll see that they are simple to use and add literally hundreds of scalacheck tests for free. And impress your boss as well, the tests can be “seen” on the screen!</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Alistair Johnson</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Alistair has been programming for far too long, for far too many companies, but is still passionate about promoting the integration of maths, science and engineering into everyday programming life.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="lifting-data-structures-to-the-type-level">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Lifting Data Structures to the Type-level</h3>
+          <h4>at 16:45</h4>
+          <p>In this talk, I will give a fast-paced tour of how various features of the Scala type system, many of them under-explored, can be harnessed to construct type-level representations of a number of different datatypes in Scala. The type system offers a limited number of “tools”, such as subtyping, least-upper-bound inference, type unification, singleton types and dependent types and (of course) implicit search, which we can compose in interesting ways to implement type-level operations on these type-level data structures. Value-level operations follow naturally from the types, but this is much less interesting.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/jonpretty.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Jon Pretty</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Jon has been having fun riding the bleeding edge of Scala for over a decade, and he's not finished yet. While he's not travelling the world attending Scala conferences, or organizing Scala World, Jon spends his time working on a variety of open-source Scala libraries, and providing professional Scala training services.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="non-academic-functional-workflows">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Non-academic functional Workflows</h3>
+          <h4>at 17:20</h4>
+          <p>In this talk I want to report about how we used cats to build a domain specific language that enables us to compile workflows into later executable programs. We started with the idea of having a possibility to combine the multiple unconnected tools that are typically used to analyze an image acquired by our microscopes. The Free Monad in cats looked to us as the perfect fit to write a domain specific language that provides a lot of the advantages of an a modern functional compiler plus enforcing stack safety of the program, which would ultimately provided by third party users. We started developing with a team that had only very little experience in Scala and none with cats. Thanks to the good documentation, Scala Exercises and the straightforward mapping to functional principles, known to us from the university, we were able to get a prototype running for a trade show in 6 weeks.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/stefanschneider.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Stefan Schneider</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p></p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+</div>
+
+<h2 id="venue">Venue</h2>
+
+<p>This event will take place at Zalando.</p>
+
+<iframe width="100%" height="180" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=Zalando, Zeughofstraße 1, Berlin&amp;key=AIzaSyAgMQPpkd_Qq-NYcCggh28PaS82oG-9YoA" allowfullscreen="">
+</iframe>
+
+<h2 id="co-located-event">Co-located Event</h2>
+
+<p>The <a href="https://scala.epfl.ch/">Scala Center</a> will organize a co-located event with roundtables of project maintainers.
+Note that because the space is limited, tickets are not on sale for this event.
+To register interest, please get in touch <a href="mailto:info@typelevel.org">via email</a>.</p>
+
+<h2 id="sponsors">Sponsors</h2>
+
+<p>We’d like to thank all our sponsors who help to make the Summit happen:</p>
+
+<div class="sponsors">
+  
+    <div class="sponsors__sponsor sponsors__sponsor--platinum">
+      <h3>Platinum</h3>
+      
+        <a href="https://jobs.zalando.com/tech/?utm_source=typelevel&amp;utm_medium=event-page-organic-b&amp;utm_campaign=2018-css&amp;utm_content=01-typelevel-summit">
+          <img src="/img/media/sponsors/zalando.png" alt="Zalando" title="Zalando" style="height:50px" />
+        </a>
+      
+    </div>
+  
+
+  
+    <div class="sponsors__sponsor sponsors__sponsor--gold">
+      <h3>Gold</h3>
+      
+        <a href="https://www.criteo.com/">
+          <img src="/img/media/sponsors/crite_o_labs.png" alt="Criteo" title="Criteo" style="height:100px" />
+        </a>
+      
+    </div>
+  
+
+  
+    <div class="sponsors__sponsor sponsors__sponsor--silver">
+      <h3>Silver</h3>
+      
+        <a href="https://www.commercetools.com/">
+          <img src="/img/media/sponsors/commercetools.png" alt="Commercetools" title="Commercetools" style="height:60px" />
+        </a>
+      
+        <a href="https://www.lightbend.com/">
+          <img src="/img/media/sponsors/lightbend.png" alt="Lightbend" title="Lightbend" style="height:50px" />
+        </a>
+      
+        <a href="https://www.signifytechnology.com/">
+          <img src="/img/media/sponsors/signify.png" alt="Signify" title="Signify" style="height:80px" />
+        </a>
+      
+    </div>
+  
+
+  
+</div>
+
+
+  </div>
+</div>
+
+<div> <!-- open dummy -->
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

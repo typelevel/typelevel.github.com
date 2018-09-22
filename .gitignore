@@ -1,0 +1,10 @@
+_site
+.idea
+s3_website.yml
+/vendor/bundle
+css/main.css
+.sass-cache
+target
+_posts
+.deploy
+.jekyll-metadata

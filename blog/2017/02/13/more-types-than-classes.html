@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | There are more types than classes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>There are more types than classes</h2>
+
+  <p>As programmers, we are very incautious with our use of the word
+“type”. The concept of “type” is sufficiently abstract and specific
+that we are tempted to understand it by analogy, so much that we begin
+to confuse analogy with sameness.</p>
+
+<p>The colloquial “runtime type”, a fair approximation of “class”, makes
+it tempting to equate <em>types</em> with “classes, interfaces, traits, that
+sort of thing”, which I will name <em>classes</em> for the rest of this
+article. But they aren’t the same. The type system is much richer and
+more interesting than the class system, even in Java.</p>
+
+<p>To appreciate this richness, we must stop thinking of types as classes
+and stop drawing conclusions from that weak analogy. Luckily, the
+compiler will readily reveal how unlike classes types are, if we ask
+it some simple questions.</p>
+
+<h2 id="one-value-with-class-many-variables-with-type">One value with class, many variables with type</h2>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">greeting</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"hi there!"</span>
+</code></pre></div></div>
+
+<p>Here I have constructed a <code class="highlighter-rouge">String</code> and assigned it to a variable. (I
+have also constructed the <code class="highlighter-rouge">char</code> array in the <code class="highlighter-rouge">String</code> and various
+other details, but immediately handed those off to the <code class="highlighter-rouge">String</code> and
+forgotten about them.) This value has class <code class="highlighter-rouge">String</code>. It has several
+classes, really.</p>
+
+<ol>
+  <li><code class="highlighter-rouge">String</code></li>
+  <li><code class="highlighter-rouge">java.io.Serializable</code></li>
+  <li><code class="highlighter-rouge">CharSequence</code></li>
+  <li><code class="highlighter-rouge">Comparable[String]</code></li>
+  <li><code class="highlighter-rouge">Object</code>/<code class="highlighter-rouge">AnyRef</code></li>
+</ol>
+
+<p>That seems like a lot of classes for one value. And they are genuine
+classes of <code class="highlighter-rouge">greeting</code>, though 2-5 are all implied by #1.</p>
+
+<p><code class="highlighter-rouge">greeting</code> also has all five of these <em>types</em>. We can ask the compiler
+to verify that this <em>type</em> truth holds, entirely separately from the
+class truth.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="o">(</span><span class="n">greeting</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">greeting</span><span class="k">:</span> <span class="kt">java.io.Serializable</span><span class="o">,</span>
+        <span class="n">greeting</span><span class="k">:</span> <span class="kt">CharSequence</span><span class="o">,</span> <span class="n">greeting</span><span class="k">:</span> <span class="kt">Comparable</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span>
+        <span class="n">greeting</span><span class="k">:</span> <span class="kt">AnyRef</span><span class="o">)</span>
+<span class="n">res3</span><span class="k">:</span> <span class="o">(</span><span class="kt">String</span><span class="o">,</span> <span class="kt">java.io.Serializable</span><span class="o">,</span> <span class="nc">CharSequence</span><span class="o">,</span>
+       <span class="nc">Comparable</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="nc">AnyRef</span><span class="o">)</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">hi</span> <span class="n">there</span><span class="o">!,</span><span class="n">hi</span> <span class="n">there</span><span class="o">!,</span><span class="n">hi</span> <span class="n">there</span><span class="o">!,</span><span class="n">hi</span> <span class="n">there</span><span class="o">!,</span><span class="n">hi</span> <span class="n">there</span><span class="o">!)</span>
+</code></pre></div></div>
+
+<p>So we have exhausted the classes, but aren’t quite done with types.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">greeting</span><span class="k">:</span> <span class="kt">greeting.type</span>
+<span class="n">res0</span><span class="k">:</span> <span class="kt">greeting.</span><span class="k">type</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">there</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">greeting.type</code> is not like the other five types we just tested. It is
+a strict subtype of <code class="highlighter-rouge">String</code>, and has no class with the same name.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// If and only if call compiles, A is a subtype of B.
+</span><span class="k">def</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">()</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">greeting.</span><span class="k">type</span>, <span class="kt">String</span><span class="o">]</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">greeting.</span><span class="k">type</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">String</span>,<span class="kt">greeting.</span><span class="k">type</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+              <span class="n">to</span> <span class="n">method</span> <span class="n">conformance</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Fine, we can accept that object identity is represented at the type
+level without our universe imploding, by inventing the theory that
+this is about object identity; hold on, though:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">salutation</span> <span class="k">=</span> <span class="n">greeting</span>
+<span class="n">salutation</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">there</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p>Fine, <code class="highlighter-rouge">salutation</code> is just another name for <code class="highlighter-rouge">greeting</code>, right?</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">salutation.</span><span class="k">type</span>, <span class="kt">String</span><span class="o">]</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">greeting.</span><span class="k">type</span> <span class="kt">=:=</span> <span class="kt">salutation.</span><span class="k">type</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Cannot</span> <span class="kt">prove</span> <span class="kt">that</span> <span class="kt">greeting.</span><span class="k">type</span> <span class="o">=:=</span> <span class="n">salutation</span><span class="o">.</span><span class="n">type</span><span class="o">.</span>
+</code></pre></div></div>
+
+<p>Now we have seven. I’ll spare you spelling out the induction: each new
+variable defined like <code class="highlighter-rouge">salutation</code> will yield a new alias with a
+distinct type. This is not about <em>objects</em>; this is about <em>variables</em>!</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// find a type for the literal "hi there!"
+</span><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">literalHiThere</span> <span class="k">=</span> <span class="n">shapeless</span><span class="o">.</span><span class="nc">Witness</span><span class="o">(</span><span class="s">"hi there!"</span><span class="o">)</span>
+<span class="n">literalHiThere</span><span class="k">:</span> <span class="kt">shapeless.Witness.Aux</span><span class="o">[</span><span class="kt">String</span><span class="o">(</span><span class="err">"</span><span class="kt">hi</span> <span class="kt">there!</span><span class="err">"</span><span class="o">)]</span> <span class="k">=</span> <span class="n">shapeless</span><span class="o">.</span><span class="nc">Witness$$anon$1</span><span class="k">@</span><span class="mf">1d</span><span class="mi">1537</span><span class="n">bb</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">greeting.</span><span class="k">type</span>, <span class="kt">literalHiThere.T</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">greeting.</span><span class="k">type</span>,<span class="kt">literalHiThere.T</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+              <span class="n">to</span> <span class="n">method</span> <span class="n">conformance</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">conformance</span><span class="o">[</span><span class="kt">literalHiThere.T</span>, <span class="kt">greeting.</span><span class="k">type</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">literalHiThere.T</span>,<span class="kt">greeting.</span><span class="k">type</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+              <span class="n">to</span> <span class="n">method</span> <span class="n">conformance</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>As local variables are a strictly compile-time abstraction, and we
+have anyway seen that the numbers don’t match up, that should be the
+end of the “types are classes” confusion for you. But maybe this is
+just some Scala oddity! And anyhow I haven’t even begun to demonstrate
+the overwhelming richness of the type model as it blindingly outshines
+the paucity of the class model. Let’s go further.</p>
+
+<h2 id="no-values-infinite-types-method-type-parameters">No values, infinite types: method type parameters</h2>
+
+<p>To our small program of a greeting, we can add a small method.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">pickGreeting</span><span class="o">[</span><span class="kt">G</span><span class="o">](</span><span class="n">grt</span><span class="k">:</span> <span class="kt">G</span><span class="o">,</span> <span class="n">rand</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">grt</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">pickGreeting</span><span class="o">(</span><span class="n">greeting</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+<span class="n">res9</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">there</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p>It seems like <code class="highlighter-rouge">G</code> must be <code class="highlighter-rouge">String</code>, because the argument passed to
+<code class="highlighter-rouge">pickGreeting</code> is a string, and in that case so must its return value
+be, according to the implementation. And from the perspective of this
+call, <a href="/blog/2016/01/28/existential-inside.html">outside</a>
+<code class="highlighter-rouge">pickGreeting</code>’s implementation, it is <code class="highlighter-rouge">String</code> indeed.</p>
+
+<p>But that implementation’s perspective matters, too; it is also part of
+our program. And it sees things quite differently. We can ask its
+thoughts on the matter by adding to its body</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">pickGreeting</span><span class="o">[</span><span class="kt">G</span><span class="o">](</span><span class="n">grt</span><span class="k">:</span> <span class="kt">G</span><span class="o">,</span> <span class="n">rand</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">G</span> <span class="kt">=:=</span> <span class="kt">String</span><span class="o">]</span>
+  <span class="n">grt</span>
+<span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">12</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Cannot</span> <span class="kt">prove</span> <span class="kt">that</span> <span class="kt">G</span> <span class="o">=:=</span> <span class="nc">String</span><span class="o">.</span>
+         <span class="n">implicitly</span><span class="o">[</span><span class="kt">G</span> <span class="kt">=:=</span> <span class="kt">String</span><span class="o">]</span>
+                   <span class="o">^</span>
+</code></pre></div></div>
+
+<p>In fact, <code class="highlighter-rouge">G</code> bears no direct relationship to <code class="highlighter-rouge">String</code> at all.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// replace implicitly with
+</span><span class="n">conformance</span><span class="o">[</span><span class="kt">G</span>, <span class="kt">String</span><span class="o">]</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">13</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">G</span>,<span class="kt">String</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+              <span class="n">to</span> <span class="n">method</span> <span class="n">conformance</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span>
+         <span class="n">conformance</span><span class="o">[</span><span class="kt">G</span>, <span class="kt">String</span><span class="o">]</span>
+                    <span class="o">^</span>
+
+<span class="c1">// or with
+</span><span class="n">conformance</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">G</span><span class="o">]</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">13</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">String</span>,<span class="kt">G</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+              <span class="n">to</span> <span class="n">method</span> <span class="n">conformance</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">A</span>,<span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span>
+         <span class="n">conformance</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">G</span><span class="o">]</span>
+                    <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Let’s apply the pigeonhole principle. Imagine that you had a list of
+every class that ever was or ever will be. Imagine that, somehow, all
+of these classes, from <code class="highlighter-rouge">String</code> to
+<code class="highlighter-rouge">AbstractFactoryMethodProxyBuilder</code>, were on your classpath, available
+to your program.</p>
+
+<p>Next, imagine that you had the time and inclination to try the <code class="highlighter-rouge">=:=</code>
+test with every last one of these classes.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implicitly</span><span class="o">[</span><span class="kt">G</span> <span class="kt">=:=</span> <span class="kt">javax.swing.JFrame</span><span class="o">]</span>
+<span class="n">implicitly</span><span class="o">[</span><span class="kt">G</span> <span class="kt">=:=</span> <span class="kt">AbstractFactoryMethodProxyBuilder</span><span class="o">]</span>
+<span class="c1">// ad [in]finitum
+</span></code></pre></div></div>
+
+<p>Your search will be futile; every class on your list-of-every-class
+will give the same compiler error we got with <code class="highlighter-rouge">String</code>.</p>
+
+<p>So, since <code class="highlighter-rouge">G</code> is not equal to anything on this list, it must be
+something else that doesn’t appear on the list. Because this list
+contains all classes, <code class="highlighter-rouge">G</code> must be something other than a class.</p>
+
+<h3 id="it-must-not-necessarily-be-anything">It must not necessarily be anything</h3>
+
+<p>It seems like it might be convenient to say “well, in this program <code class="highlighter-rouge">G</code>
+is only ever <code class="highlighter-rouge">String</code> by substitution, so therefore it is, even if the
+compiler doesn’t see that.” However, thinking like this misses out on
+the second key advantage of type parameterization, the one not based
+on multiplicity of substitution, or the type-safety of callers:
+blindness.</p>
+
+<p>The implementation of type-parameterized classes and methods are
+required to treat each type parameter uniquely, uniformly, and without
+prejudice. The compiler enforces this by making the implementation
+blind to what that parameter, like <code class="highlighter-rouge">G</code>, could be. It can only use what
+the caller, the “outside”, has told it about <code class="highlighter-rouge">G</code>—arguments whose
+types contain <code class="highlighter-rouge">G</code>, like <code class="highlighter-rouge">List[G]</code>, <code class="highlighter-rouge">(G, G) =&gt; G</code>, or <code class="highlighter-rouge">G</code> itself, like
+the argument to <code class="highlighter-rouge">pickGreeting</code>. This
+is
+<a href="/blog/2016/03/13/information-hiding.html">information-hiding at the type level</a>;
+if you find information-hiding a useful tool for implementing correct
+programs, you will find the same of the fresh, unique, and mysterious
+types induced by each introduction of a type parameter.</p>
+
+<div class="side-note">
+  Each operation a language permits by default, not via an argument,
+  on values of a type parameter is a leak in this abstraction. This
+  includes testing the value’s class, converting to string, and
+  comparing to other values of supposedly utter mystery for
+  equality. The ability to create a “default” value is also a leak. A
+  function is always permitted to ask only that of these that it needs
+  from the caller; make them default, and this design choice is taken
+  away. That is why <code>Object#equals</code> is little better for
+  type-safety than reflection-based calls, and why total type erasure
+  is a desirable feature rather than a design flaw—plugging these
+  leaks gives the programmer as much freedom to abstract by
+  information-hiding as she wishes.
+</div>
+
+<h3 id="how-many-calls-are-there">How many calls are there?</h3>
+
+<p>Put another way, when implementing the code in the scope of a type
+parameter, your implementation must be equally valid <em>for all</em>
+possible <code class="highlighter-rouge">G</code> substitutions, including the ones that haven’t been
+invented yet. This is why we call it <em>universal</em> quantification.</p>
+
+<p>But it is not merely each declaration of a type parameter that yields
+a distinct type—each call does! Consider two consecutive calls to
+<code class="highlighter-rouge">pickGreeting</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pickGreeting</span><span class="o">(</span><span class="n">greeting</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+<span class="n">pickGreeting</span><span class="o">(</span><span class="mi">33</span><span class="o">,</span> <span class="mi">84</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Externally, there are two <code class="highlighter-rouge">G</code> types. However, the possibility of
+writing this demands another level of uniqueness treatment when
+typechecking <code class="highlighter-rouge">pickGreeting</code>’s definition: whatever <code class="highlighter-rouge">G</code> is now, like
+<code class="highlighter-rouge">String</code>, it might be something else in the next call, like <code class="highlighter-rouge">Int</code> in
+the above example. With recursion, it might even be two different
+things at the same time. There’s nothing to hold this at two, either:
+there may be an unbounded number of substitutions for a given type
+parameter within a single program, at a single point in time.</p>
+
+<p>While <code class="highlighter-rouge">G</code> <em>may</em> be the same between two invocations of <code class="highlighter-rouge">pickGreeting</code>,
+it might not. So we have no choice but to treat the <code class="highlighter-rouge">G</code> types of <em>each
+call</em> as separate types. There may be infinitely many calls, so there
+are so many types.</p>
+
+<p>Incidentally, the same happens for singleton types. Each time <code class="highlighter-rouge">val
+greeting</code> comes into scope, it induces a separate singleton type. It
+is easy enough to arrange for an unbounded number of scope entries in
+a particular program. This isn’t so practical as the type parameter
+phenomenon, though.</p>
+
+<h2 id="more-types-from-variable-copies">More types from variable copies</h2>
+
+<p>Suppose we’d like to wait a while to compute our greeting. We can
+define a type-and-class to represent that conveniently.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// like Coyoneda Id, if that helps
+</span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">Later</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">I</span>
+  <span class="k">val</span> <span class="n">i</span><span class="k">:</span> <span class="kt">I</span>
+  <span class="k">val</span> <span class="n">f</span><span class="k">:</span> <span class="kt">I</span> <span class="o">=&gt;</span> <span class="n">A</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">later</span><span class="o">[</span><span class="kt">In</span>, <span class="kt">A</span><span class="o">](</span><span class="n">now</span><span class="k">:</span> <span class="kt">In</span><span class="o">)(</span><span class="n">later</span><span class="k">:</span> <span class="kt">In</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span>
+  <span class="k">:</span> <span class="kt">Later</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Later</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">I</span> <span class="o">=</span> <span class="nc">In</span>
+    <span class="k">val</span> <span class="n">i</span> <span class="k">=</span> <span class="n">now</span>
+    <span class="k">val</span> <span class="n">f</span> <span class="k">=</span> <span class="n">later</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">greeting3</span> <span class="k">=</span> <span class="n">later</span><span class="o">(</span><span class="mi">3</span><span class="o">){</span>
+  <span class="n">n</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="n">n</span><span class="o">)(</span><span class="s">"hi"</span><span class="o">).</span><span class="n">mkString</span><span class="o">(</span><span class="s">" "</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>How many <em>classes</em> are involved here, in the type of <code class="highlighter-rouge">greeting3</code>?</p>
+
+<ol>
+  <li><code class="highlighter-rouge">Later</code>, obviously;</li>
+  <li><code class="highlighter-rouge">Function1</code>, the <code class="highlighter-rouge">greeting3.f</code> overall class;</li>
+  <li><code class="highlighter-rouge">String</code>, the output type of <code class="highlighter-rouge">greeting3.f</code>;</li>
+  <li><code class="highlighter-rouge">Int</code>, the <code class="highlighter-rouge">I</code> type.</li>
+</ol>
+
+<p>How many types?</p>
+
+<p>The first difference is that <code class="highlighter-rouge">greeting3.I</code> is not <code class="highlighter-rouge">Int</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">greeting3.I</span> <span class="kt">=:=</span> <span class="kt">Int</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Cannot</span> <span class="kt">prove</span> <span class="kt">that</span> <span class="kt">greeting3.I</span> <span class="o">=:=</span> <span class="nc">Int</span><span class="o">.</span>
+       <span class="n">implicitly</span><span class="o">[</span><span class="kt">greeting3.I</span> <span class="kt">=:=</span> <span class="kt">Int</span><span class="o">]</span>
+                 <span class="o">^</span>
+</code></pre></div></div>
+
+<p>They are unrelated for much the same reason as <code class="highlighter-rouge">G</code> was unrelated to
+<code class="highlighter-rouge">String</code> in the previous example: the only things code following
+<code class="highlighter-rouge">val greeting3</code> may know are those embodied in the <code class="highlighter-rouge">greeting3.i</code> and
+<code class="highlighter-rouge">greeting3.f</code> members. You can almost think of them as “arguments”.</p>
+
+<p>But that’s not all.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">salut3</span> <span class="k">=</span> <span class="n">greeting3</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">greeting3</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">greeting3</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+<span class="n">res11</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">hi</span> <span class="n">hi</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">salut3</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">salut3</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+<span class="n">res12</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">hi</span> <span class="n">hi</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">greeting3</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">salut3</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">salut3.i.</span><span class="k">type</span> <span class="o">(</span><span class="kt">with</span> <span class="kt">underlying</span> <span class="k">type</span> <span class="kt">salut3.I</span><span class="o">)</span>
+ <span class="kt">required:</span> <span class="kt">greeting3.I</span>
+       <span class="n">greeting3</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">salut3</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+                          <span class="o">^</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">greeting3.I</span> <span class="kt">=:=</span> <span class="kt">salut3.I</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">Cannot</span> <span class="kt">prove</span> <span class="kt">that</span> <span class="kt">greeting3.I</span> <span class="o">=:=</span> <span class="n">salut3</span><span class="o">.</span><span class="n">I</span><span class="o">.</span>
+</code></pre></div></div>
+
+<p>Just like every call to <code class="highlighter-rouge">pickGreeting</code> induces a new <code class="highlighter-rouge">G</code> type, each
+simple <code class="highlighter-rouge">val</code> copy of <code class="highlighter-rouge">greeting3</code> will induce a new, unique <code class="highlighter-rouge">I</code>
+type. It doesn’t matter that they’re all the same value; this is a
+matter of variables, not values, just as with singleton types.</p>
+
+<p>But that’s <em>still</em> not all.</p>
+
+<h2 id="one-value-with-class-many-variable-references-with-types">One value with class, many variable <em>references</em> with types</h2>
+
+<p>The preceding is more delicate than it seems.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">var</span> <span class="n">allo</span> <span class="k">=</span> <span class="n">greeting3</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">allo</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">allo</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">13</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">Later</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span><span class="k">#</span><span class="n">I</span>
+ <span class="n">required</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.I</span> <span class="kt">where</span> <span class="kt">val</span> <span class="k">_</span><span class="err">1</span><span class="kt">:</span> <span class="kt">Later</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+       <span class="n">allo</span><span class="o">.</span><span class="n">f</span><span class="o">(</span><span class="n">allo</span><span class="o">.</span><span class="n">i</span><span class="o">)</span>
+                   <span class="o">^</span>
+</code></pre></div></div>
+
+<p>All we have done differently is use a mutable <code class="highlighter-rouge">var</code> instead of an
+immutable <code class="highlighter-rouge">val</code>. Why is this enough to throw a wrench in the works?</p>
+
+<p>Suppose you had another <em>value</em> of the <code class="highlighter-rouge">Later[String]</code> type.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">bhello</span> <span class="k">=</span> <span class="n">later</span><span class="o">(</span><span class="s">"olleh"</span><span class="o">)(</span><span class="k">_</span><span class="o">.</span><span class="n">reverse</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">I</code> substitution here is <code class="highlighter-rouge">String</code>. So the <code class="highlighter-rouge">f</code> takes a <code class="highlighter-rouge">String</code>
+argument, and the <code class="highlighter-rouge">I</code> is a <code class="highlighter-rouge">String</code>.</p>
+
+<p><code class="highlighter-rouge">bhello</code> is of a compatible type with the <code class="highlighter-rouge">allo</code> var. So this
+assignment will work.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">allo</span> <span class="k">=</span> <span class="n">bhello</span>
+</code></pre></div></div>
+
+<p>In a sense, when this mutation occurs, the <code class="highlighter-rouge">I</code> type <em>also</em> mutates,
+from <code class="highlighter-rouge">Int</code> to <code class="highlighter-rouge">String</code>. But that isn’t quite right; types cannot
+mutate.</p>
+
+<p>Suppose that this assignment happened in the middle of that line of
+code that could not compile. We could imagine the sequence of events,
+were it permitted.</p>
+
+<ol>
+  <li><code class="highlighter-rouge">allo.f</code> (which is <code class="highlighter-rouge">greeting3.f</code>) evaluates. It is the function
+<code class="highlighter-rouge">(n: Int) =&gt; List.fill(n)("hi").mkString(" ")</code>.</li>
+  <li>The <code class="highlighter-rouge">allo = bhello</code> assignment occurs.</li>
+  <li><code class="highlighter-rouge">allo.i</code> (which is <code class="highlighter-rouge">bhello.i</code>) evaluates. It is the string
+<code class="highlighter-rouge">"olleh"</code>.</li>
+  <li>We attempt to pass <code class="highlighter-rouge">"olleh"</code> as the <code class="highlighter-rouge">(n: Int)</code> argument to complete
+the evaluation, and get stuck.</li>
+</ol>
+
+<p>Just as it makes no difference what concrete substitutions you make
+for <code class="highlighter-rouge">G</code>, it makes no difference whether such an assignment could ever
+happen in your specific program; the compiler takes it as a
+possibility because you declared a <code class="highlighter-rouge">var</code>. (<code class="highlighter-rouge">def allo = greeting3</code> gets
+the same treatment, lest you think non-functional programs get to have
+all the fun here.) Each <em>reference</em> to <code class="highlighter-rouge">allo</code> gets a new <code class="highlighter-rouge">I</code> type
+member. That failing line of code had two <code class="highlighter-rouge">allo</code> references, so was
+working with two incompatible <code class="highlighter-rouge">I</code> types.</p>
+
+<p>Since the number of references to a variable in a program is also
+unbounded…you get the picture.</p>
+
+<div class="side-note">
+  This also occurs with existential type parameters, which are equally
+  expressive to type members. Accordingly, Java <em>also</em>
+  generates new types from occurrences of expressions of existential
+  type.
+</div>
+
+<h2 id="how-do-we-tell-the-two-apart">How do we tell the two apart?</h2>
+
+<p>All of this is simply to say that we must be working with two separate
+concepts here.</p>
+
+<ol>
+  <li>The <em>runtime</em> shape and properties of the <em>values</em> that end up
+flying around when a program actually <em>runs</em>. <strong>This we call
+class.</strong></li>
+  <li>The <em>compile-time</em>, statically-discoverable shape and properties of
+the <em>expressions</em> that fly around when a program is
+<em>written</em>. <strong>This we call type.</strong></li>
+</ol>
+
+<p>The case with <code class="highlighter-rouge">var</code> is revealing. Maybe the <code class="highlighter-rouge">I</code> type will always be
+the same for a given mutable variable. But demonstrating that this
+holds true for <em>one</em> run of the program (#1, class) isn’t nearly good
+enough to <em>prove</em> that it will be true for <em>all</em> runs of the program
+(#2, type).</p>
+
+<p>We refuse to apply the term “type” to the #1, ‘class’ concept because
+it does not live up to the name. The statement “these two types are
+the same” is another level of power entirely; “these two values have
+the same class” is extraordinarily weak by comparison.</p>
+
+<p>It is tempting to use the term “runtime type” to refer to
+classes. However, in the case of Scala, as with all type systems
+featuring parametric polymorphism, classes are so dissimilar to types
+that the similar-sounding term leads to false intuition, not helpful
+analogy. It is a detriment to learning, not an aid.</p>
+
+<p>Types are compile-time, and classes are runtime.</p>
+
+<h3 id="when-are-types-real">When are types real?</h3>
+
+<p>The phase separation—compile-time versus runtime—is the key to
+the strength of types in Scala and similar type systems. The static
+nature of types means that the truths they represent must be
+universally quantified—true in all possible cases, not just some
+test cases.</p>
+
+<p>We need this strength because the phase separation forbids us from
+taking into account anything that cannot be known about the program
+without running it. We need to think in terms of “could happen”, not
+“pretty sure it doesn’t”.</p>
+
+<h2 id="how-do-classes-give-rise-to-types">How do classes give rise to types?</h2>
+
+<p>There appears to be some overlap between the classes of <code class="highlighter-rouge">greeting</code> and
+its types. While <code class="highlighter-rouge">greeting</code> has the <em>class</em> <code class="highlighter-rouge">String</code>, it also has the
+<em>type</em> <code class="highlighter-rouge">String</code>.</p>
+
+<p>We want types to represent static truths about the expressions in a
+program. That’s why it makes sense to include a “model of the classes”
+in the type system. When we define a class, we also define an
+associated type or family of types.</p>
+
+<p>When we use a class to construct a value, as in <code class="highlighter-rouge">new Blob</code>, we would
+like to assign as much specific meaning to that expression as we can
+at compile time. So, because we know right now that this expression
+will make a value of class <code class="highlighter-rouge">Blob</code>, we assign it the type <code class="highlighter-rouge">Blob</code> too.</p>
+
+<h3 id="how-do-the-types-disappear">How do the types disappear?</h3>
+
+<p>There’s a common way to throw away type information in Scala,
+especially popular in object-oriented style.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">absGreeting</span><span class="k">:</span> <span class="kt">CharSequence</span> <span class="o">=</span> <span class="n">greeting</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">absGreeting</code> has the same value as <code class="highlighter-rouge">greeting</code>, so it has the same
+five classes. However, it only has two of those five types, because we
+threw away the other three statically. It has lost some other types,
+too, namely <code class="highlighter-rouge">greeting.type</code>, and acquired some new ones, namely
+<code class="highlighter-rouge">absGreeting.type</code>.</p>
+
+<p>Once a value is constructed, the expression will naturally cast off
+the types specifying its precise identity, as it moves into more
+abstract contexts. Ironically, the best way to preserve that
+information as it passes through abstract contexts is to take
+advantage of purely abstract types—type parameters and type
+members.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">pickGreeting</span><span class="o">[</span><span class="kt">greeting.</span><span class="k">type</span><span class="o">](</span><span class="n">greeting</span><span class="o">,</span> <span class="mi">100</span><span class="o">)</span>
+<span class="n">res16</span><span class="k">:</span> <span class="kt">greeting.</span><span class="k">type</span> <span class="o">=</span> <span class="n">hi</span> <span class="n">there</span><span class="o">!</span>
+</code></pre></div></div>
+
+<p>While the implementation must treat its argument as being of the
+abstract type <code class="highlighter-rouge">G</code>, the caller knows that the more specific
+<code class="highlighter-rouge">greeting.type</code> must come out of that process.</p>
+
+<h3 id="how-do-the-types-come-back">How do the types come back?</h3>
+
+<p>There is a feature in Scala that lets you use class to get back <em>some</em>
+type information via a dynamic, runtime test.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">absGreeting</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="n">hiAgain</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span>
+    <span class="n">conformance</span><span class="o">[</span><span class="kt">hiAgain.</span><span class="k">type</span>, <span class="kt">String</span><span class="o">]</span> <span class="c1">// will compile
+</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>The name “type test” for this feature is poorly chosen. The
+<em>conclusion</em> affects the type level—<code class="highlighter-rouge">hiAgain</code> is, indeed, proven
+statically to be of type <code class="highlighter-rouge">String</code>—but the <em>test</em> occurs only at
+the class level.</p>
+
+<p>The compiler will tell you about this limitation sometimes.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">pickGreeting2</span><span class="o">[</span><span class="kt">G</span><span class="o">](</span><span class="n">grt</span><span class="k">:</span> <span class="kt">G</span><span class="o">,</span> <span class="n">rand</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=</span>
+  <span class="o">(</span><span class="s">"magic"</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="n">ok</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=&gt;</span> <span class="n">ok</span>
+    <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="n">sys</span> <span class="n">error</span> <span class="s">"failed!"</span>
+  <span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">13</span><span class="k">:</span> <span class="kt">warning:</span> <span class="kt">abstract</span> <span class="k">type</span> <span class="kt">pattern</span> <span class="kt">G</span> <span class="kt">is</span> <span class="kt">unchecked</span>
+              <span class="n">since</span> <span class="n">it</span> <span class="n">is</span> <span class="n">eliminated</span> <span class="n">by</span> <span class="n">erasure</span>
+           <span class="k">case</span> <span class="n">ok</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=&gt;</span> <span class="n">ok</span>
+                    <span class="o">^</span>
+</code></pre></div></div>
+
+<p>But reflecting the runtime classes back to compile-time types is a
+subtle art, and the compiler often can’t explain exactly what you got
+wrong.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">pickGreeting3</span><span class="o">[</span><span class="kt">G</span><span class="o">](</span><span class="n">grt</span><span class="k">:</span> <span class="kt">G</span><span class="o">,</span> <span class="n">rand</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=</span>
+  <span class="n">grt</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="k">_:</span> <span class="kt">String</span> <span class="o">=&gt;</span>
+      <span class="s">"Surely type G is String, right?"</span>
+    <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="n">grt</span>
+  <span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">String</span><span class="o">(</span><span class="err">"</span><span class="kt">Surely</span> <span class="k">type</span> <span class="kt">G</span> <span class="kt">is</span> <span class="kt">String</span><span class="o">,</span> <span class="kt">right?</span><span class="err">"</span><span class="o">)</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">G</span>
+             <span class="s">"Surely type G is String, right?"</span>
+             <span class="o">^</span>
+</code></pre></div></div>
+
+<p>I’ve touched upon this
+mistake
+<a href="/blog/2014/07/06/singleton_instance_trick_unsafe.html#types-are-erased">in previous articles</a>,
+but it’s worth taking at least one more look. Let’s examine how
+tempting this mistake is.</p>
+
+<p><code class="highlighter-rouge">String</code> is a <code class="highlighter-rouge">final class</code>. So it is true that <code class="highlighter-rouge">G</code> can contain no
+more specific class than <code class="highlighter-rouge">String</code>, if the first <code class="highlighter-rouge">case</code> matches. For
+example, given <code class="highlighter-rouge">trait MyAwesomeMixin</code>, <code class="highlighter-rouge">G</code> cannot be
+<code class="highlighter-rouge">String with MyAwesomeMixin</code> if this <code class="highlighter-rouge">case</code> succeeds, because that
+can’t be instantiated; you would need to create a subclass of <code class="highlighter-rouge">String</code>
+that implemented <code class="highlighter-rouge">MyAwesomeMixin</code>.</p>
+
+<p>This pattern match isn’t enough evidence to say that <code class="highlighter-rouge">G</code> is exactly
+<code class="highlighter-rouge">String</code>. There are still other class-based types it could be, like
+<code class="highlighter-rouge">Serializable</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pickGreeting3</span><span class="o">[</span><span class="kt">java.io.Serializable</span><span class="o">](</span><span class="n">greeting</span><span class="o">,</span> <span class="mi">4055</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Instead, it feels like this pattern match confirms <code class="highlighter-rouge">Serializable</code> as a
+possibility, instead of denying it.</p>
+
+<p>But we don’t need <code class="highlighter-rouge">G = String</code> for this code to compile; we only need
+<code class="highlighter-rouge">G &gt;: String</code>. If that was true, then <code class="highlighter-rouge">"Surely type G is String,
+right?"</code>, a <code class="highlighter-rouge">String</code>, could simply upcast to <code class="highlighter-rouge">G</code>.</p>
+
+<p>However, even <code class="highlighter-rouge">G &gt;: String</code> is unproven. There are no subclasses of
+<code class="highlighter-rouge">String</code>, but there are infinitely many <em>subtypes</em> of
+<code class="highlighter-rouge">String</code>. Including the <code class="highlighter-rouge">G</code> created by each entry into
+<code class="highlighter-rouge">pickGreeting3</code>, every abstract and existential type bounded by
+<code class="highlighter-rouge">String</code>, and every singleton type of <code class="highlighter-rouge">String</code> variable definitions.</p>
+
+<p>This mistake is, once again, confusing a demonstration of one case
+with a proof. Pattern matching tells us a great deal about one value,
+the <code class="highlighter-rouge">grt</code> argument, but very little about the type <code class="highlighter-rouge">G</code>. All we know
+for sure is that “<code class="highlighter-rouge">grt</code> is of type <code class="highlighter-rouge">G</code>, and also of type <code class="highlighter-rouge">String</code>, so
+these types overlap by at least one value.” In the type system, if you
+don’t know something for sure, you don’t know it at all.</p>
+
+<h2 id="classes-are-a-concrete-source-of-values">Classes are a concrete source of values</h2>
+
+<p>In the parlance of functional Scala, concrete classes are often called
+“data constructors”.</p>
+
+<p>When you are creating a value, you must ultimately be concrete about
+its class, at the bottom of all the abstractions and indirections used
+to hide this potentially messy detail.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">def</span> <span class="n">pickGreeting4</span><span class="o">[</span><span class="kt">G</span><span class="o">]</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=</span> <span class="k">new</span> <span class="n">G</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">12</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">class</span> <span class="k">type</span> <span class="kt">required</span> <span class="kt">but</span> <span class="kt">G</span> <span class="kt">found</span>
+       <span class="k">def</span> <span class="n">pickGreeting4</span><span class="o">[</span><span class="kt">G</span><span class="o">]</span><span class="k">:</span> <span class="kt">G</span> <span class="o">=</span> <span class="k">new</span> <span class="n">G</span>
+                                     <span class="o">^</span>
+</code></pre></div></div>
+
+<p>You’ll have to do something else here, like take an argument
+<code class="highlighter-rouge">() =&gt; G</code>, to let <code class="highlighter-rouge">pickGreeting4</code> construct <code class="highlighter-rouge">G</code>s.</p>
+
+<p>The truly essential role that classes play is that they encapsulate
+instructions for constructing concrete values of various types. In a
+safe program, this is the only feature of classes you’ll use.</p>
+
+<p>In Scala, classes leave fingerprints on the values that they
+construct, without fail. This is merely an auxiliary part of their
+primary function as value factories, like a “Made in <code class="highlighter-rouge">class Blah</code>”
+sticker on the back. Pattern matching’s “type tests” work by checking
+this fingerprint of construction.</p>
+
+<h2 id="most-runtime-type-test-mechanisms-do-not-work-for-types">Most runtime “type test” mechanisms do not work for types</h2>
+
+<p>These fingerprints only come from classes, not types. So “type tests”
+only work for “classy” types, like <code class="highlighter-rouge">String</code> and <code class="highlighter-rouge">MyAwesomeMixin</code>. They
+also work for specific singleton types because construction also
+leaves an “object identity” fingerprint that the test can use.</p>
+
+<p>The
+<a href="http://www.scala-lang.org/api/2.12.1/scala/reflect/ClassTag.html"><code class="highlighter-rouge">ClassTag</code> typeclass</a> does
+not change this restriction. When you add a <code class="highlighter-rouge">ClassTag</code> or <code class="highlighter-rouge">TypeTag</code>
+context bound, you also prevent that type parameter from working with
+most types.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">reflect.ClassTag</span><span class="o">[</span><span class="kt">greeting3.I</span><span class="o">]]</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">No</span> <span class="kt">ClassTag</span> <span class="kt">available</span> <span class="kt">for</span> <span class="kt">greeting3.I</span>
+       <span class="n">implicitly</span><span class="o">[</span><span class="kt">reflect.ClassTag</span><span class="o">[</span><span class="kt">greeting3.I</span><span class="o">]]</span>
+                 <span class="o">^</span>
+</code></pre></div></div>
+
+<p>As such, judicious use of <code class="highlighter-rouge">ClassTag</code> is not a great solution to
+excessive use of type tests in abstract contexts. There are so many
+more types than classes that this is to confine the expressivity of
+your types to a very small, class-reflective box. Set them free!</p>
+
+<h2 id="but-doesnt-pythonjavascriptc-have-both-types-and-classes-at-runtime">“But doesn’t Python/JavaScript/&amp;c have both types and classes at runtime?”</h2>
+
+<p>In JavaScript, there’s a very general runtime classification of values
+called “type”, meant to classify built-in categories like <code class="highlighter-rouge">string</code>,
+<code class="highlighter-rouge">number</code>, and the like.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="k">typeof</span> <span class="s2">"hi"</span>
+<span class="s2">"string"</span>
+<span class="o">&gt;&gt;</span> <span class="k">typeof</span> <span class="mi">42</span>
+<span class="s2">"number"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">typeof</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">]</span>
+<span class="s2">"object"</span>
+</code></pre></div></div>
+
+<p>Defining a class with the new <code class="highlighter-rouge">class</code> keyword doesn’t extend this
+partition with new “types”; instead, it further subdivides <em>one</em> of
+those with a separate classification.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> <span class="kd">class</span> <span class="nx">Foo</span><span class="p">()</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;</span> <span class="kd">class</span> <span class="nx">Bar</span><span class="p">()</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;</span> <span class="k">typeof</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Foo</span><span class="p">)</span>
+<span class="s2">"object"</span>
+<span class="o">&gt;&gt;</span> <span class="k">typeof</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Bar</span><span class="p">)</span>
+<span class="s2">"object"</span>
+<span class="o">&gt;&gt;</span> <span class="k">new</span> <span class="nx">Foo</span><span class="p">().</span><span class="kd">constructor</span>
+<span class="kd">function</span> <span class="nx">Foo</span><span class="p">()</span>
+<span class="o">&gt;&gt;</span> <span class="k">new</span> <span class="nx">Bar</span><span class="p">().</span><span class="kd">constructor</span>
+<span class="kd">function</span> <span class="nx">Bar</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>So, if you treat JavaScript’s definition of the word “type” as
+analogous to the usage in this article, then yes, JavaScript has
+“runtime types”.</p>
+
+<p>But JavaScript can only conveniently get away with this because its
+static types are uninteresting. It has one type—the type of all
+values—and no opportunities to do interesting type-level modeling,
+at least not as part of the standard language.</p>
+
+<p>Hence, JavaScript is free to repurpose the word “type” for a flavor of
+its classes, because our “types” aren’t a tool you make much use of in
+JavaScript. But when you come back to Scala, Haskell, the ML family,
+et al, you need a word for the static concept once again.</p>
+
+<h2 id="thinking-about-types-as-just-classes-leads-to-incorrect-conclusions">Thinking about types as <em>just</em> classes leads to incorrect conclusions</h2>
+
+<p>Setting aside the goal of principled definition of terms, this
+separation is the one that makes the most sense for a practitioner of
+Scala. Consider the practicalities:</p>
+
+<p>Types and classes have different behavior, are equal and unequal
+according to different rules, and there are a lot more types than
+classes. So we need different words to distinguish them.</p>
+
+<p>Saying “compile-time type” or “runtime type” is not a practical
+solution—no one wants to speak such an unwieldy qualifier every
+time they refer to such a commonly-used concept.</p>
+
+<p>While I’ve given a sampling of the richness of the type system in this
+article, it’s not necessary to know that full richness to appreciate
+or remember the difference between the two: types are static and
+compile-time; classes are dynamic and runtime.</p>
+
+<p><em>This article was tested with Scala 2.12.1, Shapeless 2.3.2, and
+Firefox 53.0a2.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Feb 13, 2017</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | An Intro to Generic Numeric Programming with Spire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>An Intro to Generic Numeric Programming with Spire</h2>
+
+  <p>In this post I’d like to introduce you to what I have been calling <em>generic
+numeric programming</em>.</p>
+
+<h2 id="what-is-generic-numeric-programming">What is Generic Numeric Programming?</h2>
+
+<p>What do we mean by generic numeric programming? Let’s take a simple example; we
+want to add 2 numbers together. However, we don’t want to restrict ourselves to
+a particular type, like <code class="highlighter-rouge">Int</code> or <code class="highlighter-rouge">Double</code>, instead we just want to work with
+some <em>generic</em> type <code class="highlighter-rouge">A</code> that can be added. For instance:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">add</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>Of course, this won’t compile since <code class="highlighter-rouge">A</code> has no method <code class="highlighter-rouge">+</code>. What we are really
+saying is that we want <code class="highlighter-rouge">A</code> to be some type that <em>behaves like a number</em>. The
+usual OO way to achieve this is by creating an interface that defines our
+desired behaviour. This is less than ideal, but if we were to go this route,
+our <code class="highlighter-rouge">add</code> function might look like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Addable</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="n">self</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span>
+  <span class="k">def</span> <span class="o">+(</span><span class="n">that</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">add</span><span class="o">[</span><span class="kt">A</span> <span class="k">&lt;:</span> <span class="kt">Addable</span><span class="o">[</span><span class="kt">A</span><span class="o">]](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>We’ve created an interface that defines our <code class="highlighter-rouge">+</code> method, and then bound our type
+parameter <code class="highlighter-rouge">A</code> to subsume this interface. The main problem with this is that we
+can’t directly use types out of our control, like those that come in the
+standard library (ie. <code class="highlighter-rouge">Int</code>, <code class="highlighter-rouge">Long</code>, <code class="highlighter-rouge">Double</code>, <code class="highlighter-rouge">BigInt</code>, etc). The only option
+would be to wrap these types, which means extra allocations and either explicit
+or implicit conversions, neither of which are good options.</p>
+
+<p>A better approach is to use type classes. A discussion on type classes is out
+of the scope of this post, but they let us express that the type <code class="highlighter-rouge">A</code> must have
+some desired behaviour, without inheritence. Using the type class pattern, we
+could write something like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Addable</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="c1">// Both arguments must be provided. Addable works with the type A, but
+</span>  <span class="c1">// does not extend it.
+</span>  <span class="k">def</span> <span class="n">plus</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span>
+<span class="o">}</span>
+
+<span class="c1">// This class adds the + operator to any type A that is Addable,
+// by delegating to that Addable's `plus` method.
+</span><span class="k">implicit</span> <span class="k">class</span> <span class="nc">AddableOps</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">lhs</span><span class="k">:</span> <span class="kt">A</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ev</span><span class="k">:</span> <span class="kt">Addable</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="o">+(</span><span class="n">rhs</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">plus</span><span class="o">(</span><span class="n">lhs</span><span class="o">,</span> <span class="n">rhs</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// We use a context bound to require that A has an Addable instance.
+</span><span class="k">def</span> <span class="n">add</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Addable</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>We can then easily add implementations for any numeric type, regardless if we
+control it or not, or even if it is a primitive type:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">object</span> <span class="nc">IntIsAddable</span> <span class="k">extends</span> <span class="nc">Addable</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">plus</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="o">}</span>
+
+<span class="n">add</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">4</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>This is, more or less, the approach Spire takes.</p>
+
+<h2 id="why-be-generic">Why be Generic?</h2>
+
+<p>Why be generic? The flippant answer I could give is: why not? I do hope that
+after reading this, that is an acceptable answer to you, but I know that’s not
+what you came here for.</p>
+
+<p>The first reason is the obvious one; sometimes you want to run the same
+algorithm, but with different number types. Euclid’s GCD algorithm is the same
+whether you are using <code class="highlighter-rouge">Byte</code>, <code class="highlighter-rouge">Short</code>, <code class="highlighter-rouge">Int</code>, <code class="highlighter-rouge">Long</code>, or <code class="highlighter-rouge">BigInt</code>. Why implement
+it only for 1, when you could do it for all 5? Worse; why implement it 5
+times, when you need only implement it once?</p>
+
+<p>Another reason is that you want to push certain trade-offs, such as speed vs
+precision to the user of your library, rather than making the decision for
+them. <code class="highlighter-rouge">Double</code> is fast, but has a fixed precision. <code class="highlighter-rouge">BigDecimal</code> is slow, but
+can have much higher precision. Which one do you use? When in doubt, let
+someone else figure it out!</p>
+
+<p>A last great reason is that it let’s you write less tests and can make
+testing much less hairy.</p>
+
+<h3 id="one-algorithm-many-types">One Algorithm, Many Types</h3>
+
+<p>So, what does a generic version of Euclid’s GCD algorithm look like? Spire
+strives to make generic numeric code look more or less like what you’d write
+for a direct implementation. So, let’s let you compare; first up, the direct
+implementation:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">euclidGcd</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">x</span>
+  <span class="k">else</span> <span class="n">euclidGcd</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">x</span> <span class="o">%</span> <span class="n">y</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>With Spire, we can use the <code class="highlighter-rouge">spire.math.Integral</code> type class to rewrite this as:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.math.Integral</span>
+<span class="k">import</span> <span class="nn">spire.implicits._</span>
+
+<span class="k">def</span> <span class="n">euclidGcd</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Integral</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="n">x</span>
+  <span class="k">else</span> <span class="n">euclidGcd</span><span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">x</span> <span class="o">%</span> <span class="n">y</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>The 2 methods are almost identical, save the <code class="highlighter-rouge">Integral</code> context bound.
+<code class="highlighter-rouge">Integral</code> gives us many methods we expect integers to have, like addition,
+multiplication, and euclidean division (quotient + remainder).</p>
+
+<p>Because Spire provides default implicit instances of <code class="highlighter-rouge">Integral</code> for all of the
+integral types that come in the Scala standard library, we can immediately use
+<code class="highlighter-rouge">euclidGcd</code> to find the GCD of many integer types:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">euclidGcd</span><span class="o">(</span><span class="mi">42</span><span class="o">,</span> <span class="mi">96</span><span class="o">)</span>
+<span class="n">euclidGcd</span><span class="o">(</span><span class="mi">42L</span><span class="o">,</span> <span class="mi">96L</span><span class="o">)</span>
+<span class="n">euclidGcd</span><span class="o">(</span><span class="nc">BigInt</span><span class="o">(</span><span class="mi">42</span><span class="o">),</span> <span class="nc">BigInt</span><span class="o">(</span><span class="mi">96</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>This is much better than writing 5 different versions of the same algorithm!
+With Spire, you can actually do away with <code class="highlighter-rouge">euclidGcd</code> altogether, as <code class="highlighter-rouge">gcd</code>
+comes with <code class="highlighter-rouge">Integral</code> anyways:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spire</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="o">(</span><span class="nc">BigInt</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="nc">BigInt</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+</code></pre></div></div>
+
+<h3 id="performance-vs-precision">Performance vs Precision</h3>
+
+<p>Another benefit of generic numeric programming, is that you can push the choice
+of numeric type off to someone else. Rather than hardcode a method or data
+structure using <code class="highlighter-rouge">Double</code>, you can simple require some <code class="highlighter-rouge">Fractional</code> type.</p>
+
+<p>I actually first found a need for generic numeric programming after I had
+implemented a swath of algorithms with double precision floating point
+arithmetic, only to find out that the minor precision errors were causing
+serious correctness issues. The obvious fix was to just to use an exact type,
+like <code class="highlighter-rouge">spire.math.Rational</code>, which would’ve worked for many of my purposes.
+However, many of the algorithms actually worked fine with doubles or even
+integers, where as others required exact n-roots (provided by a number type
+like <code class="highlighter-rouge">spire.math.Real</code>). Being more precise meant everything got slower, even
+when it didn’t need to be. Being less precise meant some algorithms would
+occasionally return wrong answers. Abstracting out the actual number type
+used meant I didn’t have to worry about these issues. I could make the choice
+later, when I knew a bit more about my data, performance and precision
+requirements.</p>
+
+<p>We can illustrate this using a simple algorithm to compute the mean of some
+numbers.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.math._</span>
+<span class="k">import</span> <span class="nn">spire.implicits._</span>
+
+<span class="c1">// Note: It is generally better to use an incremental mean.
+</span><span class="k">def</span> <span class="n">mean</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Fractional</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">A*</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">reduceLeft</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span> <span class="o">/</span> <span class="n">xs</span><span class="o">.</span><span class="n">size</span>
+</code></pre></div></div>
+
+<p>Here, we don’t care what type <code class="highlighter-rouge">A</code> is, as long as it can be summed and divided. 
+If we’re working with approximate measurements, perhaps finding the mean of a
+list of <code class="highlighter-rouge">Double</code>s is good enough:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean</span><span class="o">(</span><span class="mf">0.5</span><span class="o">,</span> <span class="mf">1.5</span><span class="o">,</span> <span class="mf">0.0</span><span class="o">)</span> 
+<span class="c1">// = 0.6666666666666666
+</span></code></pre></div></div>
+
+<p>Or perhaps we’d like an exact answer back instead:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.math.Rational</span>
+
+<span class="n">mean</span><span class="o">(</span><span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">0</span><span class="o">))</span>
+<span class="c1">// = Rational(2, 3)
+</span></code></pre></div></div>
+
+<p>The main thing here is that as a user of the <code class="highlighter-rouge">mean</code> function, I get to choose
+whether I’d prefer the speed of <code class="highlighter-rouge">Double</code> or the precision or <code class="highlighter-rouge">Rational</code>. The
+algorithm itself looks no different, so why not give the user the choice?</p>
+
+<h3 id="better-testing">Better Testing</h3>
+
+<p>One of the best things is that if you write test code that abstracts over the
+number type, then you can re-use your tests for many different types. Spire
+makes great use of this, to ensure instances of our type classes obey the rules
+of algebra and that the number types in Spire (Rational, Complex, UInt, etc)
+are fundamentally correct.</p>
+
+<p>There is another benefit though – you can ignore the subtleties of floating
+point arithmetic in your tests if you want! If your code works with any number
+type, then you can test with an exact type such as <code class="highlighter-rouge">spire.math.Rational</code> or
+<code class="highlighter-rouge">spire.math.Real</code>. No more epsilons and NaNs. You shouldn’t let this excuse you
+from writing numerically stable code, but it may save you many false negatives
+in your build system, while also making you more confident that the fundamentals
+are correct.</p>
+
+<p>This is a big topic, deserving of its own blog post (you know who you are), so
+I’ll leave this here.</p>
+
+<h2 id="what-abstractions-exist">What Abstractions Exist?</h2>
+
+<p>We’ve already seen <code class="highlighter-rouge">Integral</code>, which can be used wherever you need something
+that acts like an integer. We also saw the modulus operator, <code class="highlighter-rouge">x % y</code>, but not
+integer division. Spire differentiates between <em>integer division</em> and <em>exact
+division</em>. You perform integer division with <code class="highlighter-rouge">x /~ y</code>. To see it in action,
+let’s use an overly complicated function to negate an integer:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.math._</span>
+<span class="k">import</span> <span class="nn">spire.implicits._</span>
+
+<span class="k">def</span> <span class="n">negate</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Integral</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=</span> <span class="o">-(</span><span class="mi">42</span> <span class="o">*</span> <span class="o">(</span><span class="n">x</span> <span class="o">/~</span> <span class="mi">42</span><span class="o">)</span> <span class="o">+</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">42</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Instances of <code class="highlighter-rouge">Integral</code> exist for <code class="highlighter-rouge">Byte</code>, <code class="highlighter-rouge">Short</code>, <code class="highlighter-rouge">Int</code>, <code class="highlighter-rouge">Long</code> and <code class="highlighter-rouge">BigInt</code>.</p>
+
+<p>Another type class Spire provides is <code class="highlighter-rouge">Fractional[A]</code>, which is used for things
+that have “exact” division. “Exact” is in quotes, since <code class="highlighter-rouge">Double</code> or
+<code class="highlighter-rouge">BigDecimal</code> division isn’t really exact, but it’s close enough that we give 
+them a pass. <code class="highlighter-rouge">Fractional</code> also provides <code class="highlighter-rouge">x.sqrt</code> and <code class="highlighter-rouge">x nroot k</code> for taking the
+roots of a number.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">distance</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Fractional</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">(</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="o">).</span><span class="n">sqrt</span>
+</code></pre></div></div>
+
+<p>Note that <code class="highlighter-rouge">Fractional[A] &lt;: Integral[A]</code>, so anything you can do with
+<code class="highlighter-rouge">Integral</code>, you can do with <code class="highlighter-rouge">Fractional[A]</code> too. Here, we can use <code class="highlighter-rouge">distance</code>
+to calculate the length of the hypotenuse with <code class="highlighter-rouge">Double</code>s, <code class="highlighter-rouge">Float</code>s,
+<code class="highlighter-rouge">BigDecimal</code>s, or some of Spire’s number types like <code class="highlighter-rouge">Real</code> or <code class="highlighter-rouge">Rational</code>.</p>
+
+<p>Lastly, you often have cases where you just don’t care if <code class="highlighter-rouge">/</code> means exact or
+integer division, or whether you are taking the square root of an <code class="highlighter-rouge">Int</code> or a
+<code class="highlighter-rouge">Double</code>. For this kind of catch-all work Spire provides <code class="highlighter-rouge">Numeric[A]</code>.</p>
+
+<h2 id="why-spire">Why Spire?</h2>
+
+<p>If you’ve already hit the types of problems solved by generic numeric
+programming, then you may have seen that <code class="highlighter-rouge">scala.math</code> also provides <code class="highlighter-rouge">Numeric</code>,
+<code class="highlighter-rouge">Integral</code>, and <code class="highlighter-rouge">Fractional</code>, so why use Spire? Well, we originally created
+Spire largely due to the problems with the type classes as they exist in Scala.</p>
+
+<p>To start, Scala’s versions aren’t specialized, so they only worked with boxed
+versions of primitive types. The operators in Scala also required boxing, which
+means you need to trade-off performance for readability. They also aren’t very
+useful for a lot of numeric programming; what about nroots, trig functions,
+unsigned types, etc?</p>
+
+<p>Spire also provides many more useful (and specialized) type classes. Some are
+ones you’d expect, like <code class="highlighter-rouge">Eq</code> and <code class="highlighter-rouge">Order</code>, while others define more basic
+algebras than <code class="highlighter-rouge">Numeric</code> and friends, like <code class="highlighter-rouge">Ring</code>, <code class="highlighter-rouge">Semigroup</code>, <code class="highlighter-rouge">VectorSpace</code>,
+etc.</p>
+
+<p>There are many useful number types that are missing from Scala in Spire, such
+as <code class="highlighter-rouge">Rational</code>, <code class="highlighter-rouge">Complex</code>, <code class="highlighter-rouge">UInt</code>, etc.</p>
+
+<p>Spire was written by people who actually use it. I somewhat feel like Scala’s
+Numeric and friends weren’t really used much after they were created, other
+than for Scala’s NumericRange support (ie. <code class="highlighter-rouge">1.2 to 2.4 by 0.1</code>). They miss
+many little creature comforts whose need becomes apparent after using Scala’s
+type classes for a bit.</p>
+
+<h3 id="spire-is-fast">Spire is Fast</h3>
+
+<p>One of Spire’s goals is that the performance of generic code shouldn’t suffer.
+Ideally, the generic code should be as fast as the direct implementation. Using
+the GCD implementation above as an example, we can compare Spire vs. Scala vs.
+a direct implementation. I’ve put the
+<a href="https://gist.github.com/tixxit/5695365">benchmarking code up as a Gist</a>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcdDirect:        29.981   1.00 x gcdDirect
+gcdSpire:         30.094   1.00 x gcdDirect
+gcdSpireNonSpec:  36.903   1.23 x gcdDirect
+gcdScala:         38.989   1.30 x gcdDirect
+</code></pre></div></div>
+
+<p>For another example, we can look at the code to
+<a href="https://gist.github.com/tixxit/5695365">find the mean of an array</a>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>meanDirect:        10.592   **1.00 x gcdDirect**
+meanSpire:         10.638   **1.00 x gcdDirect**
+meanSpireNonSpec:  13.434   **1.26 x gcdDirect** 
+meanScala:         19.388   **1.83 x gcdDirect**
+</code></pre></div></div>
+
+<p>Spire achieves these goals fairly simply. All our type classes are
+<code class="highlighter-rouge">@specialized</code>, so when using primitives types you can avoid boxing. We then use macros to remove
+the boxing normally required for the operators by the implicit conversions.</p>
+
+<p>Using <code class="highlighter-rouge">@specialized</code>, both <code class="highlighter-rouge">gcdSpire</code> and <code class="highlighter-rouge">meanSpire</code> aren’t noticably slower
+than the direct implementation. We can see the slow down caused by dropping
+<code class="highlighter-rouge">@specialized</code> in <code class="highlighter-rouge">gcdSpireNonSpec</code> and <code class="highlighter-rouge">meanSpireNonSpec</code>. The difference
+between <code class="highlighter-rouge">gcdSpireNonSpec</code> and <code class="highlighter-rouge">gcdScala</code> is because Spire doesn’t allocate an
+object for the <code class="highlighter-rouge">%</code> operator (using macros to remove the allocation). The
+difference is even more pronounced between <code class="highlighter-rouge">meanSpireNonSpec</code> and <code class="highlighter-rouge">meanScala</code>.</p>
+
+<h3 id="more-than-just-numeric-integral-and-fractional">More than just <code class="highlighter-rouge">Numeric</code>, <code class="highlighter-rouge">Integral</code>, and <code class="highlighter-rouge">Fractional</code></h3>
+
+<p>The 3 type classes highlighted in this post are just the tip of the iceberg.
+Spire provides a whole slew of type classes in <code class="highlighter-rouge">spire.algebra</code>. This package
+contains type classes representing a wide variety of algebraic structures,
+such as <code class="highlighter-rouge">Monoid</code>, <code class="highlighter-rouge">Group</code>, <code class="highlighter-rouge">Ring</code>, <code class="highlighter-rouge">Field</code>, <code class="highlighter-rouge">VectorSpace</code>, and more. The 3 type
+classes discussed above provide a good starting point, but if you use Spire in
+your project, you will probably find yourself using <code class="highlighter-rouge">spire.algebra</code> more and
+more often. If you’d like to learn more, you can <a href="http://www.youtube.com/watch?v=xO9AoZNSOH4">watch my talk on abstract
+algebra in Scala</a>.</p>
+
+<p>As an example of using the algebra package, <code class="highlighter-rouge">spire.math.Integral</code> is simply
+defined as:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.algebra.</span><span class="o">{</span> <span class="nc">EuclideanRing</span><span class="o">,</span> <span class="nc">IsReal</span> <span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Integral</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">EuclideanRing</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+                     <span class="k">with</span> <span class="nc">IsReal</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="c1">// Includes Order[A] with Signed[A].
+</span>                     <span class="k">with</span> <span class="nc">ConvertableFrom</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+                     <span class="k">with</span> <span class="nc">ConvertableTo</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Whereas <code class="highlighter-rouge">spire.math.Fractional</code> is just:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spire.algebra.</span><span class="o">{</span> <span class="nc">Field</span><span class="o">,</span> <span class="nc">NRoot</span> <span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Fractional</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">Integral</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">with</span> <span class="nc">Field</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">with</span> <span class="nc">NRoot</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<h3 id="many-new-number-types">Many New Number Types</h3>
+
+<p>Spire also adds many new useful number types. Here’s an incomplete list:</p>
+
+<ul>
+  <li><strong>spire.math.Rational</strong> is a fast, exact number type for working with
+rational numbers,</li>
+  <li><strong>spire.math.Complex[A]</strong> is a parametric number type for complex numbers,</li>
+  <li><strong>spire.math.Number</strong> is a boxed number type that strives for flexibility
+of use,</li>
+  <li><strong>spire.math.Interval</strong> is a number type for interval arithmetic,</li>
+  <li><strong>spire.math.Real</strong> is a number type for exact geometric computation that
+provides exact n-roots, as well as exact division,</li>
+  <li><strong>spire.math.{UByte,UShort,UInt,ULong}</strong> unsigned integer types, and</li>
+  <li><strong>spire.math.Natural</strong> an arbitrary precision unsigned integer type.</li>
+</ul>
+
+<h3 id="better-readability">Better Readability</h3>
+
+<p>Spire also provides better operator integration with <code class="highlighter-rouge">Int</code> and <code class="highlighter-rouge">Double</code>. For
+instance, <code class="highlighter-rouge">2 * x</code> or <code class="highlighter-rouge">x * 2</code> will just work for any <code class="highlighter-rouge">x</code> whose type has an
+<code class="highlighter-rouge">Ring</code>. On the other hand, Scala requires something like
+<code class="highlighter-rouge">implicitly[Numeric[A]].fromInt(2) * x</code> which is much less readable. This
+also goes for working with fractions; <code class="highlighter-rouge">x * 0.5</code> will just work, if <code class="highlighter-rouge">x</code> has a
+<code class="highlighter-rouge">Field</code>.</p>
+
+<h2 id="try-it-out">Try It Out!</h2>
+
+<p>Spire has a basic algebra that let’s us work generically with numeric types. It
+does this without sacrificing readability or performance. It also provides many
+more useful abstractions and concrete number types. This means you can write
+less code, write less tests, and worry less about concerns like performance vs.
+precision. If this appeals to you, then you should try it out!</p>
+
+<p>There is some basic information on getting up-and-running with Spire in SBT on
+<a href="https://github.com/non/spire">Spire’s project page</a>. If you have any further
+questions, comments, suggestions, criticism or witticisms you can say what you
+want to say on the <a href="https://groups.google.com/forum/#!forum/spire-math">Spire mailing list</a>
+or on IRC on Freenode in <code class="highlighter-rouge">#spire-math</code>.</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Tom Switzer
+    
+    on Jul 07, 2013</p>
+
+    
+  <a href="https://twitter.com/tixxit" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @tixxit</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/tixxit" aria-label="Follow @tixxit on GitHub">Follow @tixxit</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

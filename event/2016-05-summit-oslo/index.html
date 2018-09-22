@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Oslo Summit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li  class="active" >
+            <a href="/events/">Events</a>
+          </li>
+          <li >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      </div> <!-- close wrapper -->
+
+<div class="event__hero" style="background-image: url(/img/media/oslo.jpg);">
+  <div class="wrapper">
+    <div class="event__header js-fade-in">
+      <div class="wrapper">
+        <p>Oslo Summit</p>
+        <ul class="navigation">
+          <li><a href="#about">About the event</a></li>
+          
+          
+            <li><a href="#speakers-and-schedule">Speakers and Schedule</a></li>
+          
+          
+          
+          
+            <li><a href="#sponsors">Sponsors</a></li>
+          
+        </ul>
+      </div>
+    </div>
+    <h1 class="js-fade-in">Typelevel Summit Oslo</h1>
+    <p class="hero__lead js-fade-in">
+      <strong>May 4, 2016</strong>
+      at Teknologihuset
+    </p>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="content content-small js-fade-in" id="about">
+    <h2 id="about-the-summit">About the Summit</h2>
+
+<p>The second Typelevel Summit was co-located with <a href="http://2016.flatmap.no/">flatMap(Oslo)</a>.</p>
+
+<p>The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
+Whilst many of the Typelevel projects use somewhat “advanced” Scala, they are a lot more approachable than many people think, and a major part of Typelevel’s mission is to make the ideas they embody much more widely accessible.
+If you’re interested in types and pure functional programming we’d love to see you here!</p>
+
+<h2 id="speakers-and-schedule">Speakers and Schedule</h2>
+
+<table class="schedule">
+  <tr>
+    <th>Time</th>
+    <th>Talk</th>
+  </tr>
+
+  
+    
+      <tr>
+        <td>8:30</td>
+        <td>
+          <h5>Registration</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:00</td>
+        <td>
+          <h5>Opening Remarks</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:15</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/eugeniacheng.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Keynote: How to bake "How to Bake Pi"</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Dr Eugenia Cheng</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Mathematics is a very misunderstood subject.  Many people associate it only with painful experiences with childhood, or think it's all about numbers and calculations, or that it's a cold subject with clear rights and wrongs. My mission is to bring...
+          </p>
+          <span class="btn text js-open-popup" data-id="keynote-how-to-bake-how-to-bake-pi">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:15</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:30</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/chrismyers.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>A Year living Freely</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Chris Myers</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            The Free monad and the Interpreter Pattern has gained significant interest in the Scala community of late.  It is a pattern that has helped unlock the problems of separating pure functions from effects.  At REA Group we have had an explosion of in...
+          </p>
+          <span class="btn text js-open-popup" data-id="a-year-living-freely">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:10</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/dalewijnand.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>What is macro-compat and why you might be interested in using it</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Dale Wijnand</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Despite macros being an experimental feature of Scala, a number of libraries find them to provide great value and choose to make use of them. However in different Scala versions the macro support and API is different. That means that libraries tha...
+          </p>
+          <span class="btn text js-open-popup" data-id="what-is-macro-compat-and-why-you-might-be-interested-in-using-it">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:25</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:45</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alexandrunedelcu.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Monitoring and controlling power plants with Monix</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Alexandru Nedelcu</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            This talk is about my experience in dealing with modeling behavior by processing asynchronous soft-real time signals from different source using Monix, the library for building asynchronous and event-based logic.  It's an experience report from my...
+          </p>
+          <span class="btn text js-open-popup" data-id="monitoring-and-controlling-power-plants-with-monix">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>12:25</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alejandrogomez.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Fetch: Simple &amp; Efficient data access</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Alejandro Gómez</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Fetch is a Scala library for simplifying and optimizing access to data such as files systems, databases, or web services. These data sources usually have a latency cost, and we often have to trade code clarity for performance when querying them. W...
+          </p>
+          <span class="btn text js-open-popup" data-id="fetch-simple-efficient-data-access">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>12:45</td>
+        <td>
+          <h5>Lunch Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:00</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/frankthomas.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Decorate your types with refined</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Frank Thomas</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Scala has a powerful type system that allows to create very expressive types. But sometimes we need guarantees about our values beyond what the type system can usually check, for example integers in the range from zero to fifty-nine, or chars that...
+          </p>
+          <span class="btn text js-open-popup" data-id="decorate-your-types-with-refined">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:40</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/jonathanmerritt.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Discovering Types (from Strings) with Cats and Shapeless</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Jonathan Merritt</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            This talk is about a simple problem which can be solved using parts of Cats and Shapeless. While helping data scientists to use the nice, well-typed Scala tools that we build for them, we are often presented with tabular data in raw text files (CS...
+          </p>
+          <span class="btn text js-open-popup" data-id="discovering-types-from-strings-with-cats-and-shapeless">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:55</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:15</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Building functional programs with bananas, catalysts, shacl's and shapes</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Alistair Johnson</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            This is a talk that combines both the practical, but often overlooked, topic of SBT with cutting edge distributed data technologies. The practical aspect is presented by giving an overview of catalysts, where it came from (Scalaz and banana-rdf, a...
+          </p>
+          <span class="btn text js-open-popup" data-id="building-functional-programs-with-bananas-catalysts-shacl-s-and-shapes">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:55</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/janouwens.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Growing a DSL for financial calculations</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Jan Ouwens</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Rabobank is a Dutch multinational banking and financial services company headquartered in Utrecht, the Netherlands. One of their services is providing mortgage loans. Determining the height of the loans involves some rather complex calculations. T...
+          </p>
+          <span class="btn text js-open-popup" data-id="growing-a-dsl-for-financial-calculations">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:25</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:45</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/guillaumemartres.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Dotty and types: the story so far</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Guillaume Martres</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Dotty is a new, experimental compiler for Scala. One of the main goal of Dotty is to provide a better type system for Scala that is both theoretically sound and better in practice. In this talk I'll focus on some of the practical improvements to t...
+          </p>
+          <span class="btn text js-open-popup" data-id="dotty-and-types-the-story-so-far">More</span>
+        </td>
+      </tr>
+    
+  
+
+</table>
+
+<!--- All speaker popups -->
+<div class="speakers js-close-popup">
+  
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="keynote-how-to-bake-how-to-bake-pi">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Keynote: How to bake "How to Bake Pi"</h3>
+          <h4>at 9:15</h4>
+          <p>Mathematics is a very misunderstood subject.  Many people associate it only with painful experiences with childhood, or think it's all about numbers and calculations, or that it's a cold subject with clear rights and wrongs. My mission is to bring my love of mathematics to more people, and as part of this journey I need to show the beauty and the power of abstract thinking. In this talk I will present my experiences of this, starting with the book I wrote for a very general audience, and the Category Theory course I teach to art students at the School of the Art Institute of Chicago. Using a variety of surprising examples, I will show that it is possible to convince maths phobics and maths sceptics that abstract mathematics can be relevant and useful for everyone.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/eugeniacheng.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Dr Eugenia Cheng</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Eugenia Cheng is a Senior Lecturer (Associate Professor) of Pure Mathematics in the School of Mathematics and Statistics, University of Sheffield, UK.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="a-year-living-freely">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>A Year living Freely</h3>
+          <h4>at 10:30</h4>
+          <p>The Free monad and the Interpreter Pattern has gained significant interest in the Scala community of late.  It is a pattern that has helped unlock the problems of separating pure functions from effects.  At REA Group we have had an explosion of interest in FP and Scala in the last two years.  Beginning with just a couple of experienced functional programmers to now multiple teams and dozens of developers, we have experienced the growing pains of introducing FP and Scala to a large organisation.  The Free monad has been a key element  in our journey.  As we grew, we were particularly conscious of what patterns we could lay down, especially for beginners, that promoted the integral values of FP such as referential transparency and to allow obvious ways that software should grow.  After many experiments and much research, we discovered that the Free monad and interpreter pattern has been something that tangibly isolates effects, maintains referential transparency, subsumes dependency injection, is modular and is surprisingly accessible to FP/Scala new comers.  This talk briefly covers the mechanics of the Free monad and the interpreter pattern but largely looks at how a year with the Free monad has allowed us to make novice teams productive while they learn and embrace FP and Scala.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/chrismyers.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Chris Myers</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Chris is an experienced FP/Scala dev working at REA Group, Australia's largest Property website. He uses Scala daily in building the next generation APIs for our business. He also curates http://functionaltalks.org and is the creator of Monet.js (http://cwmyers.github.io/monet.js/), a powerful monad library for JS.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="what-is-macro-compat-and-why-you-might-be-interested-in-using-it">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>What is macro-compat and why you might be interested in using it</h3>
+          <h4>at 11:10</h4>
+          <p>Despite macros being an experimental feature of Scala, a number of libraries find them to provide great value and choose to make use of them. However in different Scala versions the macro support and API is different. That means that libraries that cross-build for multiple Scala versions have then had to deal with these differences. Macro-compat is a solution to this problem. In this talk I will introduce macro-compat, starting with an overview of the problems it's trying to solve, the prior art of how these problems are dealt with, how to use it and how it works.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/dalewijnand.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Dale Wijnand</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Dale is an active OSS contributor, typically in Scala, and an sbt maintainer.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="monitoring-and-controlling-power-plants-with-monix">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Monitoring and controlling power plants with Monix</h3>
+          <h4>at 11:45</h4>
+          <p>This talk is about my experience in dealing with modeling behavior by processing asynchronous soft-real time signals from different source using Monix, the library for building asynchronous and event-based logic.  It's an experience report from my work at E.On, in monitoring and controlling power plants. We do this by gathering signals in real time and modeling state machines that give us the state in which an asset is in. The component, for lack of inspiration named Asset-Engine, is the one component in the project that definitely adheres to FP principles, the business logic being described with pure functions and data-structures and the communication being handled by actors and by Observable streams.  I want to show how I pushed side effects at the edges, in a very pragmatic setup.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alexandrunedelcu.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Alexandru Nedelcu</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Alexandru is a software developer living in Bucharest, Romania. A startup guy, he's dividing his time between work, family and his personal projects, fueled by his work on the Monix project and his increased contributions to Typelevel Cats. He's also a proud father, husband, has a very unhealthy sleep schedule and appreciates talking about programming over coffee. Sometimes he blogs at: https://alexn.org</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="fetch-simple-efficient-data-access">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Fetch: Simple &amp; Efficient data access</h3>
+          <h4>at 12:25</h4>
+          <p>Fetch is a Scala library for simplifying and optimizing access to data such as files systems, databases, or web services. These data sources usually have a latency cost, and we often have to trade code clarity for performance when querying them. We can easily end up with code that complects the business logic performed on the data we're fetching with explicit synchronization or optimizations such as caching and batching. Fetch can automatically request data from multiple sources concurrently, batch multiple requests to the same data source, and cache previous requests' results without having to use any explicit concurrency construct. It does so by separating data fetch declaration from interpretation, building a tree with the data dependencies where you can express concurrency with the applicative bind, and sequential dependency with monadic bind. It borrows heavily from the Haxl (Haskell, open sourced) and Stitch (Scala, not open sourced) projects. This talk will cover the problem Fetch solves, an example of how you can benefit from using it, and a high-level look at its implementation.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/alejandrogomez.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Alejandro Gómez</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Alejandro is a functional programing enthusiast with a lot of experience with dynamic languages, specially Clojure. He's the author of the Clojure cats library (https://github.com/funcool/cats) which predates Scala's cats, and has been trying to map pure FP concepts to Clojure as an experiment for quite some time. He recently started working for 47degrees writing Scala and has started the Fetch project, similar to Facebook's Haxl project (Haskell, open source) and Twitter's Stitch (Scala, not open sourced).</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="decorate-your-types-with-refined">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Decorate your types with refined</h3>
+          <h4>at 14:00</h4>
+          <p>Scala has a powerful type system that allows to create very expressive types. But sometimes we need guarantees about our values beyond what the type system can usually check, for example integers in the range from zero to fifty-nine, or chars that are either a letter or a digit. One way to realize these constraints is known as smart constructors, where the construction mechanism validates at runtime that our values satisfy the constraint. Unfortunately this technique requires some boilerplate and always incur runtime checks even if the values are kown at compile-time. This talk will introduce a library for refining types with type-level predicates, which abstracts over smart constructors. We'll go from the idea of refinement types to examples of the library using the rich set of predicates it provides, and show how it can be used at compile- and runtime alike. On that way we'll see how we can make good use of literal-based singleton types that are proposed in SIP-23. I'll also demonstrate how refined integrates with other libraries like circe, Monocle, or scodec.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/frankthomas.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Frank Thomas</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Frank is a physicist by education and a programmer by profession, currently working in a telecommunications company. He started programming in Scala in 2011 and is a contributor to scalaz-stream and cats. Most of his Scala work is done in his free time.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="discovering-types-from-strings-with-cats-and-shapeless">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Discovering Types (from Strings) with Cats and Shapeless</h3>
+          <h4>at 14:40</h4>
+          <p>This talk is about a simple problem which can be solved using parts of Cats and Shapeless. While helping data scientists to use the nice, well-typed Scala tools that we build for them, we are often presented with tabular data in raw text files (CSV, PSV, etc.). These files usually have some consistent, but unknown, internal schema. Data scientists are often familiar with dynamic languages like R and Python, in which fields can be parsed speculatively, or on-demand by particular operations at runtime. They usually expect Scala tools to do the same, and they particularly dislike having to specify schemas manually up-front. This mis-match can be addressed by a spectrum of different approaches, which range from handling types outside the language proper (boo! - but it works quite well in practice), to discovering and pre-generating a schema that can be used for compile-time checking. The problem of discovering the schemas of these files in a composable way makes for an interesting tour of some features of Shapeless and Cats. It's useful for beginners because the problem is quite easy to understand. I'll discuss some approaches to this, some of the remaining challenges, and provide attendees with enough background to implement the basics of a working system. I'll focus specifically on a solution that involves Cats and Shapeless for schema pre-generation, rather than macro-based approaches of manifesting schemas.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/jonathanmerritt.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Jonathan Merritt</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Jonathan Merritt is a software engineer in the finance sector in Australia, writing code in Haskell and Scala to support data scientists to develop large-scale predictive models. Before joining the tech industry 2 years ago, he completed a PhD on equine biomechanics followed by 10 years on the post-doc treadmill; dissecting human cadavers, building photogrammetrically-guided robots, testing horseshoes that had an in-built inertial navigation system, and doing motion capture in horses.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="building-functional-programs-with-bananas-catalysts-shacl-s-and-shapes">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Building functional programs with bananas, catalysts, shacl's and shapes</h3>
+          <h4>at 15:15</h4>
+          <p>This is a talk that combines both the practical, but often overlooked, topic of SBT with cutting edge distributed data technologies. The practical aspect is presented by giving an overview of catalysts, where it came from (Scalaz and banana-rdf, actually), how it evolved and how it came to be what and where it is today; and why it should be used. The evolution of catalysts then leads naturally to why current build systems play such an import role in language ecosystems and why these ecosystems can't work as they are today. This is where RDF naturally has a place, along with Shapes and Shapes Constraint Language (SHACL).</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Alistair Johnson</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Alistair has been programming for far too long, for far too many companies, but is still passionate about promoting the integration of maths, science and engineering into everyday programming life.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="growing-a-dsl-for-financial-calculations">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Growing a DSL for financial calculations</h3>
+          <h4>at 15:55</h4>
+          <p>Rabobank is a Dutch multinational banking and financial services company headquartered in Utrecht, the Netherlands. One of their services is providing mortgage loans. Determining the height of the loans involves some rather complex calculations. They were struggling to represent these calculations in an understandable and reliably testable way for both domain experts and developers. We helped them develop an internal DSL in Scala that allows them to express these complex calculations in an idiomatic way that is not just easy to read for both developers and business analysts, but more testable as well. Harnessing functional programming principles and the strong Scala compiler, it also provides full typesafety with a syntax that lies very close to human language, allowing fully typesafe constructs such as 'amount per month' and 'amount per year'. In this talk, I will explain the concepts behind the DSL, how we implemented them without adding any dependencies to the project (except ScalaTest, of course), and the design decisions we had to make along the way.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/janouwens.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Jan Ouwens</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Jan Ouwens is a Scala developer at Codestar and has worked and experimented with Scala and Akka for the past five years. He has worked on a wide variety of projects over the years in the fields of service management, electron microscopes, banking, and the operation of trains. He has a polyglot mindset, having worked with a wide variety of languages such as Java, C#, Jess/Clips and yes, even VBscript.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="dotty-and-types-the-story-so-far">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Dotty and types: the story so far</h3>
+          <h4>at 16:45</h4>
+          <p>Dotty is a new, experimental compiler for Scala. One of the main goal of Dotty is to provide a better type system for Scala that is both theoretically sound and better in practice. In this talk I'll focus on some of the practical improvements to the type system we've made in Dotty, like the new type parameter inference algorithm that, while not formally specified, should be easier to reason about and work in more cases. I will also try to shed some light on the challenges we face, like getting a set of features (like union types, singleton types and type inference) to interact well with each other, or properly implementing higher-kinded types.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/guillaumemartres.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Guillaume Martres</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Compiler Engineer at EPFL working on Dotty. He's currently working on incremental compilation support using sbt.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+</div>
+
+<h2 id="sponsors">Sponsors</h2>
+
+<p>We’d like to thank all our sponsors who help to make the Summit happen:</p>
+
+<div class="sponsors">
+  
+    <div class="sponsors__sponsor sponsors__sponsor--platinum">
+      <h3>Platinum</h3>
+      
+        <a href="https://www.commbank.com.au/">
+          <img src="/img/media/sponsors/commbank.png" alt="Commonwealth Bank of Australia" title="Commonwealth Bank of Australia" style="height:40px" />
+        </a>
+      
+        <a href="http://www.47deg.com/">
+          <img src="/img/media/sponsors/47_degrees.png" alt="47 Degrees" title="47 Degrees" style="height:100px" />
+        </a>
+      
+    </div>
+  
+
+  
+    <div class="sponsors__sponsor sponsors__sponsor--gold">
+      <h3>Gold</h3>
+      
+        <a href="http://underscore.io/">
+          <img src="/img/media/sponsors/underscore.png" alt="Underscore" title="Underscore" style="height:50px" />
+        </a>
+      
+        <a href="http://www.arktekk.no/">
+          <img src="/img/media/sponsors/arktekk.png" alt="Arktekk" title="Arktekk" style="height:80px" />
+        </a>
+      
+    </div>
+  
+
+  
+    <div class="sponsors__sponsor sponsors__sponsor--silver">
+      <h3>Silver</h3>
+      
+        <a href="https://www.lightbend.com/">
+          <img src="/img/media/sponsors/lightbend.png" alt="Lightbend" title="Lightbend" style="height:60px" />
+        </a>
+      
+    </div>
+  
+
+  
+</div>
+
+<p>Thanks to the generous private supporters (in alphabetic order): Frank S. Thomas, Eric Torreborre, and the anonymous patrons.</p>
+
+  </div>
+</div>
+
+<div> <!-- open dummy -->
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

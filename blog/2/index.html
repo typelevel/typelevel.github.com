@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content content-small pull-left">
+  <div class="posts">
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/12/27/optimizing-final-tagless.html">Optimizing Tagless Final – Saying farewell to Free</a>
+      </h2>
+      <p>The Tagless Final encoding has gained some steam recently, with some people hailing 2017 as the year of Tagless Final. Being conceptually similar to the Free Monad, different comparisons have been brought up and the one trade-off that always comes up is the lack or the difficulty of inspection of...</p>
+      <div class="post__meta">
+        
+        
+          
+            <img class="portrait" src="/img/media/speakers/lukajacobowitz.jpg" />
+            <p>
+          
+            by Luka Jacobowitz 
+        
+        on Dec 27, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/12/25/cats-1.0.0.html">Announcement: cats 1.0.0</a>
+      </h2>
+      <p>The cats maintainer team is proud to announce the cats 1.0.0 release. Cats has been striving to provide functional programming abstractions that are core, modular, approachable and efficient. Cats 1.0.0 marks the point where we believe that our API is robust and stable enough to start guarantee backward binary compatibility...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Kailuo Wang 
+        
+        on Dec 25, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/12/20/who-implements-typeclass.html">Who implements the typeclass instance?</a>
+      </h2>
+      <p>The typeclass pattern in Scala invites you to place implementation-specific knowledge directly in the typeclass instances, with the interface defined as the typeclass’s abstract interface. However, GADTs permit a different organization of code. It is even possible to define a typeclass that seems to do nothing at all, yet still...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Stephen Compall 
+        
+        on Dec 20, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/09/05/three-types-of-strings.html">There are at least three types of strings</a>
+      </h2>
+      <p>Newtype mechanisms are a great way to introduce wrapper-free, global distinctions of “different” instances of the same type. But we can do that on a local level, too, by using type parameters. Consider these two signatures. def mungeIDs(uids: List[String], gids: List[String], oids: List[String]): Magic[String, String, String] def mungeIDsSafely[UID &lt;: String,...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Stephen Compall 
+        
+        on Sep 05, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/08/04/cats-1.0-mf.html">Announcement: cats 1.0.0-MF</a>
+      </h2>
+      <p>The cats maintainer team is proud to announce the cats 1.0.0-MF release. MF stands for milestone final, this will be the last release before cats 1.0.0-RC1 which will be followed by cats 1.0 shortly. The main purpose/focus of this release is to offer a relatively stable API to work with...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Kailuo Wang 
+        
+        on Aug 04, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/06/21/ciris.html">Validated Configurations with Ciris</a>
+      </h2>
+      <p>The need for configuration arises in almost every application, as we want to be able to run in different environments – for example, local, testing, and production environments. Configurations are also used as a way to keep secrets, like passwords and keys, out of source code and version control. By...</p>
+      <div class="post__meta">
+        
+        
+          
+            <img class="portrait" src="/img/media/speakers/viktorloevgren.png" />
+            <p>
+          
+            by Viktor Lövgren 
+        
+        on Jun 21, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/06/13/libra.html">Compile time dimensional analysis with Libra</a>
+      </h2>
+      <p>Dimensional analysis When we code, we code in numbers - doubles, floats and ints. Those numbers always represent real world quantities. For example, the number of people in a room can be represented as an integer, as can the number of chairs. Adding people and chairs together gives a nonsensical...</p>
+      <div class="post__meta">
+        
+        
+          
+            <img class="portrait" src="/img/media/speakers/zainabali.jpg" />
+            <p>
+          
+            by Zainab Ali 
+        
+        on Jun 13, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/05/02/io-monad-for-cats.html">An IO monad for cats</a>
+      </h2>
+      <p>Haskell is a pure language. Every Haskell expression is referentially transparent, meaning that you can substitute that expression with its evaluated result without changing the program. Or, put into code: -- this program f expr expr -- apply function f to arguments expr, expr -- is equivalent to this one,...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Daniel Spiewak 
+        
+        on May 02, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/04/02/equivalence-vs-equality.html">Equivalence versus Equality</a>
+      </h2>
+      <p>This is a guest post by Tomas Mikula. It was initially published as a document in the hasheq. It has been slightly edited and is being republished here with the permission of the original author. This article describes what we mean when we say that the data structures in this...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Tomas Mikula 
+        
+        on Apr 02, 2017</p>
+      </div>
+    </div>
+    
+    <div class="post js-fade-in">
+      <h2>
+        <a href="/blog/2017/03/01/four-ways-to-escape-a-cake.html">Four ways to escape a cake</a>
+      </h2>
+      <p>The mixin style of importing in which classes and traits are defined within traits, as seen in scala.reflect.Universe, ScalaTest, and other Scala styles, seems to be infectious. By that, I mean once you define something in a trait to be mixed in, to produce another reusable module that calls that...</p>
+      <div class="post__meta">
+        
+        
+          
+            by Stephen Compall 
+        
+        on Mar 01, 2017</p>
+      </div>
+    </div>
+    
+
+    <!-- Pagination links -->
+    <div class="pagination js-fade-in">
+      
+        <a href="/blog/" class="btn text prev">Previous</a>
+      
+      
+        <a href="/blog/3/" class="btn text next">Next</a>
+      
+    </div>
+  </div>
+</div>
+
+<div class="sidebar js-fade-in">
+  <h4>About the Blog</h4>
+  <p class="sidebar__about">
+    Here, we would like to show how to use our libraries in your code, provide examples, collect learning resources, and explore implementation details.<br><br>
+
+    Contributed blog posts are welcome.
+    If you want to share something about a library or Scala topics in general (e.g. type classes), case studies, examples, or other related content, please do not hesitate to contact us.
+    This blog (and in fact, the whole web site) is built using Jekyll on GitHub pages, so you can just fork the repository, add a post, and create a pull request.<br><br>
+  </p>
+
+	<h4>Archive</h4>
+	<p class="sidebar__about">
+		<a href="/blog/archive.html">All posts</a>
+	</p>
+
+  <h4>Follow Us</h4>
+  <a class="btn text" href="/blog/feed.rss">Subscribe via RSS</a>
+  <a class="btn text" href="//twitter.com/typelevel">Follow us on Twitter</a>
+</div>
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

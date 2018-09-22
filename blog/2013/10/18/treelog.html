@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Treelog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Treelog</h2>
+
+  <p><a href="https://twitter.com/lancewalton">Lance Walton’s</a> <a href="https://github.com/lancewalton/treelog">Treelog</a> is the result of a real problem that arose in a trading system that we were working on:</p>
+<blockquote>
+  <p>How can everything that happens to a trade be audited?</p>
+</blockquote>
+
+<p>The first (and tedious) answer is copius logging by writing to some kind of audit data type or simple logger.</p>
+
+<p>There are a number of problems with this approach:</p>
+
+<ul>
+  <li>writing logging around computations often complicates the code as values must be extracted, recorded and then applied</li>
+  <li>separating logic from the computation can lead to a mismatch between the log and the computation</li>
+  <li>linear logs are very difficult to follow</li>
+  <li>its not easy to control how much of a linear log to show a user if you do not know what is detail and what isn’t</li>
+</ul>
+
+<p>Treelog resolves these issues by making the log itself a tree, reflecting the computational tree it logs, and uses techniques described in the <a href="http://www.haskell.org/wikiupload/e/e9/Typeclassopedia.pdf">Typeclassopedia</a> to bring logging closer to the computation: the <code class="highlighter-rouge">Writer</code> Monad, a Monad Transformer, and a cunning Monoid.</p>
+
+<p>Note that this post is a more technical description of how Treelog was written. For a quick introduction of use please refer to the [README].
+I will also refer you to Eugene Yokota’s <a href="http://eed3si9n.com/learning-scalaz/">excellent Scalaz tutorial</a> to study the details of Scalaz where appropriate.</p>
+
+<h2 id="logging-with-treelog">Logging with Treelog</h2>
+<p>Here is an example which illustrates how Treelog is used (<a href="https://github.com/lancewalton/treelog#treelog-examples">more examples</a>):</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">simple</span><span class="k">:</span> <span class="kt">DescribedComputation</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="s">"Calculating sum"</span> <span class="o">~&lt;</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">{</span>
+      <span class="n">x</span> <span class="k">←</span> <span class="mi">11</span> <span class="o">~&gt;</span> <span class="o">(</span><span class="s">"x = "</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+      <span class="n">y</span> <span class="k">←</span> <span class="mi">2</span> <span class="o">~&gt;</span> <span class="o">(</span><span class="s">"y = "</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+      <span class="n">sum</span> <span class="k">←</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span><span class="s">"Sum is "</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">yield</span> <span class="n">sum</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">DescribedComputation[Value]</code> is just a type alias for <code class="highlighter-rouge">EitherT[LogTreeWriter, String, Value]</code>. <code class="highlighter-rouge">EitherT</code>, a <a href="http://eed3si9n.com/learning-scalaz/Monad+transformers.html">Monad Transformer</a>, enables success and failure to be represented and will be covered below.</p>
+
+<p>The log and value can be retrieved with <code class="highlighter-rouge">result.run.written</code> and <code class="highlighter-rouge">result.run.value</code> respectively. The written tree will look like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Calculating sum
+  x = 11
+  y = 2
+  Sum is 13
+</code></pre></div></div>
+
+<p>and the value will be <code class="highlighter-rouge">\/-(13)</code>, which is Scalaz’s version of <code class="highlighter-rouge">Right</code>.</p>
+
+<h2 id="tree-nodes">Tree Nodes</h2>
+
+<p>The nodes of the tree contain a <code class="highlighter-rouge">LogTreeLabel</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">trait</span> <span class="nc">LogTreeLabel</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">success</span><span class="k">:</span> <span class="kt">Boolean</span>
+  <span class="k">def</span> <span class="n">annotations</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="c1">// ...
+</span><span class="o">}</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">DescribedLogTreeLabel</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">description</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">success</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span> <span class="n">annotations</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">LogTreeLabel</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">UndescribedLogTreeLabel</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">success</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span> <span class="n">annotations</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">LogTreeLabel</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>The node is able to represent success or failure, may have a description, and a set of annotations. Annotations allow extra information to be carried in a Node which may be useful when working with the audit later. For our trading system that was other trades that were affected by the process as a side effect of processing a trade.</p>
+
+<p>Treelog distinguishes between tree nodes that describe a computation, a <code class="highlighter-rouge">DescribedLogTreeLabel</code>, and an <code class="highlighter-rouge">UndescribedLogTreeLabel</code> which is a Tree with no description in the root. In the example above, the root node is a <code class="highlighter-rouge">DescribedLogTreeLabel</code> containing the text <code class="highlighter-rouge">Calculating sum</code>. This is an important distinction that informs the way trees must be combined by our Treelog monoid, which the <code class="highlighter-rouge">Writer</code> needs (see below).</p>
+
+<p>Note that originally, <code class="highlighter-rouge">LogTreeLabel</code> was a case class defined like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">LogTreeLabel</span><span class="o">(</span><span class="n">description</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span> <span class="n">success</span><span class="k">:</span> <span class="kt">Boolean</span><span class="o">,</span> <span class="n">annotations</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">Annotation</span><span class="o">])</span>
+</code></pre></div></div>
+
+<p>This meant that <code class="highlighter-rouge">DescribedLogTreeLabel</code> and <code class="highlighter-rouge">UndescribedLogTreeLabel</code> were not necessary because the optional <code class="highlighter-rouge">description</code> carried the equivalent information. However, we found the formulation above easier to work with.</p>
+
+<h2 id="syntactic-sugar">Syntactic Sugar</h2>
+
+<p>Treelog makes use of some syntactic sugar inspired by <a href="http://blog.tmorris.net/posts/the-writer-monad-using-scala-example/">Tony Morris’s post</a> on <code class="highlighter-rouge">Writer</code>. In the example above, <code class="highlighter-rouge">~&gt;</code> is a method on an implicitly constructed class which takes any value <code class="highlighter-rouge">x: T</code> and returns a <code class="highlighter-rouge">DescribedComputation[T]</code>, representing the value <code class="highlighter-rouge">x</code> and a leaf node containing the description.</p>
+
+<p>There is special support for <code class="highlighter-rouge">Boolean</code>s, <code class="highlighter-rouge">Option</code>s, <code class="highlighter-rouge">Either</code>s and <code class="highlighter-rouge">Traversable</code>s which you can learn about from the Treelog [README].</p>
+
+<h2 id="writer-and-monoid"><code class="highlighter-rouge">Writer</code> and Monoid</h2>
+
+<blockquote>
+  <p>Writer allows us to do computations while making sure that all the log values are combined into one log value that then gets attached to the result. – <a href="http://learnyouahaskell.com/for-a-few-monads-more">LYAH</a></p>
+</blockquote>
+
+<p><code class="highlighter-rouge">Writer</code>s allow us to write a log embedded within a computation.</p>
+
+<p>Here is a simple example using Scalaz, see the references for more detailed examples.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Writer</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="k">for</span> <span class="o">{</span>
+    <span class="n">a</span> <span class="k">←</span> <span class="mf">3.</span><span class="n">set</span><span class="o">(</span><span class="s">"Got a 3."</span><span class="o">)</span>
+    <span class="n">b</span> <span class="k">←</span> <span class="mf">5.</span><span class="n">set</span><span class="o">(</span><span class="s">"Got a 5."</span><span class="o">)</span>
+  <span class="o">}</span> <span class="k">yield</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+
+<span class="n">println</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="n">written</span><span class="o">)</span> <span class="c1">// Got a 3.Got a 5.
+</span><span class="n">println</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="n">value</span><span class="o">)</span> <span class="c1">// 15
+</span></code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">Writer</code> uses a monoid for the written value (a <code class="highlighter-rouge">String</code> in this case) to combine the logs (concatenation for <code class="highlighter-rouge">String</code>s). For <code class="highlighter-rouge">List</code>s it is <code class="highlighter-rouge">:::</code> and <code class="highlighter-rouge">Nil</code>, etc.</p>
+
+<h2 id="treelogs-monoid">Treelog’s Monoid</h2>
+
+<p>Treelog uses a Scalaz <a href="http://eed3si9n.com/learning-scalaz/Writer.html">Writer</a>, <a href="http://eed3si9n.com/learning-scalaz/Tree.html">Tree</a> and a custom <a href="http://eed3si9n.com/learning-scalaz/Monoid.html">Monoid</a> implementation to record logs.</p>
+
+<p>The monoid has to provide two things: a <code class="highlighter-rouge">zero</code> value, and a binary operation that combines two trees in a meaningful way. The <code class="highlighter-rouge">zero</code> value for Treelog is just a constant used internally to the `Monoid´ implementation and never leaks out since there is always at least one value being logged.</p>
+
+<p>Combining trees is done as follows:</p>
+
+<ul>
+  <li>a <code class="highlighter-rouge">zero</code> tree with a tree is just the tree</li>
+  <li>two undescribed trees become a new undescribed tree with the children of the right tree appended to the children of the left tree</li>
+  <li>an undescribed tree <code class="highlighter-rouge">T1</code>, and a described tree, <code class="highlighter-rouge">T2</code>, becomes an undescribed tree with <em><code class="highlighter-rouge">T2</code> appended to the children of <code class="highlighter-rouge">T1</code></em></li>
+  <li>a described tree, <code class="highlighter-rouge">T1</code>, and an undescribed tree, <code class="highlighter-rouge">T2</code>, is an undescribed tree with <em><code class="highlighter-rouge">T1</code> prepended to the children of <code class="highlighter-rouge">T2</code></em></li>
+  <li>two described trees are combined by creating an undescribed tree with the two trees as children</li>
+</ul>
+
+<p>Note that the result is always an undescribed tree since there is no meaningful way to combine descriptions of child nodes. In the example above the tree contains two leaves: “Got a 3” and “Got a 5”. Concatenating those descriptions isn’t as meaningful as “Summing a and b”, which could be done like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">r</span><span class="k">:</span> <span class="kt">Writer</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="s">"Summing a and b"</span> <span class="o">~&lt;</span> <span class="k">for</span> <span class="o">{</span>
+    <span class="n">a</span> <span class="k">←</span> <span class="mf">3.</span><span class="n">set</span><span class="o">(</span><span class="s">"Got a 3."</span><span class="o">)</span>
+    <span class="n">b</span> <span class="k">←</span> <span class="mf">5.</span><span class="n">set</span><span class="o">(</span><span class="s">"Got a 5."</span><span class="o">)</span>
+  <span class="o">}</span> <span class="k">yield</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<p>The <a href="https://github.com/lancewalton/treelog/blob/5e36e0652b575d0102f45b1c284f68a02f148b04/src/test/scala/QuadraticRootsExample.scala">quadratic roots</a> example is a good one to see this.</p>
+
+<h2 id="success-and-failure--eithert">Success and Failure – <code class="highlighter-rouge">EitherT</code></h2>
+
+<p>The purpose of Treelog is to audit a computation, return the log and result, and indicate whether the computation was successful or not. The Writer with the Monoid described above satisfies the first two requirements, but not the third. To add success and failure, the writer needs to be combined with <code class="highlighter-rouge">Either</code>. What we need is a Monad Transformer.</p>
+
+<blockquote>
+  <p>Monad Transformers are special types that allow us to roll two monads into a single one that shares the behaviour of both. – <a href="http://en.wikibooks.org/wiki/Haskell/Monad_transformers">Haskell Wikibook</a></p>
+</blockquote>
+
+<p><code class="highlighter-rouge">EitherT</code> is a monad transformer that combines some monad with <code class="highlighter-rouge">Either</code>, which is exactly what is needed. It is constructed with three types: <code class="highlighter-rouge">EitherT[M, A, B]</code> where <code class="highlighter-rouge">M</code> is the monad, <code class="highlighter-rouge">A</code> is the failure type and <code class="highlighter-rouge">B</code> is the success type. In Treelog, <code class="highlighter-rouge">M</code> is a <code class="highlighter-rouge">Writer</code>, <code class="highlighter-rouge">A</code> is a <code class="highlighter-rouge">String</code> and <code class="highlighter-rouge">B</code> is the type of the result.</p>
+
+<p>Logtree includes the methods <code class="highlighter-rouge">def failure[V](description: String): DescribedComputation[V]</code> and <code class="highlighter-rouge">def success[V](value: V, description: String): DescribedComputation[V]</code> to support failure and success. They ensure that the failure case is included in the tree and that the nodes in the tree now reflect that the computation has failed.</p>
+
+<p>Here is an example from Treelog:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">foo</span><span class="k">:</span> <span class="kt">String</span> <span class="kt">\/</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mf">11.</span><span class="n">right</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+<span class="k">val</span> <span class="n">bar</span><span class="k">:</span> <span class="kt">String</span> <span class="kt">\/</span> <span class="kt">Int</span> <span class="o">=</span> <span class="s">"fubar"</span><span class="o">.</span><span class="n">left</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+
+<span class="k">val</span> <span class="n">leftEithers</span><span class="k">:</span> <span class="kt">DescribedComputation</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="s">"Calculating left either sum"</span> <span class="o">~&lt;</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">{</span>
+      <span class="n">x</span> <span class="k">←</span> <span class="n">foo</span> <span class="o">~&gt;?</span> <span class="o">(</span><span class="s">"x = "</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+      <span class="n">y</span> <span class="k">←</span> <span class="n">bar</span> <span class="o">~&gt;?</span> <span class="o">(</span><span class="s">"y = "</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+      <span class="n">sum</span> <span class="k">←</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span><span class="n">v</span> <span class="k">⇒</span> <span class="s">"Sum is "</span> <span class="o">+</span> <span class="n">v</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">yield</span> <span class="n">sum</span>
+  <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">leftEitherWriter</span><span class="k">:</span> <span class="kt">LogTreeWriter</span><span class="o">[</span><span class="kt">String</span> <span class="kt">\/</span> <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">leftEithers</span><span class="o">.</span><span class="n">run</span>
+<span class="n">println</span><span class="o">(</span><span class="n">leftEithers</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">written</span><span class="o">.</span><span class="n">shows</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>To retrieve the underying value back from <code class="highlighter-rouge">EitherT</code>, we call <code class="highlighter-rouge">run</code> which returns the <code class="highlighter-rouge">Writer</code> containing Scalaz’s version of <code class="highlighter-rouge">Either</code> (which is more useful than Scala’s built-in <code class="highlighter-rouge">Either</code>).</p>
+
+<p>The written value is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Failed: Calculating left either sum
+  x = 11
+  Failed: fubar
+
+Failure: Calculating left either sum
+</code></pre></div></div>
+
+<p>So the written log indicates that the whole computation failed, and the result is <code class="highlighter-rouge">-\/</code>, the <code class="highlighter-rouge">Left</code> for a Scalaz <code class="highlighter-rouge">Either</code>, containing “Failure: Calculating left either sum”.</p>
+
+<h2 id="in-practice">In Practice</h2>
+
+<p>Treelog is being used in earnest in a trading system, and the results have been a resounding success. And the level of accurate detail the system is able to show users has been invaluable in reducing support questions, which is always welcome.</p>
+
+<h2 id="further-reading">Further Reading</h2>
+
+<ul>
+  <li><a href="http://debasishg.blogspot.co.uk/2011/07/monad-transformers-in-scala.html">Monad Transformers in Scala</a></li>
+  <li><a href="http://www.slideshare.net/StackMob/monad-transformers-in-the-wild">Monad Transformers in the Wild</a></li>
+</ul>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Channing Walton
+    
+    on Oct 18, 2013</p>
+
+    
+  <a href="https://twitter.com/channingwalton" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @channingwalton</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/channingwalton" aria-label="Follow @channingwalton on GitHub">Follow @channingwalton</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

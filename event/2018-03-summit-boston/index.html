@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Boston Summit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li  class="active" >
+            <a href="/events/">Events</a>
+          </li>
+          <li >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      </div> <!-- close wrapper -->
+
+<div class="event__hero" style="background-image: url(/img/media/cambridge.jpg);">
+  <div class="wrapper">
+    <div class="event__header js-fade-in">
+      <div class="wrapper">
+        <p>Boston Summit</p>
+        <ul class="navigation">
+          <li><a href="#about">About the event</a></li>
+          
+          
+            <li><a href="#speakers-and-schedule">Speakers and Schedule</a></li>
+          
+          
+          
+          
+            <li><a href="#sponsors">Sponsors</a></li>
+          
+        </ul>
+      </div>
+    </div>
+    <h1 class="js-fade-in">Typelevel Summit Boston</h1>
+    <p class="hero__lead js-fade-in">
+      <strong>March 20, 2018</strong>
+      at Broad Institute, Cambridge, Massachusetts
+    </p>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="content content-small js-fade-in" id="about">
+    <h2 id="about-the-summit">About the Summit</h2>
+
+<p>The fifth Typelevel Summit will once again be co-located with the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> in Cambridge, Massachusetts, with one day of recorded talks and one day of (shared) unconference.
+The unconference will happen on March 18, NE Scala on March 19, and finally, the Summit on March 20.
+For tickets and other information about attending, please visit the website of the <a href="http://www.nescala.org/">Northeast Scala Symposium</a>.</p>
+
+<p>The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
+Whilst many of the Typelevel projects use somewhat “advanced” Scala, they are a lot more approachable than many people think, and a major part of Typelevel’s mission is to make the ideas they embody much more widely accessible.
+If you’re interested in types and pure functional programming we’d love to see you here!</p>
+
+<p>This is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the <a href="/conduct.html">Typelevel Code of Conduct</a>.</p>
+
+<h2 id="speakers-and-schedule">Speakers and Schedule</h2>
+
+<table class="schedule">
+  <tr>
+    <th>Time</th>
+    <th>Talk</th>
+  </tr>
+
+  
+    
+      <tr>
+        <td>8:15</td>
+        <td>
+          <h5>Registration &amp; Breakfast by Clover Food Labs</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:00</td>
+        <td>
+          <h5>Opening Remarks</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:05</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/rossbaker.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>http4s: pure, typeful, functional HTTP in Scala</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Ross Baker</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            http4s embraces cats.data.Kleisli for service definitions and fs2.Stream for payload processing. With its foundation on these simple types, we’ll take a whirlwind tour of how http4s can:
+
+
+  plug into your functional business logic
+  snap together...
+          </p>
+          <span class="btn text js-open-popup" data-id="http4s-pure-typeful-functional-http-in-scala">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:40</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>9:55</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/erikosheim.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Opaque types: understanding SIP-35</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Erik Osheim</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Proposed in SIP-35, opaque types introduce a way to define types which only exist at compile-time. Despite some superficial similarities to value classes, opaque types are significantly more flexible and introduce a number of exciting new possibil...
+          </p>
+          <span class="btn text js-open-popup" data-id="opaque-types-understanding-sip-35">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>10:30</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/longcao.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Big Data at the Intersection of Typed FP and Category Theory</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Long Cao</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Big data, functional programming, and category theory aren’t just three trendy topics smashed into a talk title as bait! Foundational ideas from typed functional programming and category theory have real and practical applications for working with...
+          </p>
+          <span class="btn text js-open-popup" data-id="big-data-at-the-intersection-of-typed-fp-and-category-theory">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:05</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:20</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/eugeneplatonov.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Tracking with Writer Monad</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Eugene Platonov</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            This talk will tell the story of one team at eBay which used to do data tracking in a healthy side-effecting manner. Until the team realized that it’s not that healthy. The solution was found in a Writer Monad (residing in the cats library) as wel...
+          </p>
+          <span class="btn text js-open-popup" data-id="tracking-with-writer-monad">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>11:40</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/gregpfeil.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Duality and How to Delete Half (minus ε) of Your Code</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Greg Pfeil</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            In functional programming, we often refer to category theory to explain various concepts. We’ll go over where these concepts do and don’t map well to Scala, as well as what duality is, how we can take advantage of it in Scala, and how to distingui...
+          </p>
+          <span class="btn text js-open-popup" data-id="duality-and-how-to-delete-half-minus-ε-of-your-code">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>12:15</td>
+        <td>
+          <h5>Lunch on your own out in Kendall Square</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>14:00</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/kathifisler.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Keynote: Planning for Rainfall</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Kathi Fisler</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Soloway's Rainfall problem, a classic benchmark in computing education research, has proven difficult for many CS1 students.  Rainfall tests students' abilities at plan composition, the task of integrating code fragments that implement subparts of...
+          </p>
+          <span class="btn text js-open-popup" data-id="keynote-planning-for-rainfall">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:05</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:20</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/lucabelli.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Why Monads?</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Luca Belli</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Monads remain a somewhat mysterious concept in Functional Programming, even though the number of tutorials and blog posts trying to “monadsplain” is at an all-time high. Rather than answering the classical question “What is a Monad?”, we are going...
+          </p>
+          <span class="btn text js-open-popup" data-id="why-monads">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>15:55</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/dorothyordogh.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Pants and Monorepos</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Dorothy Ordogh</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Large or quickly growing projects that consist of many interdependent sub-projects with complex dependencies on third-party libraries can be difficult to handle with standard language build tools. Add on to that code generators and the use of mult...
+          </p>
+          <span class="btn text js-open-popup" data-id="pants-and-monorepos">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:15</td>
+        <td>
+          <h5>Break</h5>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>16:30</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/fabiolabella.jpeg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Declarative Control Flow with fs2 Stream</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Fabio Labella</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            fs2 is a purely functional streaming library, with support for concurrent and nondeterministic merging of arbitrary streams. Concurrency support means that we can use Stream not only to process data in constant memory, but also as a very general a...
+          </p>
+          <span class="btn text js-open-popup" data-id="declarative-control-flow-with-fs2-stream">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>17:05</td>
+        <td class="talk">
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <h5>Scalafix @ Twitter scale</h5>
+              <ul class="schedule__speakers">
+                
+                  <li>Uma Srinivasan</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+          <p>
+            Scalafix is a fairly popular OSS tool that is useful for performing syntactic and semantic rewrites of Scala code. At Twitter we use it for migration to new library interfaces and maintenance of code health by removal of deprecated code. In this t...
+          </p>
+          <span class="btn text js-open-popup" data-id="scalafix-twitter-scale">More</span>
+        </td>
+      </tr>
+    
+  
+    
+      <tr>
+        <td>17:25</td>
+        <td>
+          <h5>Closing Remarks</h5>
+        </td>
+      </tr>
+    
+  
+
+</table>
+
+<!--- All speaker popups -->
+<div class="speakers js-close-popup">
+  
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="http4s-pure-typeful-functional-http-in-scala">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>http4s: pure, typeful, functional HTTP in Scala</h3>
+          <h4>at 9:05</h4>
+          <p><p>http4s embraces cats.data.Kleisli for service definitions and fs2.Stream for payload processing. With its foundation on these simple types, we’ll take a whirlwind tour of how http4s can:</p>
+
+<ul>
+  <li>plug into your functional business logic</li>
+  <li>snap together with other functional libraries</li>
+  <li>relate servers to clients</li>
+  <li>test with a simple function call</li>
+  <li>run on multiple backends</li>
+  <li>support multiple higher level DSLs</li>
+</ul>
+
+<p>This talk will not make you an expert in http4s, but show that it’s a relatively short path to become one.</p>
+</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/rossbaker.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Ross Baker</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Ross is a Senior Software Engineer at Takt. He began his open source journey on the Scalatra project in 2009, and has gotten purer, more functional, and more typeful with each passing year. He now contributes to http4s and cats among others, and is a member of Typelevel. He is a co-organizer of IndyScala.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="opaque-types-understanding-sip-35">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Opaque types: understanding SIP-35</h3>
+          <h4>at 9:55</h4>
+          <p><p>Proposed in SIP-35, opaque types introduce a way to define types which only exist at compile-time. Despite some superficial similarities to value classes, opaque types are significantly more flexible and introduce a number of exciting new possibilities in the Scala design space.</p>
+
+<p>Opaque types are motivated by a number of different concerns:</p>
+
+<ul>
+  <li>desire for a non-class type that exists only at compile-time</li>
+  <li>efficiency concerns with value classes</li>
+  <li>limitations of existing type aliases</li>
+  <li>need to better support phantom types, type tags, etc.</li>
+</ul>
+
+<p>This talk will introduce opaque types, compare them to type aliases and value classes (their two nearest cousins) and then walk through some examples of using opaque types. The focus will be on advantages of using opaque types versus other encodings, including looking at how various types are represented by the JVM at runtime. The talk does not assume in-depth knowledge of the Scala compiler and will motivate the code using plausible real world examples.</p>
+
+<p>Attendees will come away from this talk with a better understanding of what SIP-35 means, why it was proposed, and how it could change how we write Scala code for the better.</p>
+</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/erikosheim.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Erik Osheim</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Erik Osheim is one of the founders of Typelevel, and maintains several Scala libraries including Cats, Spire, and others. He hacks Scala for a living at Stripe, and is committed to having his cake and eating it too when it comes to functional programming. Besides programming he spends time playing music, drinking tea, and cycling around Providence, Rhode Island.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="big-data-at-the-intersection-of-typed-fp-and-category-theory">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Big Data at the Intersection of Typed FP and Category Theory</h3>
+          <h4>at 10:30</h4>
+          <p>Big data, functional programming, and category theory aren’t just three trendy topics smashed into a talk title as bait! Foundational ideas from typed functional programming and category theory have real and practical applications for working with big data and can also be utilized to write more principled pipelines at scale. Whether it’s aggregating with monoids or writing more typesafe Spark jobs, we’ll try and bridge these topics together in a way that can be immediately useful. Some knowledge of Scala and a big data framework like Apache Hadoop, Spark, or Beam is suggested but not necessary.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/longcao.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Long Cao</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Long Cao is a software engineer focusing on Scala, Spark, and data engineering and has been in New York for the last 5 years. He cares deeply about showing newcomers the benefits of Scala and functional programming. On his off time likes to enjoy climbing, Rocket League, music, sports, and coffee.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="tracking-with-writer-monad">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Tracking with Writer Monad</h3>
+          <h4>at 11:20</h4>
+          <p>This talk will tell the story of one team at eBay which used to do data tracking in a healthy side-effecting manner. Until the team realized that it’s not that healthy. The solution was found in a Writer Monad (residing in the cats library) as well as in the fact that the writer monad can stay in shades. Some people, especially when they are new to typed FP, don’t like/feel comfortable to see words like Semigroup, Traversable, Writer and such in their domain code. The talk will show how those “scary” parts can be “hidden” by domain specific extension methods.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/eugeneplatonov.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Eugene Platonov</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>I’m a Scala Dev at eBay Inc, working commercially with Scala as my main programming language since early 2011, Java Dev in my past life. Occasional contributor to variety of Scala related OS projects. Scala evangelist who successfully converted individuals and teams to Scala from Java.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="duality-and-how-to-delete-half-minus-ε-of-your-code">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Duality and How to Delete Half (minus ε) of Your Code</h3>
+          <h4>at 11:40</h4>
+          <p>In functional programming, we often refer to category theory to explain various concepts. We’ll go over where these concepts do and don’t map well to Scala, as well as what duality is, how we can take advantage of it in Scala, and how to distinguish other concepts that are often confused with it.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/gregpfeil.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Greg Pfeil</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Greg Pfeil is a compiler writer and programming language designer. At this point they have written four recursion scheme libraries in three languages, with the goal of getting to half a recursion scheme library for all languages. Greg works at Takt, writing Haskell, using only the purest artisanal FP.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="keynote-planning-for-rainfall">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Keynote: Planning for Rainfall</h3>
+          <h4>at 14:00</h4>
+          <p>Soloway's Rainfall problem, a classic benchmark in computing education research, has proven difficult for many CS1 students.  Rainfall tests students' abilities at plan composition, the task of integrating code fragments that implement subparts of a problem into a single program.  Nearly all early studies of Rainfall involved students who were learning imperative programming with arrays.  Over the last few years, we've conducted studies with students who were learning functional programming instead.  These students have produced atypical profiles of compositions and errors on Rainfall (and similar problems).  What do these results suggest about the role of programming languages in novice programming education?  This talk raises various questions about the relationships between programming languages, program design, curricula, and how students perceive code structure. The talk assumes no experience with having been rained upon.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/kathifisler.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Kathi Fisler</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Kathi Fisler is a Research Professor in Computer Science at Brown University, and co-director of Bootstrap, a national-scale K-12 project that integrates introductory CS into existing middle- and high-school classes.  She spent many years doing software and security verification research before deciding that people were harder (and more interesting) to model than systems. She is currently on a mission (with partner-in-crime Shriram Krishnamurthi) to explore how classical CSEd studies might have turned out differently had they considered functional programming.  She's teaching with Scala for the first time this semester.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="why-monads">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Why Monads?</h3>
+          <h4>at 15:20</h4>
+          <p>Monads remain a somewhat mysterious concept in Functional Programming, even though the number of tutorials and blog posts trying to “monadsplain” is at an all-time high. Rather than answering the classical question “What is a Monad?”, we are going to dig more into “Why Monads?”. Building intuition on why monads are useful will help better understand what they are as well. We’ll start with a simple function in a monadless world and we’ll see how annoying it would be to use it in different contexts (List, Maybe, Either). As soon as we are sufficiently frustrated we’ll invoke our friendly Monad and see how much easier our life becomes.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/lucabelli.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Luca Belli</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Luca Belli is a Senior Software Engineer at Twitter Cortex, the centralized deep learning hub within the company. Previously he was a Senior Scientist at Conversant Media where he helped bootstrapping image classification using deep learning. His first job was at Wolfram Alpha in Boston. He got his Ph.D. in Mathematics from Tor Vergata University in Rome.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="pants-and-monorepos">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Pants and Monorepos</h3>
+          <h4>at 15:55</h4>
+          <p>Large or quickly growing projects that consist of many interdependent sub-projects with complex dependencies on third-party libraries can be difficult to handle with standard language build tools. Add on to that code generators and the use of multiple languages and suddenly a lot of your coding life is spent figuring out the right commands to run for the right language, and waiting for all of your code to build. This is where Pants can help! Pants is an open source build tool developed and used by Twitter, Square, Foursquare, Medium, and others. This talk will begin with a brief overview of what Pants is and how it can help, and then discuss new features we have been adding to make the tool faster. In particular, I will discuss the work we have done to restrict what is going on the JVM compile classpaths to make building Scala and Java projects faster, and the work we are doing to implement a remotely executing build system.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/dorothyordogh.jpg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Dorothy Ordogh</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>I’m a member of the Build team at Twitter, meaning it is my full-time job to contribute to Pants. I’ve been working at Twitter for 1.5 years, the first 11 months I spent on a team building integration test frameworks, and then switched to the Build team after realizing how interesting it was. My favorite part is learning how things work under the surface! I broke into computer science in my early twenties after earning a degree in psychology. Chocolate makes the world a better place.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="declarative-control-flow-with-fs2-stream">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Declarative Control Flow with fs2 Stream</h3>
+          <h4>at 16:30</h4>
+          <p>fs2 is a purely functional streaming library, with support for concurrent and nondeterministic merging of arbitrary streams. Concurrency support means that we can use Stream not only to process data in constant memory, but also as a very general abstraction for control flow: whilst IO gives us an excellent model for a single effectful action, assembling behaviour with it often has a very imperative flavour (pure, but still imperative). This talk will introduce fs2 combinators by example, and will hopefully show how we can model control flow in a declarative, high level, composable fashion. In particular, we will focus on concurrent combinators.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/media/speakers/fabiolabella.jpeg" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Fabio Labella</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>I’m a Senior Software Engineer based in Edinburgh, UK, working in Scala in the financial industry. I also actively participate in Open Source (as SystemFw): I’m one of the maintainers of fs2, and a contributor to cats, shapeless, http4s and most of the other libraries in the Scala FP ecosystem. I have a passion for helping people master advanced concepts, so hit me up on Gitter if you have a question!</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+
+      <div class="speakers__overlay" data-id="scalafix-twitter-scale">
+        <a href="#" class="ico-close js-close-popup"></a>
+
+        <div class="content content-small">
+          <h3>Scalafix @ Twitter scale</h3>
+          <h4>at 17:05</h4>
+          <p>Scalafix is a fairly popular OSS tool that is useful for performing syntactic and semantic rewrites of Scala code. At Twitter we use it for migration to new library interfaces and maintenance of code health by removal of deprecated code. In this talk we walk through examples of simple and complex Scalafix custom rule specifications for rewrites. We describe the core infrastructure we have set up to support rewrites across our entire monorepo, several orders of magnitude faster than if we were to apply them manually. A simple demo will be included to provide a glimpse of our developer workflow and the user experience with our code base. We envision leveraging this tool for more purposes such as improving performance, upgrading compiler revisions, and assisting developers to automatically recognize and prevent commits of disallowed code patterns.</p>
+
+          <h3>About Speaker</h3>
+          <div class="schedule__header">
+            <ul class="schedule__avatars">
+              
+                <li>
+                  
+                    <img src="/img/logo-twitter.png" />
+                  
+                </li>
+              
+            </ul>
+            <hgroup>
+              <ul class="schedule__speakers">
+                
+                  <li>Uma Srinivasan</li>
+                
+              </ul>
+            </hgroup>
+          </div>
+
+          
+            <p>Uma is a Staff Software Engineer in the Advanced Scala Tools team at Twitter. She brings with her multiple decades of experience and expertise in the area of compilers, code generation and related hardware/software co-design. Prior to joining Twitter she worked at Intel and Hewlett Packard. She has a Bachelor’s degree in Electrical Engineering and a Master’s in CS. She holds several patents and technical publications in her field of expertise.</p>
+            
+          
+        </div>
+      </div>
+
+    
+  
+    
+  
+</div>
+
+<h2 id="sponsors">Sponsors</h2>
+
+<p>We’d like to thank all our sponsors who help to make the Summit happen:</p>
+
+<div class="sponsors">
+  
+
+  
+    <div class="sponsors__sponsor sponsors__sponsor--gold">
+      <h3>Gold</h3>
+      
+        <a href="https://www.comcast.com/">
+          <img src="/img/media/sponsors/comcast.png" alt="Comcast" title="Comcast" style="height:80px" />
+        </a>
+      
+    </div>
+  
+
+  
+
+  
+</div>
+
+
+  </div>
+</div>
+
+<div> <!-- open dummy -->
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

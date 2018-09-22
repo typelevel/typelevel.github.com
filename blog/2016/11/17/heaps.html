@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | API Design for Heaps (aka Priority Queues)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>API Design for Heaps (aka Priority Queues)</h2>
+
+  <p><em>This is a guest post by Chris Okasaki. It was initially published as the <a href="https://github.com/chrisokasaki/scads/blob/e78233ac6a787b7c66b44cd6139392418b214eb9/design/heaps.md">design document</a> behind <a href="https://github.com/chrisokasaki/scads">scads</a>. It is being republished here with the permission of the original author.</em></p>
+
+<p>A heap (or priority queue) is a collection of elements ordered by some <code class="highlighter-rouge">Ordering</code>, optimized for retrieving the first element according to that ordering.
+Duplicate elements are allowed.
+Applications vary in whether they need the first element to be the smallest or the biggest element according to the ordering, so both variations should be easy to use.
+(However, any given heap is expected to offer easy access to either the smallest element only or the biggest element only, not both at the same time.)
+I will consider immutable heaps in this document, but the core issues discussed below apply to both immutable heaps and mutable heaps.</p>
+
+<p>Even if an element type has a natural ordering, that ordering may not be the one we want to use, so we must allow the user to specify the ordering.</p>
+
+<h2 id="problem-1-dont-mix-two-different-orderings-in-the-same-heap">Problem 1: Don’t mix two different orderings in the same heap</h2>
+
+<p>Here is a strawman design for a very simple heap API:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="o">{</span>  <span class="c1">// WARNING: THIS IS BROKEN!!!
+</span>  <span class="k">def</span> <span class="n">isEmpty</span><span class="o">(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Boolean</span>
+  <span class="k">def</span> <span class="n">add</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Elem</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">first</span><span class="o">(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Elem</span>
+  <span class="k">def</span> <span class="n">rest</span><span class="o">(</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="c1">// factory method, probably in some companion object
+</span><span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Elem</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="k">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>You may think it strange that all of these methods are taking an <code class="highlighter-rouge">ord</code> parameter.
+From a Scala point of view, that doesn’t make much sense.
+But you can find variations of this design in many implementations of heaps on GitHub, including in the well-respected Scalaz library.
+Why? As far as I can tell, the answer is <em>because Haskell does it that way</em>.
+Here’s the equivalent design in Haskell:</p>
+
+<div class="language-haskell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">type</span> <span class="kt">Heap</span> <span class="n">a</span>
+<span class="n">empty</span>   <span class="o">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Heap</span> <span class="n">a</span>
+<span class="n">isEmpty</span> <span class="o">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Heap</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="n">add</span>     <span class="o">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Heap</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Heap</span> <span class="n">a</span>
+<span class="n">first</span>   <span class="o">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Heap</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">a</span>
+<span class="n">rest</span>    <span class="o">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="o">=&gt;</span> <span class="kt">Heap</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Heap</span> <span class="n">a</span>
+</code></pre></div></div>
+
+<p>In Haskell, this makes perfect sense.
+Behind the scenes, each method takes an <code class="highlighter-rouge">Ord</code> dictionary as a hidden parameter.
+But there’s one critical difference between Haskell and Scala: in Haskell, there can only be a <em>single</em> ordering for an element type, but in Scala, there can be <em>many</em> orderings for the same element type.</p>
+
+<p>For example, consider this Scala code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">ord1</span> <span class="k">=</span> <span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span>
+<span class="k">val</span> <span class="n">ord2</span> <span class="k">=</span> <span class="n">ord1</span><span class="o">.</span><span class="n">reverse</span>
+<span class="k">val</span> <span class="n">heap1</span> <span class="k">=</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="n">ord1</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">5</span><span class="o">)(</span><span class="n">ord1</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">7</span><span class="o">)(</span><span class="n">ord1</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">heap2</span> <span class="k">=</span> <span class="n">heap1</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="mi">4</span><span class="o">)(</span><span class="n">ord2</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="n">heap2</span><span class="o">.</span><span class="n">first</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>What should this print?
+Of course, that depends on the details of the implementation, but you would expect it to print either 4 (the smallest element) or 7 (the biggest element).
+However, because one ordering was used for two of the <code class="highlighter-rouge">add</code>s and the opposite ordering was used for the third <code class="highlighter-rouge">add</code>, there’s an excellent chance that the actual result will be 5, which is the wrong answer for both orderings.</p>
+
+<p>The magic of implicit parameters is that you usually don’t need to pass them explicitly.
+But (A) there’s nothing to stop you from doing so, and (B) there’s nothing to prevent you from calling methods in different scopes with different orderings.
+No, if you’re anything like me, the possibility that this could happen by accident is making your skin crawl.
+Surely, the API should prevent this from happening!</p>
+
+<p>Fortunately, this problem is very easy to fix.
+<em>Only the <code class="highlighter-rouge">empty</code> method should take an ordering.</em>
+Once that initial heap has been created, all future heaps derived from that heap via any sequence of <code class="highlighter-rouge">add</code>s or <code class="highlighter-rouge">rest</code>s should use the same ordering.
+With this change, the API becomes:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
+  <span class="k">def</span> <span class="n">add</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Elem</span><span class="o">)</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">first</span><span class="k">:</span> <span class="kt">Elem</span>
+  <span class="k">def</span> <span class="n">rest</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="c1">// factory method, probably in some companion object
+</span><span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Elem</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="k">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>Yay! That is both simpler and safer.</p>
+
+<h2 id="problem-2-merge">Problem 2: <code class="highlighter-rouge">merge</code></h2>
+
+<p>Another operation supported by many kinds of heaps is <code class="highlighter-rouge">merge</code>, which combines two heaps into a single heap.
+Examples of heaps supporting merge include leftist heaps, skew heaps, binomial heaps (aka binomial queues), Fibonacci heaps, etc.</p>
+
+<p>We can easily add <code class="highlighter-rouge">merge</code> to the existing <code class="highlighter-rouge">Heap[Elem]</code> trait.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>However, there are at last two problems with this.
+First, traits allow for subclassing, so we might have several different implementations, such as leftist heaps and binomial heaps.
+But we only want to merge leftist heaps with leftist heaps and binomial heaps with binomial heaps—we do <em>not</em> want to merge leftist heaps with binomial heaps.</p>
+
+<p>There are several ways to address this problem.
+For example, leftist heaps and binomial heaps could just use completely separate trait hierarchies, and each could use a <code class="highlighter-rouge">sealed trait</code> to prevent this unwanted mixing of types.</p>
+
+<p>But the code duplication this would entail is unsatisfying.
+It would also make it more difficult to share code (such as a testing harness) between different implementations.</p>
+
+<p>Alternatively, we can control the types more precisely by adding a second type parameter for the specific representation being used, as in:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">MHeap</span><span class="o">[</span><span class="kt">Elem</span>, <span class="kt">Heap</span><span class="o">]</span> <span class="o">{</span>
+  <span class="c1">// MHeap is "Mergeable Heap"
+</span>  <span class="c1">// Heap is the specific Heap representation being used
+</span>  <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
+  <span class="k">def</span> <span class="n">add</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Elem</span><span class="o">)</span><span class="k">:</span> <span class="kt">Heap</span>
+  <span class="k">def</span> <span class="n">first</span><span class="k">:</span> <span class="kt">Elem</span>
+  <span class="k">def</span> <span class="n">rest</span><span class="k">:</span> <span class="kt">Heap</span>
+  <span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">)</span><span class="k">:</span> <span class="kt">Heap</span>
+<span class="o">}</span>
+
+<span class="k">sealed</span> <span class="k">trait</span> <span class="nc">LeftistHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">MHeap</span><span class="o">[</span><span class="kt">Elem</span>, <span class="kt">LeftistHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]]</span>
+
+<span class="k">sealed</span> <span class="k">trait</span> <span class="nc">BinomialHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">MHeap</span><span class="o">[</span><span class="kt">Elem</span>, <span class="kt">BinomialHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]]</span>
+</code></pre></div></div>
+
+<p>Because of the extra type parameter, a leftist heap and binomial heap are incompatible and cannot be merged.</p>
+
+<h2 id="problem-3-merge-continued">Problem 3: <code class="highlighter-rouge">merge</code> (continued)</h2>
+
+<p>There’s a second problem with <code class="highlighter-rouge">merge</code>.  A particular implementation, such as leftist heaps, would provide a factory method for creating a new heap.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">LeftistHeap</span> <span class="o">{</span> <span class="c1">// companion object
+</span>  <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Elem</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">Elem</span><span class="o">])</span><span class="k">:</span> <span class="kt">LeftistHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="k">=</span> <span class="o">???</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Because of the <code class="highlighter-rouge">MHeap</code> definition, we can’t <code class="highlighter-rouge">merge</code> a leftist heap with a binomial heap.
+But now we’ve re-introduced the problem of incompatible orderings!</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">ord1</span> <span class="k">=</span> <span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span>
+<span class="k">val</span> <span class="n">ord2</span> <span class="k">=</span> <span class="n">ord1</span><span class="o">.</span><span class="n">reverse</span>
+<span class="k">val</span> <span class="n">heap1</span> <span class="k">=</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="n">ord1</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">7</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">heap2</span> <span class="k">=</span> <span class="n">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="n">ord2</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">6</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+<span class="k">var</span> <span class="n">heap3</span> <span class="k">=</span> <span class="n">heap1</span><span class="o">.</span><span class="n">merge</span><span class="o">(</span><span class="n">heap2</span><span class="o">)</span>
+<span class="k">while</span> <span class="o">(!</span><span class="n">heap3</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">println</span><span class="o">(</span><span class="n">heap3</span><span class="o">.</span><span class="n">first</span><span class="o">)</span>
+  <span class="n">heap3</span> <span class="k">=</span> <span class="n">heap3</span><span class="o">.</span><span class="n">rest</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="highlighter-rouge">heap1</code> and <code class="highlighter-rouge">heap2</code> were created with opposite orderings.
+What happens if we merge them? Nothing good!
+The exact results depend on details of the implementation, but a likely result is that loop will print the elements in the order 5,6,4,7—or maybe 5,7,6,4—when it <em>should</em> print them in sorted order!</p>
+
+<p>We would really like to make this sort of situation impossible!
+Maybe we could test the orderings for object equality at runtime, and throw an exception if they’re different?
+That could actually work for simple types like integers with a built-in ordering object.
+But for more complicated types, such as tuples, the orderings are generated on demand from the orderings of their constituent parts.
+And this generation is not memoized, so if we demand an ordering for, say, <code class="highlighter-rouge">(Int,String)</code> twice, we’ll get two separate ordering objects, which will cause a false negative for our hypothetical dynamic equality check.</p>
+
+<p>No, we would really like to make merging two heaps with different orderings a type error.
+We can achieve this by making the notion of a factory explicit.
+The idea is that heaps can only be merged with other heaps from the same factory.
+Attempting to merge heaps from different factories will cause a type error.</p>
+
+<p>In code, we might express this as follows:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">HeapFactory</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Elem</span>
+  <span class="k">type</span> <span class="kt">Heap</span> <span class="k">&lt;:</span> <span class="kt">MHeap</span><span class="o">[</span><span class="kt">Elem</span>,<span class="kt">Heap</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">empty</span><span class="k">:</span> <span class="kt">Heap</span>
+  <span class="c1">// plus other factory methods
+</span><span class="o">}</span>
+
+<span class="k">object</span> <span class="nc">LeftistHeap</span> <span class="o">{</span> <span class="c1">// companion object
+</span>  <span class="k">def</span> <span class="n">factory</span><span class="o">[</span><span class="kt">E</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">E</span><span class="o">])</span><span class="k">:</span> <span class="kt">HeapFactory</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Elem</span> <span class="o">=</span> <span class="kt">E</span> <span class="o">}</span> <span class="k">=</span> <span class="o">???</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now we can say:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">minHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">maxHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">.</span><span class="n">reverse</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">heap1</span> <span class="k">=</span> <span class="n">minHeaps</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">7</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">heap2</span> <span class="k">=</span> <span class="n">minHeaps</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="mi">6</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">heap3</span> <span class="k">=</span> <span class="n">heap1</span><span class="o">.</span><span class="n">merge</span><span class="o">(</span><span class="n">heap2</span><span class="o">)</span> <span class="c1">// this typechecks
+</span>
+<span class="k">val</span> <span class="n">heap4</span> <span class="k">=</span> <span class="n">maxHeaps</span><span class="o">.</span><span class="n">empty</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="mi">6</span><span class="o">).</span><span class="n">add</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">heap5</span> <span class="k">=</span> <span class="n">heap1</span><span class="o">.</span><span class="n">merge</span><span class="o">(</span><span class="n">heap4</span><span class="o">)</span> <span class="c1">// !!!type error!!!
+</span></code></pre></div></div>
+
+<p>Notice that <code class="highlighter-rouge">heap1</code>, <code class="highlighter-rouge">heap2</code>, and <code class="highlighter-rouge">heap3</code> have type <code class="highlighter-rouge">minHeaps.Heap</code> but <code class="highlighter-rouge">heap4</code> has type <code class="highlighter-rouge">maxHeaps.Heap</code>.
+According to Scala’s notion of <em>path-dependent types</em>, these types are incompatible so attempting to merge <code class="highlighter-rouge">heap1</code> and <code class="highlighter-rouge">heap4</code> causes a type error, as desired.</p>
+
+<h2 id="a-question">A question</h2>
+
+<p>Clearly, if I create two factories with incompatible element types, then a heap from one factory should not be mergeable with a heap from the other factory.
+Similarly, if I create two factories with the same element type but incompatible orderings, then again a heap from one factory should not be mergeable with a heap from the other factory.</p>
+
+<p>But what if I create two separate factories with the same element type and the same ordering?
+Should a heap created from one of these factories be mergeable with a heap created from the other factory?
+It’s not clear.
+If this duplication of factories was deliberate, then the answer is probably “no”.
+This often happens with units of measure.
+For example, maybe one of the factories is using integers to represent inches and the other is using integers to represent grams.
+Even if the factories are using the same ordering, we probably don’t want to merge a heap of inches with a heap of grams!</p>
+
+<p>On the other hand, the duplication of factories could be accidental, perhaps the result of two chunks of code being written separately and then brought together later.
+In that case, we might very well want to be able to merge a heap from one factory with a heap from another accidentally-separate-but-equivalent factory.</p>
+
+<p>Regardless of where you come down on what <em>should</em> happen, what <em>will</em> happen in the above design is that attempting to merge heaps from distinct factories will cause a type error, even if the factories were made for the same element type and ordering.</p>
+
+<h2 id="problem-4-usability-in-the-simple-case">Problem 4: Usability in the simple case</h2>
+
+<p>Most applications of priority queues do not need the <code class="highlighter-rouge">merge</code> method.
+Trying to make <code class="highlighter-rouge">merge</code> typesafe has made the API more complicated and harder to use because of the need to instantiate a factory before creating actual heaps.
+Can we hide these complications from a user until and unless they actually need to use <code class="highlighter-rouge">merge</code>? Yes.</p>
+
+<p>I’ll re-introduce the interface without <code class="highlighter-rouge">merge</code>, but now called <code class="highlighter-rouge">SHeap</code> for “Simple Heap”:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">SHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
+  <span class="k">def</span> <span class="n">add</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Elem</span><span class="o">)</span><span class="k">:</span> <span class="kt">SHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">first</span><span class="k">:</span> <span class="kt">Elem</span>
+  <span class="k">def</span> <span class="n">rest</span><span class="k">:</span> <span class="kt">SHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then <code class="highlighter-rouge">MHeap</code> should be a subtype of <code class="highlighter-rouge">SHeap</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">MHeap</span><span class="o">[</span><span class="kt">Elem</span>, <span class="kt">Heap</span> <span class="k">&lt;:</span> <span class="kt">SHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">SHeap</span><span class="o">[</span><span class="kt">Elem</span><span class="o">]</span> <span class="o">{</span>
+  <span class="c1">// inherits isEmpty and first from SHeap[Elem]
+</span>  <span class="k">def</span> <span class="n">add</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Elem</span><span class="o">)</span><span class="k">:</span> <span class="kt">Heap</span> <span class="c1">// more specific return type
+</span>  <span class="k">def</span> <span class="n">rest</span><span class="k">:</span> <span class="kt">Heap</span> <span class="c1">// more specific return type
+</span>  <span class="k">def</span> <span class="n">merge</span><span class="o">(</span><span class="n">other</span><span class="k">:</span> <span class="kt">Heap</span><span class="o">)</span><span class="k">:</span> <span class="kt">Heap</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">HeapFactory</code> definition is unchanged:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">HeapFactory</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Elem</span>
+  <span class="k">type</span> <span class="kt">Heap</span> <span class="k">&lt;:</span> <span class="kt">MHeap</span><span class="o">[</span><span class="kt">Elem</span>,<span class="kt">Heap</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">empty</span><span class="k">:</span> <span class="kt">Heap</span>
+  <span class="c1">// plus other factory methods
+</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>The last part is that the companion object should supply simple factory methods in terms of <code class="highlighter-rouge">SHeap</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">LeftistHeap</span> <span class="o">{</span> <span class="c1">// companion object
+</span>  <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">E</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">E</span><span class="o">])</span><span class="k">:</span> <span class="kt">SHeap</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="k">=</span> <span class="o">???</span>
+  <span class="c1">// plus other ordinary factory methods, similar to other Scala collections
+</span>
+  <span class="c1">// the big bad
+</span>  <span class="k">def</span> <span class="n">factory</span><span class="o">[</span><span class="kt">E</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">E</span><span class="o">])</span><span class="k">:</span> <span class="kt">HeapFactory</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Elem</span> <span class="o">=</span> <span class="kt">E</span> <span class="o">}</span> <span class="k">=</span> <span class="o">???</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now the user can proceed in blissful ignorance of <code class="highlighter-rouge">factory</code> or <code class="highlighter-rouge">MHeap</code>, treating this essentially just like any other Scala collection, until they need <code class="highlighter-rouge">merge</code>.
+Of course, <code class="highlighter-rouge">empty</code> will probably be defined as</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="n">empty</span><span class="o">[</span><span class="kt">E</span><span class="o">](</span><span class="k">implicit</span> <span class="n">ord</span><span class="k">:</span> <span class="kt">Ordering</span><span class="o">[</span><span class="kt">E</span><span class="o">])</span><span class="k">:</span> <span class="kt">SHeap</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="k">=</span> <span class="n">factory</span><span class="o">[</span><span class="kt">E</span><span class="o">](</span><span class="n">ord</span><span class="o">).</span><span class="n">empty</span>
+</code></pre></div></div>
+
+<p>(and similarly for the other ordinary factory methods), but the user doesn’t need to know that.</p>
+
+<h2 id="problem-5-min-vs-max">Problem 5: <code class="highlighter-rouge">min</code> vs <code class="highlighter-rouge">max</code></h2>
+
+<p>Should a heap favor smaller elements or bigger elements?
+There’s no obvious answer—applications abound for both.
+Therefore, an interface should easily support both flavors.
+Right now, the ordering parameter allows us to say</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">minHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">maxHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">.</span><span class="n">reverse</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>But how did I know that <code class="highlighter-rouge">Ordering.Int</code> was the right ordering for min-heaps and <code class="highlighter-rouge">Ordering.Int.reverse</code> was the right ordering for max-heaps?
+The opposite could just as easily have been true.
+Sure, this detail would probably be documented in the API, but it was fundamentally a flip-a-coin arbitrary decision.
+And arbitrary decisions with no logic favoring one choice over the other are the hardest to remember.</p>
+
+<p>In an easier-to-use interface, the user might write:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">minHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">minFactory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">maxHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">maxFactory</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="nc">Ordering</span><span class="o">.</span><span class="nc">Int</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Now, the user doesn’t need to worry whether to use <code class="highlighter-rouge">Ordering.Int</code> or <code class="highlighter-rouge">Ordering.Int.reverse</code>.
+Instead, if they want min-oriented heaps, they call <code class="highlighter-rouge">minFactory(Ordering.Int)</code> and if they want max-oriented heaps, they call <code class="highlighter-rouge">maxFactory(Ordering.Int)</code>.
+In fact, it’s even better than that.
+The whole point of implicit parameters is that you usually don’t need to write them down explicitly.
+In reality, the user would probably only write:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">minHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">minFactory</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+<span class="k">val</span> <span class="n">maxHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="n">maxFactory</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Actually, in the current version of scads, this is now</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">minHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="nc">Min</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+<span class="k">val</span> <span class="n">maxHeaps</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="nc">Max</span><span class="o">.</span><span class="n">factory</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>where <code class="highlighter-rouge">LeftistHeap.Min</code> and <code class="highlighter-rouge">LeftistHeap.Max</code> both support other simpler methods for creating <code class="highlighter-rouge">SHeap</code>s for users who don’t need <code class="highlighter-rouge">merge</code>.
+For example, a user could write:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">h1</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="nc">Min</span><span class="o">.</span><span class="n">empty</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="c1">// an empty min-heap of integers
+</span><span class="k">val</span> <span class="n">h2</span> <span class="k">=</span> <span class="nc">LeftistHeap</span><span class="o">.</span><span class="nc">Max</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span> <span class="c1">// a max-heap containing 1, 2, and 3
+</span></code></pre></div></div>
+
+<p>Of course, there’s lots more needed to flesh the whole design out into an industrial-strength API, and even more to integrate it with the current Scala collections.
+I’ll continue to work on this, and I welcome discussion on these issues.</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Chris Okasaki
+    
+    on Nov 17, 2016</p>
+
+    
+
+  <a class="github-button" href="https://github.com/chrisokasaki" aria-label="Follow @chrisokasaki on GitHub">Follow @chrisokasaki</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

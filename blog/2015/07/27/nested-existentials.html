@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Nested existentials</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Nested existentials</h2>
+
+  <p><em>This is the fifth of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+<a href="/blog/2015/07/13/type-members-parameters.html">start at the beginning</a>,
+which introduces code we refer to throughout this article without
+further ado.</em></p>
+
+<p>Let’s consider a few values of type <code class="highlighter-rouge">MList</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">estrs</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">=</span> <span class="nc">MCons</span><span class="o">(</span><span class="s">"hi"</span><span class="o">,</span> <span class="nc">MCons</span><span class="o">(</span><span class="s">"bye"</span><span class="o">,</span> <span class="nc">MNil</span><span class="o">()))</span><span class="k">:</span> <span class="kt">MList.Aux</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+
+<span class="k">val</span> <span class="n">eints</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">=</span> <span class="nc">MCons</span><span class="o">(</span><span class="mi">21</span><span class="o">,</span> <span class="nc">MCons</span><span class="o">(</span><span class="mi">42</span><span class="o">,</span> <span class="nc">MNil</span><span class="o">()))</span><span class="k">:</span> <span class="kt">MList.Aux</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+
+<span class="k">val</span> <span class="n">ebools</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">=</span> <span class="nc">MCons</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="nc">MCons</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="nc">MNil</span><span class="o">()))</span><span class="k">:</span> <span class="kt">MList.Aux</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Recall
+<a href="/blog/2015/07/13/type-members-parameters.html#why-all-the-type-t">from the first part</a>
+that the equivalent type in <code class="highlighter-rouge">PList</code> style is <code class="highlighter-rouge">PList[_]</code>.  Now, these
+variables all have the “same” type, by virtue of forgetting what their
+specific element type is, though you know that every value of, for
+example, <code class="highlighter-rouge">estrs</code> has the same type.</p>
+
+<h2 id="what-if-we-list-different-existentials">What if we list <em>different</em> existentials?</h2>
+
+<p>Lists hold values of the same type, and as you might expect, you can
+put these three lists in another list:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">elists</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">MList</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="nc">PCons</span><span class="o">(</span><span class="n">estrs</span><span class="o">,</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">eints</span><span class="o">,</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">ebools</span><span class="o">,</span> <span class="nc">PNil</span><span class="o">())))</span>
+</code></pre></div></div>
+
+<p>Again, the equivalent is <code class="highlighter-rouge">PList[PList[_]]</code>.  We can see what this
+means merely by doing substitution in the <code class="highlighter-rouge">PList</code> type.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">head</span><span class="k">:</span> <span class="kt">MList</span><span class="o">,</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">PList</span><span class="o">)</span>
+<span class="c1">// don't compile this, it's a thought process
+</span></code></pre></div></div>
+
+<p>Equivalently, <code class="highlighter-rouge">head</code> would have type <code class="highlighter-rouge">PList[_]</code>, a homogeneous list of
+unknown element type, just like <code class="highlighter-rouge">MList</code>.</p>
+
+<h2 id="method-equivalence--broken">Method equivalence … broken?</h2>
+
+<p>But we come to a problem.  Suppose we wish to count the elements of
+doubly-nested lists.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">plenLength</span><span class="o">(</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">PList</span><span class="o">[</span><span class="k">_</span><span class="o">]])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">plenLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">plenLengthTP</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xss</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">plengthT</span><span class="o">(</span><span class="n">h</span><span class="o">)</span> <span class="o">+</span> <span class="n">plenLengthTP</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+
+<span class="nc">TmTp5</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">16</span><span class="kt">:</span> <span class="kt">no</span> <span class="k">type</span> <span class="kt">parameters</span> <span class="kt">for</span> <span class="kt">method</span> <span class="kt">plenLengthTP:</span>
+<span class="kt">⤹</span> <span class="o">(</span><span class="kt">xss:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]])</span><span class="nc">Int</span> <span class="n">exist</span> <span class="n">so</span> <span class="n">that</span> <span class="n">it</span>
+<span class="o">⤹</span> <span class="n">can</span> <span class="n">be</span> <span class="n">applied</span> <span class="n">to</span> <span class="n">arguments</span> <span class="o">(</span><span class="n">tmtp</span><span class="o">.</span><span class="nc">PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="k">_</span><span class="o">]])</span>
+ <span class="o">---</span> <span class="n">because</span> <span class="o">---</span>
+<span class="n">argument</span> <span class="n">expression</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">is</span> <span class="kt">not</span> <span class="kt">compatible</span> <span class="kt">with</span> <span class="kt">formal</span> <span class="kt">parameter</span> <span class="k">type</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">?T</span><span class="o">]]</span>
+</code></pre></div></div>
+
+<p>According to our equivalence test, neither of these methods works to
+implement the other!  This despite
+<a href="/blog/2015/07/13/type-members-parameters.html#when-is-existential-ok">the “simple rule” we have already discussed</a>.
+Here’s the error the other way.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TmTp5</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">20</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]]</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.PList</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span>
+</code></pre></div></div>
+
+<p>The problem with calling <code class="highlighter-rouge">plenLengthTP</code> from <code class="highlighter-rouge">plenLength</code> is <em>there is
+no one <code class="highlighter-rouge">T</code> we can choose, even an unspeakable one, to call
+<code class="highlighter-rouge">plenLengthTP</code></em>.  That’s what the <code class="highlighter-rouge">?T</code> and the “no type parameters”
+phrasing in the first error above means.</p>
+
+<p>This is an accurate compiler error because <code class="highlighter-rouge">PList[PList[_]]</code> means
+<code class="highlighter-rouge">PList[PList[E] forSome {type E}]</code>.  Let’s see the substitution again.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">head</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E</span><span class="o">},</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">PList</span><span class="o">)</span>
+<span class="c1">// don't compile this, it's a thought process
+</span></code></pre></div></div>
+
+<p>Java has the same problem.  See?</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">llLength</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">xss</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nf">llLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">int</span> <span class="nf">llLengthTP</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">xss</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>  <span class="c1">// we only care about types in this example</span>
+<span class="o">}</span>
+
+<span class="n">TmTp5</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">7</span><span class="o">:</span>  <span class="nl">error:</span> <span class="n">method</span> <span class="n">llLengthTP</span> <span class="n">in</span> <span class="kd">class</span> <span class="nc">TmTp5</span>
+<span class="err">⤹</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">applied</span> <span class="n">to</span> <span class="n">given</span> <span class="n">types</span><span class="o">;</span>
+    <span class="k">return</span> <span class="nf">llLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">);</span>
+           <span class="o">^</span>
+
+<span class="c1">// or, with llLengthTP calling llLength</span>
+<span class="n">TmTp5</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span>  <span class="nl">error:</span> <span class="n">incompatible</span> <span class="nl">types:</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span>
+<span class="err">⤹</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">converted</span> <span class="n">to</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;?&gt;&gt;</span>
+    <span class="k">return</span> <span class="nf">llLength</span><span class="o">(</span><span class="n">xss</span><span class="o">);</span>
+                    <span class="o">^</span>
+</code></pre></div></div>
+
+<p>This discovery, which I made for myself
+<a href="https://bitbucket.org/ermine-language/ermine-writers/src/c63d4060a74f1c8520ea1c8c3ba51ebd5d269780/writers/javafx/src/main/java/com/clarifi/reporting/writers/jfx/table/JFXTables.java?at=default#JFXTables.java-163">in the depths of the Ermine Java code</a>
+(though it was certainly already well-known to others), was my first
+clue, personally, that the term
+<a href="/blog/2015/07/16/method-equiv.html#why-are-existentials-harder-to-think-about">“wildcard” was a lie, as discussed in a previous part</a>.</p>
+
+<h2 id="scoping-existential-quantifiers">Scoping existential quantifiers</h2>
+
+<p>The difference is, in Scala, we can write an equivalent for
+<code class="highlighter-rouge">plenLengthTP</code>, using the Scala-only
+<a href="http://www.artima.com/pins1ed/combining-scala-and-java.html#29.3"><code class="highlighter-rouge">forSome</code> <em>existential quantifier</em></a>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">plenLengthE</span><span class="o">(</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">PList</span><span class="o">[</span><span class="kt">E</span><span class="o">]]</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E</span><span class="o">})</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">plenLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Of course, this type doesn’t mean the same thing as <code class="highlighter-rouge">plenLength</code>’s
+type; for both <code class="highlighter-rouge">plenLengthE</code> and <code class="highlighter-rouge">plenLengthTP</code>, we demand proof that
+each sublist in the argument has the same element type, which is not a
+condition satisfied by either <code class="highlighter-rouge">PList[PList[_]]</code> or its equivalent
+<code class="highlighter-rouge">PList[MList]</code>.</p>
+
+<div class="side-note">
+  <p>The reason you can’t invoke <code>plenLength</code> from
+  <code>plenLengthTP</code> is complicated, even for this article.  In
+  short, <code>plenLength</code> demands evidence that,
+  <em>supposing</em> <code>PList</code> had a method taking an
+  argument of the element type,
+  e.g. <code>def lookAt(x: T): Unit</code>, it could do things like
+  <code>xss.lookAt(PList("hi", PNil()))</code>.  In
+  <code>plenLengthTP</code>, this hypothetical method could only be
+  invoked with empty lists, or lists gotten by inspecting
+  <code>xss</code> itself.</p>
+
+  <p>That no such method exists is irrelevant for the purposes of this
+  reasoning; we have written the definition of <code>PList</code> in a
+  way that scalac assumes that such a method may exist.  You can
+  determine the consequences yourself by adding the
+  <code>lookAt</code> method to <code>PList</code>, repeating the
+  above substitution for <code>PList</code>, and thinking about the
+  meaning of the resulting <code>def lookAt(x:
+  PList[E] forSome {type E}): Unit</code>.</p>
+</div>
+
+<p>Let’s examine the meaning of the type
+<code class="highlighter-rouge">PList[PList[E]] forSome {type E}</code>.  It requires a little bit more
+mental suspension.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Let there be some unknown (abstract)
+</span><span class="k">type</span> <span class="kt">E</span>
+<span class="c1">// then the structure of the value is
+</span><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">PList</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">head</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">E</span><span class="o">],</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">PList</span><span class="o">)</span>
+<span class="c1">// don't compile this, it's a thought process
+</span></code></pre></div></div>
+
+<p>By moving the <code class="highlighter-rouge">forSome</code> <em>existential scope</em> outside the outer <code class="highlighter-rouge">PList</code>,
+we also move the existential type variable outside of the whole
+structure, substituting <em>the same</em> variable for each place we’re
+expanding the type under consideration.  Once the <code class="highlighter-rouge">forSome</code> scope
+extends over the whole type, Scala can pick that type as the parameter
+to <code class="highlighter-rouge">plenLengthTP</code>.</p>
+
+<p>This isn’t possible in Java at all; <code class="highlighter-rouge">PList&lt;PList&lt;?&gt;&gt;</code> is your only
+choice, as <strong><code class="highlighter-rouge">?</code> in Java, like <code class="highlighter-rouge">_</code> in Scala, is always scoped to
+exactly one level outside</strong>.  So in Java, you simply can’t write
+<code class="highlighter-rouge">plenLengthE</code>’s type.  Luckily, the type-parameter equivalent is
+perfectly expressible.</p>
+
+<h2 id="what-happens-when-i-move-the-existential-scope">What happens when I move the existential scope?</h2>
+
+<p>Of course, moving the scope makes the type mean something different,
+which you can tell by counting how many <code class="highlighter-rouge">E</code>s there will be in a value.
+A <code class="highlighter-rouge">PList[PList[_]]</code> is a list of lists where each list may have a
+different, unknown element type, like <code class="highlighter-rouge">elists</code>.  A
+<code class="highlighter-rouge">PList[PList[E]] forSome {type E}</code> is a list of lists where you still
+don’t know the inner element type, but you know it’s the same for each
+sublist.  We can tell that because, in the expansion, there’s only one
+<code class="highlighter-rouge">E</code>, whereas the expansion for the former has an <code class="highlighter-rouge">E</code> introduced in
+each <code class="highlighter-rouge">head</code> value.</p>
+
+<p>So for the latter it is type-correct to, say, move elements from one
+sublist to another; you know that, whichever pair of sublists you
+choose to make this trade, they have the same element type.  But you
+<em>don’t know that</em> for <code class="highlighter-rouge">PList[PList[_]]</code>.</p>
+
+<p>Similarly, also by substitution, <code class="highlighter-rouge">PList[_] =&gt; Int</code> is a function that
+takes <code class="highlighter-rouge">PList</code>s of any element type and returns <code class="highlighter-rouge">Int</code>, like <code class="highlighter-rouge">plengthE</code>.
+You can figure this out by substituting for
+<a href="https://github.com/scala/scala/blob/v2.11.7/src/library/scala/Function1.scala#L32-L36"><code class="highlighter-rouge">Function1#apply</code></a>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">v1</span><span class="k">:</span> <span class="kt">T1</span><span class="o">)</span><span class="k">:</span> <span class="kt">R</span>
+<span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">v1</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span>
+</code></pre></div></div>
+
+<p>But <code class="highlighter-rouge">(PList[E] =&gt; Int) forSome {type E}</code> is a function that takes
+<code class="highlighter-rouge">PList</code>s of <em>one specific</em> element type that we don’t know.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Let there be some unknown (abstract)
+</span><span class="k">type</span> <span class="kt">E</span>
+<span class="c1">// then the method is
+</span><span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">v1</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">E</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span>
+</code></pre></div></div>
+
+<p>It’s easy to use existential scoping to create functions that are
+impossible to call and other values that are impossible to use besides
+functions.  This is almost one of those:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">badlength</span><span class="k">:</span> <span class="o">(</span><span class="kt">PList</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E</span><span class="o">}</span> <span class="k">=</span> <span class="n">plengthE</span>
+<span class="n">badlength</span><span class="o">(???</span> <span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span>
+
+<span class="nc">TmTp5</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">29</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="n">where</span> <span class="k">type</span> <span class="kt">E</span>
+<span class="n">badlength</span><span class="o">(???</span> <span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span>
+              <span class="o">^</span>
+</code></pre></div></div>
+
+<p>But in this case, there is one way we can call this function: with an
+empty list.  Whatever the <code class="highlighter-rouge">E</code> is, it will be inferred when we call
+<code class="highlighter-rouge">PNil()</code>.  So <code class="highlighter-rouge">badlength(PNil())</code> works.</p>
+
+<p>There is a broader theme here hinted at by the interaction between
+<code class="highlighter-rouge">PNil</code> and <code class="highlighter-rouge">badlength</code>: <strong>the most efficient, most easily understood
+way to work with values of existential type is with type-parameterized
+methods</strong>.  But we’ll get to that later.</p>
+
+<h2 id="back-to-type-members">Back to type members</h2>
+
+<p>Let us translate the working existential variant we discovered above
+to the <code class="highlighter-rouge">PList[MList]</code> form of the function, though.  What is the
+existential equivalent to <code class="highlighter-rouge">mlenLengthTP</code>?</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mlenLengthTP</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">MList.Aux</span><span class="o">[</span><span class="kt">T</span><span class="o">]])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xss</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">mlength</span><span class="o">(</span><span class="n">h</span><span class="o">)</span> <span class="o">+</span> <span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+
+<span class="k">def</span> <span class="n">mlenLength</span><span class="o">(</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">MList</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">)</span>
+
+<span class="nc">TmTp5</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">38</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.MList</span><span class="o">]</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.MList.Aux</span><span class="o">[</span><span class="kt">this.T</span><span class="o">]]</span>
+  <span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">)</span>
+               <span class="o">^</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">MList</code> is equivalent to <code class="highlighter-rouge">MList {type T = E} forSome {type E}</code>.  We
+can prove that directly in Scala.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">MList</span> <span class="kt">=:=</span> <span class="o">(</span><span class="kt">MList</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="kt">=</span> <span class="kt">E</span><span class="o">}</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E</span><span class="o">})]</span>
+<span class="n">res0</span><span class="k">:</span> <span class="o">=:=[</span><span class="kt">tmtp.MList</span>,<span class="kt">tmtp.MList</span><span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="kt">=</span> <span class="kt">E</span><span class="o">}</span> <span class="k">forSome</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">E</span> <span class="o">}]</span> <span class="k">=</span> <span class="o">&lt;</span><span class="n">function1</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>That’s why we could use <code class="highlighter-rouge">runStSource</code> to infer a type parameter for
+the existential <code class="highlighter-rouge">S</code> in
+<a href="/blog/2015/07/23/type-projection.html#type-parameters-see-existentially">the last post</a>:
+the scope is on the outside, so there’s exactly one type parameter to
+infer.  So the scoping problem now looks very similar to the
+<code class="highlighter-rouge">PList</code>-in-<code class="highlighter-rouge">PList</code> problem, and we can write:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mlenLengthE</span><span class="o">(</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">MList.Aux</span><span class="o">[</span><span class="kt">E</span><span class="o">]]</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E</span><span class="o">})</span>
+  <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">xss</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="a-triangular-generalization">A triangular generalization</h2>
+
+<p>Once again, <code class="highlighter-rouge">mlenLengthE</code> demands proof that each sublist of <code class="highlighter-rouge">xss</code> has
+the same element type, by virtue of the position of its <code class="highlighter-rouge">forSome</code>
+scope.  We can’t satisfy that with <code class="highlighter-rouge">elists</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mlenLengthE</span><span class="o">(</span><span class="n">elists</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Or, we <em>shouldn’t</em> be able to, anyway.
+<a href="https://issues.scala-lang.org/browse/SI-9410">Sometimes, the wrong thing happens.</a>
+We get the right error when we try to invoke <code class="highlighter-rouge">mlenLengthTP</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">elists</span><span class="o">)</span>
+
+<span class="nc">TmTp5</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">43</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.MList</span><span class="o">]</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">tmtp.PList</span><span class="o">[</span><span class="kt">tmtp.MList.Aux</span><span class="o">[</span><span class="kt">this.T</span><span class="o">]]</span>
+    <span class="o">(</span><span class="n">which</span> <span class="n">expands</span> <span class="n">to</span><span class="o">)</span>  <span class="n">tmtp</span><span class="o">.</span><span class="nc">PList</span><span class="o">[</span><span class="kt">tmtp.MList</span><span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="kt">=</span> <span class="kt">this.T</span><span class="o">}]</span>
+<span class="n">mlenLengthTP</span><span class="o">(</span><span class="n">elists</span><span class="o">)</span>
+             <span class="o">^</span>
+</code></pre></div></div>
+
+<p>So we have <code class="highlighter-rouge">mlenLengthE</code> $\equiv_m$ <code class="highlighter-rouge">mlenLengthTP</code>.  <code class="highlighter-rouge">mlenLength</code>,
+however, is incompatible with both; neither is more general than the
+other!  What we really want is a function that is more general than
+all three, and subsumes all their definitions.  Here it is, in two
+variants: one half-type-parameterized, the other wholly existential.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mlenLengthTP2</span><span class="o">[</span><span class="kt">T</span> <span class="k">&lt;:</span> <span class="kt">MList</span><span class="o">](</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xss</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">mlength</span><span class="o">(</span><span class="n">h</span><span class="o">)</span> <span class="o">+</span> <span class="n">mlenLengthTP2</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+
+<span class="k">def</span> <span class="n">mlenLengthE2</span><span class="o">(</span><span class="n">xss</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="k">_</span> <span class="k">&lt;:</span> <span class="kt">MList</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xss</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="n">h</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">mlength</span><span class="o">(</span><span class="n">h</span><span class="o">)</span> <span class="o">+</span> <span class="n">mlenLengthTP2</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’ve woven a tangled web, so here are, restated, the full
+relationships for the <code class="highlighter-rouge">MList</code>-in-<code class="highlighter-rouge">PList</code> functions above.</p>
+
+<ol>
+  <li><code class="highlighter-rouge">mlenLengthTP2</code> $\equiv_m$ <code class="highlighter-rouge">mlenLengthE2</code></li>
+  <li><code class="highlighter-rouge">mlenLengthTP</code> $\equiv_m$ <code class="highlighter-rouge">mlenLengthE</code></li>
+  <li>$\neg($<code class="highlighter-rouge">mlenLength</code> $&lt;:_m$ <code class="highlighter-rouge">mlenLengthE</code>$)$</li>
+  <li>$\neg($<code class="highlighter-rouge">mlenLengthE</code> $&lt;:_m$ <code class="highlighter-rouge">mlenLength</code>$)$</li>
+  <li>$\neg($<code class="highlighter-rouge">mlenLength</code> $&lt;:_m$ <code class="highlighter-rouge">mlenLengthTP</code>$)$</li>
+  <li>$\neg($<code class="highlighter-rouge">mlenLengthTP</code> $&lt;:_m$ <code class="highlighter-rouge">mlenLength</code>$)$</li>
+  <li><code class="highlighter-rouge">mlenLengthTP2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLengthTP</code></li>
+  <li><code class="highlighter-rouge">mlenLengthTP2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLength</code></li>
+  <li><code class="highlighter-rouge">mlenLengthTP2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLengthE</code></li>
+  <li><code class="highlighter-rouge">mlenLengthE2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLengthTP</code></li>
+  <li><code class="highlighter-rouge">mlenLengthE2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLength</code></li>
+  <li><code class="highlighter-rouge">mlenLengthE2</code> $&lt;_m$ <code class="highlighter-rouge">mlenLengthE</code></li>
+</ol>
+
+<p>Moreover, the full existential in <code class="highlighter-rouge">mlenLengthE2</code> is shorthand for:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">PList</span><span class="o">[</span><span class="kt">E</span><span class="o">]</span> <span class="k">forSome</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">E</span> <span class="k">&lt;:</span> <span class="kt">MList</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">E2</span>
+  <span class="o">}</span> <span class="k">forSome</span> <span class="o">{</span><span class="k">type</span> <span class="kt">E2</span><span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>…a nested existential, though not in the meaning I intend in the title
+of this article.  You can prove it with <code class="highlighter-rouge">=:=</code>, as above.</p>
+
+<p>And I say all this simply as a means of saying that <em>this</em> is what
+you’re signing up for when you decide to “simplify” your code by using
+type members instead of parameters and leaving off the refinements
+that make them concrete.</p>
+
+<p>In
+<a href="/blog/2015/07/30/values-never-change-types.html">the next part, “Values never change types”</a>,
+we’ll get some idea of why working with existential types can be so
+full of compiler errors, especially when allowing for mutation and
+impure functions.</p>
+
+<p><em>This article was tested with Scala 2.11.7 and Java 1.8.0_45.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Jul 27, 2015</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$']]}
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Type members are [almost] type parameters</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Type members are [almost] type parameters</h2>
+
+  <p><em>This is the first of a series of articles on “Type Parameters and Type
+Members”.</em></p>
+
+<p>Type members like <code class="highlighter-rouge">Member</code></p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Blah</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Member</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>and parameters like <code class="highlighter-rouge">Param</code></p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Blah2</span><span class="o">[</span><span class="kt">Param</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>have more similarities than differences.  The choice of which to use
+for a given situation is usually a matter of convenience.  In brief, a
+rule of thumb: <strong>a type parameter is usually more convenient and
+harder to screw up, but if you intend to use it existentially in most
+cases, changing it to a member is probably better</strong>.</p>
+
+<p>Here, and in later posts, we will discuss what on earth that means,
+among other things.  In this series of articles on <em>Type Parameters
+and Type Members</em>, I want to tackle a variety of Scala types that look
+very different, but are really talking about the same thing, or
+almost.</p>
+
+<h2 id="two-lists-all-alike">Two lists, all alike</h2>
+
+<p>To illustrate, let’s see two versions of
+<a href="http://www.artima.com/pins1ed/working-with-lists.html">the functional list</a>.
+Typically, it isn’t used existentially, so the usual choice of
+parameter over member fits our rule of thumb above.  It’s instructive
+anyway, so let’s see it.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="nc">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PNil</span><span class="o">[</span><span class="kt">T</span><span class="o">]()</span> <span class="k">extends</span> <span class="nc">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">PCons</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">head</span><span class="k">:</span> <span class="kt">T</span><span class="o">,</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">MList</span> <span class="o">{</span><span class="n">self</span> <span class="k">=&gt;</span>
+  <span class="k">type</span> <span class="kt">T</span>
+  <span class="k">def</span> <span class="n">uncons</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">MCons</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="kt">=</span> <span class="kt">self.T</span><span class="o">}]</span>
+<span class="o">}</span>
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">MNil</span> <span class="k">extends</span> <span class="nc">MList</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">uncons</span> <span class="k">=</span> <span class="nc">None</span>
+<span class="o">}</span>
+<span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">MCons</span> <span class="k">extends</span> <span class="nc">MList</span> <span class="o">{</span><span class="n">self</span> <span class="k">=&gt;</span>
+  <span class="k">val</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span>
+  <span class="k">val</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">self.T</span><span class="o">}</span>
+  <span class="k">def</span> <span class="n">uncons</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">self</span><span class="k">:</span> <span class="kt">MCons</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">self.T</span><span class="o">})</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’re not quite done; we’re missing a way to <em>make</em> <code class="highlighter-rouge">MNil</code>s and
+<code class="highlighter-rouge">MCons</code>es, which <code class="highlighter-rouge">PNil</code> and <code class="highlighter-rouge">PCons</code> have already provided
+for themselves, by virtue of being <code class="highlighter-rouge">case class</code>es.  But it’s already
+pretty clear that <em>a type parameter is a more straightforward way to
+define this particular data type</em>.</p>
+
+<p>The instance creation takes just a bit more scaffolding for our
+examples:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">MNil</span><span class="o">[</span><span class="kt">T0</span><span class="o">]()</span><span class="k">:</span> <span class="kt">MNil</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">T0</span><span class="o">}</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">MNil</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">T0</span>
+  <span class="o">}</span>
+
+<span class="k">def</span> <span class="nc">MCons</span><span class="o">[</span><span class="kt">T0</span><span class="o">](</span><span class="n">hd</span><span class="k">:</span> <span class="kt">T0</span><span class="o">,</span> <span class="n">tl</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">T0</span><span class="o">})</span>
+  <span class="k">:</span> <span class="kt">MCons</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">T0</span><span class="o">}</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">MCons</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">T0</span>
+    <span class="k">val</span> <span class="n">head</span> <span class="k">=</span> <span class="n">hd</span>
+    <span class="k">val</span> <span class="n">tail</span> <span class="k">=</span> <span class="n">tl</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="why-all-the-type-t--">Why all the <code class="highlighter-rouge">{type T = ...}</code>?</h2>
+
+<p>After all, isn’t the virtue of type members that we don’t have to pass
+the type around everywhere?</p>
+
+<p>Let’s see what happens when we attempt to apply that theory.  Suppose
+we remove only one of the
+<a href="http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#compound-types"><em>refinement</em>s</a>
+above, as these <code class="highlighter-rouge">{...}</code> rainclouds at the type level are called.
+Let’s remove the one in <code class="highlighter-rouge">val tail</code>, so <code class="highlighter-rouge">class MCons</code> looks like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">MCons</span> <span class="k">extends</span> <span class="nc">MList</span> <span class="o">{</span><span class="n">self</span> <span class="k">=&gt;</span>
+  <span class="k">val</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span>
+  <span class="k">val</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">MList</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now let us put a couple members into the list, and add them together.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">nums</span> <span class="k">=</span> <span class="nc">MCons</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">MCons</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">MNil</span><span class="o">()))</span><span class="k">:</span> <span class="kt">MCons</span><span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">}</span>
+<span class="n">nums</span><span class="k">:</span> <span class="kt">tmtp.MCons</span><span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">Int</span><span class="o">}</span> <span class="k">=</span> <span class="n">tmtp</span><span class="o">.</span><span class="nc">MList$$anon$2</span><span class="k">@</span><span class="mi">3</span><span class="n">c649f69</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">nums</span><span class="o">.</span><span class="n">head</span>
+<span class="n">res1</span><span class="k">:</span> <span class="kt">nums.T</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">res1</span> <span class="o">+</span> <span class="n">res1</span>
+<span class="n">res2</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">nums</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">uncons</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">head</span><span class="o">)</span>
+<span class="n">res3</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">nums.tail.T</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">res3</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span> <span class="o">-</span> <span class="n">res2</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">21</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">value</span> <span class="kt">-</span> <span class="kt">is</span> <span class="kt">not</span> <span class="kt">a</span> <span class="kt">member</span> <span class="kt">of</span> <span class="kt">nums.tail.T</span>
+       <span class="n">res3</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span> <span class="o">-</span> <span class="n">res2</span><span class="o">)</span>
+                  <span class="o">^</span>
+</code></pre></div></div>
+
+<p>When we took the refinement off of <code class="highlighter-rouge">tail</code>, we eliminated any evidence
+about what its <code class="highlighter-rouge">type T</code> might be.  We only know that <em>it must be some
+type</em>.  That’s what <em>existential</em> means.</p>
+
+<p><strong>In terms of type parameters, <code class="highlighter-rouge">MList</code> is like <code class="highlighter-rouge">PList[_]</code>, and <code class="highlighter-rouge">MList
+{type T = Int}</code> is like <code class="highlighter-rouge">PList[Int]</code>.</strong>  For the former, we say that
+the member, or parameter, is existential.</p>
+
+<h2 id="when-is-existential-ok">When is existential OK?</h2>
+
+<p>Despite the limitation implied by the error above, there <em>are</em> useful
+functions that can be written on the existential version.  Here’s one
+of the simplest:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mlength</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">MList</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xs</span><span class="o">.</span><span class="n">uncons</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">mlength</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">tail</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>For the type parameter equivalent, the parameter on the argument is
+usually carried out or <em>lifted</em> to the function, like so:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">plengthT</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">plengthT</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>By the conversion rules above, though, we should be able to write an
+existential equivalent of <code class="highlighter-rouge">mlength</code> for <code class="highlighter-rouge">PList</code>, and indeed we can:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">plengthE</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+  <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">plengthE</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>There’s another simple rule we can follow when determining whether we
+can rewrite in an existential manner.</p>
+
+<ol>
+  <li>When a type parameter appears only in one argument, and</li>
+  <li>appears nowhere in the result type,</li>
+</ol>
+
+<p>we should always, ideally, be able to write the function in an
+existential manner.  (We will discuss why it’s only “ideally” in
+<a href="/blog/2015/07/16/method-equiv.html">the next article</a>.)</p>
+
+<p>You can demonstrate this to yourself by having the parameterized
+variant (e.g. <code class="highlighter-rouge">plengthT</code>) call the existential variant
+(e.g. <code class="highlighter-rouge">plengthE</code>), and, voilà, it compiles, so it must be right.</p>
+
+<p>This hints at what is usually, though not always, <strong>an advantage for
+type parameters: you have to ask for an existential, rather than
+silently getting one just because you forgot a refinement</strong>.  We will
+discuss
+<a href="/blog/2015/07/19/forget-refinement-aux.html">what happens when you forget one in a later post</a>.</p>
+
+<h2 id="equivalence-as-a-learning-tool">Equivalence as a learning tool</h2>
+
+<p>Scala is large enough that very few understand all of it.  Moreover,
+there are many aspects of it that are poorly understood in general.</p>
+
+<p>So why focus on how different features are similar?  When we
+understand one area of Scala well, but another one poorly, we can form
+sensible ideas about the latter by drawing analogies with the former.
+This is how we solve problems with computers in general: we create an
+informal model in our heads, which we translate to a
+mathematical statement that a program can interpret, and it gives back
+a result that we can translate back to our informal model.</p>
+
+<p>My guess is that type parameters are much better understood than type
+members, but that existentials via type members are better understood
+than existentials introduced by <code class="highlighter-rouge">_</code> or <code class="highlighter-rouge">forSome</code>, though I’d wager
+that neither form of existential is particularly well understood.</p>
+
+<p>By knowing about equivalences and being able to discover more, you
+have a powerful tool for understanding unfamiliar aspects of Scala:
+just translate the problem back to what you know and think about what
+it means there, because the conclusion will still hold when you
+translate it forward.  (Category theorists, eat your hearts out.)</p>
+
+<p>In this vein, we will next generalize the above rule about existential
+methods, discovering a simple tool for determining whether two
+method types <em>in general</em> are equivalent, whereby things you know
+about one easily carry over to the other.  We will also explore
+methods that <em>cannot</em> be written in the existential style, at least
+under Scala’s restrictions.</p>
+
+<p>That all happens in
+<a href="/blog/2015/07/16/method-equiv.html">the next part, “When are two methods alike?”</a>.</p>
+
+<p><em>This article was tested with Scala 2.11.7.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Jul 13, 2015</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Of variance and functors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Of variance and functors</h2>
+
+  <p>Scala’s type system allows us to annotate type parameters with their variance: covariant, contravariant, invariant.
+Variance allows us to define the subtyping relationships between type constructors – that is, under which
+conditions <code class="highlighter-rouge">F[A]</code> is a subtype of <code class="highlighter-rouge">F[B]</code>.</p>
+
+<p>Similarly in functional programming, there are covariant functors, contravariant functors, and invariant functors. The
+similarity in names is not coincidental.</p>
+
+<h1 id="covariance">Covariance</h1>
+<p>The common example is <code class="highlighter-rouge">List[+A]</code> which is covariant in its type parameter, denoted by the <code class="highlighter-rouge">+</code> next to the <code class="highlighter-rouge">A</code>.
+A type constructor with a covariant type parameter means that if there is a subtyping relationship between the
+type parameter, there is a subtyping relationship between the two instances of the type constructor.
+For example if we have a <code class="highlighter-rouge">List[Circle]</code>, we can substitute it anywhere we have a <code class="highlighter-rouge">List[Shape]</code>.</p>
+
+<h2 id="read">Read</h2>
+<p>Another example of covariance is in parsing, for example in the following <code class="highlighter-rouge">Read</code> type class.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Read</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It makes sense to make <code class="highlighter-rouge">Read</code> covariant because if we can read a subtype, then we can read the supertype by
+reading the subtype and throwing away the subtype-specific information. For instance, if we can read a
+<code class="highlighter-rouge">Circle</code>, we can read a valid <code class="highlighter-rouge">Shape</code> by reading the <code class="highlighter-rouge">Circle</code> and ignoring any <code class="highlighter-rouge">Circle</code>-specific information.</p>
+
+<h2 id="array">Array</h2>
+<p>A type that cannot safely be made covariant is <code class="highlighter-rouge">Array</code>. If <code class="highlighter-rouge">Array</code> were covariant, we could substitute
+an <code class="highlighter-rouge">Array[Circle]</code> for an <code class="highlighter-rouge">Array[Shape]</code>. This can get us in a nasty situation.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">circles</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">10</span><span class="o">)(</span><span class="nc">Circle</span><span class="o">(..))</span>
+<span class="k">val</span> <span class="n">shapes</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="n">circles</span> <span class="c1">// works only if Array is covariant
+</span><span class="n">shapes</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Square</span><span class="o">(..)</span> <span class="c1">// Square is a subtype of Shape
+</span></code></pre></div></div>
+
+<p>If <code class="highlighter-rouge">Array</code> was covariant this would compile fine, but fail at runtime. In fact, Java arrays are
+covariant and so the analogous Java code would compile, throwing an <code class="highlighter-rouge">ArrayStoreException</code> when
+run. The compiler accepts this because it is valid to upcast an <code class="highlighter-rouge">Array[Circle]</code> into an <code class="highlighter-rouge">Array[Shape]</code>,
+and it is valid to insert a <code class="highlighter-rouge">Shape</code> into an <code class="highlighter-rouge">Array[Shape]</code>. However the runtime representation of
+<code class="highlighter-rouge">shapes</code> is still an <code class="highlighter-rouge">Array[Circle]</code> and inserting a <code class="highlighter-rouge">Square</code> into that isn’t allowed.</p>
+
+<h2 id="read-only-and-covariance">Read-only and covariance</h2>
+<p>In general, a type can be made safely covariant if it is read-only. If we know how to read a specific type, we know
+how to read a more general type by throwing away any extra information. <code class="highlighter-rouge">List</code> is safe to to make
+covariant because it is immutable and we can only ever read information off of it. With <code class="highlighter-rouge">Array</code>, we
+cannot make it covariant because we are able to write to it.</p>
+
+<h2 id="functor">Functor</h2>
+<p>As we’ve just seen, covariance states that when <code class="highlighter-rouge">A</code> subtypes <code class="highlighter-rouge">B</code>, then <code class="highlighter-rouge">F[A]</code> subtypes <code class="highlighter-rouge">F[B]</code>. Put differently,
+if <code class="highlighter-rouge">A</code> can be turned into a <code class="highlighter-rouge">B</code>, then <code class="highlighter-rouge">F[A]</code> can be turned into an <code class="highlighter-rouge">F[B]</code>. We can encode this behavior
+literally in the notion of a <code class="highlighter-rouge">Functor</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is often encoded slightly differently by changing the order of the arguments:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can implement <code class="highlighter-rouge">Functor</code> for <code class="highlighter-rouge">List</code> and <code class="highlighter-rouge">Read</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">listFunctor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">List</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">List</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">fa</span> <span class="k">match</span> <span class="o">{</span>
+      <span class="k">case</span> <span class="nc">Nil</span> <span class="k">=&gt;</span> <span class="nc">Nil</span>
+      <span class="k">case</span> <span class="n">a</span> <span class="o">::</span> <span class="n">as</span> <span class="k">=&gt;</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">::</span> <span class="n">map</span><span class="o">(</span><span class="n">as</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">readFunctor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">Read</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">Read</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Read</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Read</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+      <span class="k">new</span> <span class="nc">Read</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+          <span class="n">fa</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+            <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="nc">None</span>
+            <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">))</span>
+          <span class="o">}</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>With that we can do useful things like</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">circles</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="nc">Circle</span><span class="o">(..),</span> <span class="nc">Circle</span><span class="o">(..))</span>
+<span class="k">val</span> <span class="n">shapes</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="n">listFunctor</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">circles</span><span class="o">)(</span><span class="n">circle</span> <span class="k">=&gt;</span> <span class="n">circle</span><span class="k">:</span> <span class="kt">Shape</span><span class="o">)</span> <span class="c1">// upcast
+</span>
+<span class="k">val</span> <span class="n">parseCircle</span><span class="k">:</span> <span class="kt">Read</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="o">...</span>
+<span class="k">val</span> <span class="n">parseShape</span><span class="k">:</span> <span class="kt">Read</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="n">readFunctor</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">parseCircle</span><span class="o">)(</span><span class="n">circle</span> <span class="k">=&gt;</span> <span class="n">circle</span><span class="k">:</span> <span class="kt">Shape</span><span class="o">)</span> <span class="c1">// upcast
+</span></code></pre></div></div>
+
+<p>or more generally:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">upcast</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span> <span class="k">&lt;:</span> <span class="kt">A</span><span class="o">](</span><span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">functor</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fb</span><span class="o">)(</span><span class="n">b</span> <span class="k">=&gt;</span> <span class="n">b</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">upcast</code>’s behavior does exactly what covariance does – given some supertype <code class="highlighter-rouge">A</code> (<code class="highlighter-rouge">Shape</code>) and a subtype <code class="highlighter-rouge">B</code> (<code class="highlighter-rouge">Circle</code>),
+we can mechanically (and safely) turn an <code class="highlighter-rouge">F[B]</code> into an <code class="highlighter-rouge">F[A]</code>. Put differently, anywhere we expect an <code class="highlighter-rouge">F[A]</code> we can provide
+an <code class="highlighter-rouge">F[B]</code>, i.e. covariance. For this reason, <code class="highlighter-rouge">Functor</code> is sometimes referred to in full as covariant functor.</p>
+
+<h1 id="contravariance">Contravariance</h1>
+<p>Contravariance flips the direction of the relationship in covariance – an <code class="highlighter-rouge">F[Shape]</code> is considered a
+subtype of <code class="highlighter-rouge">F[Circle]</code>. This seems strange – when I was first learning about variance I couldn’t
+come up with a situation where this would make sense.</p>
+
+<p>If we have a <code class="highlighter-rouge">List[Shape]</code> we cannot safely treat it as a <code class="highlighter-rouge">List[Circle]</code> – doing so comes with all the usual
+warnings about downcasting. Similarly if we have a <code class="highlighter-rouge">Read[Shape]</code>, we cannot treat it as a <code class="highlighter-rouge">Read[Circle]</code> –
+we know how to parse a <code class="highlighter-rouge">Shape</code>, but we don’t know how to parse any additional information <code class="highlighter-rouge">Circle</code> may need.</p>
+
+<h2 id="show">Show</h2>
+<p>It appears fundamentally read-only types cannot be treated as contravariant. However, given that contravariance
+is covariance with the direction reversed, can we also reverse the idea of a read-only type? Instead of reading
+a value <em>from</em> a <code class="highlighter-rouge">String</code>, we can write a value <em>to</em> a <code class="highlighter-rouge">String</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Show</span><span class="o">[</span><span class="kt">-A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">show</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">Show</code> is the other side of <code class="highlighter-rouge">Read</code> – instead of going from a <code class="highlighter-rouge">String</code> to an <code class="highlighter-rouge">A</code>, we go from an <code class="highlighter-rouge">A</code> into
+a <code class="highlighter-rouge">String</code>. This reversal allows us to define contravariant behavior – if we are asked to provide a way
+to show a <code class="highlighter-rouge">Circle</code> (<code class="highlighter-rouge">Show[Circle]</code>), we can give instead a way to show just a <code class="highlighter-rouge">Shape</code>. This is a valid
+substitution because we can show a <code class="highlighter-rouge">Circle</code> by throwing away <code class="highlighter-rouge">Circle</code>-specific information and showing just
+the <code class="highlighter-rouge">Shape</code> bits. This means that <code class="highlighter-rouge">Show[Shape]</code> is a subtype of <code class="highlighter-rouge">Show[Circle]</code>, despite <code class="highlighter-rouge">Circle</code> being a
+subtype of <code class="highlighter-rouge">Shape</code>.</p>
+
+<p>In general, we can show (or write) a subtype if we know how to show a supertype by tossing away subtype-specific
+information (an upcast) and showing the remainder. Again, this means <code class="highlighter-rouge">Show[Supertype]</code> is substitutable, or a
+subtype of, <code class="highlighter-rouge">Show[Subtype]</code>.</p>
+
+<p>For similar reasons that read-only types can be made covariant, write-only types can be made contravariant.</p>
+
+<h2 id="array-again">Array, again</h2>
+<p><code class="highlighter-rouge">Array</code>s cannot be made contravariant either. If they were, we could do unsafe reads:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">shapes</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">.</span><span class="n">fill</span><span class="o">(</span><span class="mi">10</span><span class="o">)(</span><span class="nc">Shape</span><span class="o">(..),</span> <span class="nc">Shape</span><span class="o">(..))</span>
+<span class="k">val</span> <span class="n">circles</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="n">shapes</span> <span class="c1">// Works only if Array is contravariant
+</span><span class="k">val</span> <span class="n">circle</span><span class="k">:</span> <span class="kt">Circle</span> <span class="o">=</span> <span class="n">circles</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">circle</code>, having been read from an <code class="highlighter-rouge">Array[Circle]</code> has type <code class="highlighter-rouge">Circle</code>. To the compiler this would be fine, but
+at runtime, the underlying <code class="highlighter-rouge">Array[Shape]</code> may give us a <code class="highlighter-rouge">Shape</code> that is not a <code class="highlighter-rouge">Circle</code> and crash the program.</p>
+
+<h2 id="contravariant">Contravariant</h2>
+<p>Our <code class="highlighter-rouge">Functor</code> interface made explicit the behavior of covariance - we can define a similar interface that
+captures contravariant behavior. If <code class="highlighter-rouge">B</code> can be used where <code class="highlighter-rouge">A</code> is expected, then <code class="highlighter-rouge">F[A]</code> can be used where an
+<code class="highlighter-rouge">F[B]</code> is expected. To encode this explicitly:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Contravariant</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="c1">// Alternative encoding:
+</span>  <span class="c1">// def contramap[A, B](f: B =&gt; A): F[A] =&gt; F[B]
+</span>
+  <span class="c1">// More typical encoding
+</span>  <span class="k">def</span> <span class="n">contramap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can implement an instance for <code class="highlighter-rouge">Show</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">showContravariant</span><span class="k">:</span> <span class="kt">Contravariant</span><span class="o">[</span><span class="kt">Show</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Contravariant</span><span class="o">[</span><span class="kt">Show</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">contramap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Show</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Show</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+      <span class="k">new</span> <span class="nc">Show</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">show</span><span class="o">(</span><span class="n">b</span><span class="k">:</span> <span class="kt">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+          <span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="n">f</span><span class="o">(</span><span class="n">b</span><span class="o">)</span>
+          <span class="n">fa</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here we are saying if we can show an <code class="highlighter-rouge">A</code>, we can show a <code class="highlighter-rouge">B</code> by turning a <code class="highlighter-rouge">B</code> into an <code class="highlighter-rouge">A</code> before showing it.
+Upcasting is a specific case of this, when <code class="highlighter-rouge">B</code> is a subtype of <code class="highlighter-rouge">A</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">contraUpcast</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">](</span><span class="n">contra</span><span class="k">:</span> <span class="kt">Contravariant</span><span class="o">[</span><span class="kt">F</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">contra</span><span class="o">.</span><span class="n">contramap</span><span class="o">(</span><span class="n">fb</span><span class="o">)((</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">a</span><span class="k">:</span> <span class="kt">B</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Going back to <code class="highlighter-rouge">Shape</code>s and <code class="highlighter-rouge">Circle</code>s, we can show a <code class="highlighter-rouge">Circle</code> by upcasting it into a <code class="highlighter-rouge">Shape</code> and showing that.</p>
+
+<h1 id="function-variance">Function variance</h1>
+<p>We observed that read-only types are covariant and write-only types are contravariant. This can be
+seen in the context of functions and what function types are subtypes of others.</p>
+
+<h2 id="parameters">Parameters</h2>
+<p>An example function:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Right now we only care about the input
+</span><span class="k">def</span> <span class="n">squiggle</span><span class="o">(</span><span class="n">circle</span><span class="k">:</span> <span class="kt">Circle</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">???</span>
+
+<span class="c1">// or
+</span>
+<span class="k">val</span> <span class="n">squiggle</span><span class="k">:</span> <span class="kt">Circle</span> <span class="o">=&gt;</span> <span class="nc">Unit</span> <span class="k">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>What type is a valid subtype of <code class="highlighter-rouge">Circle =&gt; Unit</code>? An important note is we’re not
+looking for what subtypes we can <em>pass in</em> to the function, we are looking for a value with a type
+that satisfies the entirety of the function type <code class="highlighter-rouge">Circle =&gt; Unit</code>.</p>
+
+<p>A first guess may involve some subtype of <code class="highlighter-rouge">Circle</code> like <code class="highlighter-rouge">Dot</code> (a circle with a radius of 0), such
+as <code class="highlighter-rouge">Dot =&gt; Unit</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">squiggle</span><span class="k">:</span> <span class="kt">Circle</span> <span class="o">=&gt;</span> <span class="nc">Unit</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">d</span><span class="k">:</span> <span class="kt">Dot</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">someDotSpecificMethod</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>This doesn’t work – we are asserting with the moral equivalent of a downcast that any
+<code class="highlighter-rouge">Circle</code> input to the function is a <code class="highlighter-rouge">Dot</code>, which is not safe to assume.</p>
+
+<p>What if we used a supertype of <code class="highlighter-rouge">Circle</code>?</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">squiggle</span><span class="k">:</span> <span class="kt">Circle</span> <span class="o">=&gt;</span> <span class="nc">Unit</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">Shape</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">shapeshift</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>This is valid – from the outside looking in we have a function that takes a <code class="highlighter-rouge">Circle</code> and
+returns <code class="highlighter-rouge">Unit</code>. Internally, we can take any <code class="highlighter-rouge">Circle</code>, upcast it into a <code class="highlighter-rouge">Shape</code>, and go from there.
+Showing things a bit differently reveals better the relationship:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">Input</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">A</span> <span class="k">=&gt;</span> <span class="nc">Unit</span>
+<span class="k">val</span> <span class="n">inputSubtype</span><span class="k">:</span> <span class="kt">Input</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">Shape</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">shapeshift</span><span class="o">()</span>
+<span class="k">val</span> <span class="n">input</span><span class="k">:</span> <span class="kt">Input</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="n">inputSubtype</span>
+</code></pre></div></div>
+
+<p>We have <code class="highlighter-rouge">Input[Shape] &lt;: Input[Circle]</code>, with <code class="highlighter-rouge">Circle &lt;: Shape</code>, so function parameters are contravariant.</p>
+
+<p>The type checker enforces this when we try to use covariant type parameters in contravariant positions.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">trait</span> <span class="nc">Foo</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">foo</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">42</span> <span class="o">}</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">covariant</span> <span class="k">type</span> <span class="kt">A</span> <span class="kt">occurs</span> <span class="kt">in</span> <span class="kt">contravariant</span> <span class="kt">position</span> <span class="kt">in</span> <span class="k">type</span> <span class="kt">A</span> <span class="kt">of</span> <span class="kt">value</span> <span class="kt">a</span>
+       <span class="k">trait</span> <span class="nc">Foo</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">foo</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">42</span> <span class="o">}</span>
+                               <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Since type parameters are contravariant, a type in that position cannot also be covariant. To solve this
+we “reverse” the constraint imposed by the covariant annotation by parameterizing with a supertype <code class="highlighter-rouge">B</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">trait</span> <span class="nc">Foo</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">42</span> <span class="o">}</span>
+<span class="n">defined</span> <span class="k">trait</span> <span class="nc">Foo</span>
+</code></pre></div></div>
+
+<h2 id="return">Return</h2>
+<p>Let’s do the same exercise with function return types.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">squaggle</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=&gt;</span> <span class="nc">Shape</span> <span class="k">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>Since using the supertype seemed to work with parameters, let’s pick a supertype here, <code class="highlighter-rouge">Object</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">squaggle</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=&gt;</span> <span class="nc">Shape</span> <span class="k">=</span>
+  <span class="o">(</span><span class="k">_:</span> <span class="kt">Unit</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">somethingThatReturnsObject</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>For similar issues with using a subtype for the input parameter, we cannot use
+a supertype for the output. The function type states the return type is <code class="highlighter-rouge">Shape</code>, but we’re
+returning an <code class="highlighter-rouge">Object</code> which may or may not be a valid <code class="highlighter-rouge">Shape</code>. As far as the type checker is concerned,
+this is invalid and the checker rejects the program.</p>
+
+<p>Trying instead with a subtype:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">squaggle</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=&gt;</span> <span class="nc">Shape</span> <span class="k">=</span>
+  <span class="o">(</span><span class="k">_:</span> <span class="kt">Unit</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Circle</span><span class="o">(..)</span>
+</code></pre></div></div>
+
+<p>This makes sense – the function type says it returns a <code class="highlighter-rouge">Shape</code> and inside we return a <code class="highlighter-rouge">Circle</code> which is
+a perfectly valid <code class="highlighter-rouge">Shape</code>.</p>
+
+<p>As before, rephrasing the type signatures leads to some insights.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">Output</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Unit</span> <span class="k">=&gt;</span> <span class="n">A</span>
+<span class="k">val</span> <span class="n">outputSubtype</span><span class="k">:</span> <span class="kt">Output</span><span class="o">[</span><span class="kt">Circle</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="k">_:</span> <span class="kt">Unit</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Circle</span><span class="o">(..)</span>
+<span class="k">val</span> <span class="n">output</span><span class="k">:</span> <span class="kt">Output</span><span class="o">[</span><span class="kt">Shape</span><span class="o">]</span> <span class="k">=</span> <span class="n">outputSubtype</span>
+</code></pre></div></div>
+
+<p>That is <code class="highlighter-rouge">Output[Circle] &lt;: Output[Shape]</code> with <code class="highlighter-rouge">Circle &lt;: Shape</code> – function return types are covariant.</p>
+
+<p>Again the type checker will enforce this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">trait</span> <span class="nc">Bar</span><span class="o">[</span><span class="kt">-A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">bar</span><span class="o">()</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">???</span> <span class="o">}</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="kt">contravariant</span> <span class="k">type</span> <span class="kt">A</span> <span class="kt">occurs</span> <span class="kt">in</span> <span class="kt">covariant</span> <span class="kt">position</span> <span class="kt">in</span> <span class="k">type</span> <span class="o">()</span><span class="kt">A</span> <span class="kt">of</span> <span class="kt">method</span> <span class="kt">bar</span>
+       <span class="k">trait</span> <span class="nc">Bar</span><span class="o">[</span><span class="kt">-A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">bar</span><span class="o">()</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="o">???</span> <span class="o">}</span>
+                           <span class="o">^</span>
+</code></pre></div></div>
+
+<p>As before, we solve this by “reversing” the contraint imposed by the variance annotation.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">trait</span> <span class="nc">Bar</span><span class="o">[</span><span class="kt">-A</span><span class="o">]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">bar</span><span class="o">[</span><span class="kt">B</span> <span class="k">&lt;:</span> <span class="kt">A</span><span class="o">]()</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span> <span class="o">???</span> <span class="o">}</span>
+<span class="n">defined</span> <span class="k">trait</span> <span class="nc">Bar</span>
+</code></pre></div></div>
+
+<h2 id="all-together-now">All together now</h2>
+<p>Function inputs are contravariant and function outputs are covariant. Taking the previous examples together,
+a function type <code class="highlighter-rouge">Shape =&gt; Circle</code> can be put in a place expecting a function type <code class="highlighter-rouge">Circle =&gt; Shape</code>.</p>
+
+<p>We arrived at this conclusion by observing the behavior of subtype variance and the corresponding functors. Taken
+in the context of functional programming where the only primitive is a function, we can draw a conclusion in
+the other direction. Where function inputs are contravariant, types in positions where computations are
+done (e.g. input or read-only positions) are also contravariant (similarly for covariance).</p>
+
+<h1 id="invariance">Invariance</h1>
+<p>Unannotated type parameters are considered invariant – the only relationship that holds is if a type <code class="highlighter-rouge">A</code>
+is equal to a type <code class="highlighter-rouge">B</code>, then <code class="highlighter-rouge">F[A]</code> is equal to <code class="highlighter-rouge">F[B]</code>. Otherwise different instantiations of a
+type constructor have no relationship with one another. Given invariant
+<code class="highlighter-rouge">F[_]</code>, an <code class="highlighter-rouge">F[Circle]</code> is not a subtype of <code class="highlighter-rouge">F[Shape]</code> – you need to explicitly provide the conversion.</p>
+
+<h2 id="array-once-more">Array once more</h2>
+<p><code class="highlighter-rouge">Array</code>s are invariant in Scala because they can be neither covariant nor contravariant. If we make it
+covariant, we can get unsafe writes. If we make it contravariant, we can get unsafe reads. Since
+read-only types can only be covariant and write-only types contravariant, our compromise is to make
+types that support both invariant.</p>
+
+<p>In order to treat an <code class="highlighter-rouge">Array</code> of one type as an <code class="highlighter-rouge">Array</code> of another, we need to have conversions
+in both directions. This must be provided manually as the type checker has no way of knowing what the
+conversion would be.</p>
+
+<h2 id="invariant">Invariant</h2>
+<p>Similar to (covariant) <code class="highlighter-rouge">Functor</code> and <code class="highlighter-rouge">Contravariant</code>, we can write <code class="highlighter-rouge">Invariant</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Invariant</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">imap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>For demonstration purposes we write our own <code class="highlighter-rouge">Array</code> type</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">private</span> <span class="k">var</span> <span class="n">repr</span> <span class="k">=</span> <span class="nc">ListBuffer</span><span class="o">.</span><span class="n">empty</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span>
+    <span class="n">repr</span><span class="o">(</span><span class="n">i</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">write</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+    <span class="n">repr</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="k">=</span> <span class="n">a</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>and define <code class="highlighter-rouge">Invariant[Array]</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">arrayInvariant</span><span class="k">:</span> <span class="kt">Invariant</span><span class="o">[</span><span class="kt">Array</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Invariant</span><span class="o">[</span><span class="kt">Array</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">imap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+      <span class="k">new</span> <span class="nc">Array</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+        <span class="c1">// Convert read A to B before returning – covariance
+</span>        <span class="k">override</span> <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=</span>
+          <span class="n">f</span><span class="o">(</span><span class="n">fa</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+
+        <span class="c1">// Convert B to A before writing – contravariance
+</span>        <span class="k">override</span> <span class="k">def</span> <span class="n">write</span><span class="o">(</span><span class="n">i</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+          <span class="n">fa</span><span class="o">.</span><span class="n">write</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">g</span><span class="o">(</span><span class="n">a</span><span class="o">))</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="serialization">Serialization</h2>
+<p>Another example of a read-write type that doesn’t involve <code class="highlighter-rouge">Array</code>s (or mutation) can be
+found by just combining the <code class="highlighter-rouge">Read</code> and <code class="highlighter-rouge">Show</code> interfaces:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Serializer</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">Read</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">with</span> <span class="nc">Show</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">show</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">Serializer</code> both reads (from a <code class="highlighter-rouge">String</code>) and writes (to a <code class="highlighter-rouge">String</code>). We can’t make it
+covariant because that would cause issues with <code class="highlighter-rouge">show</code>, and we can’t make it contravariant
+because that would cause issues with <code class="highlighter-rouge">read</code>. Therefore our only choice is to keep it
+invariant.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">serializerInvariant</span><span class="k">:</span> <span class="kt">Invariant</span><span class="o">[</span><span class="kt">Serializer</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Invariant</span><span class="o">[</span><span class="kt">Serializer</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">imap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Serializer</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">Serializer</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+      <span class="k">new</span> <span class="nc">Serializer</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+        <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">s</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">f</span><span class="o">)</span>
+        <span class="k">def</span> <span class="n">show</span><span class="o">(</span><span class="n">b</span><span class="k">:</span> <span class="kt">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">fa</span><span class="o">.</span><span class="n">show</span><span class="o">(</span><span class="n">g</span><span class="o">(</span><span class="n">b</span><span class="o">))</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="bringing-everything-together">Bringing everything together</h1>
+<p>We can see the <code class="highlighter-rouge">Invariant</code> interface is more general than both <code class="highlighter-rouge">Functor</code> and <code class="highlighter-rouge">Contravariant</code> –
+where <code class="highlighter-rouge">Invariant</code> requires functions going in both directions, <code class="highlighter-rouge">Functor</code> and <code class="highlighter-rouge">Contravariant</code> only
+require one. We can make <code class="highlighter-rouge">Functor</code> and <code class="highlighter-rouge">Contravariant</code> subtypes of <code class="highlighter-rouge">Invariant</code> by ignoring
+the direction we don’t care about.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Invariant</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">imap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+    <span class="n">map</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Contravariant</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Invariant</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">contramap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">imap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)(</span><span class="n">g</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span>
+    <span class="n">contramap</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">g</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Going back to treating <code class="highlighter-rouge">Array</code> and <code class="highlighter-rouge">Serializer</code> as a read/write store, if we make it read-only (like a read-only
+handle on a resource) we can safely treat it as if it were covariant. If we are asked to read
+<code class="highlighter-rouge">Shape</code>s and we know how to read <code class="highlighter-rouge">Circle</code>s, we can read a <code class="highlighter-rouge">Circle</code> and upcast it into a <code class="highlighter-rouge">Shape</code>
+before handing it over.</p>
+
+<p>Similarly if we make it write-only (like a write-only handle on a resource) we can safely treat
+it as contravariant. If we are asked to store <code class="highlighter-rouge">Circle</code>s and we know how to store <code class="highlighter-rouge">Shape</code>s,
+we can upcast each <code class="highlighter-rouge">Circle</code> into a <code class="highlighter-rouge">Shape</code> before storing it.</p>
+
+<p>Variance manifests in two levels: one at the type level where subtyping relationships are defined, and
+the other at the value level where it is encoded as an interface which certain types can conform to.</p>
+
+<h2 id="one-more-thing">One more thing</h2>
+<p>Thus far we have seen the three kinds of variances Scala supports:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mf">1.</span> <span class="n">invariance</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">→</span> <span class="n">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="mf">2.</span> <span class="n">covariance</span><span class="k">:</span> <span class="kt">A</span> <span class="k">&lt;:</span> <span class="kt">B</span> <span class="kt">→</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">&lt;:</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="mf">3.</span> <span class="n">contravariance</span><span class="k">:</span> <span class="kt">A</span> <span class="k">&gt;:</span> <span class="kt">B</span> <span class="kt">→</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">&lt;:</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>This gives us the following graph:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   invariance
+     ↑   ↑
+    /      \
+   -        +
+</code></pre></div></div>
+
+<p>Completing the diamond implies a fourth kind of variance, one that takes contravariance and
+covariance together. This is known as phantom variance or anyvariance, a variance with no constraints on the
+type parameters: <code class="highlighter-rouge">F[A] = F[B]</code> regardless of what <code class="highlighter-rouge">A</code> and <code class="highlighter-rouge">B</code> are. Unfortunately Scala’s type system is
+missing this kind of variance which leaves us just short of a nice diamond, but we can still encode it
+in an interface.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Phantom</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">pmap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Given any <code class="highlighter-rouge">F[A]</code>, we can turn that into an <code class="highlighter-rouge">F[B]</code>, for all choices of <code class="highlighter-rouge">A</code> and <code class="highlighter-rouge">B</code>. With this power we can
+implement covariant and contravariant functors.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Phantom</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">with</span> <span class="nc">Contravariant</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">pmap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">pmap</span><span class="o">(</span><span class="n">fa</span><span class="o">)</span>
+
+  <span class="k">def</span> <span class="n">contramap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">B</span> <span class="o">=&gt;</span> <span class="n">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">pmap</span><span class="o">(</span><span class="n">fa</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This completes our diamond of variance.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   invariance
+     ↑   ↑
+    /      \
+   -        +
+   ↑        ↑
+    \      /
+    phantom
+</code></pre></div></div>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/adelbertchang.jpeg" />
+      
+      <p>by Adelbert Chang
+    
+    on Feb 04, 2016</p>
+
+    
+  <a href="https://twitter.com/adelbertchang" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @adelbertchang</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/adelbertc" aria-label="Follow @adelbertc on GitHub">Follow @adelbertc</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

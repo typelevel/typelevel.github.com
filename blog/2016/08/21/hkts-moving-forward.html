@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Higher-kinded types: the difference between giving up, and moving forward</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Higher-kinded types: the difference between giving up, and moving forward</h2>
+
+  <p>As its opening sentence reminds the reader—a point often missed by
+many reviewers—the book
+<a href="https://www.manning.com/books/functional-programming-in-scala"><em>Functional Programming in Scala</em></a>
+is not a book about Scala. This [wise] choice occasionally manifests
+in peculiar ways.</p>
+
+<p>For example, you can go quite far into the book implementing its
+exercises in languages with simpler type systems. Chapters 1–8 and 10
+port quite readily to
+<a href="https://github.com/sbordet/fpinscala-jdk8">Java [8]</a> and C#. So
+<em>Functional Programming in Scala</em> can be a very fine resource for
+learning some typed functional programming, even if such languages are
+all you have to work with. Within these chapters, you can remain
+blissfully unaware of the limitations imposed on you by these
+languages’ type systems.</p>
+
+<p>However, there is a point of inflection in the book at chapter 11. You
+can pass through with a language such as <a href="https://ocaml.org/">OCaml</a>,
+Scala, Haskell, <a href="http://www.purescript.org/">PureScript</a>, or one of a
+few others. However, users of Java, C#, F#,
+<a href="http://elm-lang.org/">Elm</a>, and many others may proceed no further,
+and must turn back here.</p>
+
+<p><img src="/img/media/hkt-inflection.png" alt="Various languages' chapter 11 support" /></p>
+
+<p>Here is where abstracting over type constructors, or “higher-kinded
+types”, comes into play. At this point in the book, you can give up,
+or proceed with a sufficiently powerful language. Let’s see how this
+happens.</p>
+
+<h2 id="functional-combinators">Functional combinators</h2>
+
+<p>The bread and butter of everyday functional programming, the
+“patterns” if you like, is the implementation of standard functional
+combinators for your datatypes, and more importantly the comfortable,
+confident use of these combinators in your program.</p>
+
+<p>For example, confidence with <code class="highlighter-rouge">bind</code>, also known as <code class="highlighter-rouge">&gt;&gt;=</code> or <code class="highlighter-rouge">flatMap</code>,
+is very important. The best way to acquire this comfort is to
+reimplement it a bunch of times, so <em>Functional Programming in Scala</em>
+has you do just that.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">List</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// in List[A]
+</span><span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="c1">// in Option[A]
+</span><span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">B</span><span class="o">]</span> <span class="c1">// in Either[E, A]
+</span><span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="nc">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">]</span> <span class="c1">// in State[S, A]
+</span></code></pre></div></div>
+
+<h2 id="all-flatmaps-are-the-same">All <code class="highlighter-rouge">flatMap</code>s are the same</h2>
+
+<p>The similarity between these functions’ types is the most obvious
+surfacing of their ‘sameness’. (Unless you wish to count their names,
+which I do not.) That sameness is congruent: when you write functions
+using <code class="highlighter-rouge">flatMap</code>, in any of the varieties above, these functions
+inherit a sort of sameness from the underlying <code class="highlighter-rouge">flatMap</code> combinator.</p>
+
+<p>For example, supposing we have <code class="highlighter-rouge">map</code> and <code class="highlighter-rouge">flatMap</code> for a type, we can
+‘tuple’ the values within.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">tuple</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">as</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">bs</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">as</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">bs</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+    
+<span class="k">def</span> <span class="n">tuple</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">as</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">bs</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">as</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">bs</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+    
+<span class="k">def</span> <span class="n">tuple</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">as</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">A</span><span class="o">],</span> <span class="n">bs</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="o">(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">as</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">bs</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+    
+<span class="k">def</span> <span class="n">tuple</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">as</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">],</span> <span class="n">bs</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="o">(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">as</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">bs</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+</code></pre></div></div>
+
+<p><em>Functional Programming in Scala</em> contains several such functions,
+such as <code class="highlighter-rouge">sequence</code>. These are each implemented for several types, each
+time with potentially the same code, if you remember to look back and
+try copying and pasting a previous solution.</p>
+
+<h2 id="to-parameterize-or-not-to-parameterize">To parameterize, or not to parameterize</h2>
+
+<p>In programming, when we encounter such great sameness—not merely
+similar code, but <em>identical</em> code—we would like the opportunity to
+<em>parameterize</em>: extract the parts that are different to arguments, and
+recycle the common code for all situations.</p>
+
+<p>In <code class="highlighter-rouge">tuple</code>’s case, what is different are</p>
+
+<ol>
+  <li>the <code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">map</code> implementations, and</li>
+  <li>the <strong>type constructor</strong>: <code class="highlighter-rouge">List</code>, <code class="highlighter-rouge">Option</code>, <code class="highlighter-rouge">State[S, ...]</code>, what
+have you.</li>
+</ol>
+
+<p>We have a way to pass in implementations; that’s just higher-order
+functions, or ‘functions as arguments’. For the type constructor, we
+need ‘type-level functions as arguments’.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">tuplef</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>We’ve handled ‘type constructor as argument’, and will add the
+<code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">map</code> implementations in a moment. First, let’s learn
+how to read this.</p>
+
+<h2 id="reading-a-higher-kinded-type">Reading a higher-kinded type</h2>
+
+<p>Confronted with a type like this, it’s helpful to sit back and muse on
+the nature of a function for a moment.</p>
+
+<p>Functions are given meaning by substitution of their arguments.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">double</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">double</code> remains “an abstraction” until we <em>substitute for x</em>; in
+other words, pass an argument.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>double(2)    double(5)
+2 + 2        5 + 5
+4            10
+</code></pre></div></div>
+
+<p>But this isn’t enough to tell us <em>what <code class="highlighter-rouge">double</code> is</em>; all we see from
+these tests is that <code class="highlighter-rouge">double</code> sometimes returns 4, sometimes 10,
+sometimes maybe other things. We must imagine what <code class="highlighter-rouge">double</code> does in
+common <em>for all possible arguments</em>.</p>
+
+<p>Likewise, we give meaning to type-parameterized definitions like
+<code class="highlighter-rouge">tuplef</code> by substitution. The parameter declaration <code class="highlighter-rouge">F[_]</code> means that
+<code class="highlighter-rouge">F</code> may not be a simple type, like <code class="highlighter-rouge">Int</code> or <code class="highlighter-rouge">String</code>, but instead a
+one-argument type constructor, like <code class="highlighter-rouge">List</code> or <code class="highlighter-rouge">Option</code>. Performing
+these substitutions for <code class="highlighter-rouge">tuplef</code>, we get</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// original, as above
+</span><span class="k">def</span> <span class="n">tuplef</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+
+<span class="c1">// F = List
+</span><span class="k">def</span> <span class="n">tupleList</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+
+<span class="c1">// F = Option
+</span><span class="k">def</span> <span class="n">tupleOpt</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+</code></pre></div></div>
+
+<p>More complicated and powerful cases are available with other kinds of
+type constructors, such as by partially applying. That’s how we can
+fit <code class="highlighter-rouge">State</code>, <code class="highlighter-rouge">Either</code>, and other such types with two or more
+parameters into the <code class="highlighter-rouge">F</code> parameter.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// F = Either[E, ...]
+</span><span class="k">def</span> <span class="n">tupleEither</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="kt">B</span><span class="o">])</span>
+    <span class="k">:</span> <span class="kt">Either</span><span class="o">[</span><span class="kt">E</span>, <span class="o">(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+
+<span class="c1">// F = State[S, ...]
+</span><span class="k">def</span> <span class="n">tupleState</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="kt">B</span><span class="o">])</span>
+    <span class="k">:</span> <span class="kt">State</span><span class="o">[</span><span class="kt">S</span>, <span class="o">(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span>
+</code></pre></div></div>
+
+<p>Just as with <code class="highlighter-rouge">double</code>, though this isn’t the whole story of <code class="highlighter-rouge">tuplef</code>,
+its true meaning arises from the common way in which it treats <em>all
+possible</em> <code class="highlighter-rouge">F</code> arguments. That is where higher kinds start to get
+interesting.</p>
+
+<h2 id="implementing-functions-with-higher-kinded-type">Implementing functions with higher-kinded type</h2>
+
+<p>The type of <code class="highlighter-rouge">tuplef</code> expresses precisely our intent—the idea of
+“multiplying” two <code class="highlighter-rouge">F</code>s, tupling the values within—but cannot be
+implemented as written. That’s because we don’t have functions that
+operate on <code class="highlighter-rouge">F</code>-constructed values, like <code class="highlighter-rouge">fa: F[A]</code> and <code class="highlighter-rouge">fb: F[B]</code>. As
+with any value of an ordinary type parameter, these are opaque.</p>
+
+<p>In Scala, there are a few ways to pass in the necessary functions. One
+option is to implement a <code class="highlighter-rouge">trait</code> or <code class="highlighter-rouge">abstract class</code> that itself uses
+a higher-kinded type parameter or abstract type constructor. Here are
+a couple possibilities.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Bindable</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">+A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">BindableTM</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">F</span><span class="o">[</span><span class="kt">X</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Note that we must use higher-kinded trait type signatures to support
+our higher-kinded method types; otherwise, we can’t write the return
+types for <code class="highlighter-rouge">map</code> and <code class="highlighter-rouge">flatMap</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">BindableBad</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span> <span class="kt">???</span>
+            <span class="c1">// where is the B supposed to go?
+</span></code></pre></div></div>
+
+<p>Now we make every type we’d like to support either inherit from or
+implicitly convert to <code class="highlighter-rouge">Bindable</code>, such as <code class="highlighter-rouge">List[+A] extends
+Bindable[List, A]</code>, and write <code class="highlighter-rouge">tuplef</code> as follows.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">tupleBindable</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">Bindable</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">Bindable</span><span class="o">[</span><span class="kt">F</span>, <span class="kt">B</span><span class="o">])</span>
+    <span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">fa</span><span class="o">.</span><span class="n">flatMap</span><span class="o">{</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">fb</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+</code></pre></div></div>
+
+<h2 id="escaping-two-bad-choices">Escaping two bad choices</h2>
+
+<p>There are two major problems with <code class="highlighter-rouge">Bindable</code>’s representation of <code class="highlighter-rouge">map</code>
+and <code class="highlighter-rouge">flatMap</code>, ensuring its wild unpopularity in the Scala functional
+community, though it still appears in some places, such as
+<a href="https://github.com/ermine-language/ermine-parser/blob/cc77bf6e150a16129744d18d69022f7b5902814f/src/main/scala/scalaparsers/Monadic.scala">in Ermine</a>.</p>
+
+<ol>
+  <li>The choices of inheritance and implicit conversion are both bad in
+different ways. Implicit conversion propagates very poorly—it
+doesn’t compose, after all, and fails as soon as we do something
+innocent like put the value-to-be-converted into a tuple.
+Inheritance leaves its own mess: modifying a type to add new,
+nonessential operations, and the weird way that <code class="highlighter-rouge">F</code> is declared in
+the method type parameters above.</li>
+  <li>The knowledge required to work out the new type signature above is
+excessively magical. There are rules about when implicit conversion
+happens, how much duplication of the reference to <code class="highlighter-rouge">Bindable</code> is
+required to have the <code class="highlighter-rouge">F</code> parameter infer correctly, and even how
+many calls to <code class="highlighter-rouge">Bindable</code> methods are performed. For example, we’d
+have to declare the <code class="highlighter-rouge">F</code> parameter as <code class="highlighter-rouge">F[X] &lt;: Bindable[F, X]</code> if we
+did one more trailing <code class="highlighter-rouge">map</code> call. But then we wouldn’t support
+implicit conversion cases anymore, so we’d have to do something
+else, too.</li>
+</ol>
+
+<p>As a result of all this magic, generic functions over higher kinds
+with OO-style operations tend to be ugly; note how much <code class="highlighter-rouge">tuplef</code>
+looked like the <code class="highlighter-rouge">List</code>-specific type, and how little <code class="highlighter-rouge">tupleBindable</code>
+looks like either of them.</p>
+
+<p>But we still really, really want to be able to write this kind of
+generic function. Luckily, we have a Wadler-made alternative.</p>
+
+<h2 id="typeclasses-constrain-higher-kinded-types-elegantly">Typeclasses constrain higher-kinded types elegantly</h2>
+
+<p>To constrain <code class="highlighter-rouge">F</code> to types with the <code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">map</code> we need, we use
+typeclasses instead. For <code class="highlighter-rouge">tuplef</code>, that means we leave <code class="highlighter-rouge">F</code> abstract,
+and leave the types of <code class="highlighter-rouge">fa</code> and <code class="highlighter-rouge">fb</code> as well as the return type
+unchanged, but add an implicit argument, the “typeclass instance”,
+which is a first-class representation of the <code class="highlighter-rouge">map</code> and <code class="highlighter-rouge">flatMap</code>
+operations.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Bind</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="c1">// note the new ↓ fa argument
+</span>  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">flatMap</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then we define instances for the types we’d like to have this on:
+<code class="highlighter-rouge">Bind[List]</code>, <code class="highlighter-rouge">Bind[Option]</code>, and so on, as seen in chapter 11 of
+<em>Functional Programming in Scala</em>.</p>
+
+<p>Now we just add the argument to <code class="highlighter-rouge">tuplef</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">tupleTC</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span>
+           <span class="o">(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Bind</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span><span class="k">:</span> <span class="kt">F</span><span class="o">[(</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">)]</span> <span class="k">=</span>
+  <span class="n">F</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">fa</span><span class="o">){</span><span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fb</span><span class="o">)((</span><span class="n">a</span><span class="o">,</span> <span class="k">_</span><span class="o">))}</span>
+</code></pre></div></div>
+
+<p>We typically mirror the typeclass operations back to methods with an
+implicit conversion—unlike with <code class="highlighter-rouge">Bindable</code>, this has no effect on
+exposed APIs, so is benign. Then, we can remove the <code class="highlighter-rouge">implicit F</code>
+argument, replacing it by writing <code class="highlighter-rouge">F[_]: Bind</code> in the type argument
+list, and write the method body as it has been written before, with
+<code class="highlighter-rouge">flatMap</code> and <code class="highlighter-rouge">map</code> methods.</p>
+
+<p>There’s another major reason to prefer typeclasses, but let’s get back
+to <em>Functional Programming in Scala</em>.</p>
+
+<h2 id="getting-stuck">Getting stuck</h2>
+
+<p>I’ve just described many of the practical mechanics of writing useful
+functions that abstract over type constructors, but <em>all this is moot
+if you cannot abstract over type constructors</em>. The fact that Java
+provides no such capability is not an indicator that they have
+sufficient abstractions to replace this missing feature: it is simply
+an abstraction that they do not provide you.</p>
+
+<p><strong>Oh, you would like to factor this common code? Sorry, you are
+stuck. You will have to switch languages if you wish to proceed.</strong></p>
+
+<h2 id="dont-get-stuck-on-the-second-order">Don’t get stuck on the second order</h2>
+
+<p><code class="highlighter-rouge">map</code> functions are obvious candidates for essential parts of a usable
+library for functional programming. This is the first-order
+abstraction—it eliminates the concrete loops, recursive functions,
+or <code class="highlighter-rouge">State</code> lambda specifications, you would need to write otherwise.</p>
+
+<p>When we note a commonality in patterns and define an abstraction over
+that commonality, we move “one order up”. When we stopped simply
+defining functions, and started taking functions as arguments, we
+moved from the first order to the second order.</p>
+
+<p>It is not enough for a modern general-purpose functional library in
+Scala to simply have a bunch of <code class="highlighter-rouge">map</code> functions. It must also provide
+the second-order feature: the ability to <em>abstract over</em> <code class="highlighter-rouge">map</code>
+functions, as well as many, many other functions numerous type
+constructors have in common. Let’s not give up; let’s move forward.</p>
+
+<p><em>This article was tested with Scala 2.11.7 and
+<a href="https://github.com/fpinscala/fpinscala">fpinscala</a> 5b0115a answers,
+with the addition of the method variants of <code class="highlighter-rouge">List#map</code> and
+<code class="highlighter-rouge">List#flatMap</code>.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Aug 21, 2016</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

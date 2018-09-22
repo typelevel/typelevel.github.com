@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Four ways to escape a cake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Four ways to escape a cake</h2>
+
+  <p>The mixin style of importing in which classes and traits are defined
+within traits, as seen in <code class="highlighter-rouge">scala.reflect.Universe</code>, ScalaTest, and
+other Scala styles, seems to be infectious. By that, I mean once you
+define something in a trait to be mixed in, to produce another
+reusable module that calls that thing, you must define <em>another</em>
+trait, and so must anyone using <em>your</em> module, and so on and so forth.
+You effectively become “trapped in the cake”.</p>
+
+<p>However, we can use type parameters that represent <strong>singleton types</strong>
+to write functions that are polymorphic over these “cakes”, without
+being defined as part of them or mixed in themselves. For example, you
+can use this to write functions that operate on elements of a
+reflection universe, without necessarily passing that universe around
+all over the place.</p>
+
+<p>Well, for the most part. Let’s see how far this goes.</p>
+
+<h2 id="our-little-universe">Our little universe</h2>
+
+<p>Let’s set aside the heavyweight real-world examples I mentioned above
+in favor of a small example. Then, we should be able to explore the
+possibilities in this simpler space.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">LittleUniverse</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">haystack</span><span class="k">:</span> <span class="kt">Haystack</span> <span class="o">=</span> <span class="nc">Haystack</span><span class="o">()</span>
+
+  <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Haystack</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">init</span><span class="k">:</span> <span class="kt">Needle</span> <span class="o">=</span> <span class="nc">Needle</span><span class="o">()</span>
+    <span class="k">def</span> <span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">Needle</span> <span class="o">=</span> <span class="n">n</span>
+  <span class="o">}</span>
+  
+  <span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">Needle</span><span class="o">()</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><em>For brevity, I’ve defined member <code class="highlighter-rouge">class</code>es, but this article equally
+applies if you are using abstract <code class="highlighter-rouge">type</code>s instead, as any Functional
+programmer of pure, virtuous heart ought to!</em></p>
+
+<p>Suppose we have a universe.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">lu</span><span class="k">:</span> <span class="kt">LittleUniverse</span> <span class="o">=</span> <span class="nc">LittleUniverse</span><span class="o">()</span>
+<span class="n">lu</span><span class="k">:</span> <span class="kt">LittleUniverse</span> <span class="o">=</span> <span class="nc">LittleUniverse</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>The thing that Scala does for us is not let <code class="highlighter-rouge">Haystack</code>s and <code class="highlighter-rouge">Needle</code> s
+from one universe be confused with those from another.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">anotherU</span> <span class="k">=</span> <span class="nc">LittleUniverse</span><span class="o">()</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">anotherU</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">anotherU.Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">lu.Needle</span>
+       <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">anotherU</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+                                          <span class="o">^</span>
+</code></pre></div></div>
+
+<p>The meaning of this error is “you can’t use one universe’s <code class="highlighter-rouge">Haystack</code>
+to <code class="highlighter-rouge">iter</code> a <code class="highlighter-rouge">Needle</code> from another universe”.</p>
+
+<p>This doesn’t look very important given the above code, but it’s a
+<em>real</em> boon to more complex scenarios. You can set up a lot of
+interdependent abstract invariants, verify them all, and have the
+whole set represented with the “index” formed by the singleton type,
+here <code class="highlighter-rouge">lu.type</code> or <code class="highlighter-rouge">anotherU.type</code>.</p>
+
+<h2 id="working-with-a-universe-on-hand">Working with a universe on hand</h2>
+
+<p>Refactoring in macro-writing style seems to be based upon passing the
+universe around everywhere. We can do that.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">twoInits</span><span class="o">(</span><span class="n">u</span><span class="k">:</span> <span class="kt">LittleUniverse</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">u.Needle</span><span class="o">,</span> <span class="kt">u.Needle</span><span class="o">)</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+  
+<span class="k">def</span> <span class="n">stepTwice</span><span class="o">(</span><span class="n">u</span><span class="k">:</span> <span class="kt">LittleUniverse</span><span class="o">)(</span><span class="n">n</span><span class="k">:</span> <span class="kt">u.Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">u.Needle</span> <span class="o">=</span>
+  <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>The most important feature we’re reaching for with these fancy
+dependent method types, and the one that we have to <em>keep</em> reaching
+for if we want to write sane functions outside the cake, is
+<strong>preserving the singleton type index</strong>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">twoInits</span><span class="o">(</span><span class="n">lu</span><span class="o">)</span>
+<span class="n">res3</span><span class="k">:</span> <span class="o">(</span><span class="kt">lu.Needle</span><span class="o">,</span> <span class="kt">lu.Needle</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="nc">Needle</span><span class="o">(),</span><span class="nc">Needle</span><span class="o">())</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">stepTwice</span><span class="o">(</span><span class="n">anotherU</span><span class="o">)(</span><span class="n">anotherU</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+<span class="n">res4</span><span class="k">:</span> <span class="kt">anotherU.Needle</span> <span class="o">=</span> <span class="nc">Needle</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>These values are ready for continued <code class="highlighter-rouge">iter</code>ing, or whatever else
+you’ve come up with, in the confines of their respective
+universes. That’s because they’ve “remembered” where they came from.</p>
+
+<p>By contrast, consider a simple replacement of the path-dependencies
+with a type projection.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">brokenTwoInits</span><span class="o">(</span><span class="n">u</span><span class="k">:</span> <span class="kt">LittleUniverse</span><span class="o">)</span>
+    <span class="k">:</span> <span class="o">(</span><span class="kt">LittleUniverse</span><span class="k">#</span><span class="kt">Needle</span><span class="o">,</span> <span class="kt">LittleUniverse</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">bti</span> <span class="k">=</span> <span class="n">brokenTwoInits</span><span class="o">(</span><span class="n">lu</span><span class="o">)</span>
+<span class="n">bti</span><span class="k">:</span> <span class="o">(</span><span class="kt">LittleUniverse</span><span class="k">#</span><span class="kt">Needle</span><span class="o">,</span> <span class="kt">LittleUniverse</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="nc">Needle</span><span class="o">(),</span><span class="nc">Needle</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>That seems to be okay, until it’s time to actually use the result.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">bti</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">LittleUniverse</span><span class="k">#</span><span class="kt">Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">lu.Needle</span>
+       <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">bti</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+                            <span class="o">^</span>
+</code></pre></div></div>
+
+<p>The return type of <code class="highlighter-rouge">brokenTwoInits</code> “forgot” the index, <code class="highlighter-rouge">lu.type</code>.</p>
+
+<h2 id="getting-two-needles-without-a-universe">Getting two needles without a universe</h2>
+
+<p>When we pass a <code class="highlighter-rouge">LittleUniverse</code> to the above functions, we’re also
+kind of passing in a constraint on the singleton type created by the
+argument variable. That’s how we know that the returned <code class="highlighter-rouge">u.Needle</code> is
+a perfectly acceptable <code class="highlighter-rouge">lu.Needle</code> in the caller scope, when we pass
+<code class="highlighter-rouge">lu</code> as the universe.</p>
+
+<p>However, as the contents of a universe become more complex, there are
+many more interactions that need not involve a universe at all, at
+least not directly.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">twoInitsFromAHaystack</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">,</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span> <span class="k">=</span>
+  <span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">init</span><span class="o">,</span> <span class="n">h</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+  
+<span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">tifah</span> <span class="k">=</span> <span class="n">twoInitsFromAHaystack</span><span class="o">[</span><span class="kt">lu.</span><span class="k">type</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">)</span>
+<span class="n">tifah</span><span class="k">:</span> <span class="o">(</span><span class="kt">lu.Needle</span><span class="o">,</span> <span class="kt">lu.Needle</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="nc">Needle</span><span class="o">(),</span><span class="nc">Needle</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>Since we didn’t pass in <code class="highlighter-rouge">lu</code>, how did it know that the returned
+<code class="highlighter-rouge">Needle</code>s were <code class="highlighter-rouge">lu.Needle</code>s?</p>
+
+<ol>
+  <li>The type of <code class="highlighter-rouge">lu.haystack</code> is <code class="highlighter-rouge">lu.Haystack</code>.</li>
+  <li>That type is shorthand for <code class="highlighter-rouge">lu.type#Haystack</code>.</li>
+  <li>We passed in <code class="highlighter-rouge">U = lu.type</code>, and our argument meets the resulting
+requirement for a <code class="highlighter-rouge">lu.type#Haystack</code> (after expanding <code class="highlighter-rouge">U</code>).</li>
+  <li>The type of the expression <code class="highlighter-rouge">h.init</code> is
+<code class="highlighter-rouge">u.Needle forSome {val u: U}</code>. We use an existential because the
+relevant variable (and its singleton type) is not in scope.</li>
+  <li>This type <em>widens</em> to <code class="highlighter-rouge">U#Needle</code>, satisfying the expected return
+type.</li>
+</ol>
+
+<p>This seems like a more complicated way of doing things, but it’s very
+freeing: by not being forced to <em>necessarily</em> pass the universe around
+everywhere, you’ve managed to escape the cake’s clutches much more
+thoroughly. You can also write syntax enrichments on various members
+of the universe that don’t need to talk about the universe’s value,
+just its singleton type.</p>
+
+<p>Unless, you know, the index appears in contravariant position.</p>
+
+<h2 id="syntactic-steptwice">Syntactic <code class="highlighter-rouge">stepTwice</code></h2>
+
+<p>One test of how well we’ve managed to escape the cake is to be able to
+write enrichments that deal with the universe. This is a little
+tricky, but quite doable if you have the universe’s value.</p>
+
+<p>With the advent of <code class="highlighter-rouge">implicit class</code>, this became a little easier to do
+wrongly, but it’s a good start.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">class</span> <span class="nc">NonWorkingStepTwice</span><span class="o">(</span><span class="k">val</span> <span class="n">u</span><span class="k">:</span> <span class="kt">LittleUniverse</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">stepTwiceOops</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">u.Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">u.Needle</span> <span class="o">=</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>That compiles okay, but seemingly can’t actually be used!</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">lu</span> <span class="n">stepTwiceOops</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">lu.Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.u.Needle</span> <span class="kt">where</span> <span class="kt">val</span> <span class="k">_</span><span class="err">1</span><span class="kt">:</span> <span class="kt">NonWorkingStepTwice</span>
+       <span class="n">lu</span> <span class="n">stepTwiceOops</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span>
+                                    <span class="o">^</span>
+</code></pre></div></div>
+
+<p>There’s a hint in that we had to write <code class="highlighter-rouge">val u</code>, not <code class="highlighter-rouge">u</code>, nor <code class="highlighter-rouge">private
+val u</code>, in order for the <code class="highlighter-rouge">implicit class</code> itself to compile. This
+signature tells us that there’s an <em>argument</em> of type
+<code class="highlighter-rouge">LittleUniverse</code>, and a <em>member</em> <code class="highlighter-rouge">u: LittleUniverse</code>. However, whereas
+with the function examples above, we [and the compiler] could trust
+that they’re one and the same, we have no such guarantee here. So we
+don’t know that an <code class="highlighter-rouge">lu.Needle</code> is a <code class="highlighter-rouge">u.Needle</code>. We didn’t get far
+enough, but we don’t know that a <code class="highlighter-rouge">u.Needle</code> is an <code class="highlighter-rouge">lu.Needle</code>, either.</p>
+
+<h2 id="relatable-variables">Relatable variables</h2>
+
+<p>Instead, we have to expand a little bit, and take advantage of a very
+interesting, if obscure, element of the type equivalence rules in the
+Scala language.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">WorkingStepTwice</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span><span class="k">val</span> <span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">stepTwice</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">u.Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">u.Needle</span> <span class="o">=</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">def</span> <span class="nc">WorkingStepTwice</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span>
+    <span class="k">:</span> <span class="kt">WorkingStepTwice</span><span class="o">[</span><span class="kt">u.</span><span class="k">type</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">WorkingStepTwice</span><span class="o">(</span><span class="n">u</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><em>Unfortunately, the ritual of expanding the <code class="highlighter-rouge">implicit class</code> shorthand
+is absolutely necessary; the <code class="highlighter-rouge">implicit class</code> won’t generate the
+dependent-method-typed implicit conversion we need.</em></p>
+
+<p>Now we can get the proof we need.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="n">lu</span> <span class="n">stepTwice</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span>
+<span class="n">res7</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.u.Needle</span> <span class="k">forSome</span> <span class="o">{</span> <span class="kt">val</span> <span class="k">_</span><span class="err">1</span><span class="kt">:</span> <span class="kt">WorkingStepTwice</span><span class="o">[</span><span class="kt">lu.</span><span class="k">type</span><span class="o">]</span> <span class="o">}</span> <span class="k">=</span> <span class="nc">Needle</span><span class="o">()</span>
+
+<span class="c1">// that's a little weird, but reduces to what we need
+</span><span class="n">scala</span><span class="o">&gt;</span> <span class="n">res7</span><span class="k">:</span> <span class="kt">lu.Needle</span>
+<span class="n">res8</span><span class="k">:</span> <span class="kt">lu.Needle</span> <span class="o">=</span> <span class="nc">Needle</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>How does this work?</p>
+
+<ol>
+  <li>Implicitly convert <code class="highlighter-rouge">lu</code>, giving us a <code class="highlighter-rouge">conv:
+WorkingStepTwice[lu.type]</code>.</li>
+  <li>This means that <code class="highlighter-rouge">conv.u: lu.type</code>, by expansion of <code class="highlighter-rouge">U</code>.</li>
+  <li>This in turn means that <code class="highlighter-rouge">conv.u.type &lt;: lu.type</code>.</li>
+</ol>
+
+<p>The next part is worth taking in two parts. It may be worth
+having
+<a href="http://www.scala-lang.org/files/archive/spec/2.12/03-types.html#conformance">§3.5.2 “Conformance”</a> of
+the language spec open for reference. First, let’s consider the return
+type (a covariant position), which is simpler.</p>
+
+<ol>
+  <li>The return type expands to <code class="highlighter-rouge">conv.u.type#Needle</code>.</li>
+  <li>The ninth conformance bullet point tells us that the left side of a
+<code class="highlighter-rouge">#</code> projection is covariant, so because <code class="highlighter-rouge">conv.u.type &lt;: lu.type</code>
+(see above), the return type <em>widens</em> to <code class="highlighter-rouge">lu.type#Needle</code>.</li>
+  <li>For this, <code class="highlighter-rouge">lu.Needle</code> is a shorthand.</li>
+</ol>
+
+<p>It was far longer until I realized how the argument type works. You’ll
+want to scroll up on the SLS a bit, to the “Equivalence” section. Keep
+in mind that we are trying to widen <code class="highlighter-rouge">lu.Needle</code> to <code class="highlighter-rouge">conv.u.Needle</code>,
+which is the reverse of what we did for the return type.</p>
+
+<ol>
+  <li>Our argument’s type expands to <code class="highlighter-rouge">lu.type#Needle</code>.</li>
+  <li>The second bullet point under “Equivalence” says that “If a path
+<em>p</em> has a singleton type <em>q</em><code class="highlighter-rouge">.type</code>, then <em>p</em><code class="highlighter-rouge">.type</code> ≡ <em>q</em><code class="highlighter-rouge">.type</code>.”
+From this, we can derive that <code class="highlighter-rouge">conv.u.type = lu.type</code>. This is a
+stronger conclusion than we reached above!</li>
+  <li>We substitute the left side of the <code class="highlighter-rouge">#</code> using the equivalence,
+giving us <code class="highlighter-rouge">conv.u.type#Needle</code>.</li>
+</ol>
+
+<p>I cannot characterize this feature of the type system as anything
+other than “really freaky” when you first encounter it. It seems like
+an odd corner case. Normally, when you write <code class="highlighter-rouge">val x: T</code>, then <code class="highlighter-rouge">x.type</code>
+is a <em>strict</em> subtype of <code class="highlighter-rouge">T</code>, and you can count on that, but this
+carves out an exception to that rule. It is sound, though, and an
+absolutely essential feature!</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">sameLu</span><span class="k">:</span> <span class="kt">lu.</span><span class="k">type</span> <span class="o">=</span> <span class="n">lu</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">sameLu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+<span class="n">res9</span><span class="k">:</span> <span class="kt">sameLu.Needle</span> <span class="o">=</span> <span class="nc">Needle</span><span class="o">()</span>
+</code></pre></div></div>
+
+<p>Without this rule, even though we have given it the most specific type
+possible, <code class="highlighter-rouge">sameLu</code> couldn’t be a <em>true</em> substitute for <code class="highlighter-rouge">lu</code> in all
+scenarios. That means that in order to make use of singleton type
+indices, we would be forever beholden to the <em>variable</em> we initially
+stored the value in. I think this would be <em>extremely inconvenient</em>,
+structurally, in almost all useful programs.</p>
+
+<p>With the rule in place, we can fully relate the <code class="highlighter-rouge">lu</code> and <code class="highlighter-rouge">conv.u</code>
+variables, to let us reorganize how we talk about universes and values
+indexed by their singleton types in many ways.</p>
+
+<h2 id="a-pointless-argument">A pointless argument</h2>
+
+<p>Let’s try to hide the universe. We don’t need it, after all. We can’t
+refer to <code class="highlighter-rouge">u</code> in the method signature anymore, so let’s try the same
+conversion we used with <code class="highlighter-rouge">twoInitsFromAHaystack</code>. We already have the
+<code class="highlighter-rouge">U</code> type parameter, after all.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CleanerStepTwice</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span><span class="k">private</span> <span class="k">val</span> <span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">stepTwiceLively</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=</span>
+    <span class="o">???</span>
+<span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">def</span> <span class="nc">CleanerStepTwice</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span>
+    <span class="k">:</span> <span class="kt">CleanerStepTwice</span><span class="o">[</span><span class="kt">u.</span><span class="k">type</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">CleanerStepTwice</span><span class="o">(</span><span class="n">u</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>This has the proper signature, and it’s cleaner, since we don’t expose
+the unused-at-runtime <code class="highlighter-rouge">u</code> variable anymore. We could refine a little
+further, and replace it with a <code class="highlighter-rouge">U#Haystack</code>, just as with
+<code class="highlighter-rouge">twoInitsFromAHaystack</code>.</p>
+
+<p>This gives us the same interface, with all the index preservation we
+need. Even better, it infers a nicer return type.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">def</span> <span class="n">trial</span> <span class="k">=</span> <span class="n">lu</span> <span class="n">stepTwiceLively</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span>
+<span class="n">trial</span><span class="k">:</span> <span class="kt">lu.Needle</span>
+</code></pre></div></div>
+
+<p>Now, let’s turn to implementation.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">OnceMoreStepTwice</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">stepTwiceFinally</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">18</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">OnceMoreStepTwice.this.u.Needle</span>
+           <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+                                           <span class="o">^</span>
+</code></pre></div></div>
+
+<p>This is the last part of the escape! If this worked, we could <em>fully
+erase</em> the <code class="highlighter-rouge">LittleUniverse</code> from most code, relying on the pure
+type-level index to prove enough of its existence! So it’s a little
+frustrating that it doesn’t quite work.</p>
+
+<p>Let’s break it down. First, the return type is fine.</p>
+
+<ol>
+  <li>Since <code class="highlighter-rouge">u: U</code>, <code class="highlighter-rouge">u.type &lt;: U</code>. (This is true, and useful, in the
+scope of <code class="highlighter-rouge">u</code>, which is now invisible to the caller.)</li>
+  <li><code class="highlighter-rouge">iter</code> returns a <code class="highlighter-rouge">u.type#Needle</code>.
+    <ul>
+      <li>Note: since <code class="highlighter-rouge">u</code> is not in scope for the caller, if we returned
+this as is, it would effectively widen to the existentially
+bound <code class="highlighter-rouge">u.type#Needle forSome {val u: U}</code>. But the same logic in
+the next step would apply to that type.</li>
+    </ul>
+  </li>
+  <li>By the <code class="highlighter-rouge">#</code> left side covariance, <code class="highlighter-rouge">u.type#Needle</code> widens to
+<code class="highlighter-rouge">U#Needle</code>.</li>
+</ol>
+
+<p>Pretty simple, by the standards of what we’ve seen so far.</p>
+
+<h2 id="contravariance-is-the-root-of-all">Contravariance is the root of all…</h2>
+
+<p>But things break down when we try to call <code class="highlighter-rouge">iter(n)</code>. Keep in mind that
+<code class="highlighter-rouge">n: U#Needle</code> and the expected type is <code class="highlighter-rouge">u.Needle</code>. Specifically: since
+we don’t know in the implementation that <code class="highlighter-rouge">U</code> is a singleton type, we
+can’t use the “singleton type equivalence” rule on it! But suppose
+that we <em>could</em>; that is, <strong>suppose that we could constrain <code class="highlighter-rouge">U</code> to be
+a singleton type</strong>.</p>
+
+<ol>
+  <li>The argument type is <code class="highlighter-rouge">U#Needle</code>.</li>
+  <li>By singleton equivalence, since <code class="highlighter-rouge">u: U</code> and <code class="highlighter-rouge">u</code> is stable, so
+<code class="highlighter-rouge">u.type = U</code>.</li>
+  <li>By substituting the left-hand side of the <code class="highlighter-rouge">#</code>, we get
+<code class="highlighter-rouge">u.type#Needle</code>.</li>
+  <li>This shortens to <code class="highlighter-rouge">u.Needle</code>.</li>
+</ol>
+
+<p>If we are unable to constrain <code class="highlighter-rouge">U</code> in this way, though, we are
+restricted to places where <code class="highlighter-rouge">U</code> occurs in covariant position when using
+cake-extracted APIs.  We can invoke functions like <code class="highlighter-rouge">init</code>, because
+they only have the singleton index occurring in covariant position.</p>
+
+<p>Invoking functions like <code class="highlighter-rouge">iter</code>, where the index occurs in
+contravariant or invariant position, requires being able to add this
+constraint, so that we can use singleton equivalence directly on the
+type variable <code class="highlighter-rouge">U</code>.  This is quite a bit trickier.</p>
+
+<h2 id="extracting-more-types">Extracting more types</h2>
+
+<p>We have the same problem with the function version.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">stepTwiceHaystack</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=</span>
+  <span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">18</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.Needle</span> <span class="kt">where</span> <span class="kt">val</span> <span class="k">_</span><span class="err">1</span><span class="kt">:</span> <span class="kt">U</span>
+         <span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+                       <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Let’s walk through it one more time.</p>
+
+<ol>
+  <li><code class="highlighter-rouge">n: U#Needle</code>.</li>
+  <li><code class="highlighter-rouge">h.iter</code> expects a <code class="highlighter-rouge">u.type#Needle</code> for all <code class="highlighter-rouge">val u: U</code>.</li>
+  <li><strong>Suppose that we constrain <code class="highlighter-rouge">U</code> to be a singleton type</strong>:
+    <ol>
+      <li>[The existential] <code class="highlighter-rouge">u.type = U</code>, by singleton equivalence.</li>
+      <li>By <code class="highlighter-rouge">#</code> left side equivalence, <code class="highlighter-rouge">h.iter</code> expects a <code class="highlighter-rouge">U#Needle</code>.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>The existential variable complicates things, but the rule is sound.</p>
+
+<p>As a workaround, it is commonly suggested to extract the member types
+in question into separate type variables. This works in some cases,
+but let’s see how it goes in this one.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">stepTwiceExUnim</span><span class="o">[</span><span class="kt">N</span>, <span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">{</span><span class="k">type</span> <span class="kt">Needle</span> <span class="kt">=</span> <span class="kt">N</span><span class="o">}](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">N</span><span class="o">)</span><span class="k">:</span> <span class="kt">N</span> <span class="o">=</span> <span class="o">???</span>
+</code></pre></div></div>
+
+<p>This looks a lot weirder, but should be able to return the right type.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">def</span> <span class="n">trial2</span> <span class="k">=</span> <span class="n">stepTwiceExUnim</span><span class="o">[</span><span class="kt">lu.Needle</span>, <span class="kt">lu.</span><span class="k">type</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">,</span> <span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+<span class="n">trial2</span><span class="k">:</span> <span class="kt">lu.Needle</span>
+</code></pre></div></div>
+
+<p>But this situation is complex enough for the technique to not work.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">stepTwiceEx</span><span class="o">[</span><span class="kt">N</span>, <span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">{</span><span class="k">type</span> <span class="kt">Needle</span> <span class="kt">=</span> <span class="kt">N</span><span class="o">}](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">N</span><span class="o">)</span><span class="k">:</span> <span class="kt">N</span> <span class="o">=</span>
+  <span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">18</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">N</span>
+ <span class="n">required</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.Needle</span> <span class="kt">where</span> <span class="kt">val</span> <span class="k">_</span><span class="err">1</span><span class="kt">:</span> <span class="kt">U</span>
+         <span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+                       <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Instead, we need to index <code class="highlighter-rouge">Haystack</code> <em>directly</em> with the <code class="highlighter-rouge">Needle</code>
+type, that is, add a type parameter to <code class="highlighter-rouge">Haystack</code> so that its <code class="highlighter-rouge">Needle</code>
+arguments can be talked about completely independently of the
+<code class="highlighter-rouge">LittleUniverse</code>, and then to write <code class="highlighter-rouge">h: U#Haystack[N]</code>
+above. Essentially, this means that any time a type talks about
+another type in a <code class="highlighter-rouge">Universe</code>, you need another type parameter to
+redeclare a little bit of the relationships between types in the
+universe.</p>
+
+<p>The problem with this is that we already declared those relationships
+by declaring the universe! All of the non-redundant information is
+represented in the singleton type index. So even where the above
+type-refinement technique works (and it does in many cases), it’s
+<em>still</em> redeclaring things that ought to be derivable from the “mere”
+fact that <code class="highlighter-rouge">U</code> is a singleton type.</p>
+
+<h2 id="the-fact-that-its-a-singleton-type">The fact that it’s a singleton type</h2>
+
+<p><em>(The following is based on enlightening commentary by Daniel Urban on
+an earlier draft.)</em></p>
+
+<p>Let’s examine the underlying error in <code class="highlighter-rouge">stepTwiceEx</code> more directly.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="k">def</span> <span class="n">fetchIter</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span><span class="o">](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="k">#</span><span class="nc">Needle</span> <span class="k">=</span> <span class="n">h</span><span class="o">.</span><span class="n">iter</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">14</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.</span><span class="k">type</span><span class="o">(</span><span class="kt">in</span> <span class="kt">method</span> <span class="kt">fetchIter</span><span class="o">)</span><span class="k">#</span><span class="kt">Needle</span>
+             <span class="n">where</span> <span class="k">type</span> <span class="k">_</span><span class="err">1</span><span class="kt">.</span><span class="k">type</span><span class="o">(</span><span class="kt">in</span> <span class="kt">method</span> <span class="kt">fetchIter</span><span class="o">)</span> <span class="k">&lt;:</span> <span class="kt">U</span> <span class="kt">with</span> <span class="kt">Singleton</span>
+ <span class="n">required</span><span class="k">:</span> <span class="k">_</span><span class="err">1</span><span class="kt">.</span><span class="k">type</span><span class="o">(</span><span class="kt">in</span> <span class="kt">value</span> <span class="kt">$anonfun</span><span class="o">)</span><span class="k">#</span><span class="kt">Needle</span>
+             <span class="n">where</span> <span class="k">type</span> <span class="k">_</span><span class="err">1</span><span class="kt">.</span><span class="k">type</span><span class="o">(</span><span class="kt">in</span> <span class="kt">value</span> <span class="kt">$anonfun</span><span class="o">)</span> <span class="k">&lt;:</span> <span class="kt">U</span> <span class="kt">with</span> <span class="kt">Singleton</span>
+           <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="k">#</span><span class="nc">Needle</span> <span class="k">=</span> <span class="n">h</span><span class="o">.</span><span class="n">iter</span>
+                                                    <span class="o">^</span>
+</code></pre></div></div>
+
+<p>It’s a good thing that this doesn’t compile. If it did, we could do</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fetchIter</span><span class="o">[</span><span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">)(</span><span class="n">anotherU</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">init</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Which is unsound.</p>
+
+<p><a href="http://www.scala-lang.org/files/archive/spec/2.12/03-types.html#singleton-types">§3.2.1 “Singleton Types”</a> of
+the specification mentions this <code class="highlighter-rouge">Singleton</code>, which is in a way related
+to singleton types.</p>
+
+<blockquote>
+  <p>A <em>stable type</em> is either a singleton type or a type which is
+declared to be a subtype of trait <code class="highlighter-rouge">scala.Singleton</code>.</p>
+</blockquote>
+
+<p>Adding <code class="highlighter-rouge">with Singleton</code> to the upper bound on <code class="highlighter-rouge">U</code> causes <code class="highlighter-rouge">fetchIter</code>
+to compile! This is sound, because we are protected from the above
+problem with the original <code class="highlighter-rouge">fetchIter</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">fetchIter</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span> <span class="kt">with</span> <span class="kt">Singleton</span><span class="o">](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=&gt;</span> <span class="n">U</span><span class="k">#</span><span class="nc">Needle</span> <span class="k">=</span> <span class="n">h</span><span class="o">.</span><span class="n">iter</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">fetchIter</span><span class="o">[</span><span class="kt">lu.</span><span class="k">type</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">)</span>
+<span class="n">res3</span><span class="k">:</span> <span class="kt">lu.Needle</span> <span class="o">=&gt;</span> <span class="n">lu</span><span class="o">.</span><span class="nc">Needle</span> <span class="k">=</span> <span class="nc">$$Lambda$1397</span><span class="o">/</span><span class="mi">1159581520</span><span class="k">@</span><span class="mi">683</span><span class="n">e7892</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="n">fetchIter</span><span class="o">[</span><span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">)</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">16</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">LittleUniverse</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+                     <span class="n">to</span> <span class="n">method</span> <span class="n">fetchIter</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span>
+                     <span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span> <span class="kt">with</span> <span class="kt">Singleton</span><span class="o">]</span>
+       <span class="n">fetchIter</span><span class="o">[</span><span class="kt">LittleUniverse</span><span class="o">](</span><span class="n">lu</span><span class="o">.</span><span class="n">haystack</span><span class="o">)</span>
+                <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Let’s walk through the logic for <code class="highlighter-rouge">fetchIter</code>. The expression <code class="highlighter-rouge">h.iter</code>
+has type <code class="highlighter-rouge">u.Needle =&gt; u.Needle</code> for some <code class="highlighter-rouge">val u: U</code>, and our goal type
+is <code class="highlighter-rouge">U#Needle =&gt; U#Needle</code>. So we have two subgoals: prove
+<code class="highlighter-rouge">u.Needle &lt;: U#Needle</code> for the covariant position (after <code class="highlighter-rouge">=&gt;</code>), and
+<code class="highlighter-rouge">U#Needle &lt;: u.Needle</code> for the contravariant position (before <code class="highlighter-rouge">=&gt;</code>).</p>
+
+<p>First, covariant:</p>
+
+<ol>
+  <li>Since <code class="highlighter-rouge">u: U</code>, <code class="highlighter-rouge">u.type &lt;: U</code>.</li>
+  <li>Since the left side of <code class="highlighter-rouge">#</code> is covariant, #1 implies
+<code class="highlighter-rouge">u.type#Needle &lt;: U#Needle</code>.</li>
+  <li>This re-sugars to <code class="highlighter-rouge">u.Needle &lt;: U#Needle</code>, which is the goal.</li>
+</ol>
+
+<p>Secondly, contravariant. We’re going to have to make a best guess
+here, because it’s not entirely clear to me what’s going on.</p>
+
+<ol>
+  <li>Since [existential] path <code class="highlighter-rouge">u</code> has a singleton type <code class="highlighter-rouge">U</code> (if we define
+“has a singleton type” as “having a type <em>X</em> such that
+<em>X</em><code class="highlighter-rouge"> &lt;: Singleton</code>”), so <code class="highlighter-rouge">u.type = U</code> by the singleton equivalence.</li>
+  <li>Since equivalence implies conformance, according to the first
+bullet under “Conformance”, #1 implies <code class="highlighter-rouge">U &lt;: u.type</code>.</li>
+  <li>Since the left side of <code class="highlighter-rouge">#</code> is covariant, #2 implies that
+<code class="highlighter-rouge">U#Needle &lt;: u.type#Needle</code>.</li>
+  <li>This resugars to <code class="highlighter-rouge">U#Needle &lt;: u.Needle</code>, which is the goal.</li>
+</ol>
+
+<p>I don’t quite understand this, because <code class="highlighter-rouge">U</code> doesn’t <em>seem</em> to meet the
+requirements for “singleton type”, according to the definition of
+singleton types. However, I’m <em>fairly</em> sure it’s sound, since type
+stability seems to be the property that lets us avoid the
+universe-mixing unsoundness. Unfortunately, it only seems to work with
+<em>existential</em> <code class="highlighter-rouge">val</code>s; we seem to be out of luck with <code class="highlighter-rouge">val</code>s that the
+compiler can still see.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// works fine!
+</span><span class="k">def</span> <span class="n">stepTwiceSingly</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span> <span class="kt">with</span> <span class="kt">Singleton</span><span class="o">](</span>
+    <span class="n">h</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Haystack</span><span class="o">,</span> <span class="n">n</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">h</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="c1">// but alas, this form doesn't
+</span><span class="k">class</span> <span class="nc">StepTwiceSingly</span><span class="o">[</span><span class="kt">U</span> <span class="k">&lt;:</span> <span class="kt">LittleUniverse</span> <span class="kt">with</span> <span class="kt">Singleton</span><span class="o">](</span><span class="n">u</span><span class="k">:</span> <span class="kt">U</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">stepTwiceSingly</span><span class="o">(</span><span class="n">n</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span><span class="o">)</span><span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span> <span class="o">=</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">15</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">U</span><span class="k">#</span><span class="kt">Needle</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">StepTwiceSingly.this.u.Needle</span>
+           <span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="n">haystack</span><span class="o">.</span><span class="n">iter</span><span class="o">(</span><span class="n">n</span><span class="o">))</span>
+                                            <span class="o">^</span>
+</code></pre></div></div>
+
+<p>We can work around this by having the second form invoke the first
+with the <code class="highlighter-rouge">Haystack</code>, thus “existentializing” the universe. I imagine
+that <em>most</em>, albeit not all, cakes can successfully follow this
+strategy.</p>
+
+<p>So, finally, we’re almost out of the cake.</p>
+
+<ol>
+  <li>Escape covariant positions with universe variable: complete.</li>
+  <li>Escape contravariant/invariant positions with universe variable:
+complete.</li>
+  <li>Escape covariant positions with universe <em>singleton type</em>:
+complete!</li>
+  <li>Escape contravariant/invariant positions with universe singleton
+type: 90% there!</li>
+</ol>
+
+<p><em>This article was tested with Scala 2.12.1.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Mar 01, 2017</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

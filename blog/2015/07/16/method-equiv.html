@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | When are two methods alike?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>When are two methods alike?</h2>
+
+  <p><em>This is the second of a series of articles on “Type Parameters and
+Type Members”.  If you haven’t yet, you should
+<a href="/blog/2015/07/13/type-members-parameters.html">start at the beginning</a>,
+which introduces code we refer to throughout this article without
+further ado.</em></p>
+
+<p><a href="/blog/2015/07/13/type-members-parameters.html#when-is-existential-ok">In the last part</a>,
+we just saw two method types that, though different, are effectively
+the same: those of <code class="highlighter-rouge">plengthT</code> and <code class="highlighter-rouge">plengthE</code>.  We have rules for
+deciding when an existential parameter can be lifted into a method
+type parameter—or a method type parameter lowered to an
+existential—but there are other pairs of method types I want to
+explore that are the same, or very close.  So let’s talk about how we
+determine this equivalence.</p>
+
+<p>A method <em>R</em> is more general than or as general as <em>Q</em> if <em>Q</em> may be
+implemented by only making a call to <em>R</em>, passing along the arguments.
+By more general, we mean <em>R</em> can be invoked in all the situations that
+<em>Q</em> can be invoked in, and more besides.  Let us call the result of
+this test $R &lt;:_m Q$ (where $&lt;:_m$ is pronounced “party duck”); if
+the test of <em>Q</em> making a call to <em>R</em> fails, then $\neg(R &lt;:_m Q)$.</p>
+
+<p>If $Q &lt;:_m R$ and $R &lt;:_m Q$, then the two method types are
+<em>equivalent</em>; that is, neither has more expressive power than the
+other, since each can be implemented merely by invoking the other and
+doing nothing else.  We write this as $Q \equiv_m R$.  Likewise, if
+$R &lt;:_m Q$ and $\neg(Q &lt;:_m R)$, that is, <em>Q</em> can be written by
+calling <em>R</em>, but not vice versa, then <em>R</em> is <em>strictly more general</em>
+than <em>Q</em>, or $R &lt;_m Q$.</p>
+
+<p>What the concrete method—the one actually doing stuff, not invoking
+the other one—does is irrelevant, for the purposes of this test,
+because this is about types.  That matters because sometimes, in
+Scala, as in Java, the body will compile in one of the methods, but
+not the other.  Let’s see an example that doesn’t compile.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.collection.mutable.ArrayBuffer</span>
+
+<span class="k">def</span> <span class="n">copyToZero</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+  <span class="n">xs</span> <span class="o">+=</span> <span class="n">xs</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+
+<span class="nc">TmTp2</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">9</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="o">(</span><span class="kt">some</span> <span class="kt">other</span><span class="o">)</span><span class="k">_</span><span class="kt">$1</span><span class="o">(</span><span class="kt">in</span> <span class="kt">value</span> <span class="kt">xs</span><span class="o">)</span>
+ <span class="kt">required:</span> <span class="k">_</span><span class="kt">$1</span><span class="o">(</span><span class="kt">in</span> <span class="kt">value</span> <span class="kt">xs</span><span class="o">)</span>
+    <span class="kt">xs</span> <span class="kt">+=</span> <span class="kt">xs</span><span class="o">(</span><span class="err">0</span><span class="o">)</span>
+            <span class="kt">^</span>
+</code></pre></div></div>
+
+<p>Likewise, the Java version has a similar problem, though the error
+message doesn’t give as good a hint as to what’s going on.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kt">void</span> <span class="nf">copyToZero</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">xs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">xs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="n">TmTp2</span><span class="o">.</span><span class="na">java</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span>  <span class="nl">error:</span> <span class="n">no</span> <span class="n">suitable</span> <span class="n">method</span> <span class="n">found</span> <span class="k">for</span> <span class="nf">add</span><span class="o">(</span><span class="n">CAP</span><span class="err">#</span><span class="mi">1</span><span class="o">)</span>
+        <span class="n">xs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+          <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Luckily, in both Java and Scala, we have an <em>equivalent</em> method type,
+from lifting the existential (misleadingly called <em>wildcard</em> in Java
+terminology) to a method type parameter.</p>
+
+<p>We can apply this transformation to put the method implementation
+somewhere it will compile.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">copyToZeroE</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+  <span class="n">copyToZeroP</span><span class="o">(</span><span class="n">xs</span><span class="o">)</span>
+
+<span class="k">private</span> <span class="k">def</span> <span class="n">copyToZeroP</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span>
+  <span class="n">xs</span> <span class="o">+=</span> <span class="n">xs</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Similarly, in Java,</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">copyToZeroE</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">xs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">copyToZeroP</span><span class="o">(</span><span class="n">xs</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">copyToZeroP</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">xs</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">T</span> <span class="n">zv</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="n">xs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">zv</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The last gives a hint as to what’s going on, both here and in the
+compiler errors above: in <code class="highlighter-rouge">copyToZeroP</code>’s body, the list element type
+has a name, <code class="highlighter-rouge">T</code>; we can use the name to create variables, and the
+compiler can rely on the name as well.  The compiler, ideally,
+shouldn’t care about whether the name can be written, but that one of
+the above compiles and the other doesn’t is telling.</p>
+
+<p>If you were to define a variable to hold the result of getting the
+first element in the list in either version of <code class="highlighter-rouge">copyToZeroE</code>, how
+would you do that?  In Java, the reason this doesn’t work is
+straightforward: you would have to declare the variable to be of type
+<code class="highlighter-rouge">Object</code>, but that type isn’t specific enough to allow the variable to
+be used as an argument to <code class="highlighter-rouge">xs.add</code>.</p>
+
+<p>Scala’s type-inferred variables don’t help here; Scala considers the
+existential type to be scoped to <code class="highlighter-rouge">xs</code>, and makes the definition of
+<code class="highlighter-rouge">zv</code> independent of <code class="highlighter-rouge">xs</code> by breaking the type relationship, and
+crushing the inferred type of <code class="highlighter-rouge">zv</code> to <code class="highlighter-rouge">Any</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">copyToZeroE</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">ArrayBuffer</span><span class="o">[</span><span class="k">_</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">zv</span> <span class="k">=</span> <span class="n">xs</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+  <span class="n">xs</span> <span class="o">+=</span> <span class="n">zv</span>
+<span class="o">}</span>
+
+<span class="nc">TmTp2</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">19</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">zv.</span><span class="k">type</span> <span class="o">(</span><span class="kt">with</span> <span class="kt">underlying</span> <span class="k">type</span> <span class="kt">Any</span><span class="o">)</span>
+ <span class="kt">required:</span> <span class="k">_</span><span class="kt">$1</span>
+    <span class="n">xs</span> <span class="o">+=</span> <span class="n">zv</span>
+          <span class="o">^</span>
+</code></pre></div></div>
+
+<p>When we call the type-parameterized variant to implement the
+existential variant, with the real implementation residing in the
+former, we are just helping the compiler along by using the equivalent
+method type; in the simpler case of the former, both <code class="highlighter-rouge">scalac</code> and
+<code class="highlighter-rouge">javac</code> manage to infer that the type <code class="highlighter-rouge">T</code> should be the (otherwise
+unspeakable) existential.  <strong>Method equivalence and generality make it
+possible to write methods, safely, that could not be written
+directly.</strong></p>
+
+<h2 id="why-are-existentials-harder-to-think-about">Why are existentials harder to think about?</h2>
+
+<p>I think we, as humans, may have even more difficulty with the lack of
+names for existentials than the compilers do.  The name “unspeakable”,
+which I have borrowed from Jon Skeet’s <em>C# in Depth</em>, is telling: even
+in our heads, our thought processes are shaped by language.  We tame
+the mathematics of programming with symbols, with names.  Existentials
+and their “unspeakable” names rob us of the tools to talk about them,
+to think about them.</p>
+
+<p>Java has done its practitioners two great disservices here.  One: by
+calling its existentials “wildcards”.  They are not “wildcards”, in
+any commonly or uncommonly understood sense.  If you suppose your
+preexisting notions of “wildcards” to apply to these much more exotic
+creatures, you will confidently stroll into the darkness until you
+trip and fall off a cliff.  They are only <em>superficially</em> “wildcards”.
+The effect of this sorry attempt at avoiding new terminology is
+chiefly to cheat Java programmers out of learning what’s really going
+on.  (We will explore some of this more exotic behavior
+<a href="/blog/2015/07/27/nested-existentials.html">in a later post</a>.)</p>
+
+<p>Two: by
+<a href="https://docs.oracle.com/javase/tutorial/extra/generics/methods.html">encouraging use of existential signatures</a>
+like <code class="highlighter-rouge">mdropFirstE</code> over parameterized versions like <code class="highlighter-rouge">mdropFirstT</code> that
+do not require the same kind of mental gymnastics.</p>
+
+<p>For lifting these type parameters is how we can reclaim the power we
+lost in the debacle of the unspeakable names.  We name them, and in so
+doing can once more talk and think about them without exhausting
+ourselves by gesticulating wildly, comforting ourselves with
+fairytales of “wildcards”.  Because in parameter lifting, we have
+found a <em>true</em> analogy.</p>
+
+<h2 id="when-are-two-methods-less-alike">When are two methods less alike?</h2>
+
+<p>Now, let’s examine another pair of methods, and apply our test to
+them.</p>
+
+<p>Let’s say we want to write the equivalent of this method for <code class="highlighter-rouge">MList</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">pdropFirst</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">PList</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">xs</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">PNil</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="nc">PNil</span><span class="o">()</span>
+    <span class="k">case</span> <span class="nc">PCons</span><span class="o">(</span><span class="k">_</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">t</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>According to the <code class="highlighter-rouge">PList</code> ⇔ <code class="highlighter-rouge">MList</code> conversion rules given
+<a href="/blog/2015/07/13/type-members-parameters.html#when-is-existential-ok">in the previous article</a>,
+section “Why all the <code class="highlighter-rouge">{type T = ...}</code>?”, the equivalent for <code class="highlighter-rouge">MList</code>
+should be</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mdropFirstT</span><span class="o">[</span><span class="kt">T0</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">T0</span><span class="o">})</span>
+  <span class="k">:</span> <span class="kt">MList</span> <span class="o">{</span><span class="k">type</span> <span class="kt">T</span> <span class="o">=</span> <span class="kt">T0</span><span class="o">}</span> <span class="k">=</span>
+  <span class="n">xs</span><span class="o">.</span><span class="n">uncons</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="nc">MNil</span><span class="o">()</span>
+    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">tail</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let us try to drop the refinements.  That seems to compile:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mdropFirstE</span><span class="o">(</span><span class="n">xs</span><span class="k">:</span> <span class="kt">MList</span><span class="o">)</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">=</span>
+  <span class="n">xs</span><span class="o">.</span><span class="n">uncons</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="nc">MNil</span><span class="o">()</span>
+    <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">c</span><span class="o">.</span><span class="n">tail</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>It certainly looks nicer.  However, while <code class="highlighter-rouge">mdropFirstE</code> can be
+implemented by calling <code class="highlighter-rouge">mdropFirstT</code>, passing the type parameter
+<code class="highlighter-rouge">xs.T</code>, the opposite is not true; <code class="highlighter-rouge">mdropFirstT</code> $&lt;_m$ <code class="highlighter-rouge">mdropFirstE</code>,
+or, <code class="highlighter-rouge">mdropFirstT</code> is <em>strictly more general</em>.</p>
+
+<p>In this case, the reason is that <code class="highlighter-rouge">mdropFirstE</code> fails to relate the
+argument’s <code class="highlighter-rouge">T</code> to the result’s <code class="highlighter-rouge">T</code>; you could implement <code class="highlighter-rouge">mdropFirstE</code>
+as follows:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">mdropFirstE</span><span class="o">[</span><span class="kt">T0</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">MList</span><span class="o">)</span><span class="k">:</span> <span class="kt">MList</span> <span class="o">=</span>
+  <span class="nc">MCons</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">42</span><span class="o">,</span> <span class="nc">MNil</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>The stronger type of <code class="highlighter-rouge">mdropFirstT</code> forbids such shenanigans.  However,
+I can just tell you that largely because I’m already comfortable with
+existentials; how could you figure that out if you’re just starting
+out with these tools?  You don’t have to; the beauty of the
+equivalence test is that you can apply it mechanically.  <strong>Knowing
+nothing about the mechanics of the parameterization and existentialism
+of the types involved, you can work out with the equivalence test</strong>
+that <code class="highlighter-rouge">mdropFirstT</code> $&lt;_m$ <code class="highlighter-rouge">mdropFirstE</code>, and therefore, that you can’t
+get away with simply dropping the refinements.</p>
+
+<h2 id="method-likeness-and-subtyping-all-alike">Method likeness and subtyping, all alike</h2>
+
+<p>If you know what the symbol <code class="highlighter-rouge">&lt;:</code> means in Scala, or perhaps you’ve
+read
+<a href="http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#relations-between-types">SLS §3.5 “Relations between types”</a>,
+you might think, “gosh, method equivalence and generality look awfully
+familiar.”</p>
+
+<p>Indeed, the thing we’re talking about is very much like subtyping and
+type equality!  In fact, every type-equal pair of methods <em>M</em>₁ and
+<em>M</em>₂ also pass our method equivalence test, and every pair of methods
+<em>M</em>₃ and <em>M</em>₄ where $M_3 &lt;: M_4$ passes our <em>M</em>₄-calls-<em>M</em>₃ test.
+So $M_1 \equiv M_2$ implies $M_1 \equiv_m M_2$, and
+$M_3 &lt;: M_4$ implies $M_3 &lt;:_m M_4$.</p>
+
+<p>We even follow many of the same rules as the type relations.  We have
+transitivity: if <em>M</em>₁ can call <em>M</em>₂ to implement itself, and <em>M</em>₂ can
+call <em>M</em>₃ to implement itself, obviously we can snap the pointer and
+have <em>M</em>₁ call <em>M</em>₃ directly.  Likewise, every method type is
+equivalent to itself: reflexivity.  Likewise, if a method <em>M</em>₁ is
+strictly more general than <em>M</em>₂, obviously <em>M</em>₂ cannot be strictly
+more general than <em>M</em>₁: antisymmetricity.  And we even copy the
+relationship between ≡ and &lt;: themselves: just as $T_1 \equiv T_2$
+implies $T_1 &lt;: T_2$, so $R \equiv_m Q$ implies $R &lt;:_m Q$.</p>
+
+<p>Scala doesn’t understand the notion of method equivalence we’ve
+defined above, though.  So you can’t, say, implement an abstract
+method in a subclass using an equivalent or more general form, at
+least directly; you have to <code class="highlighter-rouge">override</code> the Scala way, and call the
+alternative form yourself, if that’s what you want.</p>
+
+<p>I do confess to one oddity in my terminology: <strong>the method that has
+more specific type is <em>the more general method</em>.</strong> I hope the example
+of <code class="highlighter-rouge">mdropFirstT</code> $&lt;:_m$ <code class="highlighter-rouge">mdropFirstE</code> justifies my choice.
+<code class="highlighter-rouge">mdropFirstT</code> has more specific type, and rejects more
+implementations, such as the one that returns a list with <code class="highlighter-rouge">42</code> in it
+above.  Thus, it has fewer implementations, in the same way that more
+specific types have fewer values inhabiting them.  But it can be used
+in more circumstances, so it is “more general”.  The generality in
+terms of when a method can be used is directly proportional to the
+specificity of its type.</p>
+
+<h2 id="javas-edge-of-insanity">Java’s edge of insanity</h2>
+
+<p>Now we have enough power to demonstrate that Scala’s integration with
+Java generics is faulty.  Or, more fairly, that Java’s generics are
+faulty.</p>
+
+<p>Consider this method type, in Scala:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">goshWhatIsThis</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span>
+</code></pre></div></div>
+
+<p>This is a pretty specific method type; there are not too many
+implementations.  Of course you can always perform a side effect; we
+don’t track that in Scala’s type system.  But what can it return?
+Just <code class="highlighter-rouge">t</code>.</p>
+
+<p>Specifically, you can’t return <code class="highlighter-rouge">null</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TmTp2</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">36</span><span class="kt">:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">Null</span><span class="o">(</span><span class="kt">null</span><span class="o">)</span>
+ <span class="kt">required:</span> <span class="kt">T</span>
+  <span class="k">def</span> <span class="n">goshWhatIsThis</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="kc">null</span>
+                                   <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Well now, let’s convert this type to Java:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">holdOnNow</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We got away with that!  And, indeed, we can call <code class="highlighter-rouge">holdOnNow</code> to
+implement <code class="highlighter-rouge">goshWhatIsThis</code>, and vice versa; they’re <em>equivalent</em>.  But
+the type says we can’t return <code class="highlighter-rouge">null</code>!</p>
+
+<p>The problem is that Java adds an implicit upper bound, because it
+assumes generic type parameters can only have class types chosen for
+them; in Scala terms, <code class="highlighter-rouge">[T &lt;: AnyRef]</code>.  If we encode this constraint
+in Scala, Scala gives us the correct error.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">holdOnNow</span><span class="o">[</span><span class="kt">T</span> <span class="k">&lt;:</span> <span class="kt">AnyRef</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="nc">TmTp2</span><span class="o">.</span><span class="n">holdOnNow</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">goshWhatIsThis</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">holdOnNow</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+
+<span class="nc">TmTp2</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">38</span><span class="kt">:</span> <span class="kt">inferred</span> <span class="k">type</span> <span class="kt">arguments</span> <span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">do</span> <span class="n">not</span> <span class="n">conform</span>
+<span class="o">⤹</span> <span class="n">to</span> <span class="n">method</span> <span class="n">holdOnNow</span><span class="ss">'s </span><span class="k">type</span> <span class="kt">parameter</span> <span class="kt">bounds</span> <span class="o">[</span><span class="kt">T</span> <span class="k">&lt;:</span> <span class="kt">AnyRef</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">goshWhatIsThis</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">t</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">holdOnNow</span><span class="o">(</span><span class="n">t</span><span class="o">)</span>
+                                   <span class="o">^</span>
+</code></pre></div></div>
+
+<p>This is forgivable on Scala’s part, because it’d be annoying to add
+<code class="highlighter-rouge">&lt;: AnyRef</code> to your generic methods just because you called some Java
+code and it’s probably going to work out fine.  I blame <code class="highlighter-rouge">null</code>, and
+while I’m at it, I blame <code class="highlighter-rouge">Object</code> having any methods at all, too.
+We’d be better off without these bad features.</p>
+
+<p>In
+<a href="/blog/2015/07/19/forget-refinement-aux.html">the next part, “What happens when I forget a refinement?”</a>,
+we’ll talk about what happens when you forget refinements for things
+like <code class="highlighter-rouge">MList</code>, and how you can avoid that while simplifying your
+type-member-binding code.</p>
+
+<p><em>This article was tested with Scala 2.11.7 and Java 1.8.0_45.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Jul 16, 2015</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$']]}
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

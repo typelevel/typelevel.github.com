@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Symbolic operators and type classes for Cats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Symbolic operators and type classes for Cats</h2>
+
+  <p>This post is an introduction into how operators are implemented in Cats and has been originally published in <a href="https://gist.github.com/non/3abdb35a72c39276d3d9">August 2015</a>.
+Some more details can be found in the <a href="/blog/2015/08/06/machinist.html">previous post</a>.</p>
+
+<p>One of the simplest and most recognizable type classes is the semigroup.
+This type class abstracts over the ability to combine values of a certain
+type in an associative manner.</p>
+
+<div class="side-note">
+  What does <em>associativity</em> mean?
+  We call an operation $\oplus$ associative, if for all $a$, $b$ and $c$, $a \oplus (b \oplus c) = (a \oplus b) \oplus c$ holds.
+  Read more about this in the <a href="https://github.com/non/algebra#algebraic-properties-and-terminology">README of the algebra repository</a>.
+</div>
+
+<p>Cats provides <code class="highlighter-rouge">cats.Semigroup[A]</code> to model semigroups.
+The <code class="highlighter-rouge">combine</code> method takes two values of the type <code class="highlighter-rouge">A</code> and returns an <code class="highlighter-rouge">A</code> value.</p>
+
+<p>In addition, Cats defines syntax allowing the binary operator <code class="highlighter-rouge">|+|</code> to be
+used in place of the <code class="highlighter-rouge">combine</code> method.</p>
+
+<h2 id="small-example">Small example</h2>
+
+<p>Here is a small method that provides a generic way to combine the elements
+of a list:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.Semigroup</span>
+<span class="k">import</span> <span class="nn">cats.implicits._</span>
+
+<span class="k">def</span> <span class="n">gsum</span><span class="o">[</span><span class="kt">A:</span> <span class="kt">Semigroup</span><span class="o">](</span><span class="n">values</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">reduceLeft</span><span class="o">((</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">|+|</span> <span class="n">y</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>(A similar method is built into Cats as <code class="highlighter-rouge">Semigroup.combineAllOption</code>.)</p>
+
+<h2 id="how-does-it-work">How does it work?</h2>
+
+<p>One of the parts of <code class="highlighter-rouge">gsum</code> that might be hard to understand is where
+the <code class="highlighter-rouge">|+|</code> method comes from. Since <code class="highlighter-rouge">x</code> and <code class="highlighter-rouge">y</code> are totally generic values
+(of type <code class="highlighter-rouge">A</code>) how can we call a method on them?</p>
+
+<p>To boil the example down further, consider this simpler example:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.implicits._</span>
+<span class="mi">19</span> <span class="o">|+|</span> <span class="mi">20</span> <span class="c1">// produces 39
+</span></code></pre></div></div>
+
+<p>How does this work? We know that the <code class="highlighter-rouge">Int</code> type does not have a <code class="highlighter-rouge">|+|</code> method.
+Experienced Scala developers will suspect that implicits play a role here,
+but what are the details?</p>
+
+<h2 id="in-detail">In detail</h2>
+
+<p>Let’s walk through how the expression <code class="highlighter-rouge">19 |+| 20</code> is compiled.</p>
+
+<p>First, a <code class="highlighter-rouge">|+|</code> method is needed on <code class="highlighter-rouge">Int</code>. Since
+<a href="https://github.com/scala/scala/blob/v2.11.7/src/library/scala/Int.scala"><code class="highlighter-rouge">Int</code></a>
+does not provide one, the compiler searches for an implicit conversion to a
+type that <em>does</em> have a <code class="highlighter-rouge">|+|</code> method.</p>
+
+<p>Due to our import, it will find the
+<a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/core/src/main/scala/cats/syntax/semigroup.scala#L8"><code class="highlighter-rouge">semigroupSyntax[A]</code></a>
+method, which returns a type that has a <code class="highlighter-rouge">|+|</code> method (specifically
+<a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/core/src/main/scala/cats/syntax/semigroup.scala#L12"><code class="highlighter-rouge">SemigroupOps[A]</code></a>).
+However, <code class="highlighter-rouge">semigroupSyntax</code> requires an implicit <code class="highlighter-rouge">Semigroup[A]</code> value to be in scope.
+Do we have a <code class="highlighter-rouge">Semigroup[Int]</code> in scope?</p>
+
+<p>Yes we do. Our import also provides an implicit value <a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/std/src/main/scala/cats/std/anyval.scala#L23"><code class="highlighter-rouge">intGroup</code></a>
+of type <code class="highlighter-rouge">AdditiveCommutativeGroup[Int]</code>. Leaving aside what <em>additive</em>, <em>commutative</em>,
+and <em>group</em> mean here, this is a subtype of <code class="highlighter-rouge">Semigroup[Int]</code>, so it matches.</p>
+
+<p>Let’s continue with our current example. At this point we have gone from:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">19</span> <span class="o">|+|</span> <span class="mi">20</span> <span class="c1">// produces 39
+</span></code></pre></div></div>
+
+<p>to:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semigroupSyntax</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">19</span><span class="o">)(</span><span class="n">intGroup</span><span class="o">)</span> <span class="o">|+|</span> <span class="mi">20</span>
+</code></pre></div></div>
+
+<p>But we aren’t out of the woods yet! We still need to see how this expression
+is evaluated.</p>
+
+<h2 id="of-macros-and-machinists">Of macros and machinists</h2>
+
+<p>Looking at how the <code class="highlighter-rouge">|+|</code> method is
+<a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/core/src/main/scala/cats/syntax/semigroup.scala#L13">implemented</a>
+reveals the cryptic <code class="highlighter-rouge">macro Ops.binop[A, A]</code>. What is this?</p>
+
+<p>Following the rabbit hole farther, we come to
+<a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/macros/src/main/scala/cats/macros/Ops.scala#L6"><code class="highlighter-rouge">cats.macros.Ops</code></a>
+which provides the macro implementation that <code class="highlighter-rouge">|+|</code> is using. Aside from a
+<a href="https://github.com/non/cats/blob/82dbf4076572dfbb6e29dd49875f5e5d929f80be/macros/src/main/scala/cats/macros/Ops.scala#L18">suggestively named</a>
+item in the <code class="highlighter-rouge">operatorNames</code> map, we don’t have any clues what is going on.</p>
+
+<p>The <a href="https://github.com/typelevel/machinist">machinist</a> project was created
+to optimize exactly this kind of implicit syntax problem. What will happen here
+is that <code class="highlighter-rouge">operatorNames</code> describes how to rewrite expressions using type
+classes. Long-story short, we will transform:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">semigroupSyntax</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">19</span><span class="o">)(</span><span class="n">intGroup</span><span class="o">)</span> <span class="o">|+|</span> <span class="mi">20</span>
+</code></pre></div></div>
+
+<p>into:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">intGroup</span><span class="o">.</span><span class="n">combine</span><span class="o">(</span><span class="mi">19</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>The aforementioned suggestive map item tells us that we should rewrite the <code class="highlighter-rouge">|+|</code> operator
+to method calls on the given type class (i.e. <code class="highlighter-rouge">intGroup</code>) using <code class="highlighter-rouge">.combine</code>.</p>
+
+<h2 id="finishing-up">Finishing up</h2>
+
+<p>Just to confirm that we’re done, let’s look at what <code class="highlighter-rouge">intGroup.combine</code> will do.
+We started with a call to <code class="highlighter-rouge">AdditiveCommutativeGroup[Int]</code>, which will find
+<a href="https://github.com/non/algebra/blob/v0.3.1/std/shared/src/main/scala/algebra/std/int.scala#L12"><code class="highlighter-rouge">intAlgebra</code></a>.
+Then we call the <a href="https://github.com/non/algebra/blob/v0.3.1/core/src/main/scala/algebra/ring/Additive.scala#L93"><code class="highlighter-rouge">.additive</code></a>
+method on it to produce a <code class="highlighter-rouge">CommutativeGroup[Int]</code>.</p>
+
+<p>So putting that together, we can see that calling <code class="highlighter-rouge">intGroup.combine(19, 20)</code>
+will call <code class="highlighter-rouge">intAlgebra.plus(19, 20)</code>, and that this is defined as <code class="highlighter-rouge">19 + 20</code>,
+as we would expect.</p>
+
+<p>Whew!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This is a lot of machinery. The incredibly terse and expressive syntax it
+enables is quite nice, but you can see that even leaving out one import
+will cause the whole edifice to come tumbling down.</p>
+
+<p>The easiest way to use Cats is to just import <code class="highlighter-rouge">cats.implicits._</code>. That
+way, you can be sure that you have all of it. There are individual imports
+from <code class="highlighter-rouge">cats.syntax</code> and <code class="highlighter-rouge">cats.std</code> which can be used to pinpoint the exact
+values and method you want to put into scope, but getting these right
+can be a bit tricky, especially for newcomers.</p>
+
+<p>Some more examples of Machinist can be found in the <a href="https://github.com/typelevel/machinist/blob/v0.4.1/README.md#examples">README</a>.</p>
+
+<h2 id="errata">Errata</h2>
+
+<p>You may also decide that the syntax convenience is not worth it. To write our
+original example without syntax implicits (but still using implicit values)
+you could say:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats.Semigroup</span>
+<span class="k">import</span> <span class="nn">cats.implicits._</span>
+
+<span class="k">def</span> <span class="n">gsum</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">values</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">s</span><span class="k">:</span> <span class="kt">Semigroup</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">)</span> <span class="nc">None</span> <span class="k">else</span> <span class="nc">Some</span><span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">reduceLeft</span><span class="o">((</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">combine</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)))</span>
+
+<span class="c1">// values.reduceLeft(s.combine) would also work
+</span></code></pre></div></div>
+
+<p>Whether to use syntax implicits or explicit method calls is mostly a matter
+of preference. Personally, I like using syntax explicits to help make generic
+code read in a clearer manner, but as always, your mileage may vary.</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/erikosheim.jpg" />
+      
+      <p>by Erik Osheim
+    
+    on Aug 07, 2015</p>
+
+    
+  <a href="https://twitter.com/d6" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @d6</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/non" aria-label="Follow @non on GitHub">Follow @non</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$']]}
+  });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

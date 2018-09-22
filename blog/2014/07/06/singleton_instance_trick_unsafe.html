@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | The singleton instance trick is unsafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>The singleton instance trick is unsafe</h2>
+
+  <p><em>Also, the “fake covariance” trick.</em></p>
+
+<p>Sometimes, Scala programmers notice a nice optimization they can use
+in the case of a class that has an invariant type parameter, but in
+which that type parameter
+<a href="/blog/2014/03/09/liskov_lifting.html">appears in variant or phantom position in the actual data involved</a>.
+<a href="http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html"><code class="highlighter-rouge">=:=</code></a>
+is an
+<a href="https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L398">example of the phantom case</a>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">=:=</span><span class="o">[</span><span class="kt">From</span>, <span class="kt">To</span><span class="o">]</span> <span class="nc">extends</span> <span class="o">(</span><span class="nc">From</span> <span class="k">=&gt;</span> <span class="nc">To</span><span class="o">)</span> <span class="k">with</span> <span class="nc">Serializable</span>
+</code></pre></div></div>
+
+<p><a href="http://www.scala-lang.org/api/2.11.1/scala/collection/immutable/Set.html"><code class="highlighter-rouge">scala.collection.immutable.Set</code></a>
+is an example of the covariant case.</p>
+
+<p>Here is the optimization, which is very similar to
+<a href="/blog/2014/03/09/liskov_lifting.html">the <code class="highlighter-rouge">Liskov</code>-lifting previously discussed</a>:
+a “safe” cast of the invariant type
+parameter can be made, because all operations on the casted result
+remain sound.
+<a href="https://github.com/scala/scala/blob/9fc098dd0dcf1825ec55501716b4f2a0a6d197ae/src/library/scala/collection/immutable/HashSet.scala#L170">Here it is for Set</a>,
+an example of the “fake covariance” trick:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="n">toSet</span><span class="o">[</span><span class="kt">B</span> <span class="k">&gt;:</span> <span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="k">this</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">Set</span><span class="o">[</span><span class="kt">B</span><span class="o">]]</span>
+</code></pre></div></div>
+
+<p>And
+<a href="https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L399-L402">here it is for <code class="highlighter-rouge">=:=</code></a>,
+an example of the “singleton instance” trick.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">final</span> <span class="k">val</span> <span class="n">singleton_=:=</span> <span class="k">=</span> <span class="k">new</span> <span class="o">=:=[</span><span class="kt">Any</span>,<span class="kt">Any</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Any</span><span class="o">)</span><span class="k">:</span> <span class="kt">Any</span> <span class="o">=</span> <span class="n">x</span>
+<span class="o">}</span>
+<span class="k">object</span> <span class="nc">=:=</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="n">tpEquals</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=:=</span> <span class="n">A</span> <span class="k">=</span> <span class="n">singleton_=:=</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">A</span> <span class="kt">=:=</span> <span class="kt">A</span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Unless you are using
+<a href="https://dl.dropboxusercontent.com/u/7810909/talks/parametricity/4985cb8e6d8d9a24e32d98204526c8e3b9319e33/parametricity.pdf">the Scalazzi safe Scala subset</a>,
+which forbids referentially nontransparent and nonparametric
+operations, <em>these tricks are unsafe</em>.</p>
+
+<h2 id="types-are-erased">Types are erased</h2>
+
+<p>Many people are confused that they cannot write functions like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">addone</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"one"</span>
+  <span class="k">case</span> <span class="n">i</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Being given an error as follows.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">8</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">String</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">A</span>
+         <span class="k">case</span> <span class="n">s</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"one"</span>
+                             <span class="o">^</span>
+<span class="o">&lt;</span><span class="n">console</span><span class="k">&gt;:</span><span class="mi">9</span><span class="k">:</span> <span class="kt">error:</span> <span class="k">type</span> <span class="kt">mismatch</span><span class="o">;</span>
+ <span class="n">found</span>   <span class="k">:</span> <span class="kt">Int</span>
+ <span class="n">required</span><span class="k">:</span> <span class="kt">A</span>
+         <span class="k">case</span> <span class="n">i</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                          <span class="o">^</span>
+</code></pre></div></div>
+
+<p>Let’s consider only one case, the first. In the right-hand side (RHS)
+of this case, you have not proved that <code class="highlighter-rouge">A</code> is <code class="highlighter-rouge">String</code> at all! You
+have only proved that, in addition to definitely having type <code class="highlighter-rouge">A</code>, <code class="highlighter-rouge">x</code>
+also definitely has type <code class="highlighter-rouge">String</code>. In type relationship language,</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span><span class="o">.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">A</span>
+<span class="n">x</span><span class="o">.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">String</span>
+</code></pre></div></div>
+
+<p>All elephants are grey and are also animals, but it does not follow
+that all grey things are animals or vice versa. If you use a cast to
+“fix” this, you have produced type-incorrect code, period.</p>
+
+<h2 id="type-recovery">Type recovery</h2>
+
+<p>Under special circumstances, however, information about a type
+parameter can be recovered, safe and sound. Take this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="nc">case</span> <span class="k">class</span> <span class="nc">SBox</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">IBox</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span>
+
+<span class="k">def</span> <span class="n">addone2</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">b</span><span class="k">:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">b</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">SBox</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"one"</span>
+  <span class="k">case</span> <span class="nc">IBox</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This compiles, and I don’t even have to have data in the box to get at
+the type information that <code class="highlighter-rouge">A ~ String</code> or <code class="highlighter-rouge">A ~ Int</code>.  Consider the
+first case.  On the RHS, I have</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span><span class="o">.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">SBox</span> <span class="k">&lt;:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+<span class="n">b</span><span class="o">.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>In addition, <strong><code>A</code> is invariant</strong>, so after going up to
+<code class="highlighter-rouge">Box[String]</code>, <code class="highlighter-rouge">b</code> couldn’t have widened that type parameter, or
+changed it in any way, without an unsafe cast.  Additionally, our
+supertype tree cannot contain <code class="highlighter-rouge">Box</code> twice with different parameters.
+So we have proved that <code class="highlighter-rouge">A</code> is <code class="highlighter-rouge">String</code>, because we proved that
+<code class="highlighter-rouge">Box[A]</code> is <code class="highlighter-rouge">Box[String]</code>.</p>
+
+<p>This is very useful when defining
+<a href="http://www.haskell.org/haskellwiki/GADTs_for_dummies">GADTs</a>.</p>
+
+<h2 id="partial-type-recovery">Partial type recovery</h2>
+
+<p>Let’s consider a similar ADT with the type parameter marked variant.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="k">class</span> <span class="nc">CovBox</span><span class="o">[</span><span class="kt">+A</span><span class="o">]</span>
+<span class="nc">case</span> <span class="k">class</span> <span class="nc">CovSBox</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">CovBox</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+
+<span class="k">def</span> <span class="n">addone3</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">b</span><span class="k">:</span> <span class="kt">CovBox</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">b</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">CovSBox</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"one"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This works too, because in the RHS of the case, we proved that:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span><span class="o">.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">CovSBox</span> <span class="k">&lt;:</span> <span class="kt">CovBox</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">&lt;:</span> <span class="nc">CovBox</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="nc">String</span> <span class="k">&lt;:</span> <span class="n">A</span>
+</code></pre></div></div>
+
+<p>The only transform in type <code class="highlighter-rouge">A</code> could have possibly undergone is a
+widening, which <em>must</em> have begun at <code class="highlighter-rouge">String</code>. A similar example can
+be derived for contravariance.</p>
+
+<h2 id="singleton-surety">Singleton surety</h2>
+
+<p>In our first example, there is one type that we know must be a subtype
+of <code class="highlighter-rouge">A</code>, no matter what!</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">addone</span><span class="o">[</span><span class="kt">A</span> <span class="k">&lt;:</span> <span class="kt">AnyRef</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">x</span><span class="k">:</span> <span class="kt">x.type</span>
+</code></pre></div></div>
+
+<p>(Scala doesn’t like it when we talk about singleton types without an
+<code class="highlighter-rouge">AnyRef</code> upper bound at least.  But the underlying principle holds for
+all value types.)</p>
+
+<p>Where <code class="highlighter-rouge">x</code> is an <code class="highlighter-rouge">A</code> of stable type, <code class="highlighter-rouge">x.type &lt;: A</code> for all possible <code class="highlighter-rouge">A</code>
+types.  You might say, “that’s uninteresting; obviously <code class="highlighter-rouge">x</code> is an <code class="highlighter-rouge">A</code>
+in this code.”  But that isn’t what we’re talking about; our premise
+is that <strong>any</strong> value of type <code class="highlighter-rouge">x.type</code> is also an <code class="highlighter-rouge">A</code>!</p>
+
+<p>So if we could prove that something else had the singleton type
+<code class="highlighter-rouge">x.type</code>, we would also prove that it shared all of <code class="highlighter-rouge">x</code>’s types!  We
+can do that with a singleton type pattern, which is implemented
+(soundly in 2.11) with a reference comparison.  Scala lets us use
+<em>some</em> of the resulting implications.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">case</span> <span class="k">class</span> <span class="nc">InvBox</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">b</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">maybeeq</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">x</span><span class="k">:</span> <span class="kt">InvBox</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">y</span><span class="k">:</span> <span class="kt">InvBox</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=</span> <span class="n">y</span> <span class="k">match</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="k">_:</span> <span class="kt">x.</span><span class="k">type</span> <span class="o">=&gt;</span> <span class="n">y</span><span class="o">.</span><span class="n">b</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="unsafety">Unsafety</h2>
+
+<p>To which you might protest, “there’s only one value of any singleton
+type!”  Well, yes.  And here’s where our seemingly innocent
+optimization turns nasty.  If you’ll recall, it depends upon treating
+a value with multiple types via an unsafe cast.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">unsafeCoerce</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">a</span> <span class="k">=</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">A</span> <span class="kt">=:=</span> <span class="kt">A</span><span class="o">]</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">B</span> <span class="kt">=:=</span> <span class="kt">B</span><span class="o">]</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="k">_:</span> <span class="kt">a.</span><span class="k">type</span> <span class="o">=&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">A</span> <span class="kt">=:=</span> <span class="kt">B</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="n">unsafeCoerce2</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">n</span> <span class="k">=</span> <span class="nc">Set</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]()</span>
+  <span class="k">val</span> <span class="n">b</span> <span class="k">=</span> <span class="n">n</span><span class="o">.</span><span class="n">toSet</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="n">n</span><span class="o">.</span><span class="n">toSet</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="k">_:</span> <span class="kt">b.</span><span class="k">type</span> <span class="o">=&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">A</span> <span class="kt">=:=</span> <span class="kt">B</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Both of these compile to what is in essence an identity function.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scala</span><span class="o">&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">unsafeCoerce</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">](</span><span class="s">"hi"</span><span class="o">))</span>
+<span class="n">res0</span><span class="k">:</span> <span class="kt">Some</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">hi</span><span class="o">)</span>
+
+<span class="n">scala</span><span class="o">&gt;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">unsafeCoerce2</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">Int</span><span class="o">](</span><span class="s">"hi"</span><span class="o">))</span>
+<span class="n">res1</span><span class="k">:</span> <span class="kt">Some</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="n">hi</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>In our invariant <code class="highlighter-rouge">Box</code> example we decided that, as it was impossible
+to change the type parameter without an unsafe cast, we could use that
+knowledge in the consequent types. In <code class="highlighter-rouge">unsafeCoerce</code>, where <code class="highlighter-rouge">?</code>
+represents the value before the match keyword:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">a.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="o">(</span><span class="kt">A</span> <span class="o">=</span><span class="kt">:=</span> <span class="kt">A</span><span class="o">)</span>
+<span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="o">(</span><span class="kt">B</span> <span class="o">=</span><span class="kt">:=</span> <span class="kt">B</span><span class="o">)</span>
+<span class="n">A</span> <span class="o">~</span> <span class="n">B</span>
+</code></pre></div></div>
+
+<p>In <code class="highlighter-rouge">unsafeCoerce2</code>,</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">b.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="n">A</span> <span class="o">~</span> <span class="n">B</span>
+</code></pre></div></div>
+
+<p><strong>There is nothing wrong with Scala making this logical inference. The
+“optimization” of that cast is not safe.</strong></p>
+
+<p>Let me reiterate: <strong>Scala’s type inference surrounding pattern
+matching should not be “fixed” to make unsafe casts “safer” and steal
+our GADTs. Unsafe code is unsafe.</strong></p>
+
+<h2 id="scalazzi-safe-scala-subset-saves-us">Scalazzi safe Scala subset saves us</h2>
+
+<p>For types like these, it is not possible to exploit this unsafety
+without a reference check, which is what a singleton type pattern
+compiles to.  As the Scalazzi safe subset forbids referentially
+nontransparent operations, if you follow its rules, these
+optimizations become safe again.</p>
+
+<p>This is just yet another of countless ways in which following the
+Scalazzi rules makes your code safer and easier to reason about.</p>
+
+<p>That isn’t to say it’s impossible to derive a situation where the
+optimization exposes an <code class="highlighter-rouge">unsafeCoerce</code> in Scalazzi code.  However, you
+must specially craft a type in order to do so.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Oops</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">widen</span><span class="o">[</span><span class="kt">B</span><span class="k">&gt;:</span><span class="kt">A</span><span class="o">]</span><span class="k">:</span> <span class="kt">Oops</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="k">this</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">Oops</span><span class="o">[</span><span class="kt">B</span><span class="o">]]</span>
+<span class="o">}</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Bot</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">Oops</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+
+<span class="k">def</span> <span class="n">unsafeCoerce3</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="nc">Bot</span><span class="o">()</span>
+  <span class="n">x</span><span class="o">.</span><span class="n">widen</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Bot</span><span class="o">()</span> <span class="k">=&gt;</span> <span class="n">implicitly</span><span class="o">[</span><span class="kt">A</span> <span class="k">&lt;:</span><span class="kt">&lt;</span> <span class="kt">B</span><span class="o">]</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The implication being</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">Bot</span> <span class="k">&lt;:</span> <span class="kt">Oops</span><span class="o">[</span><span class="kt">Nothing</span><span class="o">]</span>
+<span class="o">?.</span><span class="k">type</span> <span class="k">&lt;:</span> <span class="kt">Oops</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+<span class="nc">Nothing</span> <span class="o">~</span> <span class="n">A</span>
+</code></pre></div></div>
+
+<p>Scalaz
+<a href="https://github.com/scalaz/scalaz/blob/v7.0.6/core/src/main/scala/scalaz/IList.scala#L436-L437">uses the optimization under consideration in <code class="highlighter-rouge">scalaz.IList</code></a>.
+So would generalized <code class="highlighter-rouge">Functor</code>-based <code class="highlighter-rouge">Liskov</code>-lifting, as discussed at
+the end of <a href="/blog/2014/03/09/liskov_lifting.html">“When can Liskov be lifted?”</a>,
+were it to be implemented.  However, these cases do not fit the bill
+for exploitation from Scalazzi-safe code.</p>
+
+<p>On the other hand, the singleton type pattern approach may be used in
+<em>all</em> cases where the optimization may be invoked by a caller,
+including standard library code where some well-meaning contributor
+might add such a harmless-seeming avoidance of memory allocation
+without your knowledge.  Purity pays, and often in very nonobvious
+ways.</p>
+
+<p><em>This article was tested with Scala 2.11.1.</em></p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+      <p>by Stephen Compall
+    
+    on Jul 06, 2014</p>
+
+    
+  <a href="https://twitter.com/S11001001" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @S11001001</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/S11001001" aria-label="Follow @S11001001 on GitHub">Follow @S11001001</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Subtype type classes don't work</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Subtype type classes don't work</h2>
+
+  <p><em>Update: A comprehensive version of this blog post was published at the
+<a href="https://conf.researchr.org/track/scala-2017/scala-2017-papers&lt;Paste&gt;">2017 Scala Symposium</a> and is available <a href="http://www.sigplan.org/OpenTOC/scala17.html">for free</a>
+through the ACM OpenTOC service. The corresponding talk can be found
+<a href="https://www.youtube.com/watch?v=BGoTXO1V0HM&amp;list=PL6KWJEIH5ulcNeQ92iKFN2k-UIV9QHExH&amp;index=3">here</a>.</em></p>
+
+<p>The common encoding of type classes in Scala relies on subtyping. This singular
+fact gives us a certain cleanliness in the code, but at what cost?</p>
+
+<h2 id="problem">Problem</h2>
+
+<p>Consider the following hierarchy of type classes. A similar hierarchy can be
+found in both <a href="https://github.com/typelevel/cats" title="Typelevel Cats">Cats</a> and <a href="https://github.com/scalaz/scalaz/tree/series/7.3.x" title="Scalaz 7">Scalaz 7</a>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span>
+
+<span class="nc">trait</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="k">extends</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+<span class="k">trait</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+<span class="k">trait</span> <span class="nc">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>For purposes of demonstration I will be using Cats for the rest of this post,
+but the same arguments apply to Scalaz 7.</p>
+
+<p>We will also assume that there is syntax accompanying this hierarchy, allowing
+us to call methods like <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">flatMap</code>, and <code class="highlighter-rouge">traverse</code> directly on some
+<code class="highlighter-rouge">F[A]</code>, provided <code class="highlighter-rouge">F</code> has the appropriate type class instances (<code class="highlighter-rouge">Functor</code>,
+<code class="highlighter-rouge">Monad</code>, and <code class="highlighter-rouge">Traverse</code>, respectively).</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">cats._</span>
+<span class="k">import</span> <span class="nn">cats.implicits._</span>
+</code></pre></div></div>
+
+<p>One important consequence is we can use for comprehensions in methods
+parameterized over some <code class="highlighter-rouge">Monad</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">a</span> <span class="k">&lt;-</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+  <span class="n">b</span> <span class="k">&lt;-</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<p>Notice that due to how for comprehensions <a href="http://docs.scala-lang.org/tutorials/FAQ/yield.html" title="How does yield work?">desugar</a>, there is also
+a call to <code class="highlighter-rouge">map</code> in there. Since our type class hierarchy is encoded via
+subtyping Scala knows a <code class="highlighter-rouge">Monad[F]</code> implies a <code class="highlighter-rouge">Functor[F]</code>, so all is well.
+Or is it?</p>
+
+<p>Consider a case where we want to abstract over a data type that has
+both <code class="highlighter-rouge">Monad</code> and <code class="highlighter-rouge">Traverse</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Ignore the fact we're not even using `Traverse` - we can't even call `map`!
+</span><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:19: error: value map is not a member of type parameter F[Int]
+//        def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].pure(10).map(identity)
+//                                                                   ^
+// &lt;console&gt;:19: error: missing argument list for method identity in object Predef
+// Unapplied methods are only converted to functions when a function type is expected.
+// You can make this conversion explicit by writing `identity _` or `identity(_)` instead of `identity`.
+//        def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].pure(10).map(identity)
+//                                                                       ^
+</span></code></pre></div></div>
+
+<p>We’re already in trouble. In order to call <code class="highlighter-rouge">map</code> we need <code class="highlighter-rouge">F</code> to have a
+<code class="highlighter-rouge">Functor</code> instance, which it does via <code class="highlighter-rouge">Monad</code> as before.. but now also via
+<code class="highlighter-rouge">Traverse</code>. It is for precisely this reason that this does not work. Because
+our encoding of type classes uses subtyping, a <code class="highlighter-rouge">Monad[F]</code> <strong>is a</strong> <code class="highlighter-rouge">Functor[F]</code>.
+Similarly, a <code class="highlighter-rouge">Traverse[F]</code> <strong>is a</strong> <code class="highlighter-rouge">Functor[F]</code>. When implicit resolution
+attempts to find a <code class="highlighter-rouge">Functor[F]</code>, it can’t decide between <code class="highlighter-rouge">Monad[F]</code>’s or
+<code class="highlighter-rouge">Traverse[F]</code>’s and bails out. Even though the instances may be,
+<a href="https://www.youtube.com/watch?v=hIZxTQP1ifo" title="Edward Kmett - Type Classes vs. the World">and arguably should be</a>, the same, the compiler has no way of
+knowing that.</p>
+
+<p>This problem generalizes to anytime the compiler decides an implicit is ambiguous,
+such as method calls.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// The fact we don't actually use `Functor` here is irrelevant.
+</span><span class="k">def</span> <span class="n">bar</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative:</span> <span class="kt">Functor</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+</code></pre></div></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">callBar</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">bar</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+<span class="c1">// &lt;console&gt;:19: error: ambiguous implicit values:
+//  both value evidence$2 of type cats.Traverse[F]
+//  and value evidence$1 of type cats.Monad[F]
+//  match expected type cats.Functor[F]
+//        def callBar[F[_]: Monad: Traverse]: F[Int] = bar[F]
+//                                                        ^
+</span></code></pre></div></div>
+
+<p>What do we do? For <code class="highlighter-rouge">map</code> it is easy enough to arbitrarily pick one
+of the instances and call <code class="highlighter-rouge">map</code> on that. For function calls you
+can thread the implicit through explicitly.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">map</span><span class="o">(</span><span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">))(</span><span class="n">identity</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">callBar</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">bar</span><span class="o">(</span><span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">],</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span>
+                                       <span class="c1">// or bar(Monad[F], Traverse[F])
+</span></code></pre></div></div>
+
+<p>For <code class="highlighter-rouge">foo</code> it’s not <em>too</em> terrible. For <code class="highlighter-rouge">bar</code> though we are
+already starting to see it get unwieldy. While we could have passed in
+<code class="highlighter-rouge">Monad[F]</code> or <code class="highlighter-rouge">Traverse[F]</code> for the second parameter which corresponds
+to <code class="highlighter-rouge">bar</code>’s <code class="highlighter-rouge">Functor[F]</code> constraint, we can only pass in <code class="highlighter-rouge">Monad[F]</code> for
+the first parameter to satisfy <code class="highlighter-rouge">Applicative[F]</code>. Because implicit resolution
+can’t disambiguate the <code class="highlighter-rouge">Functor[F]</code> by itself we’ve had to pass it in
+explicitly, but by doing so we also have to pass in everything else explicitly!
+We become the implicit resolver. And this is with just two constraints, what
+if we had three, four, five?</p>
+
+<p>And the trouble doesn’t end there. We asked for a <code class="highlighter-rouge">Monad</code> so let’s try using
+a for comprehension.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">a</span> <span class="k">&lt;-</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+  <span class="n">b</span> <span class="k">&lt;-</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">].</span><span class="n">pure</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="c1">// &lt;console&gt;:21: error: value map is not a member of type parameter F[Int]
+//          b &lt;- Monad[F].pure(20)
+//                            ^
+</span></code></pre></div></div>
+
+<p>This is also broken! Because of how <a href="http://docs.scala-lang.org/tutorials/FAQ/yield.html" title="How does yield work?">for comprehensions</a> desugar, a
+<code class="highlighter-rouge">map</code> call is inevitable which leads to the for comprehension breaking down.
+This drastically reduces the ergonomics of doing anything monadic.</p>
+
+<p>As with <code class="highlighter-rouge">map</code> we could call <code class="highlighter-rouge">flatMap</code> on <code class="highlighter-rouge">Monad</code> directly, but this quickly
+becomes cumbersome.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Monad:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">M</span> <span class="k">=</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+  <span class="n">M</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="n">M</span><span class="o">.</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span> <span class="o">{</span> <span class="n">a</span> <span class="k">=&gt;</span>
+    <span class="n">M</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">M</span><span class="o">.</span><span class="n">pure</span><span class="o">(</span><span class="mi">20</span><span class="o">))</span> <span class="o">{</span> <span class="n">b</span> <span class="k">=&gt;</span>
+      <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>These same problems arise if you ask for two or more type classes that share a
+common superclass. Some examples of this:</p>
+
+<ul>
+  <li>Two or more of Monad{Error, Plus, Reader, State, Writer} (ambiguous Monad)
+    <ul>
+      <li>This prevents ergonomic use of <a href="https://hackage.haskell.org/package/mtl" title="mtl: Monad classes, using functional dependencies">“MTL-style”</a></li>
+    </ul>
+  </li>
+  <li>MonadPlus + Monad (ambiguous Monad)</li>
+  <li>Alternative + Traverse (ambiguous Functor)</li>
+  <li>MonadRec + MonadPlus (ambiguous Monad)</li>
+</ul>
+
+<p>This suggests every type class have only <strong>one</strong> subclass.
+That is quite limiting as is readily demonstrated by the extremely useful
+<code class="highlighter-rouge">Applicative</code> and <code class="highlighter-rouge">Traverse</code> type classes. What do we do?</p>
+
+<h2 id="solution-">Solution (?)</h2>
+
+<p>This more or less remains an open problem in Scala. There has been
+an interesting alternative prototyped in <a href="https://github.com/aloiscochard/scato" title="Scato">scato</a>, now making its way to
+<a href="https://github.com/scalaz/scalaz/tree/series/8.0.x" title="Scalaz 8">Scalaz 8</a>, that has received some positive feedback. The gist of the
+encoding completely throws out the notion of subtyping, encoding the hierarchy
+via members instead.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">pure</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">map2</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">C</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">C</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="c1">// Definitions elided for space
+</span><span class="k">trait</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">applicative</span><span class="k">:</span> <span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Because there is no relation between the type classes, there is no
+danger of implicit ambiguity. However, for that very reason, having a
+<code class="highlighter-rouge">Monad[F]</code> no longer implies having a <code class="highlighter-rouge">Functor[F]</code>. Not currently
+anyway. What we can do is use implicit conversions to re-encode the
+hierarchy.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">applicativeIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+
+<span class="k">implicit</span> <span class="k">def</span> <span class="n">traverseIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+</code></pre></div></div>
+
+<p>But now we’re back to square one.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Syntax for Functor
+</span><span class="k">implicit</span> <span class="k">class</span> <span class="nc">FunctorOps</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">F</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:18: error: value map is not a member of type parameter F[Int]
+//          implicitly[Applicative[F]].pure(10).map(identity)
+//                                              ^
+// &lt;console&gt;:18: error: missing argument list for method identity in object Predef
+// Unapplied methods are only converted to functions when a function type is expected.
+// You can make this conversion explicit by writing `identity _` or `identity(_)` instead of `identity`.
+//          implicitly[Applicative[F]].pure(10).map(identity)
+//                                                  ^
+</span></code></pre></div></div>
+
+<p>Since both implicits have equal priority, the compiler
+doesn’t know which one to pick. <strong>However</strong>, Scala has mechanisms for
+<a href="http://eed3si9n.com/revisiting-implicits-without-import-tax" title="revisiting implicits without import tax">prioritizing implicits</a> which solves the problem.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Prioritized</span> <span class="o">{</span> <span class="c1">// needed for tut, irrelevant to demonstration
+</span>  <span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+  <span class="o">}</span>
+
+  <span class="c1">// Prioritize implicit conversions - Functor only for brevity
+</span>  <span class="k">trait</span> <span class="nc">FunctorConversions1</span> <span class="o">{</span>
+    <span class="k">implicit</span> <span class="k">def</span> <span class="n">applicativeIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+      <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+  <span class="o">}</span>
+
+  <span class="k">trait</span> <span class="nc">FunctorConversions0</span> <span class="k">extends</span> <span class="nc">FunctorConversions1</span> <span class="o">{</span>
+    <span class="k">implicit</span> <span class="k">def</span> <span class="n">traverseIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+      <span class="n">implicitly</span><span class="o">[</span><span class="kt">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+  <span class="o">}</span>
+
+  <span class="k">object</span> <span class="nc">Functor</span> <span class="k">extends</span> <span class="nc">FunctorConversions0</span>
+
+  <span class="k">trait</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+    <span class="k">def</span> <span class="n">pure</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+    <span class="k">def</span> <span class="n">map2</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">C</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">C</span><span class="o">]</span>
+  <span class="o">}</span>
+
+  <span class="c1">// Definition elided for space
+</span>  <span class="k">trait</span> <span class="nc">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">}</span>
+
+  <span class="c1">// Syntax for Functor
+</span>  <span class="k">implicit</span> <span class="k">class</span> <span class="nc">FunctorOps</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">F</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span> <span class="c1">// we have Applicative
+</span>    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span>    <span class="c1">// we have Traverse
+</span>    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span>     <span class="c1">// we also have Functor!
+</span>
+    <span class="c1">// and we have syntax!
+</span>    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Because implicit resolution treats implicits in subtypes with higher priority,
+we can organize conversions appropriately to prevent ambiguity. Here this means
+that <code class="highlighter-rouge">applicativeIsFunctor</code> has lower priority than <code class="highlighter-rouge">traverseIsFunctor</code>, so
+when both <code class="highlighter-rouge">Applicative</code> and <code class="highlighter-rouge">Traverse</code> instances are in scope and the compiler
+is looking for a <code class="highlighter-rouge">Functor</code>, <code class="highlighter-rouge">traverseIsFunctor</code> wins.</p>
+
+<p>One thing to note is that we’ve baked the implicit hierarchy into <code class="highlighter-rouge">Functor</code>
+itself - in general this means all superclasses are aware of their subclasses.
+This is convenient from a usability perspective as companion objects are
+considered during implicit resolution, but from a modularity perspective is
+strange and in this case would prevent extensions to the hierarchy from external
+sources. This can be solved by removing the hierarchy from the superclasses
+(removing <code class="highlighter-rouge">Functor</code>’s <code class="highlighter-rouge">extends FunctorConversions0</code>), but comes at
+the cost of needing an import at use sites to bring the implicits into scope.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+  <span class="k">def</span> <span class="n">pure</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">map2</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">C</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">C</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">class</span> <span class="nc">FunctorOps</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">F</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="c1">// Separate from type class definitions
+</span>
+<span class="k">trait</span> <span class="nc">FunctorConversions1</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="n">applicativeIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">FunctorConversions0</span> <span class="k">extends</span> <span class="nc">FunctorConversions1</span> <span class="o">{</span>
+  <span class="k">implicit</span> <span class="k">def</span> <span class="n">traverseIsFunctor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="k">=</span>
+    <span class="n">implicitly</span><span class="o">[</span><span class="kt">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">functor</span>
+<span class="o">}</span>
+
+<span class="k">object</span> <span class="nc">Prelude</span> <span class="k">extends</span> <span class="nc">FunctorConversions0</span>
+</code></pre></div></div>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Need this import to get implicit conversions in scope
+</span><span class="k">import</span> <span class="nn">Prelude._</span>
+
+<span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]]</span>
+
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">Prelude</code> could be provided by the base library, but external libraries
+with their own type classes can still extend the hierarchy and provide
+their own <code class="highlighter-rouge">Prelude</code>.</p>
+
+<p>A more developed form can be seen in the <a href="https://github.com/scalaz/scalaz/blob/611d69f6b2bff3500181d0338dec9d6143d386ad/base/src/main/scala/BaseHierarchy.scala" title="Scalaz 8 base hierarchy">BaseHierarchy</a> of Scalaz 8.</p>
+
+<p>Do we win? I’m not sure. This encoding is certainly more cumbersome than what
+we started with, but solves the problems we ran into.</p>
+
+<h2 id="compromise">Compromise?</h2>
+
+<p>Another thing we can try is to make some compromise of the two. We can
+continue to use subtyping for a blessed subset of the hierarchy, and use
+members for any branching type class.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">class</span> <span class="nc">FunctorOps</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span>, <span class="kt">A</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">F</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">])</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">map</span><span class="o">[</span><span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="n">F</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">fa</span><span class="o">)(</span><span class="n">f</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">pure</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span>
+  <span class="k">def</span> <span class="n">map2</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">C</span><span class="o">](</span><span class="n">fa</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">fb</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="n">f</span><span class="k">:</span> <span class="o">(</span><span class="kt">A</span><span class="o">,</span> <span class="kt">B</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">C</span><span class="o">)</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">C</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="k">trait</span> <span class="nc">Monad</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="nc">extends</span> <span class="nc">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span>
+
+<span class="k">trait</span> <span class="nc">Traverse</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]]</span> <span class="o">{</span> <span class="k">def</span> <span class="n">functor</span><span class="k">:</span> <span class="kt">Functor</span><span class="o">[</span><span class="kt">F</span><span class="o">]</span> <span class="o">}</span>
+
+<span class="k">def</span> <span class="n">foo</span><span class="o">[</span><span class="kt">F</span><span class="o">[</span><span class="k">_</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Applicative:</span> <span class="kt">Traverse</span><span class="o">]</span><span class="k">:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span>
+  <span class="n">implicitly</span><span class="o">[</span><span class="kt">Applicative</span><span class="o">[</span><span class="kt">F</span><span class="o">]].</span><span class="n">pure</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>This works, but is even messier than the alternatives. We have to
+decide which type classes get to live in the subtype hierarchy and which are
+doomed (blessed?) to express the relationship with members. But maybe the
+pros outweigh the cons. Pull requests with this change have been filed for
+<a href="https://github.com/typelevel/cats/pull/1379" title="MTL fix for Cats">Cats</a> and <a href="https://github.com/scalaz/scalaz/pull/1262" title="MTL fix for Scalaz">Scalaz 7.3</a>.</p>
+
+<p>I’m not convinced that the story is over though. Maybe there’s another solution
+yet to be discovered.</p>
+
+<p>For further reading, there are open tickets for both <a href="https://github.com/typelevel/cats/issues/1210" title="Better accommodate MTL style">Cats</a> and
+<a href="https://github.com/scalaz/scalaz/issues/1110" title="MTL-style doesn't seem to work in Scala">Scalaz 7</a> documenting the subtyping problem. A discussion around
+the Scato encoding for Scalaz 8 can be found <a href="https://github.com/scalaz/scalaz/issues/1084" title="[scalaz8] Subtyping-free encoding for typeclasses">here</a>.</p>
+
+<p><em>This article was tested with Scala 2.11.8 and Cats 0.7.2 using <a href="https://github.com/tpolecat/tut" title="tut: doc/tutorial generator for scala">tut</a>.</em></p>
+
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/adelbertchang.jpeg" />
+      
+      <p>by Adelbert Chang
+    
+    on Sep 30, 2016</p>
+
+    
+  <a href="https://twitter.com/adelbertchang" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @adelbertchang</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/adelbertc" aria-label="Follow @adelbertc on GitHub">Follow @adelbertc</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

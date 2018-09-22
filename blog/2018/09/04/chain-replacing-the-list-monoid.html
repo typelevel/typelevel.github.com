@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Chain – Replacing the List Monoid</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Chain – Replacing the List Monoid</h2>
+
+  <p><code class="highlighter-rouge">List</code> is a great data type, it is very simple and easy to understand.
+It has very low overhead for the most important functions such as <code class="highlighter-rouge">fold</code> and <code class="highlighter-rouge">map</code> and also supports prepending a single element in constant time.</p>
+
+<p>Traversing a data structure with something like <code class="highlighter-rouge">Writer[List[Log], A]</code> or <code class="highlighter-rouge">ValidatedNel[Error, A]</code> is  powerful and allows us to precisely specify what kind of iteration we want to do while remaining succint.
+However, in terms of efficiency it’s a whole different story unfortunately.
+That is because both of these traversals make use of the <code class="highlighter-rouge">List</code> monoid (or the <code class="highlighter-rouge">NonEmptyList</code> semigroup), which by the nature of <code class="highlighter-rouge">List</code> is very inefficient.
+If you use <code class="highlighter-rouge">traverse</code> with a data structure with <code class="highlighter-rouge">n</code> elements and <code class="highlighter-rouge">Writer</code> or <code class="highlighter-rouge">Validated</code> as the <code class="highlighter-rouge">Applicative</code> type, you will end up with a runtime of <code class="highlighter-rouge">O(n^2)</code>.
+This is because, with <code class="highlighter-rouge">List</code>, appending a single element requires iterating over the entire data structure and therefore takes linear time.</p>
+
+<p>So <code class="highlighter-rouge">List</code> isn’t all that great for this use case, so let’s use <code class="highlighter-rouge">Vector</code> or <code class="highlighter-rouge">NonEmptyVector</code> instead, right?</p>
+
+<p>Well, <code class="highlighter-rouge">Vector</code> has its own problems and in this case it’s unfortunately not that much faster than <code class="highlighter-rouge">List</code> at all. You can check <a href="http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html#vectors-are-ok">this blog post</a> by Li Haoyi for some deeper insight into <code class="highlighter-rouge">Vector</code>’s issues.</p>
+
+<p>Because of this, it’s now time to welcome a new data structure to Cats.
+Meet <code class="highlighter-rouge">Chain</code> and its non-empty counterpart, <code class="highlighter-rouge">NonEmptyChain</code>.</p>
+
+<p>Available in the newest Cats 1.3.1 release, <code class="highlighter-rouge">Chain</code> evolved from what used to be <code class="highlighter-rouge">fs2.Catenable</code> and Erik Osheim’s <a href="https://github.com/non/chain">Chain</a> library.
+Similar to <code class="highlighter-rouge">List</code>, it is also a very simple data structure, but unlike <code class="highlighter-rouge">List</code> it supports both constant O(1) time <code class="highlighter-rouge">append</code> and <code class="highlighter-rouge">prepend</code>.
+This makes its <code class="highlighter-rouge">Monoid</code> instance super performant and a much better fit for usage with <code class="highlighter-rouge">Validated</code>,<code class="highlighter-rouge">Writer</code>, <code class="highlighter-rouge">Ior</code> or <code class="highlighter-rouge">Const</code>.</p>
+
+<p>To utilize this, we’ve added a bunch of <code class="highlighter-rouge">NonEmptyChain</code> shorthands in Cats 1.3 that mirror those that used <code class="highlighter-rouge">NonEmptyList</code> in earlier versions. These include type aliases like <code class="highlighter-rouge">ValidatedNec</code> or <code class="highlighter-rouge">IorNec</code> as well as helper functions like <code class="highlighter-rouge">groupByNec</code> or <code class="highlighter-rouge">Validated.invalidNec</code>.
+We hope that these make it easy for you to upgrade to the more efficient data structure and enjoy those benefits as soon as possible.</p>
+
+<p>To get a good idea of the performance improvements, here are some benchmarks that test monoidal append (higher score is better):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] Benchmark                                  Mode  Cnt   Score   Error  Units
+[info] CollectionMonoidBench.accumulateChain     thrpt   20  51.911 ± 7.453  ops/s
+[info] CollectionMonoidBench.accumulateList      thrpt   20   6.973 ± 0.781  ops/s
+[info] CollectionMonoidBench.accumulateVector    thrpt   20   6.304 ± 0.129  ops/s
+</code></pre></div></div>
+
+<p>As you can see accumulating things with <code class="highlighter-rouge">Chain</code> is more than 7 times faster than <code class="highlighter-rouge">List</code> and over 8 times faster than <code class="highlighter-rouge">Vector</code>.
+So appending is a lot more performant than the standard library collections, but what about operations like <code class="highlighter-rouge">map</code> or <code class="highlighter-rouge">fold</code>?
+Fortunately we’ve also benchmarked these (again, higher score is better):</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[info] Benchmark                           Mode  Cnt          Score         Error  Units
+[info] ChainBench.foldLeftLargeChain      thrpt   20        117.267 ±       1.815  ops/s
+[info] ChainBench.foldLeftLargeList       thrpt   20        135.954 ±       3.340  ops/s
+[info] ChainBench.foldLeftLargeVector     thrpt   20         61.613 ±       1.326  ops/s
+[info]
+[info] ChainBench.mapLargeChain           thrpt   20         59.379 ±       0.866  ops/s
+[info] ChainBench.mapLargeList            thrpt   20         66.729 ±       7.165  ops/s
+[info] ChainBench.mapLargeVector          thrpt   20         61.374 ±       2.004  ops/s
+</code></pre></div></div>
+
+<p>While not as dominant, <code class="highlighter-rouge">Chain</code> holds its ground fairly well.
+It won’t have the random access performance of something like <code class="highlighter-rouge">Vector</code>, but in a lot of other cases, <code class="highlighter-rouge">Chain</code> seems to outperform it quite handily.
+So if you don’t perform a lot of random access on your data structure, then you should be fine using <code class="highlighter-rouge">Chain</code> extensively instead.</p>
+
+<p>So next time you write any code that uses <code class="highlighter-rouge">List</code> or <code class="highlighter-rouge">Vector</code> as a <code class="highlighter-rouge">Monoid</code>, be sure to use <code class="highlighter-rouge">Chain</code> instead!</p>
+
+<p>The whole code for <code class="highlighter-rouge">Chain</code> and <code class="highlighter-rouge">NonEmptyChain</code> can be found <a href="https://github.com/typelevel/cats/blob/v1.3.0/core/src/main/scala/cats/data/Chain.scala">here</a> and <a href="https://github.com/typelevel/cats/blob/v1.3.0/core/src/main/scala/cats/data/NonEmptyChain.scala">here</a>.
+You can also check out the benchmarks <a href="https://github.com/typelevel/cats/blob/v1.3.0/bench/src/main/scala/cats/bench">here</a>.</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/lukajacobowitz.jpg" />
+      
+      <p>by Luka Jacobowitz
+    
+    on Sep 04, 2018</p>
+
+    
+  <a href="https://twitter.com/LukaJacobowitz" class="twitter-follow-button" data-show-count="false" data-dnt="true">Follow @LukaJacobowitz</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+  <a class="github-button" href="https://github.com/LukaJCB" aria-label="Follow @LukaJCB on GitHub">Follow @LukaJCB</a>
+  <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>

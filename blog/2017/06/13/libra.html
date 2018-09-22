@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Typelevel.scala | Compile time dimensional analysis with Libra</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.">
+
+
+    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
+    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
+    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/app.js"></script>
+  </head>
+  <body class="no-js ">
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            Typelevel.scala
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li >
+            <a href="/projects/">Projects</a>
+          </li>
+          <li >
+            <a href="/events/">Events</a>
+          </li>
+          <li  class="active" >
+            <a href="/blog/">Blog</a>
+          </li>
+          <li >
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="wrapper">
+      <div class="content post js-fade-in">
+  <h2>Compile time dimensional analysis with Libra</h2>
+
+  <h2 id="dimensional-analysis">Dimensional analysis</h2>
+
+<p>When we code, we code in numbers - doubles, floats and ints.  Those numbers always represent real world quantities.</p>
+
+<p>For example, the number of people in a room can be represented as an integer, as can the number of chairs.
+Adding people and chairs together gives a nonsensical result, but dividing the number of people by the number of chairs gives a useful indicator of how full up the room is.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">numberOfPeople</span> <span class="k">=</span> <span class="mi">9</span>
+<span class="k">val</span> <span class="n">numberOfChairs</span> <span class="k">=</span> <span class="mi">10</span>
+<span class="n">numberOfPeople</span> <span class="o">+</span> <span class="n">numberOfChairs</span> <span class="c1">// this is a bug
+</span><span class="n">numberOfPeople</span><span class="o">.</span><span class="n">toDouble</span> <span class="o">/</span> <span class="n">numberOfChairs</span><span class="o">.</span><span class="n">toDouble</span> <span class="c1">// this is useful
+</span></code></pre></div></div>
+
+<p>This is actually a form of dimensional analysis.  We’re mentally assigning the dimension <code class="highlighter-rouge">Person</code> to the quantity of people, and <code class="highlighter-rouge">Chair</code> to the quantity of chairs.  Dimensional analysis can be summarized in two laws.</p>
+
+<ol>
+  <li>Quantities can only be added or subtracted to quantities of the same dimension</li>
+  <li>Quantities of different dimensions can be multiplied or divided</li>
+</ol>
+
+<h3 id="why-is-it-important">Why is it important?</h3>
+
+<p>Ignoring the laws can result in serious problems. 
+Take the Mars Climate Orbiter, a $200 million space probe which successfully reached Mars after a year long voyage, but suddenly crashed into the Martian atmosphere on arrival.  Most components on the orbiter were using metric units, however a single component was sending instructions in Imperial units.  The other components did not detect this, and instead began a sudden descent causing the orbiter to burn up.  This was a simple unit conversion error!  It was a basic mistake that could have been easily avoided.  It should have been picked up during testing, or in the runtime validation layer.</p>
+
+<p>In fact, it could even have been caught at compile time.</p>
+
+<h3 id="compile-time-dimensional-analysis">Compile time dimensional analysis</h3>
+
+<p>We’re going to use a similar problem to demonstrate compile time dimensional analysis.
+To fit with the theme of rocket physics, we will tackle a rocket launch towards the distant constellation of Libra.
+We’ll begin by working through our calculation in doubles before adding compile time safety with dependent types and finally supporting compile time dimensional analysis with typeclass induction.</p>
+
+<h2 id="destination-alpha-librae">Destination: Alpha Librae</h2>
+
+<p>The star that we’re aiming for is Alpha Librae.  This is pretty far, so we can only send one very small person.  We have been given the following quantities to work with:</p>
+
+<ul>
+  <li>rocket mass of a small person - 40kg</li>
+  <li>fuel mass of a lot of fuel - 10<sup>4</sup>kg</li>
+  <li>exhaust speed of a decent fuel - 10<sup>6</sup>ms<sup>-1</sup></li>
+  <li>distance to Alpha Librae - 77 ly</li>
+</ul>
+
+<p>We want to calculate when the rocket will arrive.</p>
+
+<p>To do so, we’re going to make use of a formula known as the <em>Ideal Rocket Equation</em>.
+This calculates the speed of a rocket in ideal conditions.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="n">exhaustSpeed</span> <span class="o">*</span> <span class="n">log</span><span class="o">((</span><span class="n">rocketMass</span> <span class="o">+</span> <span class="n">fuelMass</span><span class="o">)</span> <span class="o">/</span> <span class="n">rocketMass</span><span class="o">)</span>
+</code></pre></div></div>
+<p>Once we have the speed, we can work out the travel time.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">time</span> <span class="k">=</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">rocketSpeed</span>
+</code></pre></div></div>
+
+<h3 id="plugging-the-numbers-in">Plugging the numbers in</h3>
+
+<p>Let’s do what we’re used to doing and use doubles:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="mf">1000000.0</span> <span class="o">*</span> <span class="n">log</span><span class="o">((</span><span class="mf">40.0</span> <span class="o">+</span> <span class="mf">10000.0</span><span class="o">)</span> <span class="o">/</span> <span class="mf">40.0</span><span class="o">)</span>
+<span class="c1">// rocketSpeed: Double = 5525452.939131783
+</span>
+<span class="k">val</span> <span class="n">time</span> <span class="k">=</span> <span class="mf">77.0</span> <span class="o">/</span> <span class="n">rocketSpeed</span>
+<span class="c1">// time: Double = 1.39355091515989E-5
+</span></code></pre></div></div>
+
+<p>Fantastic! We can get to Libra in less than a day!</p>
+
+<p>Unfortunately, this time estimate is too far off to be valid.  We can’t get to Libra that quickly at light speed, let alone rocket speed.  We’ve clearly made a mistake somewhere.  Instead of pouring over our code to find out where that is, let’s try and use the compiler.</p>
+
+<h3 id="using-types">Using types</h3>
+
+<p>We can add some type safety to this problem by using a case class to represent each quantity.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">A</code> represents the quantity dimension. So given the following dimensions:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">Kilogram</span>
+<span class="k">type</span> <span class="kt">Metre</span>
+<span class="k">type</span> <span class="kt">Second</span>
+<span class="k">type</span> <span class="kt">MetresPerSecond</span>
+<span class="k">type</span> <span class="kt">C</span>
+<span class="k">type</span> <span class="kt">LightYear</span>
+<span class="k">type</span> <span class="kt">Year</span>
+</code></pre></div></div>
+
+<p>We can create quantities:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketMass</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">Kilogram</span><span class="o">](</span><span class="mf">40.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">fuelMass</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">Kilogram</span><span class="o">](</span><span class="mf">10000.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">exhaust</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">MetresPerSecond</span><span class="o">](</span><span class="mf">1000000.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">distance</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">LightYear</span><span class="o">](</span><span class="mf">77.0</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>It’s important to note that these are <em>types</em>, not classes.  We never instantiate a <code class="highlighter-rouge">MetresPerSecond</code> - we’re just using it to differentiate between <code class="highlighter-rouge">Quantity[MetresPerSecond]</code> and <code class="highlighter-rouge">Quantity[Year]</code> at the type level.</p>
+
+<p>So how does this change the code?</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">MetresPerSecond</span><span class="o">](</span><span class="n">exhaust</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">log</span><span class="o">((</span><span class="n">rocketMass</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">fuelMass</span><span class="o">.</span><span class="n">value</span><span class="o">)</span> <span class="o">/</span> <span class="n">rocketMass</span><span class="o">.</span><span class="n">value</span><span class="o">))</span>
+<span class="c1">// rocketSpeed: Quantity[Types.MetresPerSecond] = Quantity(5525452.939131783)
+</span>
+<span class="k">val</span> <span class="n">time</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">Year</span><span class="o">](</span><span class="n">distance</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">rocketSpeed</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+<span class="c1">// time: Quantity[Types.Year] = Quantity(1.39355091515989E-5)
+</span></code></pre></div></div>
+
+<p>In short, it doesn’t. The code might be clearer, but we don’t know what the bug is.  This is because the compiler isn’t doing anything with the types we’ve added.</p>
+
+<h3 id="operating-on-quantities">Operating on quantities</h3>
+
+<p>We can encode our first law of addition at compile time by creating a function to add quantities:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">add</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">q0</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">q1</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">q0</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">q1</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>This ensures that quantities can only be added to other quantities of the same type.  Trying to add quantities of different types will result in a compilation error.</p>
+
+<p>A quantity can also be multiplied by a dimensionless scalar value to give a quantity of the same dimension.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">times</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">q</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">v</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">q</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>It would be great if we could divide quantities too.  Writing a divide function is more difficult:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">Magic</span><span class="o">](</span><span class="n">q0</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">q1</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">Magic</span><span class="o">]</span> <span class="k">=</span>
+  <span class="nc">Quantity</span><span class="o">[</span><span class="kt">Magic</span><span class="o">](</span><span class="n">q0</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">q1</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>There’s a clear problem with trying to do this.  When we divide a quantity by another, we don’t know what the <code class="highlighter-rouge">Magic</code> output type should be.
+The output type is dependent on what the input types are (for example, dividing <code class="highlighter-rouge">Metre</code> by <code class="highlighter-rouge">Second</code> should give <code class="highlighter-rouge">MetresPerSecond</code>).  The compiler needs a way of working out what the output is, provided that it knows the input types.</p>
+
+<h3 id="dependent-types">Dependent types</h3>
+
+<p>What we actually want is a dependent type.  A division operation should occur at the type level, taking two input types and supplying a dependent output type.
+We can create the trait <code class="highlighter-rouge">Divide</code> with a dependent output type:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Out</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We also need to define an <code class="highlighter-rouge">Aux</code> type alias.  This is known as the Aux pattern and makes it easier to refer to all three types at once.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">Divide</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">Out0</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Out0</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can create instances of this divide typeclass with different output types, so the output type is dependent on the value of the divide typeclass instance.</p>
+
+<p>When dividing, the compiler looks for this implicit typeclass instance and returns a quantity corresponding to the output type.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">q0</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">],</span> <span class="n">q1</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">d</span><span class="k">:</span> <span class="kt">Divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">d.Out</span><span class="o">]</span> <span class="k">=</span>
+  <span class="nc">Quantity</span><span class="o">[</span><span class="kt">d.Out</span><span class="o">](</span><span class="n">q0</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="n">q1</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>So given that we want to divide <code class="highlighter-rouge">A</code> by <code class="highlighter-rouge">B</code>, the compiler will look for a value of <code class="highlighter-rouge">Divide[A, B]</code> and find the <code class="highlighter-rouge">Out</code> type of it.  If no instance exists, the code doesn’t compile.</p>
+
+<p>We’ll need some more types to represent the result of a division:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">LightYearSecondsPerMetre</span>
+<span class="k">type</span> <span class="kt">MetresPerSecondPerC</span>
+<span class="k">type</span> <span class="kt">Dimensionless</span>
+</code></pre></div></div>
+
+<p>And we’ll need to write instances for all combinations of dimensions.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">val</span> <span class="n">kgDivideKg</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">Kilogram</span>, <span class="kt">Kilogram</span>, <span class="kt">Dimensionless</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">Kilogram</span>, <span class="kt">Kilogram</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Dimensionless</span> <span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">lyDivideC</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="kt">C</span>, <span class="kt">Year</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="kt">C</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Year</span> <span class="o">}</span>
+	
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">lyDivideMps</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="kt">MetresPerSecond</span>, <span class="kt">LightYearSecondsPerMetre</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="kt">MetresPerSecond</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">LightYearSecondsPerMetre</span> <span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">mpsDivideC</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">MetresPerSecond</span>, <span class="kt">C</span>, <span class="kt">MetresPerSecondPerC</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">MetresPerSecond</span>, <span class="kt">C</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">MetresPerSecondPerC</span> <span class="o">}</span>
+
+<span class="k">implicit</span> <span class="k">val</span> <span class="n">mpsDivideMpsPerC</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">MetresPerSecond</span>, <span class="kt">MetresPerSecondPerC</span>, <span class="kt">C</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">MetresPerSecond</span>, <span class="kt">MetresPerSecondPerC</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="n">C</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>And so on.</p>
+
+<p>Unfortunately, there are an infinite number of combinations, so there are an infinite number of instances.
+Nevertheless, let’s plough on with the ones we’ve written.  We can modify our rocket equation to use <code class="highlighter-rouge">add</code>, <code class="highlighter-rouge">times</code> and <code class="highlighter-rouge">divide</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="n">times</span><span class="o">(</span><span class="n">exhaust</span><span class="o">,</span> <span class="n">log</span><span class="o">(</span><span class="n">divide</span><span class="o">(</span><span class="n">add</span><span class="o">(</span><span class="n">rocketMass</span><span class="o">,</span> <span class="n">fuelMass</span><span class="o">),</span> <span class="n">rocketMass</span><span class="o">).</span><span class="n">value</span><span class="o">))</span>
+<span class="c1">// rocketSpeed: Quantity[Types.MetresPerSecond] = Quantity(5525452.939131783)
+</span>
+<span class="k">val</span> <span class="n">time</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">Year</span><span class="o">]</span> <span class="k">=</span> <span class="n">divide</span><span class="o">(</span><span class="n">distance</span><span class="o">,</span> <span class="n">rocketSpeed</span><span class="o">)</span>
+<span class="c1">// &lt;console&gt;:31: error: type mismatch;
+//  found   : Quantity[lyDivideMps.Out]
+//     (which expands to)  Quantity[MoreTypes.LightYearSecondsPerMetre]
+//  required: Quantity[Types.Year]
+//        val time: Quantity[Year] = divide(distance, rocketSpeed)
+//                                         ^
+</span></code></pre></div></div>
+
+<p>Great!  We’ve caught our bug!  The result was in <code class="highlighter-rouge">LightYearSecondsPerMetre</code>, not <code class="highlighter-rouge">Year</code>.  We made a unit conversion error, just like the Mars orbiter.</p>
+
+<p>We can now fix this by adding a conversion:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">metresPerSecondPerC</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">MetresPerSecondPerC</span><span class="o">]</span> <span class="k">=</span> <span class="n">divide</span><span class="o">(</span><span class="nc">Quantity</span><span class="o">[</span><span class="kt">MetresPerSecond</span><span class="o">](</span><span class="mf">300000000.0</span><span class="o">),</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">C</span><span class="o">](</span><span class="mf">1.0</span><span class="o">))</span>
+<span class="c1">// metresPerSecondPerC: Quantity[MoreTypes.MetresPerSecondPerC] = Quantity(3.0E8)
+</span>
+<span class="k">val</span> <span class="n">speedInC</span> <span class="k">=</span> <span class="n">divide</span><span class="o">(</span><span class="n">rocketSpeed</span><span class="o">,</span> <span class="n">metresPerSecondPerC</span><span class="o">)</span>
+<span class="c1">// speedInC: Quantity[mpsDivideMpsPerC.Out] = Quantity(0.018418176463772612)
+</span>
+<span class="k">val</span> <span class="n">time</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">Year</span><span class="o">]</span> <span class="k">=</span> <span class="n">divide</span><span class="o">(</span><span class="n">distance</span><span class="o">,</span> <span class="n">speedInC</span><span class="o">)</span>
+<span class="c1">// time: Quantity[Types.Year] = Quantity(4180.65274547967)
+</span></code></pre></div></div>
+
+<p>It seems like it’s going to take a lot longer than we hoped to get to Libra.  Perhaps it’s unwise to send a person.</p>
+
+<h2 id="automatic-derivation">Automatic derivation</h2>
+
+<p>We found the bug, but we needed to explicitly write out typeclass instances for every combination of dimensions.
+This might have worked for our small problem, but it just doesn’t scale in the long run.
+We need to figure out a way of deriving the typeclass instances automatically.
+To attempt this, we first need to generalize what a combination of dimensions actually is.</p>
+
+<h3 id="representing-dimensions">Representing dimensions</h3>
+
+<p>We can represent a combination of dimensions as a heterogeneous list (HList) of base dimensions.  HLists are defined in <a href="https://github.com/milessabin/shapeless">shapeless</a>, a cornerstone of most functional libraries, and can be thought of as a type level list.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">LightYearSeconds</span> <span class="o">=</span> <span class="nc">LightYear</span> <span class="o">::</span> <span class="nc">Second</span> <span class="o">::</span> <span class="nc">HNil</span>
+</code></pre></div></div>
+
+<p>This is good for multiples of dimensions, such as <code class="highlighter-rouge">LightYearSeconds</code>, but doesn’t represent combinations created from division, such as <code class="highlighter-rouge">MetresPerSecond</code>.
+To do this, we need some way of representing integer exponents as types. We can represent integers as types using Singleton types.  We actually need these singleton types in type position.  This is supported by a new feature present in <a href="https://typelevel.org/scala/">Typelevel Scala</a>, called <a href="http://docs.scala-lang.org/sips/pending/42.type.html">literal types</a>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">scalaOrganization</span> <span class="o">:=</span> <span class="s">"org.typelevel"</span>
+<span class="n">scalacOptions</span> <span class="o">+=</span> <span class="s">"-Yliteral-types"</span>
+</code></pre></div></div>
+
+<p>We need to represent a key value pair of dimension and integer exponent. We could use a <code class="highlighter-rouge">Tuple</code> for this, but will use a shapeless <code class="highlighter-rouge">FieldType</code> instead.  This is similar to a <code class="highlighter-rouge">Tuple</code>, but is more compatible with some of shapeless’s typeclasses.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">MetresPerSecond</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">[</span><span class="kt">Metre</span>, <span class="err">1</span><span class="o">]</span> <span class="o">::</span> <span class="nc">FieldType</span><span class="o">[</span><span class="kt">Second</span>, <span class="kt">-</span><span class="err">1</span><span class="o">]</span> <span class="o">::</span> <span class="nc">HNil</span>
+</code></pre></div></div>
+
+<p>It’s important to note that the number <code class="highlighter-rouge">1</code> above is a type, not a value.  Because it’s a type, the compiler can work with it.</p>
+
+<h3 id="operations-on-singleton-types">Operations on Singleton types</h3>
+
+<p>When we multiply and divide dimensions, we want to add or subtract from these exponents.</p>
+
+<p>We can use a library called <a href="https://github.com/fthomas/singleton-ops">singleton ops</a> to do this.  This provides us with type level integer operations using the <code class="highlighter-rouge">OpInt</code> typeclass:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">OpInt</span><span class="o">.</span><span class="nc">Aux</span><span class="o">[</span><span class="err">1</span> <span class="kt">+</span> <span class="err">2</span>, <span class="err">3</span><span class="o">]</span>
+<span class="nc">OpInt</span><span class="o">.</span><span class="nc">Aux</span><span class="o">[</span><span class="err">3</span> <span class="kt">*</span> <span class="err">2</span>, <span class="err">6</span><span class="o">]</span>
+</code></pre></div></div>
+<p>It also provides a convenient alias for integer singleton types</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="kt">XInt</span> <span class="o">=</span> <span class="nc">Singleton</span> <span class="k">with</span> <span class="nc">Int</span>
+</code></pre></div></div>
+
+<p>The type <code class="highlighter-rouge">1</code>, for example, is a subtype of <code class="highlighter-rouge">XInt</code>.</p>
+
+<h3 id="deriving-typeclass-instances">Deriving typeclass instances</h3>
+
+<p>We now need to automatically derive typeclass instances of <code class="highlighter-rouge">Divide</code>.
+To do this, we’re going to derive instances for <code class="highlighter-rouge">Invert</code> and <code class="highlighter-rouge">Multiply</code> operations first.
+Deriving <code class="highlighter-rouge">Divide</code> then becomes much simpler.</p>
+
+<p>The technique we’re going to use to automatically derive instances is known as typeclass induction.</p>
+
+<h3 id="typeclass-induction">Typeclass Induction</h3>
+
+<p>Aaron Levin gave a great introduction to induction in his talk earlier at the <a href="https://typelevel.org/event/2017-06-summit-copenhagen/">Typelevel Summit</a>.  In summary, you can derive an implicit typeclass instance for all cases by:</p>
+
+<ol>
+  <li>Providing it for the base case</li>
+  <li>Providing it for the n + 1 case, given that the n case is provided</li>
+</ol>
+
+<p>This is similar to the mathematical method of proof by induction.</p>
+
+<h3 id="invert">Invert</h3>
+
+<p>We’re first going to derive inductive typeclass instances for the <code class="highlighter-rouge">Invert</code> operation.
+Inverting a quantity raises it to the exponent of <code class="highlighter-rouge">-1</code>.  This means that the exponents of all dimensions must be negated.</p>
+
+<p>For example, the inverse of <code class="highlighter-rouge">FieldType[Metre, 1] :: HNil</code> is <code class="highlighter-rouge">FieldType[Metre, -1] :: HNil</code>.
+<code class="highlighter-rouge">Invert</code> takes one input type and returns one output type:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Invert</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span>
+	<span class="k">type</span> <span class="kt">Out</span>
+<span class="o">}</span>
+<span class="k">object</span> <span class="nc">Invert</span> <span class="o">{</span>
+	<span class="k">type</span> <span class="kt">Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">Out0</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Invert</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Out0</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>To inductively derive typeclass instances for inverting, we need to prove that:</p>
+
+<ol>
+  <li>We can derive an instance for <code class="highlighter-rouge">HNil</code> (the base case)</li>
+  <li>We can derive an instance for a non-empty HList (the n + 1 case), provided there is an existing instance for its tail (the n case)</li>
+</ol>
+
+<p>The base case operates on <code class="highlighter-rouge">HNil</code></p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">baseCase</span><span class="k">:</span> <span class="kt">Invert.Aux</span><span class="o">[</span><span class="kt">HNil</span>, <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Invert</span><span class="o">[</span><span class="kt">HNil</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">HNil</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The inductive case assumes that the tail has an instance, and derives an instance for the head by negating the exponent:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">inductiveCase</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">Exp</span> <span class="k">&lt;:</span> <span class="kt">XInt</span>, <span class="kt">NExp</span> <span class="k">&lt;:</span> <span class="kt">XInt</span>, <span class="kt">Tail</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, 
+  <span class="kt">OutTail</span> <span class="k">&lt;:</span> <span class="kt">HList</span><span class="o">](</span>
+    <span class="k">implicit</span> <span class="n">negateEv</span><span class="k">:</span> <span class="kt">OpInt.Aux</span><span class="o">[</span><span class="kt">Negate</span><span class="o">[</span><span class="kt">Exp</span><span class="o">]</span>, <span class="kt">NExp</span><span class="o">],</span>
+    <span class="n">tailEv</span><span class="k">:</span> <span class="kt">Invert.Aux</span><span class="o">[</span><span class="kt">Tail</span>, <span class="kt">OutTail</span><span class="o">]</span>
+<span class="o">)</span><span class="k">:</span> <span class="kt">Invert.Aux</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">Exp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">Tail</span>, <span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">NExp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">OutTail</span><span class="o">]</span> <span class="k">=</span>
+  <span class="k">new</span> <span class="nc">Invert</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">Exp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">Tail</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">NExp</span><span class="o">]</span> <span class="o">::</span> <span class="nc">OutTail</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>When the compiler looks for the implicit instance for <code class="highlighter-rouge">FieldType[Metre, 1] :: HNil</code>:</p>
+<ul>
+  <li>It finds that the <code class="highlighter-rouge">inductiveCase</code> method has a return type which fits the signature</li>
+  <li>It can find the required evidence <code class="highlighter-rouge">negateEv</code> for negating <code class="highlighter-rouge">1</code> from singleton ops</li>
+  <li>It requires evidence of an implicit instance for the tail <code class="highlighter-rouge">HNil</code></li>
+  <li>It finds that <code class="highlighter-rouge">baseCase</code> provides this evidence</li>
+</ul>
+
+<p>So in hunting for implicit typeclass instance for the whole list, the compiler goes and finds instances for the tail (the n case), right up until the base.  If we provide an inductive proof with a <code class="highlighter-rouge">baseCase</code> and an <code class="highlighter-rouge">inductiveCase</code>, we fit the bill for what the compiler needs.</p>
+
+<h3 id="multiply">Multiply</h3>
+
+<p>Now that we’ve tested a basic example of induction, we can go on to a more complex one.</p>
+
+<p>We want to multiply two HLists of dimensions together. This means that the exponents should be added.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">Multiply</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Out</span>
+<span class="o">}</span>
+<span class="k">object</span> <span class="nc">Multiply</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Aux</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span>, <span class="kt">Out0</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Multiply</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">]</span> <span class="o">{</span> <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Out0</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is harder to make inductive because there are two input lists involved.  Luckily, we only need to recurse over one of them, as we can pick dimensions from the other using shapeless’s <code class="highlighter-rouge">Selector</code>.  We will recurse over the left list and can pick elements from the right list.</p>
+
+<p>Our base case can be the same:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">baseCase</span><span class="k">:</span> <span class="kt">Multiply.Aux</span><span class="o">[</span><span class="kt">HNil</span>, <span class="kt">HNil</span>, <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Multiply</span><span class="o">[</span><span class="kt">HNil</span>, <span class="kt">HNil</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">HNil</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can define the inductive case using the following logic:</p>
+<ol>
+  <li>Pick the exponent in the right list corresponding to the head dimension in the left list</li>
+  <li>Add the left and right exponents together</li>
+  <li>Filter the term from the right list to get the remaining elements</li>
+  <li>Look for a typeclass instance for the left list tail and the remaining elements in the right list</li>
+</ol>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">inductiveCase</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">R</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, <span class="kt">LExp</span> <span class="k">&lt;:</span> <span class="kt">XInt</span> , <span class="kt">RExp</span> <span class="k">&lt;:</span> <span class="kt">XInt</span>, 
+  <span class="kt">OutExp</span> <span class="k">&lt;:</span> <span class="kt">XInt</span>, <span class="kt">RTail</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, <span class="kt">LTail</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, <span class="kt">OutTail</span> <span class="k">&lt;:</span> <span class="kt">HList</span><span class="o">](</span>
+  <span class="k">implicit</span> <span class="n">pickEv</span><span class="k">:</span> <span class="kt">Selector.Aux</span><span class="o">[</span><span class="kt">R</span>, <span class="kt">D</span>, <span class="kt">RExp</span><span class="o">],</span>
+  <span class="n">addEv</span><span class="k">:</span> <span class="kt">OpInt.Aux</span><span class="o">[</span><span class="kt">LExp</span> <span class="kt">+</span> <span class="kt">RExp</span>, <span class="kt">OutExp</span><span class="o">],</span>
+  <span class="n">filterEv</span><span class="k">:</span> <span class="kt">FilterNot.Aux</span><span class="o">[</span><span class="kt">R</span>, <span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">RExp</span><span class="o">]</span>, <span class="kt">RTail</span><span class="o">],</span>
+  <span class="n">tailEv</span><span class="k">:</span> <span class="kt">Multiply.Aux</span><span class="o">[</span><span class="kt">LTail</span>, <span class="kt">RTail</span>, <span class="kt">OutTail</span><span class="o">]</span>
+<span class="o">)</span><span class="k">:</span> <span class="kt">Multiply.Aux</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">LExp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">LTail</span>, <span class="kt">R</span>, <span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">OutExp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">OutTail</span><span class="o">]</span> <span class="k">=</span> 
+  <span class="k">new</span> <span class="nc">Multiply</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">LExp</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">LTail</span>, <span class="kt">R</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">[</span><span class="kt">D</span>, <span class="kt">OutExp</span><span class="o">]</span> <span class="o">::</span> <span class="nc">OutTail</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>When the compiler looks for an implicit instance of multiply for <code class="highlighter-rouge">FieldType[Metre, -1] :: HNil</code> and <code class="highlighter-rouge">FieldType[Metre, 3] :: HNil</code>:</p>
+
+<ul>
+  <li>It finds that the <code class="highlighter-rouge">inductiveCase</code> has a return type which fits the signature</li>
+  <li>Given that the head of the left list is <code class="highlighter-rouge">Metre</code>, it selects the exponent for <code class="highlighter-rouge">Metre</code> from the right list</li>
+  <li>It can find the evidence <code class="highlighter-rouge">addEv</code> to add the exponents <code class="highlighter-rouge">-1</code> and <code class="highlighter-rouge">3</code></li>
+  <li>It filters <code class="highlighter-rouge">Metre</code> from the right list to get <code class="highlighter-rouge">HNil</code></li>
+  <li>It requires evidence of an instance for  <code class="highlighter-rouge">HNil</code> and <code class="highlighter-rouge">HNil</code></li>
+  <li>This is provided by the base case</li>
+</ul>
+
+<p>The compiler can now find instances of <code class="highlighter-rouge">Multiply</code>, as long as a dimension appears in both the left and right lists.
+This can be extended to when a dimension doesn’t appear by writing a few more inductive cases.</p>
+
+<h3 id="divide">Divide</h3>
+
+<p>The reason we went to the effort of writing <code class="highlighter-rouge">Invert</code> and <code class="highlighter-rouge">Multiply</code> was to divide.
+Dividing a numerator by a denominator is as simple as inverting the denominator and multiplying it by the numerator.
+We can write this in a single non-inductive instance:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">def</span> <span class="n">divide</span><span class="o">[</span><span class="kt">L</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, <span class="kt">R</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, <span class="kt">RInverted</span> <span class="k">&lt;:</span> <span class="kt">HList</span>, 
+  <span class="kt">Divided</span> <span class="k">&lt;:</span> <span class="kt">HList</span><span class="o">](</span>
+  <span class="k">implicit</span> <span class="n">invertEv</span><span class="k">:</span> <span class="kt">Invert.Aux</span><span class="o">[</span><span class="kt">R</span>, <span class="kt">RInverted</span><span class="o">],</span>
+  <span class="n">multiplyEv</span><span class="k">:</span> <span class="kt">Multiply.Aux</span><span class="o">[</span><span class="kt">L</span>, <span class="kt">RInverted</span>, <span class="kt">Divided</span><span class="o">]</span>
+<span class="o">)</span><span class="k">:</span> <span class="kt">Divide.Aux</span><span class="o">[</span><span class="kt">L</span>, <span class="kt">R</span>, <span class="kt">Divided</span><span class="o">]</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Divide</span><span class="o">[</span><span class="kt">L</span>, <span class="kt">R</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">type</span> <span class="kt">Out</span> <span class="o">=</span> <span class="nc">Divided</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>That’s far simpler than the work we’ve done before - we’re just building on the typeclasses we wrote to do this.</p>
+
+<h3 id="automatically-derived-instances">Automatically derived instances</h3>
+
+<p>We can now have compile time dimensional analysis without writing out divide instances for every combination of dimensions:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketMass</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Kilogram</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">](</span><span class="mf">40.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">fuelMass</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Kilogram</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">](</span><span class="mf">10000.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">exhaust</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Metre</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">FieldType</span><span class="o">[</span><span class="kt">Second</span>, <span class="kt">-</span><span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">](</span><span class="mf">1000000.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">distance</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">](</span><span class="mf">77.0</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="n">times</span><span class="o">(</span><span class="n">exhaust</span><span class="o">,</span> <span class="n">log</span><span class="o">(</span><span class="n">divide</span><span class="o">(</span><span class="n">add</span><span class="o">(</span><span class="n">rocketMass</span><span class="o">,</span> <span class="n">fuelMass</span><span class="o">),</span> <span class="n">rocketMass</span><span class="o">).</span><span class="n">value</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">time</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Year</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="n">divide</span><span class="o">(</span><span class="n">distance</span><span class="o">,</span> <span class="n">rocketSpeed</span><span class="o">)</span>
+<span class="c1">// error: type mismatch; found: FieldType[LightYear, 1] :: FieldType[Metre, -1] :: FieldType[Second, 1] :: HNil; required: FieldType[Year, 1] :: HNil
+</span></code></pre></div></div>
+<p>Yay! We’ve solved the problem!  It looks a lot more verbose than what we started with, but we can tidy this up by using extension methods:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">final</span> <span class="k">class</span> <span class="nc">DoubleOps</span><span class="o">(</span><span class="k">val</span> <span class="n">d</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">ly</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">LightYear</span>,<span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">kg</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Kilogram</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">yr</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Year</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span>     <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">mps</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">Metre</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">FieldType</span><span class="o">[</span><span class="kt">Second</span>, <span class="kt">-</span><span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">c</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">LightYear</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">FieldType</span><span class="o">[</span><span class="kt">Year</span>, <span class="kt">-</span><span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>We can also add symbolic infix operators for <code class="highlighter-rouge">add</code>, <code class="highlighter-rouge">times</code> and <code class="highlighter-rouge">divide</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="o">+(</span><span class="n">q</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">value</span> <span class="o">+</span> <span class="n">q</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+  <span class="k">def</span> <span class="o">*(</span><span class="n">v</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">value</span> <span class="o">+</span> <span class="n">v</span><span class="o">)</span>
+  <span class="k">def</span> <span class="o">/[</span><span class="kt">B</span><span class="o">](</span><span class="n">q</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">B</span><span class="o">])(</span><span class="k">implicit</span> <span class="n">d</span><span class="k">:</span> <span class="kt">Divide</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">])</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">d.Out</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Quantity</span><span class="o">(</span><span class="n">value</span> <span class="o">/</span> <span class="n">q</span><span class="o">.</span><span class="n">value</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="weve-reached-libra">We’ve reached Libra!</h2>
+
+<p>We started with doubles:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="mf">1000000.0</span> <span class="o">*</span> <span class="n">log</span><span class="o">((</span><span class="mf">40.0</span> <span class="o">+</span> <span class="mf">10000.0</span><span class="o">)</span> <span class="o">/</span> <span class="mf">40.0</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">time</span> <span class="k">=</span> <span class="mf">77.0</span> <span class="o">/</span> <span class="n">rocketSpeed</span>
+</code></pre></div></div>
+<p>And we finished with compile time dimensional analysis:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">rocketSpeed</span> <span class="k">=</span> <span class="mf">1000000.0</span><span class="o">.</span><span class="n">mps</span> <span class="o">*</span> <span class="n">log</span><span class="o">(((</span><span class="mf">40.0</span><span class="o">.</span><span class="n">kg</span> <span class="o">+</span><span class="mf">10000.0</span><span class="o">.</span><span class="n">kg</span><span class="o">)</span> <span class="o">/</span><span class="mf">40.0</span><span class="o">.</span><span class="n">kg</span><span class="o">).</span><span class="n">value</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">speedConversion</span> <span class="k">=</span> <span class="mf">300000000.0</span><span class="o">.</span><span class="n">mps</span> <span class="o">/</span> <span class="mf">1.</span><span class="n">c</span> 
+<span class="k">val</span> <span class="n">speedInC</span> <span class="k">=</span> <span class="n">rocketSpeed</span> <span class="o">/</span> <span class="n">speedConversion</span>
+<span class="k">val</span> <span class="n">time</span> <span class="k">=</span> <span class="mf">77.0</span><span class="o">.</span><span class="n">ly</span> <span class="o">/</span> <span class="n">speedInC</span>
+<span class="c1">//time: Quantity[FieldType[Year, 1] :: HNil] = Quantity(4180.65274634)
+</span></code></pre></div></div>
+
+<p>The code isn’t more verbose - if anything, it’s more explanatory and just as easy to work with.</p>
+
+<h2 id="rolling-this-out-to-more-problems">Rolling this out to more problems</h2>
+
+<p>All we need to provide for the business logic of our rocket launch problem are the dimensions and <code class="highlighter-rouge">DoubleOps</code>.
+We could roll this out to any other problem.  Let’s say we wanted to do a currency conversion between <code class="highlighter-rouge">GBP</code> and <code class="highlighter-rouge">DKK</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">exchangeRate</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">DKK</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">FieldType</span><span class="o">[</span><span class="kt">GBP</span>, <span class="kt">-</span><span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> 
+   <span class="n">currentExchangeRate</span><span class="o">()</span> 
+<span class="nc">Val</span> <span class="n">krone</span><span class="k">:</span> <span class="kt">Quantity</span><span class="o">[</span><span class="kt">FieldType</span><span class="o">[</span><span class="kt">DKK</span>, <span class="err">1</span><span class="o">]</span> <span class="kt">::</span> <span class="kt">HNil</span><span class="o">]</span> <span class="k">=</span> <span class="mf">10.</span><span class="n">gbp</span> <span class="o">*</span> <span class="n">exchangeRate</span>
+</code></pre></div></div>
+
+<p>We get dimensional analysis for any problem domain out of the box!</p>
+
+<p>Most of the code we’ve written is library code.  In fact, it’s Libra code!  <a href="https://to-ithaca.github.io/libra/">Libra</a> is a dimensional analysis library based on typelevel induction.  It performs compile time dimensional analysis to any problem domain.  It also uses <a href="https://github.com/non/spire">spire</a> for its numeric typeclasses, so can be used for far more than just doubles.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It’s been a long way from the humble <code class="highlighter-rouge">Double</code>.  We started with basic types, explored dependent types, took a look at Typelevel Scala along the way, before finally ending up performing typelevel induction.  As a result, we’ve managed to achieve compile time dimensional analysis for any problem. If you’re curious about typelevel induction take a look at <a href="https://github.com/to-ithaca/libra">the Libra codebase</a> for more examples.  Enjoy!</p>
+
+
+<h2>Licensing</h2>
+<p>
+  Unless otherwise noted, all content is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.
+</p>
+
+
+  <div class="post__author js-fade-in">
+    
+    
+      
+        <img class="portrait" src="/img/media/speakers/zainabali.jpg" />
+      
+      <p>by Zainab Ali
+    
+    on Jun 13, 2017</p>
+
+    
+
+
+  </div>
+  <a class="btn text" href="/blog">Back to blog</a>
+
+  <br style="clear:both;">
+<div class="disqus-container" style="padding-top:1em;">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'typelevel'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+</div>
+
+
+
+    </div>
+
+    <div class="footer">
+      <div class="wrapper">
+        <p>Copyright &copy; 2013-2018 the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
+        <ul class="navigation">
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    
+  <!-- Salvattore.js for the masonry layout -->
+  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <!-- Salvattore.js for the masonry layout -->
+  </body>
+</html>
