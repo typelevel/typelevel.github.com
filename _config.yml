@@ -13,7 +13,7 @@ kramdown:
   syntax_highlighter: rouge
   hard_wrap: false
 highlighter: rouge
-exclude: ["README.md", "CNAME", "vendor", "src", "project/", "build.sbt", "posts", "Rakefile"]
+exclude: ["README.md", "vendor", "src", "project/", "build.sbt", "posts", "Rakefile"]
 include: ["_redirects", "_posts"]
 permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
