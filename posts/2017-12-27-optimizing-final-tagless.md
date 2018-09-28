@@ -176,7 +176,7 @@ def wrappedProgram(mouse: String) = new Program[KVStore, List[String]] {
 
 def optimizedProgram[F[_]: Applicative](mouse: String)(F: KVStore[F]): KVStore[F] => F[List[String]] = 
   optimize(wrappedProgram(mouse))(analysisInterpreter) { case (gets, puts) =>
-    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
+    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get).map(_.flatten)
   }
 ```
 
