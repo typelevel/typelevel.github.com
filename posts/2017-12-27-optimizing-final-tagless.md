@@ -259,11 +259,11 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
 
   def rebuild(gs: Set[String], interp: KVStore[Task]): Task[KVStore[Task]] =
     gs.toList
-      .parTraverse(key => interp.get(key).map(_.map(s => (key, s))))
-      .map(_.collect { case Some(v) => v }.toMap)
-      .map { m =>
+      .parTraverse(key => OptionT(interp.get(key)).map(s => (key, s)).value)
+      .map(_.flatten.toMap)
+      .map { map =>
         new KVStore[Task] {
-          override def get(key: String) = m.get(key) match {
+          override def get(key: String) = map.get(key) match {
             case Some(a) => Option(a).pure[Task]
             case None => interp.get(key)
           }
