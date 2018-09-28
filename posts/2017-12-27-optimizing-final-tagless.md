@@ -261,9 +261,9 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
     gs.toList
       .parTraverse(key => OptionT(interp.get(key)).map(s => (key, s)).value)
       .map(_.flatten.toMap)
-      .map { map =>
+      .map { m =>
         new KVStore[Task] {
-          override def get(key: String) = map.get(key) match {
+          override def get(key: String) = m.get(key) match {
             case v @ Some(_) => v.pure[Task]
             case None        => interp.get(key)
           }
