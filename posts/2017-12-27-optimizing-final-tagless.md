@@ -264,8 +264,8 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
       .map { map =>
         new KVStore[Task] {
           override def get(key: String) = map.get(key) match {
-            case Some(a) => Option(a).pure[Task]
-            case None => interp.get(key)
+            case v @ Some(_) => v.pure[Task]
+            case None        => interp.get(key)
           }
 
           def put(key: String, a: String): Task[Unit] = interp.put(key, a)
