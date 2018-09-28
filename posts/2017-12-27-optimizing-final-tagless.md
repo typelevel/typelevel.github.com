@@ -199,7 +199,7 @@ trait Optimizer[Alg[_[_]], F[_]] {
   def extract: Alg[Const[M, ?]]
   def rebuild(m: M, interpreter: Alg[F]): F[Alg[F]]
 
-  def optimize[A](p: Program[Alg, Applicative, A]): Alg[F] => F[A] = { interpreter =>
+  def optimize[A](p: Program[Alg, A]): Alg[F] => F[A] = { interpreter =>
     implicit val M: Monoid[M] = monoidM
     implicit val F: Monad[F] = monadF
 
