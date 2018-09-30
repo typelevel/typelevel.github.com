@@ -176,7 +176,7 @@ def wrappedProgram(mouse: String) = new Program[KVStore, List[String]] {
 
 def optimizedProgram[F[_]: Applicative](mouse: String)(F: KVStore[F]): KVStore[F] => F[List[String]] = 
   optimize(wrappedProgram(mouse))(analysisInterpreter) { case (gets, puts) =>
-    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get)
+    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverseFilter(F.get)
   }
 ```
 
@@ -199,7 +199,7 @@ trait Optimizer[Alg[_[_]], F[_]] {
   def extract: Alg[Const[M, ?]]
   def rebuild(m: M, interpreter: Alg[F]): F[Alg[F]]
 
-  def optimize[A](p: Program[Alg, Applicative, A]): Alg[F] => F[A] = { interpreter =>
+  def optimize[A](p: Program[Alg, A]): Alg[F] => F[A] = { interpreter =>
     implicit val M: Monoid[M] = monoidM
     implicit val F: Monad[F] = monadF
 
@@ -260,11 +260,11 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
   def rebuild(gs: Set[String], interp: KVStore[Task]): Task[KVStore[Task]] =
     gs.toList
       .parTraverse(key => interp.get(key).map(_.map(s => (key, s))))
-      .map(_.collect { case Some(v) => v }.toMap)
+      .map(_.flattenOption.toMap)
       .map { m =>
         new KVStore[Task] {
           override def get(key: String) = m.get(key) match {
-            case Some(a) => Option(a).pure[Task]
+            case v @ Some(_) => v.pure[Task]
             case None => interp.get(key)
           }
 
