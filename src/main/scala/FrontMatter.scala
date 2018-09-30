@@ -6,7 +6,12 @@ import java.io.File
 import java.net.URLClassLoader
 import scala.concurrent.{ExecutionContext, Future}
 
-case class Tut(scala: String, binaryScala: String, dependencies: List[String]) {
+case class Tut(
+  scala: String,
+  binaryScala: String,
+  dependencies: List[String],
+  scalacOptions: List[String]
+) {
 
   val tutResolution: Resolution = Resolution(Set(
     Dependency(Module("org.tpolecat", s"tut-core_$binaryScala"), BuildInfo.tutVersion)
@@ -31,7 +36,7 @@ case class Tut(scala: String, binaryScala: String, dependencies: List[String]) {
       ".*",
       "-classpath",
       libClasspath.mkString(File.pathSeparator)
-    )
+    ) ++ scalacOptions
 
     Future {
       tutMain.invoke(null, commandLine)
