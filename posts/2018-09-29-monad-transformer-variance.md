@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Monad Transformer Variance
+title: Variance of Monad Transformers
 
 meta:
   nav: blog
@@ -19,7 +19,7 @@ tut:
 
 ---
 
-A question that repeatedly pops up about [Cats](https://typelevel.org/cats/) is why monad transformer types like `OptionT` and `EitherT` aren't covariant like their `Option` and `Either` counterparts. This blog post aims to answer that question.
+A question that [repeatedly](https://github.com/typelevel/cats/issues/556) [pops](https://github.com/typelevel/cats/issues/2310) [up](https://github.com/typelevel/cats/issues/2538) about [Cats](https://typelevel.org/cats/) is why monad transformer types like `OptionT` and `EitherT` aren't covariant like their `Option` and `Either` counterparts. This blog post aims to answer that question.
 
 # Covariance
 
@@ -36,7 +36,7 @@ val optionNotFound: Option[NotFound] = Some(NotFound(42L))
 optionNotFound: Option[Err]
 ```
 
-Great. If you want to treat your `Option[Notfound]` as an `Option[Err]`, you are free to.
+Great. If you want to treat your `Option[NotFound]` as an `Option[Err]`, you are free to.
 
 This is made possible because the `Option` type is declared as `sealed abstract class Option[+A]`, where the `+` in front of the `A` means that it is covariant in the `A` type parameter.
 
@@ -99,7 +99,7 @@ def wrap[A](optionDecoder: Decoder[Option[A]]): CovariantOptionT[Decoder, A] =
   CovariantOptionT[Decoder, A](optionDecoder)
 ```
 
-In this particular case, `Decoder` _could_ be declared as covariant, but it's not. It would be unfortunate to lose the ability to use a monad transformer because a 3rd party library chose not to make a type covariant. And perhaps more importantly, sometimes you might want to use an `OptionT` with an `F` type that fundamentally isn't covariant in nature, such as `Monoid` (which is invariant) or `Order` (which is contravariant in nature and is declared as invariant in its type definition).
+In this particular case, `Decoder` _could_ be declared as covariant, but it's not. It would be unfortunate to lose the ability to use a monad transformer because a 3rd party library chose not to make a type covariant. And perhaps more importantly, sometimes you might want to use an `OptionT` with an `F` type that fundamentally isn't covariant in nature, such as `Monoid` (which is invariant) or `Order` (which is contravariant in nature and is declared as invariant in its type definition). Later in this post there will be some examples of using `OptionT` with a contravariant functor type (`Eq`) to gain acess to a handy `contramap` operation.
 
 # Workaround
 
@@ -161,3 +161,7 @@ val optionTEqErr: MyOptionT[Eq, Err] = optionTEqNotFound // only allowed in our 
 ```
 
 Because `MyOptionT` would be covariant in `A`, this `MyOptionT[Eq, NotFound]` could be treated as a `MyOptionT[Eq, Err]`. That is, it would have a `value` that is an `Eq[Option[Err]]`. But if you look at how we implemented our equality check, it's taking two `NotFound` instances and comparing their `id` fields. For a general `Err`, we have no guarantee that it will be a `NotFound` and that it will have an `id` field. We can't treat an `Eq[Option[NotFound]]` as an `Eq[Option[Err]]`, because `Eq` is contravariant and _not_ covariant in nature. The `covariant type A occurs in invariant position` message that the scala compiler gave us was the compiler correctly identifying that our code was unsound.
+
+# Conclusion
+
+There are some use-cases in which having monad transforers such as `OptionT` and `EitherT` be defined as covariant would be convenient, such as helping to nudge type inference in the right direction. However, if Cats were to define these types as covariant, it would eliminate the possibility of using them with non-covariant types. Forcing covariance in Cats would be overly restrictive, since third-party libraries might not declare types as covariant, and monad transformers can be useful for invariant a contravariant types. Luckily, methods such as `widen`, `leftWiden`, and `narrow` provide concise solutions to turning a monad transformer (or other type that forms a functor) into the type that you need.
