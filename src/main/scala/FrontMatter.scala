@@ -10,24 +10,34 @@ case class Tut(
   scala: String,
   binaryScala: String,
   dependencies: List[String],
-  scalacOptions: List[String]
+  scalacOptions: List[String],
+  plugins: List[String]
 ) {
 
   val tutResolution: Resolution = Resolution(Set(
     Dependency(Module("org.tpolecat", s"tut-core_$binaryScala"), BuildInfo.tutVersion)
   ))
 
-  val allDependencies: Set[Dependency] =
-    dependencies.map { dep =>
+  private def mkDependencies(strs: List[String]): Set[Dependency] =
+    strs.map { dep =>
       val (mod, v) = Parse.moduleVersion(dep, binaryScala).right.get
       Dependency(mod, v)
-    }.toSet + Dependency(Module("org.scala-lang", "scala-library"), scala)
+    }.toSet
+
+  val allDependencies: Set[Dependency] = mkDependencies(dependencies) + Dependency(Module("org.scala-lang", "scala-library"), scala)
 
   val libResolution: Resolution = Resolution(allDependencies)
+
+  val pluginExclusions = Set("scala-compiler", "scala-library", "scala-reflect").map(("org.scala-lang", _))
+
+  val pluginDependencies: Set[Dependency] = mkDependencies(plugins).map(_.copy(exclusions = pluginExclusions))
+
+  val pluginResolution: Resolution = Resolution(pluginDependencies)
 
   def invoke(file: File)(implicit ec: ExecutionContext): Future[Unit] = {
     val tutClasspath = resolve(tutResolution).get
     val libClasspath = resolve(libResolution).get
+    val pluginClasspath = resolve(pluginResolution).get
 
     val classLoader = new URLClassLoader(tutClasspath.map(_.toURI.toURL).toArray, null)
     val tutClass = classLoader.loadClass("tut.TutMain")
@@ -38,7 +48,8 @@ case class Tut(
       BuildInfo.tutOutput.toString,
       ".*",
       "-classpath",
-      libClasspath.mkString(File.pathSeparator)
+      libClasspath.mkString(File.pathSeparator),
+      s"-Xplugin:${pluginClasspath.mkString(File.pathSeparator)}"
     ) ++ scalacOptions
 
     Future {
