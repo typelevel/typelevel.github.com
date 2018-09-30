@@ -176,7 +176,7 @@ def wrappedProgram(mouse: String) = new Program[KVStore, List[String]] {
 
 def optimizedProgram[F[_]: Applicative](mouse: String)(F: KVStore[F]): KVStore[F] => F[List[String]] = 
   optimize(wrappedProgram(mouse))(analysisInterpreter) { case (gets, puts) =>
-    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverse(F.get).map(_.flatten)
+    puts.toList.traverse { case (k, v) => F.put(k, v) } *> gets.toList.traverseFilter(F.get)
   }
 ```
 
@@ -259,13 +259,13 @@ implicit val kvStoreTaskOptimizer: Optimizer[KVStore, Task] = new Optimizer[KVSt
 
   def rebuild(gs: Set[String], interp: KVStore[Task]): Task[KVStore[Task]] =
     gs.toList
-      .parTraverse(key => OptionT(interp.get(key)).map(s => (key, s)).value)
-      .map(_.flatten.toMap)
+      .parTraverse(key => interp.get(key).map(_.map(s => (key, s))))
+      .map(_.flattenOption.toMap)
       .map { m =>
         new KVStore[Task] {
           override def get(key: String) = m.get(key) match {
             case v @ Some(_) => v.pure[Task]
-            case None        => interp.get(key)
+            case None => interp.get(key)
           }
 
           def put(key: String, a: String): Task[Unit] = interp.put(key, a)
