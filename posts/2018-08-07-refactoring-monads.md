@@ -11,7 +11,6 @@ tut:
   scala: 2.12.6
   binaryScala: "2.12"
   dependencies:
-    - org.scala-lang:scala-library:2.12.6
     - org.typelevel::cats-core:1.2.0
 ---
 

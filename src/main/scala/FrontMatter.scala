@@ -17,10 +17,13 @@ case class Tut(
     Dependency(Module("org.tpolecat", s"tut-core_$binaryScala"), BuildInfo.tutVersion)
   ))
 
-  val libResolution: Resolution = Resolution(dependencies.map { dep =>
-    val (mod, v) = Parse.moduleVersion(dep, binaryScala).right.get
-    Dependency(mod, v)
-  }.toSet)
+  val allDependencies: Set[Dependency] =
+    dependencies.map { dep =>
+      val (mod, v) = Parse.moduleVersion(dep, binaryScala).right.get
+      Dependency(mod, v)
+    }.toSet + Dependency(Module("org.scala-lang", "scala-library"), scala)
+
+  val libResolution: Resolution = Resolution(allDependencies)
 
   def invoke(file: File)(implicit ec: ExecutionContext): Future[Unit] = {
     val tutClasspath = resolve(tutResolution).get
