@@ -10,6 +10,8 @@ meta:
 tut:
   scala: 2.12.7
   binaryScala: "2.12"
+  scalacOptions:
+    - "-Ypartial-unification"
   dependencies:
     - org.scala-lang:scala-library:2.12.7
     - org.typelevel::cats-core:1.4.0

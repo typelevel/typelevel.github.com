@@ -34,7 +34,6 @@ case class Tut(
       file.toString,
       BuildInfo.tutOutput.toString,
       ".*",
-      "-Ypartial-unification",
       "-classpath",
       libClasspath.mkString(File.pathSeparator)
     ) ++ scalacOptions
