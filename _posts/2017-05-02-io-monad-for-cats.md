@@ -11,7 +11,6 @@ tut:
   scala: 2.12.1
   binaryScala: "2.12"
   dependencies:
-    - org.scala-lang:scala-library:2.12.1
     - org.typelevel::cats-effect:0.1-0848c9b
 ---
 

@@ -10,8 +10,6 @@ meta:
 tut:
   scala: 2.12.1
   binaryScala: "2.12"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.1
 ---
 
 As programmers, we are very incautious with our use of the word

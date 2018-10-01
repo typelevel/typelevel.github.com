@@ -11,9 +11,7 @@ tut:
   scala: 2.12.4
   binaryScala: "2.12"
   dependencies:
-    - org.scala-lang:scala-library:2.12.4
     - org.typelevel::cats-core:1.1.0
-
 ---
 
 `MonadError` is a very old type class, hackage shows me it was originally added in 2001, long before I had ever begun doing functional programming, just check the [hackage page](https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-Error-Class.html).

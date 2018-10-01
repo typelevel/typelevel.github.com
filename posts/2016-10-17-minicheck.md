@@ -11,8 +11,6 @@ meta:
 tut:
   scala: 2.11.8
   binaryScala: "2.11"
-  dependencies:
-    - org.scala-lang:scala-library:2.11.8
 ---
 
 _[ScalaCheck](http://scalacheck.org/) is a well-known property-based testing library, based on ideas from Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck).
