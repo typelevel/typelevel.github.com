@@ -10,6 +10,10 @@ meta:
 tut:
   scala: 2.12.6
   binaryScala: "2.12"
+  scalacOptions:
+    - -Ypartial-unification
+  plugins:
+    - org.spire-math::kind-projector:0.9.8
   dependencies:
     - org.scala-lang:scala-library:2.12.6
     - org.typelevel::cats-core:1.1.0
