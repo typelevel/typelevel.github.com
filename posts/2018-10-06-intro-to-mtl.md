@@ -23,22 +23,22 @@ tut:
 ## A comprehensive introduction to MTL
 
 MTL is a library for composing monad transformers and making it easier to work with nested monad transformer stacks.
-It originates from the land of Haskell, but have made it into Scala a long time ago.
+It originates from the land of Haskell, but has made it into Scala a long time ago.
 For the longest time however, it was barely usable, because of a bunch of different Scala quirks coming together.
 With all this, I feel many have the impression that mtl is something scary, abstract or too complicated.
-In this blog post, I'll try my best to disprove this notion and demonstrate the simplicity and elegance of Cats-mtl. After reading this, I hope you'll agree that one should prefer `mtl`  whenever you need to compose more than one monad transformer nested inside of each other.
+In this blog post, I'll try my best to disprove this notion and demonstrate the simplicity and elegance of Cats-mtl. After reading this, I hope you'll agree that one should prefer `mtl`  whenever one needs to compose more than one monad transformer nested inside of each other.
 
 ## What is mtl?
 
-Mtl is an acronym and stands for Monad Transformer Library. It's main purpose it make it easier to work with nested monad transformers. It achieves this by encoding the effects of most common monad transformers as type classes.
+Mtl is an acronym and stands for *Monad Transformer Library*. Its main purpose it make it easier to work with nested monad transformers. It achieves this by encoding the effects of most common monad transformers as type classes.
 To understand what this means we'll first have to look at some of the common monad transformers.
 
-I'll go over some of the lesser known transformers `StateT` and `ReaderT` next, so feel free to skip this next section if you already know about `StateT` and `ReaderT`.
+I'll go over some of the lesser known transformers `StateT` and `ReaderT` next, so feel free to skip the next section if you already know about `StateT` and `ReaderT`.
 
 
 ### ReaderT
 
-`ReaderT` allows us *read* from an environment and create other values that depending on the environment.
+`ReaderT` allows us to *read* from an environment and create other values that depend on the environment.
 This can be especially useful for e.g. reading from some external configuration.
 Some like to describe this as the functional programming equivalent of dependency injection.
 
@@ -106,14 +106,14 @@ If you continue reading on, we'll go through how this problem can be mitigated u
 Like `ReaderT`, `StateT` also allows us to read from an environment.
 However, unlike `ReaderT`, it also allows us to write to that environment, making it capable of holding state, hence the name. 
 With `StateT` over `IO`, we can deliberately create programs that can access the outside world and also maintain mutable state.
-This is very powerful and, when used without carre, can give rise to similar problems as can be found in imperative programs that abuse global mutable state and unlimited side effects.
+This is very powerful and, when used without care, can give rise to similar problems as can be found in imperative programs that abuse global mutable state and unlimited side effects.
 Use `StateT` with care however, and it can be a really great tool for parts of your application that require some notion of mutable state.
 
 An example use case that comes up very often is the ability to send some requests to an external services and after each of those requests, use the resulting value to modify an environment with which you'll create the next request.
 This environment could be used for something simple like a cache, or something more complex like dynamically changing the parameters of each request, depening on what state the environment currently holds.
 Let's look at an abstract example, that showcases this ability.
 
-First, we'll define a function that call our external service which will take the environment into account.
+First, we'll define a function that calls our external service which will take the environment into account.
 
 ```tut:silent
 // Again we use String here for simplicity, in real code this would be something else
@@ -202,13 +202,13 @@ At it's core `ApplicativeAsk` just encodes the fact that we can ask for a value 
 Exactly like `ReaderT`, it also includes another type parameter `E`, that represents that environment.
 
 If you're wondering why `ApplicativeAsk` has an `Applicative` field instead of just extending from `Applicative`, that is to avoid implicit ambiguities that arise from having multiple subclasses of a given type (here `Applicative`) in scope implicitly.
-So in this case we favor composition over inheritancem as otherwise, we could not e.g. use `Monad` together with `ApplicativeAsk`.
+So in this case we favor composition over inheritance as otherwise, we could not e.g. use `Monad` together with `ApplicativeAsk`.
 You can read more about this issue in this excellent [blog post by Adelbert Chang](https://typelevel.org/blog/2016/09/30/subtype-typeclasses.html).
 
 ### Effect type classes
 
 `ApplicativeAsk` is an example for what is at the core of Cats-mtl.
-Cats-mtl provides type classes for most common effects which let you choose what kind of effects you need without commiting to a specific monad transformer stack.
+Cats-mtl provides type classes for most common effects which let you choose what kind of effects you need without committing to a specific monad transformer stack.
 
 Ideally, you'd write all your code using only an abstract type constructor `F[_]` with different type class constraints and then at the end run that code with a specific data type that is able to fulfill those constraints.
 
@@ -363,13 +363,12 @@ Then we can easily use that underlying instance to handle and raise the errors i
 Again, this means that if some part of transformer stack is capable of raising and handling errors, now your whole stack is.
 So if it includes `EitherT` somewhere, you can "lift" that capability. 
 
-There are different strategies for lifting these capabilities throughout your monad stack, but they'd be out of scope for this article. 
+There are different strategies for lifting these capabilities throughout your monad stack, but they'd be out of scope for this article.
 
-
-
-
+What this means for us, is that we never have to think about lifting individual monads through transformer stacks.
+The implicit search used by the type class mechanic takes care of it.
 Pretty neat, I think.
-Now contrast this, with the same program written without mtl:
+Now contrast this lack of lifting, with the same program written without mtl:
 
 ```tut:book
 type EitherApp[A] = EitherT[IO, AppError, A]
@@ -479,7 +478,7 @@ If you'd like to learn more about Cats-mtl, [check out its new website!](https:/
 ### Other mtl class instances
 
 Now I said that `ApplicativeAsk` is the type class encoding of `ReaderT`, but it's by no means the only one that can form an `ApplicativeAsk` instance.
-Monad transformer stacks are known to be quite unperformant, especially so on the JVM, so there are some alternate solutions. For example, one could use [the Arrows library](https://github.com/traneio/arrows) , which provide effect types with an input type in addition to its output type `Arrow[A, B]`. If you squint a bit, it's practically equivalent to a function `A => IO[B]` or `ReaderT[IO, A, B]`. At the same time, however, it can be substantially more performant.
+Monad transformer stacks are known to be quite unperformant, especially so on the JVM, so there are some alternate solutions. For example, one could use [the Arrows library](https://github.com/traneio/arrows), which provides effect types with an input type in addition to its output type `Arrow[A, B]`. If you squint a bit, it's practically equivalent to a function `A => IO[B]` or `ReaderT[IO, A, B]`. At the same time, however, it can be substantially more performant.
 
 Other examples include using something like `cats-effect`' `Ref` for `MonadState` (a working instance [can be found here](https://github.com/oleg-py/meow-mtl)), or using a bifunctor `IO` that includes an extra type parameter for the error type, i.e. `BIO[E, A]` instead of using `EitherT[IO, E, A]` (a WIP for cats-effect [can be found here](https://github.com/LukaJCB/cats-bio)).
 
