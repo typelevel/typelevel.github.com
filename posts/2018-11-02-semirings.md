@@ -13,12 +13,13 @@ tut:
   scalacOptions:
     - "-Ypartial-unification"
     - "-language:higherKinds"
+    - "-language:implicitConversions"
     - "-language:experimental.macros"
   dependencies:
     - com.github.mpilquist::simulacrum:0.14.0
   plugins:
     - org.spire-math::kind-projector:0.9.8
-    - org.scalamacros::paradise:2.1.0
+    - org.scalamacros:paradise_2.12.7:2.1.0
 ---
 
 
@@ -73,7 +74,7 @@ A `Semiring` is then just an `AdditiveMonoid` coupled with a `MultiplicativeMono
 
 To define it as a typeclass, we simply extend from both additive and multiplicative monoid:
 
-```scala
+```tut:silent
 @typeclass trait Semiring[A] extends MultiplicativeMonoid[A] with AdditiveMonoid[A]
 ```
 
