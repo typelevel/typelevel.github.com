@@ -18,7 +18,6 @@ tut:
   dependencies:
     - com.github.mpilquist::simulacrum:0.14.0
   plugins:
-    - org.spire-math::kind-projector:0.9.8
     - org.scalamacros:paradise_2.12.7:2.1.0
 ---
 
@@ -120,7 +119,7 @@ implicit def booleanNumberOfInhabitants = new PossibleInhabitants[Boolean] {
 }
 
 implicit def longNumberOfInhabitants = new PossibleInhabitants[Long] {
-  override def number: BigInt = BigInt(2).pow(64)
+  def number: BigInt = BigInt(2).pow(64)
 }
 
 implicit def intNumberOfInhabitants = new PossibleInhabitants[Int] {
@@ -363,7 +362,7 @@ Indeed, and we can show that quite easily.
 def empty[A]: F[A]
 ```
 
-This function uses an existential quantifier for `A`, which means that it works for any `A`, which then means that it cannot actually include any particular `A` and is therefore equivalent to `F[Nothing]` which is what we have for `AdditiveMonoidal`.
+This function uses a universal quantifier for `A`, which means that it works for any `A`, which then means that it cannot actually include any particular `A` and is therefore equivalent to `F[Nothing]` which is what we have for `AdditiveMonoidal`.
 
 Excellent, so we found counterparts for the additive type classes, and we already now that `MultiplicativeSemigroupal` is equivalent to `cats.Semigroupal`.
 So the only thing left to find out is the counterpart of `MultiplicativeMonoidal`.
@@ -401,7 +400,7 @@ We could also lift any `Semiring` back into `Alternative`, by using `Const`, jus
 
 To end this blog post, we'll have a very quick look on how to do that.
 
-```tut:silent
+```scala
 import Semiring.ops._
 
 case class Const[A, B](getConst: A)
