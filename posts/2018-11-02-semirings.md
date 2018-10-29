@@ -80,12 +80,12 @@ To define it as a typeclass, we simply extend from both additive and multiplicat
 Now we have a `Semiring` class, that we can use with the various numeric types like `Int`, `Long`, `BigDecimal` etc, but what else is a `Semiring` and why dedicate a whole blog post to it?
 
 It turns out a lot of interesting things can be `Semiring`s, including `Boolean`s, `Set`s and [animations](https://bkase.github.io/slides/algebra-driven-design/#/).
-One very interesting thing, I'd like to point out is the fact that we can form a Semiring homomorphism from types to their number of possible inhabitants.
+One very interesting thing, I'd like to point out is the fact that we can form a Semiring homomorphism from types to their cardinality.
 What the hell is that?
 Well, bear with me for a while and I'll try to explain step by step.
 
-Okay, so let's start with what I mean by possible inhabitants.
-Every type has a specific number of values it can possibly have, e.g. a `Boolean` has 2 possible inhabitants, because it has two possible values: `true` and `false`.
+Okay, so let's start with what I mean by cardinality.
+Every type has a specific number of values it can possibly have, e.g. a `Boolean` has a cardinality of 2, because it has two possible values: `true` and `false`.
 
 So `Boolean` has two, how many do other primitive types have?
 `Byte` has 2^8, `Short` has 2^16, `Int` has 2^32 and `Long` has 2^64.
@@ -99,14 +99,14 @@ That's neat, maybe we can encode this in actual code.
 We could create a type class that should be able to give us the number of inhabitants for any type we give it:
 
 ```tut:silent
-trait PossibleInhabitants[A] {
-  def number: BigInt
+trait Cardinality[A] {
+  def cardinality: BigInt
 }
 
-object PossibleInhabitants {
-  def of[A: PossibleInhabitants]: BigInt = apply[A].number
+object Cardinality {
+  def of[A: Cardinality]: BigInt = apply[A].cardinality
 
-  def apply[A: PossibleInhabitants]: PossibleInhabitants[A] = implicitly
+  def apply[A: Cardinality]: Cardinality[A] = implicitly
 }
 ```
 
@@ -114,43 +114,43 @@ Awesome!
 Now let's try to define some instances for this type class:
 
 ```tut:silent
-implicit def booleanNumberOfInhabitants = new PossibleInhabitants[Boolean] {
-  def number: BigInt = BigInt(2)
+implicit def booleanNumberOfInhabitants = new Cardinality[Boolean] {
+  def cardinality: BigInt = BigInt(2)
 }
 
-implicit def longNumberOfInhabitants = new PossibleInhabitants[Long] {
-  def number: BigInt = BigInt(2).pow(64)
+implicit def longNumberOfInhabitants = new Cardinality[Long] {
+  def cardinality: BigInt = BigInt(2).pow(64)
 }
 
-implicit def intNumberOfInhabitants = new PossibleInhabitants[Int] {
-  def number: BigInt = BigInt(2).pow(32)
+implicit def intNumberOfInhabitants = new Cardinality[Int] {
+  def cardinality: BigInt = BigInt(2).pow(32)
 }
 
-implicit def shortNumberOfInhabitants = new PossibleInhabitants[Short] {
-  def number: BigInt = BigInt(2).pow(16)
+implicit def shortNumberOfInhabitants = new Cardinality[Short] {
+  def cardinality: BigInt = BigInt(2).pow(16)
 }
 
-implicit def byteNumberOfInhabitants = new PossibleInhabitants[Byte] {
-  def number: BigInt = BigInt(2).pow(8)
+implicit def byteNumberOfInhabitants = new Cardinality[Byte] {
+  def cardinality: BigInt = BigInt(2).pow(8)
 }
 
-implicit def unitNumberOfInhabitants = new PossibleInhabitants[Unit] {
-  def number: BigInt = 1
+implicit def unitNumberOfInhabitants = new Cardinality[Unit] {
+  def cardinality: BigInt = 1
 }
 
-implicit def nothingNumberOfInhabitants = new PossibleInhabitants[Nothing] {
-  def number: BigInt = 0
+implicit def nothingNumberOfInhabitants = new Cardinality[Nothing] {
+  def cardinality: BigInt = 0
 }
 ```
 
 Alright, this is cool, let's try it out in the REPL!
 
 ```tut
-PossibleInhabitants.of[Int]
+Cardinality.of[Int]
 
-PossibleInhabitants.of[Unit]
+Cardinality.of[Unit]
 
-PossibleInhabitants.of[Long]
+Cardinality.of[Long]
 ```
 
 Cool, but this is all very simple, what about things like ADTs?
@@ -170,9 +170,9 @@ If you try this with other examples, you'll see that it's exactly true, awesome!
 Let's encode that fact in a type class instance:
 
 ```tut:silent
-implicit def tupleNumberOfInhabitants[A: PossibleInhabitants, B: PossibleInhabitants] =
-  new PossibleInhabitants[(A, B)] {
-    def number: BigInt = PossibleInhabitants[A].number * PossibleInhabitants[B].number
+implicit def tupleNumberOfInhabitants[A: Cardinality, B: Cardinality] =
+  new Cardinality[(A, B)] {
+    def cardinality: BigInt = Cardinality[A].cardinality * Cardinality[B].cardinality
   }
 ```
 
@@ -183,18 +183,18 @@ So `Either[Boolean, Byte]` should have `2 + 256 = 258` number of inhabitants. Co
 Let's also code that up and try and confirm what we learned in the REPL:
 
 ```tut:silent
-implicit def eitherNumberOfInhabitants[A: PossibleInhabitants, B: PossibleInhabitants] =
-  new PossibleInhabitants[Either[A, B]] {
-    def number: BigInt = PossibleInhabitants[A].number + PossibleInhabitants[B].number
+implicit def eitherNumberOfInhabitants[A: Cardinality, B: Cardinality] =
+  new Cardinality[Either[A, B]] {
+    def cardinality: BigInt = Cardinality[A].cardinality + Cardinality[B].cardinality
   }
 ```
 
 ```tut
-PossibleInhabitants.of[(Boolean, Byte)]
+Cardinality.of[(Boolean, Byte)]
 
-PossibleInhabitants.of[Either[Boolean, Byte]]
+Cardinality.of[Either[Boolean, Byte]]
 
-PossibleInhabitants.of[Either[Int, (Boolean, Unit)]]
+Cardinality.of[Either[Int, (Boolean, Unit)]]
 ```
 
 So using sum types seem to add the number of inhabitants whereas product types seem to multiply the number of inhabitants.
@@ -224,11 +224,11 @@ If `Unit` is `one` then a product type of any type with `Unit` should be equival
 Turns out, it is, we can easily go from something like `(Int, Unit)` to `Int` and back without losing anything and the number of inhabitants also stay exactly the same.
 
 ```tut
-PossibleInhabitants.of[Int]
+Cardinality.of[Int]
 
-PossibleInhabitants.of[(Unit, Int)]
+Cardinality.of[(Unit, Int)]
 
-PossibleInhabitants.of[(Unit, (Unit, Int))]
+Cardinality.of[(Unit, (Unit, Int))]
 ```
 
 Okay, not bad, but how about `Nothing`?
@@ -244,19 +244,19 @@ Let's see if this translates to the number of possible inhabitants as well:
 
 Additive Identity:
 ```scala
-scala> PossibleInhabitants.of[Either[Nothing, Boolean]]
+scala> Cardinality.of[Either[Nothing, Boolean]]
 res0: BigInt = 2
 
-scala> PossibleInhabitants.of[Either[Nothing, (Byte, Boolean)]]
+scala> Cardinality.of[Either[Nothing, (Byte, Boolean)]]
 res1: BigInt = 258
 ```
 
 Absorption:
 ```scala
-scala> PossibleInhabitants.of[(Nothing, Boolean)]
+scala> Cardinality.of[(Nothing, Boolean)]
 res0: BigInt = 0
 
-scala> PossibleInhabitants.of[(Nothing, Long)]
+scala> Cardinality.of[(Nothing, Long)]
 res1: BigInt = 0
 ```
 
@@ -267,9 +267,9 @@ If we think about it, these two types should also be exactly equivalent, woohoo!
 
 ```tut
 
-PossibleInhabitants.of[(Boolean, Either[Byte, Short])]
+Cardinality.of[(Boolean, Either[Byte, Short])]
 
-PossibleInhabitants.of[Either[(Boolean, Byte), (Boolean, Short)]]
+Cardinality.of[Either[(Boolean, Byte), (Boolean, Short)]]
 ```
 
 ## Higher kinded algebraic structures
