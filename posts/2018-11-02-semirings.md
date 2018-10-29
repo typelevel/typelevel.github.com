@@ -67,7 +67,7 @@ A `Semiring` is then just an `AdditiveMonoid` coupled with a `MultiplicativeMono
 
 1. Additive commutativity. i.e. `x + y === y + x`
 2. Right Distributivity. i.e. `(x + y) * z === (x * z) + (y * z)`
-3. Right Distributivity. i.e. `x * (y + z) === (x * y) + (x * z)`
+3. Left Distributivity. i.e. `x * (y + z) === (x * y) + (x * z)`
 4. Right absorption. i.e. `x * zero === zero`
 5. Left absorption. i.e. `zero * x === zero`
 
