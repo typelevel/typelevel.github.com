@@ -428,7 +428,7 @@ For me personally, realizing how all of this ties together and form some really 
 
 
 
-#### Addendum:
+## Addendum
 
 This article glossed over commutativity in the typeclass encodings.
 Commutativity is very important law for semrings and the code should show that.
