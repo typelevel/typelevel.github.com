@@ -80,7 +80,7 @@ To define it as a typeclass, we simply extend from both additive and multiplicat
 Now we have a `Semiring` class, that we can use with the various numeric types like `Int`, `Long`, `BigDecimal` etc, but what else is a `Semiring` and why dedicate a whole blog post to it?
 
 It turns out a lot of interesting things can be `Semiring`s, including `Boolean`s, `Set`s and [animations](https://bkase.github.io/slides/algebra-driven-design/#/).
-One very interesting thing, I'd like to point out is the fact that we can form a Semiring homomorphism from types to their number of possible inhabitants.
+One very interesting thing I'd like to point out is that we can form a `Semiring` homomorphism from types to their number of possible inhabitants.
 What the hell is that?
 Well, bear with me for a while and I'll try to explain step by step.
 
