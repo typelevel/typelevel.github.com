@@ -95,7 +95,7 @@ So far so good, that makes sense, what about something like `String`?
 `String` is an unbounded type and therefore theoretically has infinite number of different inhabitants (practically of course, we don't have infinite memory, so the actual number may vary depending on your system).
 
 For what other types can we determine their cardinality?
-Well a couple of easy ones are `Unit`, which has exactly one value it can take and also `Nothing`, which has 0 possible values.
+Well a couple of easy ones are `Unit`, which has exactly one value it can take and also `Nothing`, which is the "bottom" type in Scala, which means being a subtype of every possible other type and has 0 possible values. I.e you can never instantiate a value of `Nothing`, which gives it a cardinality of 0.
 
 That's neat, maybe we can encode this in actual code.
 We could create a type class that should be able to give us the number of inhabitants for any type we give it:
