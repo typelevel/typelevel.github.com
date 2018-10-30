@@ -40,7 +40,7 @@ These are called `Semiring`s (sometimes also `Rig`) and they are defined as two 
 Because they are often used to describe numeric data types we usually classify them as *Additive* and *Multiplicative*. 
 Just like with numeric types the laws of `Semiring` state that multiplication has to distribute over addition and multiplying a value with the additive identity (i.e. zero) absorbs the value and becomes zero.
 
-There are different ways to encode this as type classes and different libraries handle this differently, but let's look at how the `typelevel/algebra` project handles this.
+There are different ways to encode this as type classes and different libraries handle this differently, but let's look at how the [algebra](https://typelevel.org/algebra/) project handles this.
 Specifically, it defines a separate `AdditiveSemigroup` and `MultiplicativeSemigroup` and goes from there.
 
 ```tut:silent
