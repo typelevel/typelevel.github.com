@@ -23,13 +23,11 @@ tut:
 
 
 
-Ever wondered why sum types are called sum types?
+*Ever wondered why sum types are called sum types?
 Or maybe you've always wondered why the `<*>` operator uses exactly these symbols?
 And what do these things have to do with Semirings?
-Read this article and find out!
+Read this article and find out!*
 
-
-----
 We all know and use `Monoid`s and `Semigroup`s.
 They're super useful and come with properties that we can directly utilize to gain a higher level of abstractions at very little cost.
 Sometimes, however, certain types can have multiple `Monoid` or `Semigroup` instances.
@@ -65,13 +63,13 @@ import simulacrum._
 
 A `Semiring` is then just an `AdditiveMonoid` coupled with a `MultiplicativeMonoid` with the following extra laws:
 
-1. Additive commutativity. i.e. `x + y === y + x`
-2. Right Distributivity. i.e. `(x + y) * z === (x * z) + (y * z)`
-3. Right Distributivity. i.e. `x * (y + z) === (x * y) + (x * z)`
-4. Right absorption. i.e. `x * zero === zero`
-5. Left absorption. i.e. `zero * x === zero`
+1. Additive commutativity, i.e. `x + y === y + x`
+2. Right distributivity, i.e. `(x + y) * z === (x * z) + (y * z)`
+3. Left distributivity, i.e. `x * (y + z) === (x * y) + (x * z)`
+4. Right absorption, i.e. `x * zero === zero`
+5. Left absorption, i.e. `zero * x === zero`
 
-To define it as a typeclass, we simply extend from both additive and multiplicative monoid:
+To define it as a type class, we simply extend from both additive and multiplicative monoid:
 
 ```tut:silent
 @typeclass trait Semiring[A] extends MultiplicativeMonoid[A] with AdditiveMonoid[A]
@@ -84,15 +82,17 @@ One very interesting thing, I'd like to point out is the fact that we can form a
 What the hell is that?
 Well, bear with me for a while and I'll try to explain step by step.
 
+### Cardinality
+
 Okay, so let's start with what I mean by cardinality.
-Every type has a specific number of values it can possibly have, e.g. a `Boolean` has a cardinality of 2, because it has two possible values: `true` and `false`.
+Every type has a specific number of values it can possibly have, e.g. a `Boolean` has cardinality of 2, because it has two possible values: `true` and `false`.
 
 So `Boolean` has two, how many do other primitive types have?
 `Byte` has 2^8, `Short` has 2^16, `Int` has 2^32 and `Long` has 2^64.
 So far so good, that makes sense, what about something like `String`?
 `String` is an unbounded type and therefore theoretically has infinite number of different inhabitants (practically of course, we don't have infinite memory, so the actual number may vary depending on your system).
 
-For what other types can we determine their number of possible inhabitants? 
+For what other types can we determine their cardinality?
 Well a couple of easy ones are `Unit`, which has exactly one value it can take and also `Nothing`, which has 0 possible values.
 
 That's neat, maybe we can encode this in actual code.
@@ -114,31 +114,31 @@ Awesome!
 Now let's try to define some instances for this type class:
 
 ```tut:silent
-implicit def booleanNumberOfInhabitants = new Cardinality[Boolean] {
+implicit def booleanCardinality = new Cardinality[Boolean] {
   def cardinality: BigInt = BigInt(2)
 }
 
-implicit def longNumberOfInhabitants = new Cardinality[Long] {
+implicit def longCardinality = new Cardinality[Long] {
   def cardinality: BigInt = BigInt(2).pow(64)
 }
 
-implicit def intNumberOfInhabitants = new Cardinality[Int] {
+implicit def intCardinality = new Cardinality[Int] {
   def cardinality: BigInt = BigInt(2).pow(32)
 }
 
-implicit def shortNumberOfInhabitants = new Cardinality[Short] {
+implicit def shortCardinality = new Cardinality[Short] {
   def cardinality: BigInt = BigInt(2).pow(16)
 }
 
-implicit def byteNumberOfInhabitants = new Cardinality[Byte] {
+implicit def byteCardinality = new Cardinality[Byte] {
   def cardinality: BigInt = BigInt(2).pow(8)
 }
 
-implicit def unitNumberOfInhabitants = new Cardinality[Unit] {
+implicit def unitCardinality = new Cardinality[Unit] {
   def cardinality: BigInt = 1
 }
 
-implicit def nothingNumberOfInhabitants = new Cardinality[Nothing] {
+implicit def nothingCardinality = new Cardinality[Nothing] {
   def cardinality: BigInt = 0
 }
 ```
@@ -170,7 +170,7 @@ If you try this with other examples, you'll see that it's exactly true, awesome!
 Let's encode that fact in a type class instance:
 
 ```tut:silent
-implicit def tupleNumberOfInhabitants[A: Cardinality, B: Cardinality] =
+implicit def tupleCardinality[A: Cardinality, B: Cardinality] =
   new Cardinality[(A, B)] {
     def cardinality: BigInt = Cardinality[A].cardinality * Cardinality[B].cardinality
   }
@@ -183,7 +183,7 @@ So `Either[Boolean, Byte]` should have `2 + 256 = 258` number of inhabitants. Co
 Let's also code that up and try and confirm what we learned in the REPL:
 
 ```tut:silent
-implicit def eitherNumberOfInhabitants[A: Cardinality, B: Cardinality] =
+implicit def eitherCardinality[A: Cardinality, B: Cardinality] =
   new Cardinality[Either[A, B]] {
     def cardinality: BigInt = Cardinality[A].cardinality + Cardinality[B].cardinality
   }
@@ -202,7 +202,7 @@ That makes a lot of sense given their names!
 
 
 So what about that homomorphism we talked about earlier? 
-Well, a homomorphism is a structure-preserving mapping function between two algebraic structures of the same type (in this case a semiring).
+Well, a homomorphism is a structure-preserving mapping function between two algebraic structures of the same sort (in this case a semiring).
 
 This means that for any two values `x` and `y` and the homomorphism `f`, we get 
 1. `f(x * y) === f(x) * f(y)`
@@ -425,11 +425,12 @@ implicit def constSemiringal[A: Semiring] = new Semiringal[Const[A, ?]] {
 Rings and Semirings are very interesting algebraic structures and even if we didn't know about them we've probably been using them for quite some time.
 This blog post aimed to show how `Applicative` and `MonoidK` relate to `Monoid` and how algebraic data types form a semiring and how these algebraic structures are pervasive throughout Scala and other functional programming languages.
 For me personally, realizing how all of this ties together and form some really satisfying symmetry was really mind blowing and I hope this blog post can give some good insight on recognizing these interesting similarities throughout Cats and other libraries based on different mathematical abstractions.
+For further material on this topic, you can check out [this talk](https://www.youtube.com/watch?v=YScIPA8RbVE).
 
 
 
 #### Addendum:
 
-This article glossed over commutativity in the typeclass encodings.
+This article glossed over commutativity in the type class encodings.
 Commutativity is very important law for semrings and the code should show that.
 However, since this post already contained a lot of different type class definitions, adding extra commutative type class definitions that do nothing but add laws felt like it would distract from what is trying to be taught.
