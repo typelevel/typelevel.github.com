@@ -38,7 +38,7 @@ These are called `Semiring`s (sometimes also `Rig`) and they are defined as two 
 Because they are often used to describe numeric data types we usually classify them as *Additive* and *Multiplicative*. 
 Just like with numeric types the laws of `Semiring` state that multiplication has to distribute over addition and multiplying a value with the additive identity (i.e. zero) absorbs the value and becomes zero.
 
-There are different ways to encode this as type classes and different libraries handle this differently, but let's look at how the `typelevel/algebra` project handles this.
+There are different ways to encode this as type classes and different libraries handle this differently, but let's look at how the [algebra](https://typelevel.org/algebra/) project handles this.
 Specifically, it defines a separate `AdditiveSemigroup` and `MultiplicativeSemigroup` and goes from there.
 
 ```tut:silent
@@ -63,6 +63,7 @@ import simulacrum._
 
 A `Semiring` is then just an `AdditiveMonoid` coupled with a `MultiplicativeMonoid` with the following extra laws:
 
+
 1. Additive commutativity, i.e. `x + y === y + x`
 2. Right distributivity, i.e. `(x + y) * z === (x * z) + (y * z)`
 3. Left distributivity, i.e. `x * (y + z) === (x * y) + (x * z)`
@@ -78,7 +79,8 @@ To define it as a type class, we simply extend from both additive and multiplica
 Now we have a `Semiring` class, that we can use with the various numeric types like `Int`, `Long`, `BigDecimal` etc, but what else is a `Semiring` and why dedicate a whole blog post to it?
 
 It turns out a lot of interesting things can be `Semiring`s, including `Boolean`s, `Set`s and [animations](https://bkase.github.io/slides/algebra-driven-design/#/).
-One very interesting thing, I'd like to point out is the fact that we can form a Semiring homomorphism from types to their cardinality.
+
+One very interesting thing I'd like to point out is that we can form a `Semiring` homomorphism from types to their number of possible inhabitants.
 What the hell is that?
 Well, bear with me for a while and I'll try to explain step by step.
 
@@ -429,7 +431,7 @@ For further material on this topic, you can check out [this talk](https://www.yo
 
 
 
-#### Addendum:
+## Addendum
 
 This article glossed over commutativity in the type class encodings.
 Commutativity is very important law for semrings and the code should show that.
