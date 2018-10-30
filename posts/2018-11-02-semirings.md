@@ -349,7 +349,7 @@ These two functions are actually the same, and we can define them in terms of on
 def sum[A, B](fa: F[A], fb: F[B]): F[Either[A, B]]
 
 def combineK[A](x: F[A], y: F[A]): F[A] = {
-  val feaa: F[Either[A, A]]] = sum(x, y)
+  val feaa: F[Either[A, A]] = sum(x, y)
   feaa.imap(_.merge)(Right(_))
 }
 ```
