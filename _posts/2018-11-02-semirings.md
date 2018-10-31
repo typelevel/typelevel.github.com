@@ -28,8 +28,8 @@ Or maybe you've always wondered why the `<*>` operator uses exactly these symbol
 And what do these things have to do with Semirings?
 Read this article and find out!*
 
-We all know and use `Monoid`s and `Semigroup`s.
-They're super useful and come with properties that we can directly utilize to gain a higher level of abstractions at very little cost.
+Most of us know and use `Monoid`s and `Semigroup`s.
+They're super useful and come with properties that we can directly utilize to gain a higher level of abstractions at very little cost (In case you don't know about them, check out the [Cats documentation](https://typelevel.org/cats/typeclasses/semigroup.html) for some insight).
 Sometimes, however, certain types can have multiple `Monoid` or `Semigroup` instances.
 An easy example are the various numeric types where both multiplication and addition form two completely lawful monoid instances.
 
@@ -353,14 +353,15 @@ def <+>[A, B](fa: F[A], fb: F[B]): F[Either[A, B]]
 Oh! The `<+>` function already exists in cats as an alias for `combineK` which can be found on `SemigroupK`, but it's sort of different, it takes two `F[A]`s and returns an `F[A]`, not quite what we have here.
 
 Or is it?
-These two functions are actually the same, and we can define them in terms of one another as long as we have an invariant functor:
+These two functions are actually the same, and we can define them in terms of one another as long as we have a functor:
 
 ```scala
 def sum[A, B](fa: F[A], fb: F[B]): F[Either[A, B]]
 
 def combineK[A](x: F[A], y: F[A]): F[A] = {
+
   val feaa: F[Either[A, A]] = sum(x, y)
-  feaa.imap(_.merge)(Right(_))
+  feaa.map(_.merge)
 }
 ```
 
@@ -388,10 +389,10 @@ Well the answer is again using a functor:
 ```scala
 def unit: F[Unit]
 
-def pure(a: A): F[A] = unit.imap(_ => a)(_ => ())
+def pure(a: A): F[A] = unit.map(_ => a)
 ```
 
-`Applicative` uses a covariant functor, but as we've shown above it also works for invariant functors.
+`Applicative` uses a covariant functor, but in general we could use invariant and contravariant structures as well.
 `Applicative` also uses `<*>` as an alias for using `product` together with `map`, which seems like further evidence that our intuition that its a multiplicative type class is correct.
 
 So in cats right now we have `<+>` and `<*>`, is there also a type class that combines both similar to how `Semiring` combines `+` and `*`?
