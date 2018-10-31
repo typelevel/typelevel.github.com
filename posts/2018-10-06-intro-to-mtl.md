@@ -20,8 +20,6 @@ tut:
     - org.spire-math::kind-projector:0.9.8
 ---
 
-## A comprehensive introduction to MTL
-
 MTL is a library for composing monad transformers and making it easier to work with nested monad transformer stacks.
 It originates from the land of Haskell, but has made it into Scala a long time ago.
 For the longest time however, it was barely usable, because of a bunch of different Scala quirks coming together.
