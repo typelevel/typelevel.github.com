@@ -446,3 +446,9 @@ For further material on this topic, you can check out [this talk](https://www.yo
 This article glossed over commutativity in the type class encodings.
 Commutativity is very important law for semrings and the code should show that.
 However, since this post already contained a lot of different type class definitions, adding extra commutative type class definitions that do nothing but add laws felt like it would distract from what is trying to be taught.
+
+Moreover I focused on the cardinality of only the types we need, but for completeness' sake, we could also add instances of `Cardinality` for things like `A => B` , `Option[A]` or `Ior[A, B]`.
+These are:
+1. `Cardinality.of[A => B] === Cardinality.of[B].pow(Cardinality.of[A])`
+2. `Cardinality.of[Option[A]] === Cardinality.of[A] + 1`
+3. `Cardinality.of[Ior[A, B]] === Cardinality.of[A] + Cardinality.of[B] + Cardinality.of[A] * Cardinality.of[B]`
