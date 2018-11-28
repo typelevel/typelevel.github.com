@@ -33,9 +33,13 @@ This is a continuation of my [previous blog post](https://typelevel.org/blog/201
 
 I recently gave a 20 minutes talk on `classy optics` at the unconference of [Scale by the Bay](http://scale.bythebay.io/) where I also talked about this error handling technique and on my way back home I was still thinking of different ways of doing this. So, after some exploratory work, I came up with a few different alternatives.
 
+### Issues with first approach
+
 Something that made me cringe and that a few of my colleagues at work were not happy with was that the algebras had no association with the error type defined in `HttpErrorHandler[F, E]` so the type-safety was down to the programmer's discipline and in this case the compiler was not able to do much.
 
 When working with `EitherT[F, E, A]` or a bifunctor `IO[E, A]` we have a clear error type whereas by just relying on a single `F[A]` with a `MonadError[F, Throwable]` instance we lose this property. However, most of the time we only care about mapping a few business errors to Http responses if working on a REST API.
+
+#### Data types with error handling capabilities
 
 As of now I still prefer the latter for a number of reasons. Here's a comparison table of all the different approaches I can think of:
 
@@ -232,7 +236,7 @@ class PreUserRoutesMTL[F[_]: Sync](users: UserAlg[F, UserError]) extends Http4sD
 }
 ```
 
-Notice that in contrary to the example shown in the previous blog post there is now a relationship between `UserAlg` and `HttpErrorHandler`: the error type is the same. However, this is not enforced by the compiler. ***Can we be more strict about it?***
+Notice that in contrast to the example shown in the previous blog post there is now a relationship between `UserAlg` and `HttpErrorHandler`: the error type is the same. However, this is not enforced by the compiler. *Can we be more strict about it?*
 
 We could define a generic `Routes[F, E]`:
 
@@ -292,7 +296,7 @@ In most of my programs I tend to specify an `HttpRoute` per algebra. But what if
 
 Let's first define a new ADT of errors and a new algebra to illustrate the problem:
 
-**Catalog Error**
+#### Catalog Error
 
 ```tut:book:silent
 sealed trait CatalogError extends Exception
@@ -300,7 +304,7 @@ case class ItemAlreadyExists(item: String) extends CatalogError
 case class CatalogNotFound(id: Long) extends CatalogError
 ```
 
-**CatalogAlg**
+#### CatalogAlg
 
 ```tut:book:silent
 case class Item(name: String) extends AnyVal
@@ -311,7 +315,7 @@ abstract class CatalogAlg[F[_]: ErrorChannel[?[_], E], E <: Throwable] {
 }
 ```
 
-**HttpRoutes with multiple algebras**
+#### HttpRoutes with multiple algebras
 
 Here we have an `HttpRoutes` that makes use of two algebras with different error types:
 
@@ -334,7 +338,7 @@ class UserRoutesMTL[F[_]: Sync](
 
 It works! But it's not as elegant as we would like it to be and if we add more algebras this would quicky get out of control.
 
-***Can we generalize this pattern?***
+*Can we generalize this pattern?*
 
 ### Shapeless Coproduct
 
@@ -346,9 +350,9 @@ import shapeless._
 def routes[F[_]](implicit H: HttpErrorHandler[F, UserError :+: CatalogError :+: CNil]) = ???
 ```
 
-However, this doesn't compile because the error type is no longer a subtype of `Throwable`. It is now a `Coproduct` :/. But...
+However, this doesn't compile because the error type is no longer a subtype of `Throwable`. It is now a `Coproduct`.
 
-We might be able to derive an instance for a coproduct of errors if we have an instance of `HttpErrorHandler[F, E]` for each error type. Let's give it a try! We need to define a new typeclass `CoHttpErrorHandler`:
+But we might be able to derive an instance for a coproduct of errors if we have an instance of `HttpErrorHandler[F, E]` for each error type. Let's give it a try! We need to define a new typeclass `CoHttpErrorHandler`:
 
 ```tut:book:silent
 import shapeless._
@@ -393,7 +397,7 @@ Yay!!! Now this is more elegant and generic so we can re-use the same pattern in
 
 It's possible but in the case of coproducts we need to introduce some boilerplate...
 
-**CoRoutes**
+#### CoRoutes
 
 ```tut:book:silent
 abstract class CoRoutes[F[_], E <: Coproduct](implicit CH: CoHttpErrorHandler[F, E]) extends Http4sDsl[F] {
@@ -404,7 +408,7 @@ abstract class CoRoutes[F[_], E <: Coproduct](implicit CH: CoHttpErrorHandler[F,
 
 This one is pretty basic and similar to `Routes` defined before.
 
-**CoUserRoutes**
+#### CoUserRoutes
 
 ```tut:book:silent
 abstract class CoUserRoutes[
@@ -426,7 +430,7 @@ Here we have a couple of constraints:
 - `A` and `B` are the error types of the two algebras.
 - `E` needs to be a `Coproduct` of type `A :+: B :+: CNil`.
 
-**HttpRoutes with multiple algebras - Strict version**
+#### HttpRoutes with multiple algebras - Strict version
 
 ```tut:book:silent
 class CoUserRoutesMTL[F[_]: CoHttpErrorHandler[?[_], CustomError]: Sync](
@@ -453,4 +457,3 @@ Personally, I settle for the previous approach where the error type of the algeb
 
 I hope you have enjoyed this post and please do let me know if you have other ideas to keep broadening my understanding!
 
-Thanks for reading :)
