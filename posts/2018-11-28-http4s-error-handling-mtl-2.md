@@ -47,7 +47,7 @@ As of now I still prefer the latter for a number of reasons. Here's a comparison
 |------------|-------------------|----------|-------|-----------------------|
 | Concise code style | ✘ | ✔ | ✔ | ✔ |
 | Polymorphic code | ✔ | ✘ | ✔ | ✔ |
-| Performance overhead | **2x** | ✔ | ✔ | ✔ |
+| Performance overhead | **~2x** | ✔ | ✔ | ✔ |
 | Double error channel | ✔ | ✔ | ✘ | ✘ |
 
 With "Double error channel" I mean that we can signal failure in two different ways:
@@ -111,6 +111,8 @@ case class UserAlreadyExists(username: String) extends UserError
 case class UserNotFound(username: String) extends UserError
 case class InvalidUserAge(age: Int) extends UserError
 ```
+
+We want to make sure our ADT is a subtype of `Throwable` and indeed `Exception <: Throwable`.
 
 ### User Interpreter
 
