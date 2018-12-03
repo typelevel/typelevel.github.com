@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Http4s error handling with Cats Meow MTL
+title: Error handling in Http4s with classy optics
 
 meta:
   nav: blog
@@ -327,3 +327,7 @@ This is such an exciting time to be writing pure functional programming in Scala
 I hope you have enjoyed this post and please do let me know if you know of better ways to solve this problem in the comments!
 
 And last but not least I would like to thank all the friendly folks I hang out with in the `cats-effect`, `cats`, `fs2` and `http4s` Gitter channels for all the time and effort they put (*for free*) into making this community an amazing space.
+
+**UPDATE:** See the new article [Error handling in Http4s with classy optics – Part 2](https://typelevel.org/blog/2018/11/28/http4s-error-handling-mtl-2.html).
+
+
