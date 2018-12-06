@@ -47,7 +47,7 @@ The `IO[E, A]` model is naturally a better approach but I found out polymorphic 
 
 #### Errors vs Failures
 
-What I like about the `IO[E, A]` model is that we can distinguish between "business errors" and "unexpected failures" such as a database connection failure. Eg: when working on a REST API, most of the time we only care about mapping a few business errors to the appropriated http responses. The unexpected failures should be handled by someone else. In this case `http4s` will convert any failure into a response with code 500 (internal server error).
+What I like about the `IO[E, A]` model is that we can distinguish between "business errors" and "unexpected failures" such as a database connection failure. Eg: when working on a REST API, most of the time we only care about mapping a few business errors into the appropriated http responses. The unexpected failures should be handled by someone else. In this case `http4s` will convert any failure into a response with code 500 (internal server error).
 
 And this is exactly what we want to achieve here. Writing polymorphic code using `cats-effect` while trying to keep it as simple as possible. Here's an encoding I would like to explore further:
 
