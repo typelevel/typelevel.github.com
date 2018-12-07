@@ -37,25 +37,19 @@ I recently gave a 20 minutes talk on `classy optics` at the unconference of [Sca
 
 Something that made me cringe and that a few of my colleagues at work were not happy with was that the algebras had no association with the error type defined in `HttpErrorHandler[F, E]` so the type-safety was down to the programmer's discipline and in this case the compiler was not able to do much.
 
-When working with `EitherT[F, E, A]` or a bifunctor `IO[E, A]` we have a clear error type whereas by just relying on a single `F[A]` with a `MonadError[F, Throwable]` instance we lose this property. However, most of the time we only care about mapping a few business errors to Http responses if working on a REST API.
+When working with `EitherT[F, E, A]` or a bifunctor `IO[E, A]` we have a clear error type whereas by just relying on a single `F[A]` with a `MonadError[F, Throwable]` instance we lose this property. There are a few issues with the first though:
 
-#### Data types with error handling capabilities
+- It has a "double error channel", meaning that can report errors via `Left` or via its effect type `IO`.
+- As any other Monad Transformer in Scala, introduces a performance overhead due to the extra `flatMap` calls and extra allocations.
+- Code becomes cumbersome as we need to lift effects and pure `Either` values into the transformer stack.
 
-As of now I still prefer the latter for a number of reasons. Here's a comparison table of all the different approaches I can think of:
+The `IO[E, A]` model is naturally a better approach but I found out polymorphic code is more cumbersome than working with `F[A]`. Although this might change once [Cats Effect 2.0](https://github.com/typelevel/cats-effect/issues/321) is out, it'll take a while until we get there.
 
-|            | EitherT[IO, E, ?] | IO[E, A] | IO[A] | IO[A] + Classy Optics |
-|------------|-------------------|----------|-------|-----------------------|
-| Concise code style | ✘ | ✔ | ✔ | ✔ |
-| Polymorphic code | ✔ | ✘ | ✔ | ✔ |
-| Performance overhead | **~2x** | ✔ | ✔ | ✔ |
-| Double error channel | ✔ | ✔ | ✘ | ✘ |
+#### Errors vs Failures
 
-With "Double error channel" I mean that we can signal failure in two different ways:
+What I like about the `IO[E, A]` model is that we can distinguish between "business errors" and "unexpected failures" such as a database connection failure (learn more about `zio`'s error model [here](https://scalaz.github.io/scalaz-zio/)). Eg: when working on a REST API, most of the time we only care about mapping a few business errors into the appropriate http responses. The unexpected failures should be handled by someone else. In this case `http4s` will convert any failure into a response with code 500 (internal server error).
 
-- `EitherT[IO, E, ?]` can either fail with `Left` or with `IO.raiseError` (that can also be a caught exception).
-- `IO[E, A]` can either fail with an `E` or by throwing an exception when `A` was expected. This is called "unrecoverable" errors.
-
-And this is not a bad thing at all! It is like this by design and we can have the same property when writing polymorphic code using `cats-effect` while still keeping it simple. Here's one way:
+And this is exactly what we want to achieve here. Writing polymorphic code using `cats-effect` while trying to keep it as simple as possible. Here's an encoding I would like to explore further:
 
 ### Error Channel
 
