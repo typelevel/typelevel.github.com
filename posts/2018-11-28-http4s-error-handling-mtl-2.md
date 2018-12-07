@@ -43,11 +43,11 @@ When working with `EitherT[F, E, A]` or a bifunctor `IO[E, A]` we have a clear e
 - As any other Monad Transformer in Scala, introduces a performance overhead due to the extra `flatMap` calls and extra allocations.
 - Code becomes cumbersome as we need to lift effects and pure `Either` values into the transformer stack.
 
-The `IO[E, A]` model is naturally a better approach but I found out polymorphic code is more cumbersome than working with `F[A]`.
+The `IO[E, A]` model is naturally a better approach but I found out polymorphic code is more cumbersome than working with `F[A]`. Although this might change once [Cats Effect 2.0](https://github.com/typelevel/cats-effect/issues/321) is out, it'll take a while until we get there.
 
 #### Errors vs Failures
 
-What I like about the `IO[E, A]` model is that we can distinguish between "business errors" and "unexpected failures" such as a database connection failure. Eg: when working on a REST API, most of the time we only care about mapping a few business errors into the appropriated http responses. The unexpected failures should be handled by someone else. In this case `http4s` will convert any failure into a response with code 500 (internal server error).
+What I like about the `IO[E, A]` model is that we can distinguish between "business errors" and "unexpected failures" such as a database connection failure (learn more about `zio`'s error model [here](https://scalaz.github.io/scalaz-zio/)). Eg: when working on a REST API, most of the time we only care about mapping a few business errors into the appropriate http responses. The unexpected failures should be handled by someone else. In this case `http4s` will convert any failure into a response with code 500 (internal server error).
 
 And this is exactly what we want to achieve here. Writing polymorphic code using `cats-effect` while trying to keep it as simple as possible. Here's an encoding I would like to explore further:
 
