@@ -55,6 +55,22 @@ When making changes to a post, sbt will re-run tut, after which Jekyll will re-r
 
 When you send a pull request, [Netlify](https://www.netlify.com/) will automatically build a rendered preview of the site.
 
+#### Running in Docker
+
+Build the docker image:
+
+    docker build . -t typelevel-blog
+    
+Start the container like this:
+
+    docker run -it -v $(pwd):/app -p 4000:4000 typelevel-blog bin/bash
+    
+From inside the container run:
+
+    cd /app && rake init && rake build && rake dev
+    
+On your host browse to `http://localhost:4000`.
+
 ## License
 
 Two different licenses apply:
