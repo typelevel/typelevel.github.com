@@ -33,3 +33,5 @@ collections:
     layout: event
   projects:
     output: false
+
+host: 0.0.0.0
