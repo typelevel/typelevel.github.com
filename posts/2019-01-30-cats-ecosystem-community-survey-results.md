@@ -9,9 +9,9 @@ meta:
 
 ---
 
-Overall we received 588 responses over the course of 30 days. These feedbacks are essential for us to make informed decisions on our 2019 plan. Thank you, everyone, who participated. 
+Overall we received 588 responses over the course of 30 days. This feedback is essential for us to make informed decisions on our 2019 plan. Thank you, everyone, who participated. 
 
-As promised, here are the results, as well as some quick read from us. 
+As promised, here are the results, as well as some quick reads from us. 
 
 <br /><br /><br />
 ### Q: How long have you been using the Cats ecosystem (including Cats and Cats ecosystem libraries)?
@@ -28,13 +28,13 @@ As promised, here are the results, as well as some quick read from us.
 ![2](/img/media/2018-survey/JjK3muU.png)
 
 #### Our read:
-83% of users gave the 4+ ratings on the welcomeness of the community. This is a promising sign. We should aim for having more 5 ratings (currently at 42.5%) and less 3- ones. 
+83% of users gave the 4+ ratings on the welcomeness of the community. This is a promising sign. We should aim for having more 5 ratings (currently at 42.5%) and fewer 3- ones. 
 
 <br /><br /><br />
 ### Q: How can we be more welcoming?
 
 #### Responses summary: 
-We received 92 responses on this free form question. The vast majority, 90+%, of them suggested that more documentation, tutorial, and real-world examples will help them feel more welcome. Some of them suggested that the learning curve could be less intimidating to them if there are more introductory resources. 
+We received 92 responses on this free-form question. The vast majority, 90+%, of them suggested that more documentation, tutorials, and real-world examples would help them feel more welcome. Some of them suggested that the learning curve could be less intimidating to them if there were more introductory resources. 
 
 #### Our read: 
 
@@ -76,7 +76,7 @@ The free form `other` responses can be summarized as
 
 
 #### Our read:
-Overall the experience is mostly positive for our users. 73% of them believe there is space for improvements - they gave a rating less than 5. Again, more documentation and training will help most users. There are also 25% of users are looking for more features. 
+Overall the experience is mostly positive for our users. 73% of them believe there is space for improvements - they gave a rating less than 5. Again, more documentation and training will help most users. 25% of users are looking for more features. 
 
 <br /><br /><br />
 ### Q: If you are contributing to Cats, thank you! How is your overall experience contributing?
@@ -116,7 +116,7 @@ The contributing experience is good/okay but not really great. There is still a 
 ![6](/img/media/2018-survey/slzrAHi.png)
 
 #### Our read: 
-The community is split on this one. There are slightly more users that prefer a longer cadence (18-36 or in sync with Scala minor version) than those who prefer a faster one (12-18 months). 
+The community is split on this one. There are slightly more users that prefer a longer cadence (18-36 or in sync with Scala minor version) than those who prefer a shorter one (12-18 months). 
 
 <br /><br /><br />
 ### Q: How are you using cats-laws?
@@ -136,7 +136,7 @@ Breaking Cats-laws's backward compatibility might be blockers for roughly 6% of 
 #### Results:
 ![6](/img/media/2018-survey/xGjcmj6.png)
 #### Our Read: 
-While most people are neutral on this one, there are significantly more users (14.2%) that would benefit from a Scalacheck 1.14 upgrade than those that would suffer (1%). 
+While most people are neutral on this one, there are significantly more users (14.2%) who would benefit from a Scalacheck 1.14 upgrade than those who would suffer (1%). 
 
 
 <br /><br /><br />
