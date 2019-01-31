@@ -93,7 +93,7 @@ The contributing experience is good/okay but not really great. There is still a 
 
 
 <br /><br /><br />
-### For your applications, what would be a good time line for the Cats ecosystem to drop Scala 2.11 support?
+### Q: For your applications, what would be a good time line for the Cats ecosystem to drop Scala 2.11 support?
 #### Results:
 ![6](/img/media/2018-survey/C5OdxEK.png)
 
