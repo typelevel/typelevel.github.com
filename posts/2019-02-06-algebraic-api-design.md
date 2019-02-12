@@ -24,22 +24,21 @@ In this post we are going to explore the concept of *algebraic API design* which
 
 An API in this context describes the types and operations that a module exposes to the user.
 
-SameGame is a deterministic single player game with perfect information. It has a game-tree complexity of $10^{82}$. In other words it is extremely hard to solve. Exhaustive search strategies and traditional path finding algorithms do not perform well. Monte Carlo tree search which is based on random sampling on the other hand is a promising approach.
+SameGame is a deterministic single player game with perfect information. It has a game-tree complexity of $10^{82}$. In other words it is extremely hard to solve. Exhaustive search strategies and traditional path finding algorithms do not perform well. Monte Carlo tree search which is based on random sampling on the other hand is a promising approach. We will go into more details on these concepts below.
 
 But how can we implement this with functional programming? How can we express algorithms that are based on randomness, mutable state, and side effects in a purely functional way?
 
-All the code in this post is interpreted with [tut](https://github.com/tpolecat/tut) to make sure everything type-checks so that the reader gets a complete picture rather than simplistic code samples that don't actually work. As a downside some of the code is quite lengthy. Please note that it is not required to read and understand each single line.
+All the code in this post is interpreted with [tut](https://github.com/tpolecat/tut) to make sure everything type-checks so that the reader gets a complete picture rather than simplistic code samples that don't actually work. As a downside some of the code is quite lengthy. Please note that it is not required to read and understand every single line.
 
 Let's have a quick recap on the definition of algebraic structures and how they relate to programming and domain modeling.
 
-### Algebraic Structures
+## Algebraic Structures
 
-An algebraic structure consists of one or more sets together with one or more operators which are required to satisfy
-certain axioms:
-
-- One or more *sets*
-- A set of *operators*
-- A collection of *axioms*
+An algebraic structure consists of:
+ 
+* One or more *sets*
+* A set of *operators*
+* A collection of *axioms* (which the operators are required to satisfy)
 
 A prototypical example of an algebraic structure from mathematics is a group. A concrete example of a group is the set $\mathbb{Z}$ of integers together with the addition operator denoted as $(\mathbb{Z}, +)$ that satisfy the group axioms.
 
@@ -52,7 +51,7 @@ A group can be defined in an abstract way like this:
   - Identity: $\exists e \in G: \forall a \in G:e \circ a = a = a \circ e$
   - Inverse: $\forall a \in G: \exists b \in G:a \circ b = e = b \circ a$
 
-### Programming
+## Programming
 
 There is an analogy in programming where:
 
@@ -95,7 +94,7 @@ The verification of the `Group` properties for the instance we created can be do
 
 Please note that, while property-based testing is a very powerful tool, it is not the only way to verify properties. There are other methods like dependant types, formal verification, or example-based testing. However, property-based testing works really well and has a huge return on investment.
 
-### Domain Modeling
+## Domain Modeling
 
 Algebraic design is not exclusively applicable to modeling algebraic structures from mathematics such as groups from the example above. We can use exactly the same technique to model the API of any domain.
 
@@ -113,7 +112,7 @@ Here is an overview of how algebraic structures, programming, and domain modelin
 | Operators | Functions | Business behavior |
 | Axioms | Properties | Business rules |
 
-### Programs
+## Programs
 
 Once we've defined the algebras that model the API of our domain, we can describe *programs* in terms of one or more of these algebras. Algebras in programming are also sometimes referred to as embedded domain specific languages (EDSLs). Programs that are composed of algebras or EDSLs are parametrically polymorphic and they know nothing about the algebras' concrete implementations other than that they satisfy certain properties.
 
@@ -125,7 +124,7 @@ We could define a program as follows:
 
 > A program is a pure polymorphic function that uses algebras by combining their operators with other input parameters to produce a pure value.
 
-### Interpreters
+## Interpreters
 
 The concrete implementation of an algebra is also know as the *interpreter* of the algebra. In the example from above the value `group` of type `Group[Int]` is an interpreter of the algebra of `Group[A]`.
 
@@ -133,9 +132,9 @@ This might all sound a bit abstract and theoretical at first. In fact, talking a
 
 Let's look at a concrete and self-contained example.
 
-### Solving single player games
+## Solving single player games
 
-<img src="../../../../img/media/samegame.png" alt="SameGame" style="float: right;width: 40%;min-width: 200px;">
+<img src="/img/media/samegame.png" alt="SameGame" style="float: right;width: 40%;min-width: 200px;">
 
 We will write a program that finds solutions for deterministic single player games with a high game-tree complexity like SameGame.
 
@@ -151,7 +150,7 @@ SameGame is a game with perfect information that is very difficult to solve. Giv
 
 The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about $10^5$. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately $10^{82}$. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a *combinatorial explosion*. The time required to find the best solution increases so rapidly that we hit a solvability limit.
 
-### Monte Carlo tree search
+## Monte Carlo tree search
 
 When we encounter a combinatorial explosion, *stochastic optimization algorithms* come to the rescue. Instead of exploring the complete search tree these algorithms sample the search space and can find very good solutions. It is very unlikely, however, that they reach a global maximum and find the best solution in a reasonable amount of time.
 
@@ -170,7 +169,7 @@ A way to improve on this basic algorithm is to add a nested (lower level) search
 
 That's all we need to know so let's implement this in a purely functional way using algebraic API design.
 
-### Game algebra
+## Game algebra
 
 First we define a type that represents the game state:
 
@@ -204,7 +203,7 @@ Furthermore, `Game` is defined for any type constructor `F[_]` which we use to m
 
 While `applyMove` and `legalMoves` have no effects, `simulation` returns an effect `F`. Even though one could think of implementations without effects, the implementation of `simulation` will use a generator for uniformly distributed random numbers. This can be done by describing a side effect or by using the State Monad. With an abstract effect we are able to choose a specific effect later and make `simulation` referentially transparent.
 
-### Game properties
+## Game properties
 
 Just as an algebraic structure has certain axioms, we can also define properties for the `Game` algebra that all interpreters have to satisfy. These properties can be generic or they can be driven by the business rules of the domain.
 
@@ -247,7 +246,7 @@ The properties of `Game` are tightly coupled to the algebra as any implementatio
 
 Later we will see how to implement property-based tests to verify the properties.
 
-### Programs
+## Programs
 
 The `Game` properties are expressed solely in terms of the `Game` algebra. We have no idea how `Game` is implemented or what the types `Move`, `BoardPosition`, or `Score` look like. In a similar fashion we will only use the algebra to implement programs such as the search algorithm described above.
 
@@ -309,7 +308,7 @@ Note that to implement the algorithm we need a `Monad` instance for `F`. Other t
 
 Moreover, the `nestedSearch` function implies additional constraints for `Score` and `GameState`. We need to pass instances of `Ordering[Score]` (because we want to compare scores) and `Show[GameState]` (which we need for logging) as implicit parameters.
 
-### The Game interpreter
+## The Game interpreter
 
 ```tut:invisible
 
@@ -639,7 +638,7 @@ implicit val showGameState: Show[GameState[Position, SameGameState, Int]] =
                         |""".stripMargin)
 ```
 
-### Verifying the Game properties
+## Verifying the Game properties
 
 Now that we have defined the interpreter for `Game`, it is time to ensure that `Game` properties are satisfied. We will do this with property-based testing and the library ScalaCheck. ScalaCheck uses a large number of randomly generated test cases to verify that the given properties hold.
 
@@ -712,7 +711,7 @@ run(new GameTests)
 
 Of course, there are additional test strategies that can be employed. In particular, it is useful to test not only the interpreters, but to test the program, too. However, this goes beyond the scope of this post. For more information on testing in the world of functional programming please, refer to the links in the resource section below.
 
-### Application
+## Application
 
 With `cats.effect.IOApp` we describe a purely functional program that performs a Monte Carlo tree search for a given initial board position. For demonstration purposes we use a smaller board of size $6 \times 6$ to shorten the search time.
 
@@ -792,9 +791,9 @@ Score: 1018 (game finished)
 Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), (0, 1), (1, 2), (0, 0), (0, 0)]
 ```
 
-### Improving on the results
+## Improving on the results
 
-<img src="../../../../img/media/highscore.png" alt="SameGame Highsores" style="float: right;width: 40%;min-width: 200px;">
+<img src="/img/media/highscore.png" alt="SameGame Highscores" style="float: right;width: 40%;min-width: 200px;">
 
 The Monte Carlo tree search algorithm presented in this post has been intentionally kept simple. There are numerous different strategies of how to guide the tree search based on heuristics to influence the choice of moves which require multiple parameters that have to be fine tuned to maximize the outcomes.
 
@@ -804,7 +803,7 @@ Please refer to [this GitHub repository](https://github.com/battermann/mcs) wher
 
 Another very promising strategy that can be combined with a Monte Carlo tree search is [simulated annealing](https://en.wikipedia.org/wiki/Simulated_annealing).
 
-### Conclusion
+## Conclusion
 
 We have covered a lot of things. Some of the details might have been challenging depending on your prior knowledge of the topics introduced in this post. The reason for presenting such extensive examples is to provide complete and compiling code and to make a point that we do not only get great benefits from functional programming techniques, but that they are also feasible for real world problems.
 
@@ -819,7 +818,7 @@ These are the key takeaways:
 
 *The code has been interpreted with tut, using Scala 2.12.7, scalatest 3.0.5, scalacheck 1.14.0, and cats-effect 1.1.0.*
 
-### Resources
+## Resources
 
 - [Functional and Reactive Domain Modeling](https://www.manning.com/books/functional-and-reactive-domain-modeling) by Debasish Ghosh
 - [Nested Monte-Carlo Search](https://www.lamsade.dauphine.fr/~cazenave/papers/nested.pdf) by Tristan Cazenave
