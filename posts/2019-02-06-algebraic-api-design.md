@@ -20,7 +20,7 @@ tut:
     - org.typelevel::cats-effect:1.1.0
 ---
 
-In this post we are going to explore the concept of **algebraic API design** which is based on types, pure functions, and the relationships between them known as domain rules or properties. We will do this based on a complete, self-contained example using Cats and Cats Effect and walk through the process of designing and implementing the domain of solving complex, deterministic single player games.
+In this post we are going to explore the concept of *algebraic API design* which is based on types, pure functions, and the relationships between them known as domain rules or properties. We will do this based on a complete, self-contained example using Cats and Cats Effect and walk through the process of designing and implementing the domain of solving complex, deterministic single player games.
 
 An API in this context describes the types and operations that a module exposes to the user.
 
@@ -37,16 +37,16 @@ Let's have a quick recap on the definition of algebraic structures and how they 
 An algebraic structure consists of one or more sets together with one or more operators which are required to satisfy
 certain axioms:
 
-- One or more **sets**
-- A set of **operators**
-- A collection of **axioms**
+- One or more *sets*
+- A set of *operators*
+- A collection of *axioms*
 
 A prototypical example of an algebraic structure from mathematics is a group. A concrete example of a group is the set $\mathbb{Z}$ of integers together with the addition operator denoted as $(\mathbb{Z}, +)$ that satisfy the group axioms.
 
 A group can be defined in an abstract way like this:
 
-- **Set** and **operator**: $(G, \circ)$
-- **Axioms**:
+- *Set* and *operator*: $(G, \circ)$
+- *Axioms*:
   - Closure: $\forall a, b \in G:a \circ b \in G$
   - Associativity: $\forall a, b, c \in G: a \circ (b \circ c) = (a \circ b) \circ c$
   - Identity: $\exists e \in G: \forall a \in G:e \circ a = a = a \circ e$
@@ -56,9 +56,9 @@ A group can be defined in an abstract way like this:
 
 There is an analogy in programming where:
 
-- Sets are **types** (specifically algebraic data types)
-- Operators are **functions**
-- Axioms are **properties** (predicates expressed in terms of the algebra backed up by property-based tests)
+- Sets are *types* (specifically algebraic data types)
+- Operators are *functions*
+- Axioms are *properties* (predicates expressed in terms of the algebra backed up by property-based tests)
 
 The [type classes provided by Cats](https://typelevel.org/cats/typeclasses.html) follow exactly this pattern. Cats provides representations of many algebraic structures, one of which is `Group[A]`. It is defined by a *type* `A` and an *operator* `combine`:
 
@@ -101,9 +101,9 @@ Algebraic design is not exclusively applicable to modeling algebraic structures 
 
 The elements of algebraic structures can be related to domain driven design as follows:
 
-- Sets are **types of entities or value objects**
-- Operators are **business behavior**
-- Axioms are **business rules**
+- Sets are *types of entities or value objects*
+- Operators are *business behavior*
+- Axioms are *business rules*
 
 Here is an overview of how algebraic structures, programming, and domain modeling relate to each other:
 
@@ -115,7 +115,7 @@ Here is an overview of how algebraic structures, programming, and domain modelin
 
 ### Programs
 
-Once we've defined the algebras that model the API of our domain, we can describe **programs** in terms of one or more of these algebras. Algebras in programming are also sometimes referred to as embedded domain specific languages (EDSLs). Programs that are composed of algebras or EDSLs are parametrically polymorphic and they know nothing about the algebras' concrete implementations other than that they satisfy certain properties.
+Once we've defined the algebras that model the API of our domain, we can describe *programs* in terms of one or more of these algebras. Algebras in programming are also sometimes referred to as embedded domain specific languages (EDSLs). Programs that are composed of algebras or EDSLs are parametrically polymorphic and they know nothing about the algebras' concrete implementations other than that they satisfy certain properties.
 
 Programs are therefore flexible and constrained at the same time. Flexible in the sense that they can be used with any lawful implementation of the given algebra. And constrained because they can only use the operators provided by the algebra to manipulate values of the types that the algebra is expressed with.
 
@@ -127,7 +127,7 @@ We could define a program as follows:
 
 ### Interpreters
 
-The concrete implementation of an algebra is also know as the **interpreter** of the algebra. In the example from above the value `group` of type `Group[Int]` is an interpreter of the algebra of `Group[A]`.
+The concrete implementation of an algebra is also know as the *interpreter* of the algebra. In the example from above the value `group` of type `Group[Int]` is an interpreter of the algebra of `Group[A]`.
 
 This might all sound a bit abstract and theoretical at first. In fact, talking about the concept of algebraic design is one thing, but applying this concept to a real business domain is another.
 
@@ -149,13 +149,13 @@ SameGame is a game with perfect information that is very difficult to solve. Giv
 - The root node represents the starting position
 - The leafs are terminal game states
 
-The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about $10^5$. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately $10^{82}$. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a **combinatorial explosion**. The time required to find the best solution increases so rapidly that we hit a solvability limit.
+The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about $10^5$. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately $10^{82}$. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a *combinatorial explosion*. The time required to find the best solution increases so rapidly that we hit a solvability limit.
 
 ### Monte Carlo tree search
 
-When we encounter a combinatorial explosion, **stochastic optimization algorithms** come to the rescue. Instead of exploring the complete search tree these algorithms sample the search space and can find very good solutions. It is very unlikely, however, that they reach a global maximum and find the best solution in a reasonable amount of time.
+When we encounter a combinatorial explosion, *stochastic optimization algorithms* come to the rescue. Instead of exploring the complete search tree these algorithms sample the search space and can find very good solutions. It is very unlikely, however, that they reach a global maximum and find the best solution in a reasonable amount of time.
 
-A stochastic optimization algorithm that has successfully been employed to game play is known as **Monte Carlo tree search**. The basic idea of Monte Carlo tree search is to determine the most promising move based on random simulations at each node in the game-tree. In a random simulation the game is played out to the very end by selecting uniformly distributed random moves.
+A stochastic optimization algorithm that has successfully been employed to game play is known as *Monte Carlo tree search*. The basic idea of Monte Carlo tree search is to determine the most promising move based on random simulations at each node in the game-tree. In a random simulation the game is played out to the very end by selecting uniformly distributed random moves.
 
 Here is a very simple version of a Monte Carlo tree search:
 
