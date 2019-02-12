@@ -159,11 +159,11 @@ A stochastic optimization algorithm that has successfully been employed to game 
 Here is a very simple version of a Monte Carlo tree search:
 
 1. Choose the root node as the current node $n$ of the game-tree
-1. For the current node $n$, determine all legal moves $ms$
+2. For the current node $n$, determine all legal moves $ms$
   - If no legal moves exist, the algorithm terminates
-1. Determine all child nodes $cs$ of $n$ by applying each of the moves $ms$ to the current state $n$
-1. Perform a random simulation for each of the child nodes $cs$
-1. From the child nodes $cs$ choose the node with the best simulation result, and continue with step 2.
+3. Determine all child nodes $cs$ of $n$ by applying each of the moves $ms$ to the current state $n$
+4. Perform a random simulation for each of the child nodes $cs$
+5. From the child nodes $cs$ choose the node with the best simulation result, and continue with step 2.
 
 A way to improve on this basic algorithm is to add a nested (lower level) search at step 4. such that a random simulation is performed if the current level equals 1, otherwise a `level - 1` search is performed.
 
@@ -279,7 +279,7 @@ def nestedSearch[F[_]: Monad: Logger, Move, Position, Score](
     show: Show[GameState[Move, Position, Score]]): F[GameState[Move, Position, Score]] = {
   val legalMoves = g.legalMoves(gameState)
   for {
-    _ <- if (level == numLevels) Logger[F].log(gameState) else Monad[F].pure(())
+    _ <- if (level == numLevels) Logger[F].log(gameState) else ().pure[F]
     result <- if (legalMoves.isEmpty)
       Monad[F].pure(gameState)
     else
@@ -470,17 +470,13 @@ object SameGame {
   }
 
   private def findGroup(board: Board, position: Position): Option[Group] = {
-    def find(toSearch: Set[Position], group: Set[Position]): Set[Position] = {
-      if (toSearch.isEmpty) {
-        group
-      } else {
-        val head               = toSearch.head
+    def find(toSearch: Set[Position], group: Set[Position]): Set[Position] = 
+      toSearch.headOption.fold(group) { head =>
         val cellsWithSameColor = findAdjacentWithSameColor(board, head)
         val cellsFoundSoFar    = group + head
         val stillToSearch      = (cellsWithSameColor ++ toSearch.tail) -- cellsFoundSoFar
         find(stillToSearch, cellsFoundSoFar)
       }
-    }
 
     getCellState(board, position) match {
       case Filled(color) =>
