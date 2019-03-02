@@ -17,7 +17,7 @@ sponsors_section: true
 
 ## About the Summit
 
-The seventh Typelevel Summit will once again be co-located with the <a href="https://twitter.com/nescalas/status/1086306457556054016">Northeast Scala Symposium</a> in Philadelphia, with one day of recorded talks and one day of unconference.
+The seventh Typelevel Summit will once again be co-located with the <a href="https://nescala.io">Northeast Scala Symposium</a> in Philadelphia, with one day of recorded talks and one day of unconference.
 The schedule for this year is as follows:
 
 * April 1st: Typelevel Summit
