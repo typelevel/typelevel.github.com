@@ -336,7 +336,7 @@ battermann:
   github: "battermann"
   portrait: "/img/media/speakers/battermann.jpg"
 justin:
-  full_name: "Justin du Coeur"
+  full_name: "Justin du Coeur (Mark Waks)"
   twitter: "jducoeur"
   bio: "I’m a second-generation programmer, starting out on my father’s PDP-8 back in the mid-70s, and I’ve been a language geek ever since, working professionally in everything from LISP to Ada to assembly to C# to JavaScript to C++ to (heaven help me) COBOL, and pretty much everything in between. I picked up Scala back in 2007 (after trying to build a company in Java and winding up in a rage over its limitations); I’ve been working in Scala full-time since 2012. I’ve been doing “light FP” since picking up the style from Ruby around 2002, but am just now getting into the pure stuff. During the day, I work at Artima, doing Scala training and consulting and helping with ScalaTest. In my spare time, I’m the CEO and Architect of Querki, a wiki/database hybrid designed to make it easier for individuals and communities to manage and collaborate on their data."
   portrait: "/img/logo-twitter.png"
