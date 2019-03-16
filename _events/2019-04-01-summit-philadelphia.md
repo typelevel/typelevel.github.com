@@ -16,6 +16,13 @@ sponsors_section: true
 
 schedule:
   - time: "TBD"
+    speakers: ["kristinasojakova"]
+    title: "Keynote: Higher Inductive Types in Homotopy Type Theory"
+    summary: "Homotopy type theory is a new field of mathematics based on the recently-discovered correspondence between constructive type theory and abstract homotopy theory. Higher inductive types, which form a crucial part of this new system, generalize ordinary inductive types such as the natural numbers to higher dimensions. We will look at a few different examples of higher inductive types such as the integers, circles, and the torus, and indicate how we can use their associated induction principles to reason about them, e.g., to prove that the torus is equivalent to the product of two circles."
+  - time: "TBD"
+    speakers: ["stephaniebalzer"]
+    title: "Keynote: Session Types"
+  - time: "TBD"
     speakers: ["fabio"]
     title: "Composable concurrency with Ref + Deferred"
     summary: |
