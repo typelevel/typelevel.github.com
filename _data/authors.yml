@@ -352,3 +352,10 @@ ryanwilliams:
   full_name: "Ryan Williams"
   bio: "Ryan develops software for analyzing genome- and single-cell-sequencing data at the Icahn School of Medicine at Mount Sinai Hospital in NYC. He has been pushing a snowball of increasingly portable, typelevel, and FP Scala OSS libraries for several years, from dependency-management and testing DSLs to collections algorithms for Spark RDDs and genomic-analysis tools."
   portrait: "/img/media/speakers/ryanwilliams.jpg"
+kristinasojakova:
+  full_name: "Kristina Sojakova"
+  bio: "Kristina Sojakova is a postdoctoral researcher at Cornell University working with Greg Morrisett on the verification of cryptographic protocols. She received her PhD in 2016 from Carnegie Mellon University, where she worked on homotopy type theory, developing a universal mapping characterization of higher inductive types."
+  portrait: "/img/media/speakers/kristinasojakova.jpg"
+stephaniebalzer:
+  full_name: "Stephanie Balzer"
+  portrait: "/img/media/speakers/stephaniebalzer.jpg"
