@@ -358,4 +358,5 @@ kristinasojakova:
   portrait: "/img/media/speakers/kristinasojakova.jpg"
 stephaniebalzer:
   full_name: "Stephanie Balzer"
+  bio: "Stephanie Balzer is a research faculty in the Principles of Programming group in the Computer Science Department at Carnegie Mellon University.  Stephanie obtained her PhD from ETH Zurich under the supervision of Thomas R. Gross.  In her PhD work, Stephanie developed the object-based programming language Rumer, which uses the abstraction of a relationship to make explicit the collaborations between objects, rather than representing them implicitly in terms of references.  Stephanie demonstrated the benefits of relationships for program verification, by developing an invariant-based, visible-state semantics verification technique for Rumer. During her postdoc, Stephanie enriched her expertise with a more theoretical approach to programming language research based on type theory and logic, which resulted in her work on manifest sharing and manifest deadlock freedom."
   portrait: "/img/media/speakers/stephaniebalzer.jpg"

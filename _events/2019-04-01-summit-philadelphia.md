@@ -21,7 +21,30 @@ schedule:
     summary: "Homotopy type theory is a new field of mathematics based on the recently-discovered correspondence between constructive type theory and abstract homotopy theory. Higher inductive types, which form a crucial part of this new system, generalize ordinary inductive types such as the natural numbers to higher dimensions. We will look at a few different examples of higher inductive types such as the integers, circles, and the torus, and indicate how we can use their associated induction principles to reason about them, e.g., to prove that the torus is equivalent to the product of two circles."
   - time: "TBD"
     speakers: ["stephaniebalzer"]
-    title: "Keynote: Session Types"
+    title: "Keynote: Shared Session Types for Safe, Practical Concurrency"
+    summary: |
+      <p>Message-passing concurrency abstracts over the details of how programs are compiled to machine
+      instructions and has been adopted by various practical languages, such as Erlang, Go, and Rust.
+      For example, Mozilla's Servo, a next-generation browser engine being written in Rust, exploits
+      message-passing concurrency to parallelize loading and rendering of webpage elements, done
+      sequentially in existing web browsers.  Messages are exchanged along channels, which are typed
+      with enumeration types.  Whereas typing ensures in this setting that only messages of the
+      appropriate type are communicated along channels, it fails to guarantee adherence to the
+      intended protocol of message exchange.</p>
+      <p>In this talk I show how session types can be used to type communication channels to check
+      protocol adherence at compile-time.  Session types were conceived in the context of process
+      calculi, but made their ways into various practical languages using libraries.  A key
+      restriction of prior session type work is linearity.  Whereas linear session types enjoy strong
+      properties such as race freedom, protocol adherence, and deadlock-freedom, their insistance on
+      a single client rules out common programing scenarios, such as multi-producer-consumer queues
+      or shared databases or output devices.  I report on my work on shared session types, which
+      accommodates those programing scenarios, while upholding the guarantees of linear session
+      types.  First, I introduce manifest sharing, a discipline in which linear and shared sessions
+      coexist, but the type system ensures that clients of shared sessions run in mutual exclusion
+      from each other.  Manifest sharing guarantees race freedom and protocol adherence, but permits
+      deadlocks.  Next, I introduce manifest deadlock freedom, which makes shared and linear sessions
+      deadlock-free by construction.  Finally, I give an overview of my current and future research
+      plans.</p>
   - time: "TBD"
     speakers: ["fabio"]
     title: "Composable concurrency with Ref + Deferred"
