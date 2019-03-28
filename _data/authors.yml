@@ -84,7 +84,7 @@ sellout:
   portrait: "/img/media/speakers/gregpfeil.jpg"
   twitter: "sellout"
   github: "sellout"
-  bio: "Greg Pfeil is a compiler writer and programming language designer. At this point they have written four recursion scheme libraries in three languages, with the goal of getting to half a recursion scheme library for all languages. Greg works at Takt, writing Haskell, using only the purest artisanal FP."
+  bio: "Greg Pfeil is a compiler writer and programming language designer. At this point they have written four recursion scheme libraries in three languages, with the goal of getting to half a recursion scheme library for all languages. Greg works at Formation, writing Haskell, using only the purest artisanal FP."
 mpilquist:
   full_name: "Michael Pilquist"
   portrait: "/img/media/speakers/michaelpilquist.png"
