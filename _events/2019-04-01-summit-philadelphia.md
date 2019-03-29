@@ -134,8 +134,6 @@ The schedule for this year is as follows:
 * April 2nd: Northeast Scala Symposium
 * April 3rd: Unconference
 
-<a class="btn large" href="https://ti.to/northeast-scala-symposium-2019/nescala-2019">Buy tickets</a>
-
 ## Speakers and Schedule
 
 {% assign schedule=page.schedule %}
