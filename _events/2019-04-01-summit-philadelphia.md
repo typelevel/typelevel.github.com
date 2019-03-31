@@ -122,6 +122,36 @@ schedule:
     speakers: ["ryanwilliams"]
     title: "Portable, type-fancy multidimensional arrays"
     summary: "Zarr is a multidimensional-array container format that's gaining momentum in several scientific domains. It hails from the Python world, and primarily caters to numpy- and xarray-wielding scientists. It shines as a more remote- and parallel-processing-friendly HDF5 replacement. I implemented the Zarr spec in portable Scala, leveraging dependent- and higher-kinded-types. The resulting arrays have a unique type-safety profile. In this talk I'll: contextualize Zarr's use in the single-cell-sequencing domain, examine the freewheeling DSLs that scientific-Python exposes for array processing (including remote and distributed), discuss possibilities for Scala (and types!) to make inroads in these ecosystems, and show what worked well and poorly about my attempt."
+  - time: "17:30"
+    break: yes
+    title: "Closing"
+
+sponsors:
+  - name: "Comcast"
+    logo: "/img/media/sponsors/comcast.png"
+    link: "http://www.comcast.com/"
+    type: "gold"
+    height: 70
+  - name: "Azavea"
+    logo: "/img/media/sponsors/azavea.png"
+    link: "http://www.azavea.com/"
+    type: "gold"
+    height: 70
+  - name: "Chariot Solutions"
+    logo: "/img/media/sponsors/chariot.png"
+    link: "http://www.chariotsolutions.com/"
+    type: "gold"
+    height: 70
+  - name: "Simple"
+    logo: "/img/media/sponsors/simple.png"
+    link: "http://www.simple.com/"
+    type: "gold"
+    height: 70
+  - name: "Coatue"
+    logo: "/img/media/sponsors/coatue.png"
+    link: "http://www.coatue.com/"
+    type: "gold"
+    height: 70
 
 ---
 
@@ -146,8 +176,16 @@ Headquartered in Philadelphia, with offices in California and Europe, the Instit
 
 {% include venue_map.html %}
 
+## Code of Conduct
+
+The Code of Conduct & reporting of incidents are handled together with the team of the Northeast Scala Symposium.
+You can find details on <a href="https://nescala.io/#code">their website</a>.
+In short: there is a Slack team where you can report incidents to the organizers, to which every ticket holder should have received an invitation.
+It is possible to file anonymous reports.
+The list of organizers can be found <a href="https://nescala.io/organizers.html">here</a>.
+
 ## Sponsors
 
-If you would like to talk to us about sponsorship options, please get in touch:
+We'd like to thank all our sponsors who help to make the Summit happen:
 
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
+{% include sponsors.html %}
