@@ -127,6 +127,11 @@ schedule:
     title: "Closing"
 
 sponsors:
+  - name: "Bridgewater"
+    logo: "/img/media/sponsors/bridgewater.png"
+    link: "http://www.bridgewater.com/"
+    type: "platinum"
+    height: 30
   - name: "Comcast"
     logo: "/img/media/sponsors/comcast.png"
     link: "http://www.comcast.com/"
