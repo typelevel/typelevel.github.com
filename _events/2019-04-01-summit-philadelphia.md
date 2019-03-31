@@ -176,6 +176,14 @@ Headquartered in Philadelphia, with offices in California and Europe, the Instit
 
 {% include venue_map.html %}
 
+## Code of Conduct
+
+The Code of Conduct & reporting of incidents are handled together with the team of the Northeast Scala Symposium.
+You can find details on <a href="https://nescala.io/#code">their website</a>.
+In short: there is a Slack team where you can report incidents to the organizers, to which every ticket holder should have received an invitation.
+It is possible to file anonymous reports.
+The list of organizers can be found <a href="https://nescala.io/organizers.html">here</a>.
+
 ## Sponsors
 
 We'd like to thank all our sponsors who help to make the Summit happen:
