@@ -360,3 +360,11 @@ stephaniebalzer:
   full_name: "Stephanie Balzer"
   bio: "Stephanie Balzer is a research faculty in the Principles of Programming group in the Computer Science Department at Carnegie Mellon University.  Stephanie obtained her PhD from ETH Zurich under the supervision of Thomas R. Gross.  In her PhD work, Stephanie developed the object-based programming language Rumer, which uses the abstraction of a relationship to make explicit the collaborations between objects, rather than representing them implicitly in terms of references.  Stephanie demonstrated the benefits of relationships for program verification, by developing an invariant-based, visible-state semantics verification technique for Rumer. During her postdoc, Stephanie enriched her expertise with a more theoretical approach to programming language research based on type theory and logic, which resulted in her work on manifest sharing and manifest deadlock freedom."
   portrait: "/img/media/speakers/stephaniebalzer.jpg"
+denisrosset:
+  full_name: "Denis Rosset"
+  bio: "I’m a researcher in quantum physics with a strong interest in convex optimization and numerical/symbolical computing. I’ve been using Scala&Play since I wanted to build a database of research results, and Play seemed to be a reasonable solution. I fell in love with the Scala language since then, and am contributing to its open source ecosystem (Spire + personal libraries for mathematical computations)."
+  portrait: "/img/media/speakers/denisrosset.png"
+buggymcbugfix:
+  full_name: "Vilem-Benjamin Liepelt"
+  bio: "I believe in - static types & thoughtfully crafted APIs - good communication & documentation - open-mindedness & fearless prototyping"
+  portrait: "/img/media/speakers/vilemliepelt.jpg"
