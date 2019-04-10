@@ -20,6 +20,11 @@ sponsors_section: true
 The eight Typelevel Summit will once again be co-located with Scala Days.
 Read more about all events in the <a href="https://www.scala-lang.org/blog/2019/01/17/scala-days-2019-celebrating-collaborative-success.html">blog post</a> from the Scala Center.
 
+The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
+Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
+If you're interested in types and pure functional programming we'd love to see you here!
+
+<a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-lausanne-2019">Buy tickets</a>
 
 ## Sponsors
 
