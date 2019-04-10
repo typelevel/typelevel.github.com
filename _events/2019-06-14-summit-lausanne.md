@@ -13,6 +13,27 @@ poster_thumb: "/img/media/lausanne-thumb.jpg"
 featured: true
 
 sponsors_section: true
+
+schedule:
+  - time: "TBD"
+    speakers: ["denisrosset"]
+    title: "Lord of the rings: the Spire numerical towers"
+    summary: |
+      <p>Spire defines around 80 typeclasses, including 30 coming from algebra and cats-kernel. We’ll see how much of that structure is dictated by mathematical laws, and which parts are the result of design decisions that balance different tradeoffs. In particular, we’ll discuss the different roles played by typeclasses in the Scala ecosystem:
+      <ul>
+        <li>as encoding operations obeying well-defined laws,</li>
+        <li>as enabling the use of a particular syntax for those operations, if possible close to the mathematical notation of a domain (and subfields often disagree on the notation!),</li>
+        <li>defining a context in which a combination of typeclasses implicitly imposes additional laws (for example, the ordering of numbers and addition),</li>
+        <li>enabling the user to change the variant of a relation being used (Order),</li>
+        <li>singling out one variant of a structure as canonical (cats: the additive Group for integers),</li>
+        <li>as selecting a particular algorithm for an operation (integer factorization: deterministic or Monte-Carlo).</li>
+      </ul></p>
+      <p>It quickly becomes apparent that these roles conflict. With this in mind, we’ll have a look at some design choices made in Spire. We’ll discuss success stories, such as the clarification of the laws of the % operator, the commutative ring tower that formalizes integer factorization and Euclidean division. We’ll also discuss parts where trade offs have been made, such as the triplication of group structures (Group, AdditiveGroup, MultiplicativeGroup), the problem of coherent instances, especially when various typeclasses are combined. Time permitting, we’ll also discuss issues with law-based property checks (precision, range, time and memory complexity).</p>
+  - time: "TBD"
+    speakers: ["buggymcbugfix"]
+    title: "Taking Resources to the Type Level"
+    summary: "With the Granule project, we are working towards making statically typed functional languages more resource-aware, hence providing a way to enforce stateful protocols regarding memory, file handles, network interaction, etc. Static enforcement of security policies and first-class support for multi-stage programming are further examples of what is possible in a type system based on Linear Logic and Graded Modalities. We present Granule, a functional programming language which combines parametric polymorphism and indexed types with such a type system. Granule programs will probably look very familiar to you, especially if you know some Haskell/ML, but in Granule’s type system we can reason about much more. Hillel Wayne’s Great Theorem Prover Showdown has made a point of the fact that there are many things we can’t easily reason about with functional (programming proving)—up until now! We will implement leftPad in Granule and prove it correct with little more effort that writing the type signatures. We will then breeze through how Granule’s type system very naturally supports session-typed channels and safe mutable arrays."
+
 ---
 
 ## About the Summit
@@ -25,6 +46,11 @@ Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a 
 If you're interested in types and pure functional programming we'd love to see you here!
 
 <a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-lausanne-2019">Buy tickets</a>
+
+## Speakers and Schedule
+
+{% assign schedule=page.schedule %}
+{% include schedule.html %}
 
 ## Sponsors
 
