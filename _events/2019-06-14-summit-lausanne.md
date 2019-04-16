@@ -41,6 +41,18 @@ schedule:
     speakers: ["romac"]
     title: "Formal verification of Scala programs with Stainless"
     summary: "Everyone knows that writing bug-free code is fundamentally difficult, and that bugs will sometimes sneak in even in the presence of unit- or property-based tests. One solution to this problem is formal software verification. Formal verification allows users to statically verify that software systems will never crash nor diverge, and will in addition satisfy given functional correctness properties. In this talk, I will present Stainless, a verification system for an expressive subset of Scala. I will start by explaining what formal verification is, what are some of the challenges people encounter when putting it into practice, and how it can be made more practical. Then I will give a high-level overview of Stainless, and finally present a few verified programs, such as a small actor system, a parallel map-reduce implementation, as well as a little surprise! I’ll also demonstrate the tooling we have developed around Stainless which lets users easily integrate Stainless in their SBT-based Scala projects."
+  - time: "TBD"
+    speakers: ["diesalbla"]
+    title: "Actors Design Patterns and Arrowised FRP"
+    summary: "Object-oriented design patterns combine basic language features to solve coding problems in an extensible way. In functional Scala, we solve those coding problems with functions, combinators, and type-classes, so design patterns are less relevant. Actor design patterns combine basic features of the actors to solve coding problems in an extensible way. Arrowised functional reactive programming (based on languages like Scala and Haskell also offers a way to solve those coding problem using functions, combinators, and type-classes. This talk describes a prototype implementation of AFRP and its primitive types and functions, discusses its similarities to actors, and then describes how some actor design patterns in the existing literature corresponds to constructions of AFRP."
+  - time: "TBD"
+    speakers: ["jefersonossa"]
+    title: "Exploring Scala Tooling ecosystem"
+    summary: "We are going to explore and compare some build tools with special focus on LSP/BSP implementations, IDEs and text editor support. To help the audience’s judgement about the tools that are suitable for their particular needs this talk aims to get attendees familiar with terms like SemanticDB, Metals, Bloop, SBT, Pants, Bazel, Ensime, IntelliJ IDE, Scala IDE, Dotty IDE and other honorific mentions."
+  - time: "TBD"
+    speakers: ["yifanxing"]
+    title: "Want to Diversify the Scala Community? Here is How You Can Help!"
+    summary: "The Scala community has grown significantly over the past 15 years. As a community, we wrote millions of lines of code and developed hundreds of projects. While the language is thriving, there is still room to contribute to the community. Different from other tech talks, this talk focuses on contributing to the diversity aspect of the community. It explains the significance and benefits of diversity, and it proposes solutions to diversify and improve the community. One of the best ways to grow the community and to bring diversity into the community is to organize ScalaBridge workshops, which are intended to provide resources for people from underrepresented populations to learn Scala. (Diversity comes in many forms: race, gender, age, religion, culture, sexual orientation, socioeconomic background, etc.) While the workshops have positive and lasting impacts, it cannot be done by one individual or by a single organization. In order for the Scala community to become more diverse, we need your help to scale up! Attend this talk to learn about how to contribute to our community!"
 
 ---
 
@@ -56,6 +68,8 @@ If you're interested in types and pure functional programming we'd love to see y
 <a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-lausanne-2019">Buy tickets</a>
 
 ## Speakers and Schedule
+
+Stay tuned while we announce the full programme!
 
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
