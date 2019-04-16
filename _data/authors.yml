@@ -376,3 +376,15 @@ romac:
   full_name: "Romain Ruetschi"
   bio: "I earned a MSc degree in Computer Science from EPFL in February 2018, and I have since been working at the Laboratory for Automated Reasoning and Analysis (LARA) at EPFL, under the supervision of Prof. Viktor Kunčak. I discovered Scala directly from Prof. Martin Ordersky during my Bachelor at EPFL a few years ago, and have never stopped learning more of it, alongside other languages such as Haskell, Rust or Idris. I am mainly interested in pure functional programming, type systems and formal methods."
   portrait: "/img/media/speakers/romainruetschi.jpg"
+diesalbla:
+  full_name: "Diego E. Alonso"
+  bio: ""
+  portrait: "/img/media/speakers/diegoalonso.png"
+jefersonossa:
+  full_name: "Jeferson David Ossa"
+  bio: ""
+  portrait: "/img/media/speakers/jefersonossa.jpg"
+yifanxing:
+  full_name: "Yifan Xing"
+  bio: "Yifan is a software engineer, ScalaBridge organizer, and open-source contributor. Her work involves many distributed systems related topics, including network protocols, consensus, network security, etc. Yifan contributed to the message queue systems and asynchronous APIs for a Scala open source project Shared Health Research Information Network (SHRINE) at Harvard Medical School. The system uses concepts of parallel processing/multi-threading, non-blocking asynchronous, distributed systems, etc."
+  portrait: "/img/logo-twitter.png"
