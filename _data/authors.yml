@@ -382,7 +382,7 @@ diesalbla:
   portrait: "/img/media/speakers/diegoalonso.png"
 jefersonossa:
   full_name: "Jeferson David Ossa"
-  bio: ""
+  bio: "I am a software engineer living in Medellin, Colombia. Scala and distributed systems enthusiast interested in FP, software architecture and infrastructure. Scuba diver wannabe."
   portrait: "/img/media/speakers/jefersonossa.jpg"
 yifanxing:
   full_name: "Yifan Xing"
