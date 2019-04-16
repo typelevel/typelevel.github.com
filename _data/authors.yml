@@ -366,5 +366,13 @@ denisrosset:
   portrait: "/img/media/speakers/denisrosset.png"
 buggymcbugfix:
   full_name: "Vilem-Benjamin Liepelt"
-  bio: "I believe in - static types & thoughtfully crafted APIs - good communication & documentation - open-mindedness & fearless prototyping"
+  bio: "I believe in static types & thoughtfully crafted APIs, good communication & documentation, and open-mindedness & fearless prototyping"
   portrait: "/img/media/speakers/vilemliepelt.jpg"
+oronport:
+  full_name: "Oron Port"
+  bio: "I am a third year Electrical Engineering Ph.D. student at Technion – Israel Institute of Technology. My research topic is “DFiant: A Dataflow Hardware Description Language”, a Scala-based DSL. I’m involved in and contribute to the Scala ecosystem and especially to the singleton-ops library."
+  portrait: "/img/logo-twitter.png"
+romac:
+  full_name: "Romain Ruetschi"
+  bio: "I earned a MSc degree in Computer Science from EPFL in February 2018, and I have since been working at the Laboratory for Automated Reasoning and Analysis (LARA) at EPFL, under the supervision of Prof. Viktor Kunčak. I discovered Scala directly from Prof. Martin Ordersky during my Bachelor at EPFL a few years ago, and have never stopped learning more of it, alongside other languages such as Haskell, Rust or Idris. I am mainly interested in pure functional programming, type systems and formal methods."
+  portrait: "/img/media/speakers/romainruetschi.jpg"
