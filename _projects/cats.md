@@ -11,6 +11,12 @@ extensions:
   - title: Cats-Effect
     description: "The IO Monad for Scala, plus type classes for general effect types."
     link: "https://typelevel.org/cats-effect/"
+  - title: "Cats MTL"
+    description: "Monad transformers made easy"
+    link: "https://typelevel.org/cats-mtl/"
+  - title: "Cats Tagless"
+    description: "A library of utilities for tagless final algebras"
+    link: "https://typelevel.org/cats-tagless/"
   - title: "Alleycats"
     description: "Lawless classes & illegal instances"
     link: "https://github.com/typelevel/cats"
