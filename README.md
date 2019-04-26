@@ -28,7 +28,11 @@ You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` f
 
 To preview your changes, you have to install [Rake](https://ruby.github.io/rake/) and [Bundler](https://bundler.io/) first.
 To download and set up all necessary dependencies, run
-
+You might need to run install bundler first
+```bash
+$ gem install bundler
+```
+Then
 ```bash
 $ rake init
 ... lots of text ...
@@ -52,8 +56,6 @@ $ rake dev
 
 This will spin up an sbt and a Jekyll instance in parallel.
 When making changes to a post, sbt will re-run tut, after which Jekyll will re-render (which takes a moment).
-
-When you send a pull request, [Netlify](https://www.netlify.com/) will automatically build a rendered preview of the site.
 
 #### Running in Docker
 
