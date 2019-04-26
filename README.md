@@ -28,11 +28,6 @@ You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` f
 
 To preview your changes, you have to install [Rake](https://ruby.github.io/rake/) and [Bundler](https://bundler.io/) first.
 To download and set up all necessary dependencies, run
-You might need to run install bundler first
-```bash
-$ gem install bundler
-```
-Then
 ```bash
 $ rake init
 ... lots of text ...
