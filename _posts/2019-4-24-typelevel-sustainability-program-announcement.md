@@ -18,7 +18,7 @@ There are also some concerns, 3% of users suggested paid maintainers will reduce
 
 * Paid maintainers focus on supporting the community contributors. In another sentence, 
 paid maintainers’ first task is to maintain the community-driven development. 
-More specific responsibilities are listed below.
+More specific responsibilities are listed [here](https://github.com/typelevel/general/blob/master/sustainability_program.md#responsibilities-for-paid-maintainers).
 * Main obligations to sponsors (individual or corporate) are limited to  
   - The existing license remains unchanged. 
   - Timely security patches and mission critical bug fixes. 
