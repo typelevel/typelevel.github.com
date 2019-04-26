@@ -32,7 +32,10 @@ For more details, including goals and responsibilities for maintainers, funding 
 Today we are launching the program with the help of several founding sponsors. 
 
 <a href="http://47deg.com"><img src="/img/media/sponsors/47_degrees.png" width="80px" height="80px"/></a>
-<a href="https://commercetools.com/"><img src="/img/media/sponsors/commercetools_2.png" width="150px" style="margin-top:3px; margin-left: 10px; margin-right: 10px" /></a><a href="https://www.inner-product.com/"><img src="/img/media/sponsors/inner-product.png" width="170px" style="margin-bottom:15px; margin-right: 10px/><a href="https://triplequote.com/"><img src="/img/media/sponsors/triplequote.png" width="170px" style="margin-bottom:20px; margin-right: 10px" /></a><a href="http://underscore.io"><img src="/img/media/sponsors/underscore_2.png" width="150px" style="margin-bottom:5px;"/></a>
+<a href="https://commercetools.com/"><img src="/img/media/sponsors/commercetools_2.png" width="150px" style="margin-top:5px; margin-left: 10px; margin-right: 10px" /></a>
+<a href="https://www.inner-product.com/"><img src="/img/media/sponsors/inner-product.png" width="170px" style="margin-bottom:15px; margin-right: 10px"/></a>
+<a href="https://triplequote.com/"><img src="/img/media/sponsors/triplequote.png" width="170px" style="margin-bottom:21px; margin-right: 10px" /></a>
+<a href="http://underscore.io"><img src="/img/media/sponsors/underscore_2.png" width="150px" style="margin-bottom:8px;"/></a>
 
 
 Thanks to their generosity we are on an excellent start for the sustainability program. However, to successfully support the long term sustainability for our ecosystem, we need every bit of help we can get. For 2019, we have the following initiatives that require a significant investment of maintainer time. 
