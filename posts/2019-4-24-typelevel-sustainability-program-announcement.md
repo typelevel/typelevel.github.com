@@ -7,7 +7,7 @@ in the future of the ecosystem if there are compensated maintainers. We believe 
 Scala ecosystem should have an institution supporting it, somewhat like the Scala Center
 supporting the language, and Lightbend supporting language as well as ecosystem libs. 
 
-There are also some concerns, 3% of users suggested paid maintainers will reduce their confidence, and 27.1% are not sure one way or another. Given these numbers, we believe that the gain of confidence will outweigh the concerns especially if we design our paid maintainership program with deliberations to address them. The worries we received fall into four categories: 
+There are also some concerns, 3% of users suggested paid maintainers will reduce their confidence, the remainder are not sure one way or another. Given these numbers, we believe that the gain of confidence will outweigh the concerns especially if we design our paid maintainership program with deliberations to address them. The worries we received fall into four categories: 
 
 * Vendor favoritism and influence
 * Conflicts of interest
