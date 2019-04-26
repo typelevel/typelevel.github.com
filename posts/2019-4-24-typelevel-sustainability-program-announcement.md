@@ -50,7 +50,7 @@ Thanks to their generosity we are on an excellent start for the sustainability p
 
 Our initial fundraising goal is $150,000. Among other things, achieving this goal will allow us to have a dedicated half-time (20 hr/week) maintainer for at least 2019. Why half time? We want to start with a committed maintainer to bring some certainties for our projects, and yet we are not sure how much support we will be getting from the community. Hence a half-time maintainer for the year is a minimum viable solution for the program. 
 
-Please consider talking to your employee about supporting the OSS libraries they are using. Any amount, either $5 per month from a one-person start-up or $5000 per month from a billion dollar corporation, will bring us closer to our goal.
+Please consider talking to your employer about supporting the OSS libraries they are using. Any amount, either $5 per month from a one-person start-up or $5000 per month from a billion dollar corporation, will bring us closer to our goal.
 
 Aside from monetary assistance, your company can also support us by:
 
