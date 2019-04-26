@@ -65,6 +65,6 @@ For individual developers, another way to support us monetarily is to help our f
 * mentioning and linking to our donation page when you write a blog post or give a talk about one of these libraries
 * advocating for the sustainable OSS development
 
-Please don't hesitate to reach out with questions. Our contact Email is sponsor-contact@typelevel.org 
+Please don't hesitate to reach out with questions. Our contact address is sponsor-contact@typelevel.org.
 Thank you for reading this and considering supporting us.
 
