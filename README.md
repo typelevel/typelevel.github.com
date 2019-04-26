@@ -53,8 +53,6 @@ $ rake dev
 This will spin up an sbt and a Jekyll instance in parallel.
 When making changes to a post, sbt will re-run tut, after which Jekyll will re-render (which takes a moment).
 
-When you send a pull request, [Netlify](https://www.netlify.com/) will automatically build a rendered preview of the site.
-
 #### Running in Docker
 
 Build the docker image:
