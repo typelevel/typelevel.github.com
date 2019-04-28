@@ -1,3 +1,12 @@
+---
+layout: post
+title: Typelevel Sustainability Program Announcement
+
+meta:
+  nav: blog
+  author: typelevel
+---
+
 We are excited to announce the Typelevel sustainability program.
 The ultimate goal for this program is to provide ways for the user community to ensure the long-term sustainability of the development and maintenance of some Typelevel libraries.
 Currently, these libraries are maintained in their contributors' spare time. This arrangement has worked so far but we want to firmly secure their long term sustainability with an institution dedicated to supporting the maintenance of these mission critical libraries.
