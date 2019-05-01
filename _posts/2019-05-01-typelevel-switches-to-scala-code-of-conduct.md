@@ -8,7 +8,7 @@ meta:
 ---
 
 Typelevel is pleased to announce that we are retiring the Typelevel Code of
-Conduct in favour of the Scala Code of Conduct. Many of the major projects
+Conduct in favour of the [Scala Code of Conduct][scoc]. Many of the major projects
 under the Typelevel umbrella have already made the switch and we will be asking
 new projects that join Typelevel to adopt the new code.
 
@@ -28,3 +28,5 @@ both community and commercial: the Scala Center, Lightbend, ScalaBridge, Scala
 Days amongst many others. And now Typelevel and the Typelevel Summits.
 
 We'd love you to join us.
+
+[scoc]: /code-of-conduct.html
