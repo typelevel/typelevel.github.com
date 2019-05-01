@@ -1,7 +1,8 @@
+dist: xenial
 sudo: false
 language: scala
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 script:
   - sbt run
