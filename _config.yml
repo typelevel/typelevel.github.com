@@ -24,7 +24,9 @@ sass:
   style: compressed
 future: true
 
-plugins: [jekyll-paginate]
+plugins:
+  - jekyll-paginate
+  - jekyll-redirect-from
 
 collections:
   events:
