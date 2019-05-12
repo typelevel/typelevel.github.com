@@ -54,6 +54,13 @@ schedule:
     title: "Want to Diversify the Scala Community? Here is How You Can Help!"
     summary: "The Scala community has grown significantly over the past 15 years. As a community, we wrote millions of lines of code and developed hundreds of projects. While the language is thriving, there is still room to contribute to the community. Different from other tech talks, this talk focuses on contributing to the diversity aspect of the community. It explains the significance and benefits of diversity, and it proposes solutions to diversify and improve the community. One of the best ways to grow the community and to bring diversity into the community is to organize ScalaBridge workshops, which are intended to provide resources for people from underrepresented populations to learn Scala. (Diversity comes in many forms: race, gender, age, religion, culture, sexual orientation, socioeconomic background, etc.) While the workshops have positive and lasting impacts, it cannot be done by one individual or by a single organization. In order for the Scala community to become more diverse, we need your help to scale up! Attend this talk to learn about how to contribute to our community!"
 
+sponsors:
+  - name: "Triplequote"
+    logo: "/img/media/sponsors/triplequote.png"
+    link: "https://www.triplequote.com/"
+    type: "gold"
+    height: 90
+
 ---
 
 ## About the Summit
@@ -79,3 +86,5 @@ Stay tuned while we announce the full programme!
 If you would like to talk to us about sponsorship options, please get in touch:
 
 <a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
+
+{% include sponsors.html %}
