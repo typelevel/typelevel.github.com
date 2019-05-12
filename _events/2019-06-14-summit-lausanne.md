@@ -53,13 +53,21 @@ schedule:
     speakers: ["yifanxing"]
     title: "Want to Diversify the Scala Community? Here is How You Can Help!"
     summary: "The Scala community has grown significantly over the past 15 years. As a community, we wrote millions of lines of code and developed hundreds of projects. While the language is thriving, there is still room to contribute to the community. Different from other tech talks, this talk focuses on contributing to the diversity aspect of the community. It explains the significance and benefits of diversity, and it proposes solutions to diversify and improve the community. One of the best ways to grow the community and to bring diversity into the community is to organize ScalaBridge workshops, which are intended to provide resources for people from underrepresented populations to learn Scala. (Diversity comes in many forms: race, gender, age, religion, culture, sexual orientation, socioeconomic background, etc.) While the workshops have positive and lasting impacts, it cannot be done by one individual or by a single organization. In order for the Scala community to become more diverse, we need your help to scale up! Attend this talk to learn about how to contribute to our community!"
+  - time: "TBD"
+    speakers: ["aleksander"]
+    title: "GADTs in Dotty"
+    summary: "GADTs (Generalized Algebraic Data Types) are a special case of ADTs (or Dotty enums) that, when we match on them, let us know more about type parameters to enclosing functions. In practice, they are mostly used to associate types with data constructors (case classes and objects in Scala’s case), and to ensure that incorrectly assembling data structures will not typecheck. Two good examples are a database query type that cannot be malformed (no integers as if conditions!) or a red-black tree data type that will only compile if it is balanced. So far Scala’s support for GADTs has been lacking and rife with runtime type errors compared to Haskell. Fortunately, I’ve been working on making it far better in Dotty! During the talk first we’ll walk through examples of GADTs, see what makes them useful and how they can be applied to solve real problems. Next, I’ll explain how GADTs in Scala naturally follow from subtyping and inheritance, completely unlike Haskell or any other language with GADTs. Finally, I’ll talk about how the support for GADTs in Dotty is tightly related to other features such as match types and (the possible) nullable types."
+  - time: "TBD"
+    speakers: ["felixmulder"]
+    title: "Brave New World - tales of PureScript and Haskell in production"
+    summary: "The rumours are true. Writing code in purely functional languages tends to produce code that is much easier to read, modify and reason about. This talk examines how an experienced Scala team transitioned into writing production code using PureScript in AWS lambda, and services using Haskell."
 
 sponsors:
   - name: "Triplequote"
     logo: "/img/media/sponsors/triplequote.png"
     link: "https://www.triplequote.com/"
     type: "gold"
-    height: 90
+    height: 60
 
 ---
 

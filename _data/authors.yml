@@ -388,3 +388,11 @@ yifanxing:
   full_name: "Yifan Xing"
   bio: "Yifan is a software engineer, ScalaBridge organizer, and open-source contributor. Her work involves many distributed systems related topics, including network protocols, consensus, network security, etc. Yifan contributed to the message queue systems and asynchronous APIs for a Scala open source project Shared Health Research Information Network (SHRINE) at Harvard Medical School. The system uses concepts of parallel processing/multi-threading, non-blocking asynchronous, distributed systems, etc."
   portrait: "/img/logo-twitter.png"
+aleksander:
+  full_name: "Aleksander Boruch-Gruszecki"
+  bio: "I’m Martin Odersky’s freshest PhD student, interested in GADTs, typelevel programming and effect systems. Before coming to EPFL, I spent four years working in the industry on back- and front-ends of web applications and dealing with the abomination known as TeamSite. Also, I drink frankly absurd amounts of coffee."
+  portrait: "/img/logo-twitter.png"
+felixmulder:
+  full_name: "Felix Mulder"
+  bio: "Former Scala 3 Compiler Engineer at LAMP, EPFL. Currently writes code for Snoop Dogg, building the next generation of banking at the Swedish payments company Klarna."
+  portrait: "/img/media/speakers/felixmulder.jpg"
