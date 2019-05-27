@@ -15,6 +15,12 @@ featured: true
 sponsors_section: true
 
 schedule:
+  - time: "8:15"
+    title: "Registration"
+    break: true
+  - time: "9:00"
+    title: "Opening Remarks"
+    break: true
   - time: "TBD"
     speakers: ["denisrosset"]
     title: "Lord of the rings: the Spire numerical towers"
