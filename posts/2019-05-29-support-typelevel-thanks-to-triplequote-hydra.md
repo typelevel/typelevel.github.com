@@ -15,14 +15,10 @@ In just a little bit more than one month we reached 10% of the fundraising goal 
 
 One difficulty we are aware of is that it can be hard to convince a company to donate money even if it benefits extensively from our ecosystem. This, despite developers knowing how important it is to sustain the maintenance and development of the open source libraries they love and use every day.
 
-## Announcing: Give 25%, Get 25%, Compile Scala 75% faster!
+### Announcing: Give 25%, Get 25%, Compile Scala 75% faster!
 
 To help us get over this hurdle, we are stoked to announce that [Triplequote](https://triplequote.com/), the creator of [Triplequote Hydra](https://triplequote.com/hydra) - the only multicore Scala compiler with built-in compile-time monitoring - has kindly offered to donate 25% of each yearly Hydra license [purchased online](https://triplequote.com/hydra/pricing/) until June 30th using the discount code **TYPELEVEL25**. But that’s not it, by using the discount code you also benefit from a 25% discount on their list pricing!
 
-<figure>
-<a href="https://triplequote.com/"><img src="/img/media/triplequote/triplequote-compile-scala-3.2x-faster-front.jpg" width="300px" height="416px" alt="Compile Scala 3.2x faster with Triplequote Hydra"/></a>
-<figcaption>Triplequote makes Scala more badass, bringing ridiculous compiler speed, tools and support to help you rock your code!🤘</figcaption>
-</figure>
 
 Using Hydra has proven to be incredibly valuable for Scala projects that rely on our ecosystem, and it delivered impressive compilation speedups. Nowadays, even [Cats is compiled with Hydra](https://github.com/typelevel/cats/pull/2848). Therefore, if you are looking for a way to help us reach our fundraising goal, while also profiting from a great product, don’t let this opportunity slip away. Head over to the [Hydra trial page](https://triplequote.com/hydra/trial) and get started with it in no time using your preferred development tool, whether that is sbt, Maven, Gradle, or IntelliJ IDEA!
 
