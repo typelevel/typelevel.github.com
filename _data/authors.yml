@@ -396,3 +396,7 @@ felixmulder:
   full_name: "Felix Mulder"
   bio: "Former Scala 3 Compiler Engineer at LAMP, EPFL. Currently writes code for Snoop Dogg, building the next generation of banking at the Swedish payments company Klarna."
   portrait: "/img/media/speakers/felixmulder.jpg"
+martinodersky:
+  full_name: "Martin Odersky"
+  bio: "Martin Odersky is professor at EPFL, coordinating the LAMP group."
+  portrait: "/img/media/speakers/martinodersky.jpg"
