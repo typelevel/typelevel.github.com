@@ -99,6 +99,14 @@ Stay tuned while we announce the full programme!
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
 
+## Venue
+
+The Summit will take place at EPFL in Ecublens, building CO, lecture hall CO2.
+You can find a detailed plan at [plan.epfl.ch](https://plan.epfl.ch/).
+_Please note that this is a different venue than Scala Days!_
+
+{% include venue_map.html %}
+
 ## Sponsors
 
 If you would like to talk to us about sponsorship options, please get in touch:
