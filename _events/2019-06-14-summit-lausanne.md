@@ -21,6 +21,10 @@ schedule:
   - time: "9:00"
     title: "Opening Remarks"
     break: true
+  - time: "9:05"
+    title: "Keynote"
+    speakers: ["martinodersky"]
+    summary: TBD
   - time: "TBD"
     speakers: ["denisrosset"]
     title: "Lord of the rings: the Spire numerical towers"
