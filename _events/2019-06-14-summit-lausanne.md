@@ -22,9 +22,9 @@ schedule:
     title: "Opening Remarks"
     break: true
   - time: "9:05"
-    title: "Keynote"
+    title: "Keynote: Some Mistakes We Made When Designing Implicits (And Some Things We Got Right)"
     speakers: ["martinodersky"]
-    summary: TBD
+    summary: "We will talk about the history how Scala's implicits evolved, and about some of the mistakes we could have avoided in hindsight, but also about things that I believe we got right. I'll conclude with a presentation of revised implicits in Scala 3 which fixes most of the current problems and hopefully does not create too many new ones."
   - time: "10:00"
     title: "Break"
     break: true
