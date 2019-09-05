@@ -159,10 +159,10 @@ import cats.Eq
 
 ```scala
 val optionTEqErr: OptionT[Eq, Err] = OptionT(Eq[Option[String]]).contramap((err: Err) => err.msg)
-// optionTEqErr: cats.data.OptionT[cats.Eq,Err] = OptionT(cats.kernel.Eq$$anon$103@55f8903d)
+// optionTEqErr: cats.data.OptionT[cats.Eq,Err] = OptionT(cats.kernel.Eq$$anon$103@26747623)
 
 optionTEqErr.narrow[NotFound]
-// res7: cats.data.OptionT[cats.Eq,NotFound] = OptionT(cats.kernel.Eq$$anon$103@55f8903d)
+// res7: cats.data.OptionT[cats.Eq,NotFound] = OptionT(cats.kernel.Eq$$anon$103@26747623)
 ```
 
 # Back to that compile error...
