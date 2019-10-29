@@ -59,7 +59,7 @@
   description: "A statically typed unit analysis library for Scala"
   github: "https://github.com/erikerlandson/coulomb"
 - title: "Ciris"
-  description: "Lightweight, extensible, and validated configuration loading in Scala"
+  description: "Functional Configurations for Scala"
   github: "https://github.com/vlovgr/ciris"
 - title: "decline"
   description: "A composable command-line parser for Scala"
