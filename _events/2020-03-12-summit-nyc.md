@@ -53,3 +53,7 @@ Proposals should be related to the Typelevel family in some way or follow the Ty
 <a class="btn large" href="https://www.papercall.io/typelevel-summit-nyc-2020">Submit your talk here</a>
 
 Please check the linked website for information on when the call ends.
+
+## Code of Conduct
+
+The Typelevel Summit is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Scala Code of Conduct](https://typelevel.org/code-of-conduct.html)
