@@ -8,3 +8,4 @@ target
 _posts
 .deploy
 .jekyll-metadata
+.metals
