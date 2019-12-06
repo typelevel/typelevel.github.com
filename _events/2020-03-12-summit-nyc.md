@@ -7,8 +7,8 @@ date_string: "March 12, 2020"
 location: "26 Bridge Street, Brooklyn"
 description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
 
-poster_hero: "/img/media/philly.jpg"
-poster_thumb: "/img/media/philly-thumb.jpg"
+poster_hero: "/img/media/nyc.jpg"
+poster_thumb: "/img/media/nyc-thumb.jpg"
 
 featured: true
 
