@@ -3,7 +3,7 @@ layout: event
 
 title: "Typelevel Summit New York City"
 short_title: "NYC Summit"
-date_string: "April 1, 2019"
+date_string: "March 12, 2020"
 location: "26 Bridge Street, Brooklyn"
 description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
 
