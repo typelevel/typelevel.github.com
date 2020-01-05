@@ -23,7 +23,7 @@ class: projects-page
             {% for project in section.projects %}
               <div class="list__item">
                 <a href="{{ project.github }}">
-                  <span class="ico-repo"></span><h6>{{ project.title }}</h6>
+                  <span class="ico-repo"></span><h6>{{ project.title }} - {{ project.stars }}</h6>
                 </a>
                 <span class="list__item-slug">{{ project.description }}</span>
               </div>

@@ -2,21 +2,33 @@
 
 import $ivy.`io.circe::circe-yaml:0.12.0`
 import $ivy.`io.circe::circe-parser:0.12.3`
+import $ivy.`io.circe::circe-generic:0.12.3`
 import $ivy.`com.lihaoyi::requests:0.4.7`
+import $ivy.`com.lihaoyi::os-lib:0.6.2`
 
 import io.circe.yaml
+import io.circe.yaml.syntax._
 import io.circe.parser
 import io.circe._
+import io.circe.generic.auto._
 
-val content = scala.io.Source.fromFile("_data/projects.yml").mkString
+val yamlPath = os.pwd / "_data" / "projects.yml"
 
-def fetchDescription(org: String, repo: String): String = {
+val content = os.read(yamlPath)
+val githubToken = sys.env("GITHUB_TOKEN")
+
+final case class RepoMeta(
+  description: String,
+  stargazers_count: Long,
+  homepage: Option[String]
+)
+
+def fetchRepoMeta(org: String, repo: String): RepoMeta = {
   val url = s"https://api.github.com/repos/$org/$repo"
-  val resp = requests.get(url)
+  val resp = requests.get(url, headers = Map("Authorization" -> s"token $githubToken"))
   if (resp.is2xx) {
     val js = parser.parse(resp.text).toTry.get
-    val obj = js.asObject.getOrElse(throw new Exception(s"$js is not a JSON object"))
-    obj("description").get.asString.get
+    js.as[RepoMeta].toTry.get
   } else throw new Exception(s"Non 2xx response from $url, $resp")
 }
 
@@ -28,8 +40,11 @@ val result = for {
 def transformProjectObj(projectObj: JsonObject): JsonObject = {
   val githubUrl = projectObj("github").get.asString.get
   val orgRepo = githubUrl.split("/").takeRight(2)
-  val desc = Json.fromString(fetchDescription(orgRepo(0), orgRepo(1)))
-  projectObj.add("description", desc)
+  val repoMeta = fetchRepoMeta(orgRepo(0), orgRepo(1))
+  projectObj.deepMerge(JsonObject.fromMap(Map(
+    "description" -> Json.fromString(repoMeta.description),
+    "stars" -> Json.fromLong(repoMeta.stargazers_count)
+  ) ++ repoMeta.homepage.map(homepage => "homepage" -> Json.fromString(homepage))))
 }
 
-println(result)
+os.write.over(yamlPath, result.right.get.asYaml.spaces2)

@@ -1,141 +1,280 @@
-- category: "Web Server"
+- category: Web Server
   description: HTTP web servers
   projects:
-    - title: "http4s"
-      github: "https://github.com/http4s/http4s"
-    - title: "Finch"
-      github: "https://github.com/finagle/finch"
-- category: "HTTP Client"
+  - description: A minimal, idiomatic Scala interface for HTTP
+    github: https://github.com/http4s/http4s
+    title: http4s
+    stars: 1727
+    homepage: https://http4s.org/
+  - title: Finch
+    homepage: https://finagle.github.io/finch
+    stars: 1432
+    description: Scala combinator library for building Finagle HTTP services
+    github: https://github.com/finagle/finch
+- category: HTTP Client
   description: HTTP web clients.
-  projects: 
-    - title: "fetch"
-      github: "https://github.com/47deg/fetch"
-    - title: "Hammock"
-      github: "https://github.com/pepegar/hammock"
-    - title: "http4s"
-      github: "https://github.com/http4s/http4s"
-- category: "JSON"
+  projects:
+  - github: https://github.com/47deg/fetch
+    stars: 410
+    description: Simple & Efficient data access for Scala and Scala.js
+    title: fetch
+    homepage: http://47deg.github.io/fetch/
+  - stars: 167
+    github: https://github.com/pepegar/hammock
+    title: Hammock
+    homepage: http://pepegar.com/hammock
+    description: Purely functional HTTP client
+  - github: https://github.com/http4s/http4s
+    description: A minimal, idiomatic Scala interface for HTTP
+    title: http4s
+    homepage: https://http4s.org/
+    stars: 1727
+- category: JSON
   description: Working with JSON.
   projects:
-    - title: "argonaut-shapeless"
-      github: "https://github.com/alexarchambault/argonaut-shapeless"
-- category: "Functional Reactive Programming"
+  - description: Automatic argonaut codec derivation with shapeless
+    stars: 93
+    title: argonaut-shapeless
+    github: https://github.com/alexarchambault/argonaut-shapeless
+- category: Functional Reactive Programming
   description: Modelling effects, event streams, etc.
   projects:
-    - title: "cats-effect"
-      github: "https://github.com/typelevel/cats-effect"
-    - title: "fs2"
-      github: "https://github.com/functional-streams-for-scala/fs2"
-    - title: "monix"
-      github: "https://github.com/monix/monix"
-- category: "Database"
+  - description: The IO monad for Scala
+    github: https://github.com/typelevel/cats-effect
+    homepage: https://typelevel.org/cats-effect/
+    stars: 842
+    title: cats-effect
+  - title: fs2
+    homepage: https://fs2.io
+    stars: 1577
+    github: https://github.com/functional-streams-for-scala/fs2
+    description: Compositional, streaming I/O library for Scala
+  - description: Asynchronous, Reactive Programming for Scala and Scala.js.
+    stars: 1627
+    title: monix
+    homepage: https://monix.io
+    github: https://github.com/monix/monix
+- category: Database
   description: Integrating with databases.
   projects:
-    - title: "doobie"
-      github: "https://github.com/tpolecat/doobie"
-- category: "Front End"
+  - title: doobie
+    stars: 1587
+    description: Functional JDBC layer for Scala.
+    github: https://github.com/tpolecat/doobie
+    homepage: ''
+- category: Front End
   description: Front end development.
   projects:
-    - title: "OutWatch"
-      github: "https://github.com/OutWatch/outwatch"
-- category: "Configuration"
+  - stars: 325
+    title: OutWatch
+    github: https://github.com/OutWatch/outwatch
+    homepage: http://outwatch.github.io
+    description: A purely functional and reactive UI framework based on Monix and
+      VirtualDom
+- category: Configuration
   description: Handle application configuration.
   projects:
-    - title: "Ciris"
-      github: "https://github.com/vlovgr/ciris"
-    - title: "Extruder"
-      github: "https://github.com/janstenpickle/extruder"
-    - title: "PureConfig"
-      github: "https://github.com/pureconfig/pureconfig"
-- category: "Serialization"
+  - description: Functional Configurations for Scala
+    github: https://github.com/vlovgr/ciris
+    title: Ciris
+    homepage: https://cir.is
+    stars: 269
+  - title: Extruder
+    github: https://github.com/janstenpickle/extruder
+    description: Populate Case Classes From Any Data Source
+    homepage: https://janstenpickle.github.io/extruder/
+    stars: 75
+  - stars: 923
+    description: A boilerplate-free library for loading configuration files
+    title: PureConfig
+    homepage: https://pureconfig.github.io
+    github: https://github.com/pureconfig/pureconfig
+- category: Serialization
   description: Serializing and deserializing data.
   projects:
-    - title: "scodec"
-      github: "https://github.com/scodec/scodec"
-- category: "Science and Data Analysis"
+  - description: Scala combinator library for working with binary data
+    homepage: http://scodec.org
+    stars: 658
+    github: https://github.com/scodec/scodec
+    title: scodec
+- category: Science and Data Analysis
   projects:
-    - title: "Algebird"
-      github: "https://github.com/twitter/algebird"
-    - title: "coulomb"
-      github: "https://github.com/erikerlandson/coulomb"
-    - title: "Frameless"
-      github: "https://github.com/typelevel/frameless"
-    - title: "Libra"
-      github: "https://github.com/to-ithaca/libra"
-    - title: "spire"
-      github: "https://github.com/typelevel/spire"
-    - title: "squants"
-      github: "https://github.com/typelevel/squants"
-- category: "Testing"
+  - homepage: https://twitter.github.io/algebird
+    github: https://github.com/twitter/algebird
+    stars: 1922
+    title: Algebird
+    description: Abstract Algebra for Scala
+  - description: 'coulomb: a statically typed unit analysis library for Scala'
+    title: coulomb
+    homepage: https://github.com/erikerlandson/coulomb#coulomb
+    stars: 75
+    github: https://github.com/erikerlandson/coulomb
+  - github: https://github.com/typelevel/frameless
+    stars: 603
+    title: Frameless
+    description: Expressive types for Spark.
+    homepage: ''
+  - description: A dimensional analysis library based on dependent types
+    stars: 187
+    title: Libra
+    github: https://github.com/to-ithaca/libra
+  - homepage: ''
+    title: spire
+    stars: 1551
+    github: https://github.com/typelevel/spire
+    description: Powerful new number types and numeric abstractions for Scala.
+  - stars: 676
+    description: The Scala API for Quantities, Units of Measure and Dimensional Analysis
+    github: https://github.com/typelevel/squants
+    homepage: https://www.squants.com
+    title: squants
+- category: Testing
   description: Test frameworks and test utilities.
   projects:
-    - title: "cats-scalatest"
-      github: "https://github.com/IronCoreLabs/cats-scalatest"
-    - title: "ScalaCheck"
-      github: "https://github.com/typelevel/scalacheck"
-    - title: "scalacheck-shapeless"
-      github: "https://github.com/alexarchambault/scalacheck-shapeless"
-    - title: "Specs2"
-      github: "https://github.com/etorreborre/specs2"
-    - title: "discipline"
-      github: "https://github.com/typelevel/discipline"
-- category: "Linked Data"
+  - description: Scalatest binding for Cats
+    stars: 53
+    title: cats-scalatest
+    github: https://github.com/IronCoreLabs/cats-scalatest
+  - stars: 1598
+    title: ScalaCheck
+    homepage: www.scalacheck.org
+    github: https://github.com/typelevel/scalacheck
+    description: Property-based testing for Scala
+  - homepage: ''
+    description: Generation of arbitrary case classes / ADTs instances with scalacheck
+      and shapeless
+    stars: 195
+    title: scalacheck-shapeless
+    github: https://github.com/alexarchambault/scalacheck-shapeless
+  - title: Specs2
+    github: https://github.com/etorreborre/specs2
+    homepage: http://specs2.org
+    description: Software Specifications for Scala
+    stars: 674
+  - github: https://github.com/typelevel/discipline
+    description: Flexible law checking for Scala
+    title: discipline
+    stars: 244
+    homepage: http://typelevel.org
+- category: Linked Data
   projects:
-    - title: "banana-rdf"
-      github: "https://github.com/banana-rdf/banana-rdf"
-- category: "Generic Programming"
+  - description: Banana RDF
+    stars: 252
+    title: banana-rdf
+    github: https://github.com/banana-rdf/banana-rdf
+- category: Generic Programming
   projects:
-    - title: "shapeless"
-      github: "https://github.com/milessabin/shapeless"
-- category: "Command Line"
+  - description: Generic programming for Scala
+    github: https://github.com/milessabin/shapeless
+    title: shapeless
+    stars: 2919
+    homepage: ''
+- category: Command Line
   description: Command line applications.
   projects:
-    - title: "decline"
-      github: "https://github.com/bkirwi/decline"
-- category: "Extensions"
+  - homepage: http://monovore.com/decline/
+    stars: 325
+    description: A composable command-line parser for Scala.
+    github: https://github.com/bkirwi/decline
+    title: decline
+- category: Extensions
   description: Language extensions.
   projects:
-    - title: "cats"
-      github: "https://github.com/typelevel/cats"
-    - title: "cats-tagless"
-      github: "https://github.com/typelevel/cats-tagless"
-    - title: "eff"
-      github: "https://github.com/atnos-org/eff"
-    - title: "kittens"
-      github: "https://github.com/typelevel/kittens"
-    - title: "monocle"
-      github: "https://github.com/julien-truffaut/Monocle"
-    - title: "mouse"
-      github: "https://github.com/typelevel/mouse"
-    - title: "refined"
-      github: "https://github.com/fthomas/refined"
-    - title: "singleton-ops"
-      github: "https://github.com/fthomas/singleton-ops"
-- category: "Misc"
+  - github: https://github.com/typelevel/cats
+    description: Lightweight, modular, and extensible library for functional programming.
+    stars: 3718
+    homepage: http://typelevel.org/cats/
+    title: cats
+  - github: https://github.com/typelevel/cats-tagless
+    stars: 194
+    homepage: https://typelevel.org/cats-tagless/
+    title: cats-tagless
+    description: Library of utilities for tagless final encoded algebras
+  - stars: 434
+    homepage: ''
+    github: https://github.com/atnos-org/eff
+    title: eff
+    description: Eff monad for cats - http://atnos-org.github.io/eff
+  - github: https://github.com/typelevel/kittens
+    description: Automatic type class derivation for Cats
+    title: kittens
+    homepage: ''
+    stars: 362
+  - stars: 1188
+    title: monocle
+    description: Optics library for Scala
+    github: https://github.com/julien-truffaut/Monocle
+    homepage: http://julien-truffaut.github.io/Monocle/
+  - description: A small companion to cats
+    stars: 212
+    title: mouse
+    github: https://github.com/typelevel/mouse
+  - homepage: ''
+    description: Simple refinement types for Scala
+    stars: 1043
+    title: refined
+    github: https://github.com/fthomas/refined
+  - homepage: ''
+    github: https://github.com/fthomas/singleton-ops
+    stars: 129
+    description: Operations for primitive and String singleton types
+    title: singleton-ops
+- category: Misc
   description: Projects which don't fit a specific category.
   projects:
-    - title: "algebra"
-      github: "https://github.com/typelevel/algebra"
-    - title: "paiges"
-      github: "https://github.com/typelevel/paiges"
-    - title: "scala-steward"
-      github: "https://github.com/fthomas/scala-steward"
-    - title: "scala-exercises"
-      github: "https://github.com/scala-exercises/scala-exercises"
-    - title: "Scoverage"
-      github: "https://github.com/scoverage/scalac-scoverage-plugin"
-- category: "Macros and Compiler Plugins"
+  - description: Experimental project to lay out basic algebra type classes
+    stars: 360
+    homepage: https://typelevel.org/algebra/
+    title: algebra
+    github: https://github.com/typelevel/algebra
+  - description: an implementation of Wadler's a prettier printer
+    stars: 141
+    title: paiges
+    github: https://github.com/typelevel/paiges
+  - homepage: ''
+    github: https://github.com/fthomas/scala-steward
+    description: ':robot: A bot that helps you keeping your Scala projects up-to-date'
+    stars: 608
+    title: scala-steward
+  - description: The easy way to learn Scala.
+    title: scala-exercises
+    homepage: https://www.scala-exercises.org
+    stars: 2037
+    github: https://github.com/scala-exercises/scala-exercises
+  - homepage: http://scoverage.org
+    stars: 346
+    description: Scoverage Scala Code Coverage Core Libs
+    github: https://github.com/scoverage/scalac-scoverage-plugin
+    title: Scoverage
+- category: Macros and Compiler Plugins
   projects:
-    - title: "export-hook"
-      github: "https://github.com/milessabin/export-hook"
-    - title: "imp"
-      github: "https://github.com/non/imp"
-    - title: "kind-projector"
-      github: "https://github.com/typelevel/kind-projector"
-    - title: "macro-compat"
-      github: "https://github.com/milessabin/macro-compat"
-    - title: "simulacrum"
-      github: "https://github.com/typelevel/simulacrum"
-    - title: "TwoTails"
-      github: "https://github.com/wheaties/TwoTails"
-
+  - github: https://github.com/milessabin/export-hook
+    stars: 89
+    title: export-hook
+    homepage: ''
+    description: Minimal infrastructure for type class providers to support the inclusion
+      of derived, subclass and other orphan instances in their implicit scope.
+  - description: macro for summoning implicit values
+    stars: 90
+    title: imp
+    github: https://github.com/non/imp
+  - homepage: ''
+    title: kind-projector
+    github: https://github.com/typelevel/kind-projector
+    description: Compiler plugin for making type lambdas (type projections) easier
+      to write
+    stars: 716
+  - description: macro-compat is a small library which allows you to compile macros
+      with Scala 2.10.x which are written to the Scala 2.11/2 macro API.
+    stars: 83
+    title: macro-compat
+    github: https://github.com/milessabin/macro-compat
+  - description: First class syntax support for type classes in Scala
+    stars: 856
+    title: simulacrum
+    github: https://github.com/typelevel/simulacrum
+  - homepage: ''
+    title: TwoTails
+    github: https://github.com/wheaties/TwoTails
+    description: A Scala compiler plugin for mutual tail recursion
+    stars: 83
