@@ -4,110 +4,34 @@ title: Projects
 class: projects-page
 ---
 
-<div class="section projects-core js-fade-in">
+<div class="section projects">
   <h2>Libraries</h2>
   <p>Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
-  
-  {% for project in site.projects %}
-    <!-- Core Projects / Featured (have the option core: true) -->
-    {% if project.core %}
-      <div class="projects__project expandable-core">
-        <div class="projects__project-header">
-          <a href="{{ project.github }}">
-            <h4 id="{{ project.title | slugify: 'raw' }}">
-              <span class="ico-repo"></span>
-              {{ project.title }}
-            </h4>
-          </a>
-          {% if project.permalink %}
-            <a class="btn pull-right" href="{{ project.permalink }}">More</a>
-          {% endif %}
-        </div>
-        <div class="projects__project-body">
-          <span class="tag">{{ project.category }}</span>
-          <p class="projects__project-body-description">{{ project.description }}</p>
-          {% if project.extensions %}
-          <div class="projects__project-body-extensions">
-            <p>Extensions and companions for <strong>{{ project.title }}</strong></p>
-            <div class="list">
-              {% for extension in project.extensions %}
-                <div class="list__item">
-                  <a href="{{ extension.link }}">
-                    <span class="ico-repo"></span><h6>{{ extension.title }}</h6>
-                  </a>
-                  <span class="list__item-slug">{{ extension.description }}</span>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-</div>
-
-<div class="section projects">
+    
   <div class="projects__container" data-columns>
-    {% for project in site.projects %}
-      {% unless project.core %}
-        <div class="projects__project expandable js-fade-in">
-          <div class="projects__project-header">
-            <a href="{{ project.github }}">
-              <h4 id="{{ project.title | slugify: 'raw' }}"><span class="ico-repo"></span>{{ project.title }}</h4>
-            </a>
-            {% if project.permalink %}
-              <a class="btn pull-right" href="{{ project.permalink }}">More</a>
-            {% endif %}
+  {% for section in site.data.projects %}
+    <div class="projects__project expandable-core">
+      <div class="projects__project-header">
+        <h4 id="{{ section.category | slugify: 'raw' }}">
+          {{ section.category }}
+        </h4>
+      </div>
+      <div class="projects__project-body">
+        <p class="projects__project-body-description">{{ section.description }}</p>
+        <div class="projects__project-body-extensions">
+          <div class="list">
+            {% for project in section.projects %}
+              <div class="list__item">
+                <a href="{{ project.github }}">
+                  <span class="ico-repo"></span><h6>{{ project.title }}</h6>
+                </a>
+                <span class="list__item-slug">{{ project.description }}</span>
+              </div>
+            {% endfor %}
           </div>
-            <div class="projects__project-body">
-              <span class="tag">{{ project.category }}</span>
-              <p>{{ project.description }}</p>
-            </div>
         </div>
-      {% endunless %}
-    {% endfor %}
-  </div>
-</div>
-
-<div class="section macros js-fade-in">
-  <div class="projects__project incubator">
-    <div class="projects__project-header">
-      <h4>Incubator Projects</h4>
-    </div>
-    <div class="projects__project-body">
-      <span class="tag">Newly joined projects</span>
-      <div class="list">
-        {% for incubator in site.data.incubator %}
-          <div id="{{ incubator.title | slugify: 'raw' }}" class="list__item">
-            <a href="{{ incubator.github }}">
-              <span class="ico-repo"></span><h6>{{ incubator.title }}</h6>
-            </a>
-            <span class="list__item-slug">{{ incubator.description }}</span>
-          </div>
-        {% endfor %}
       </div>
     </div>
-  </div>
-</div>
-
-<div class="section macros js-fade-in">
-  <div class="projects__project macros">
-    <div class="projects__project-header">
-      <h4>Macros and Compiler Plugins</h4>
-    </div>
-    <div class="projects__project-body">
-      <span class="tag">Extending the language</span>
-      <div class="list">
-        {% for macro in site.data.macros %}
-          <div id="{{ macro.title | slugify: 'raw' }}" class="list__item">
-            <a href="{{ macro.github }}">
-              <span class="ico-repo"></span><h6>{{ macro.title }}</h6>
-            </a>
-            <span class="list__item-slug">{{ macro.description }}</span>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
+  {% endfor %}
   </div>
 </div>

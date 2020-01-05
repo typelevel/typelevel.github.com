@@ -1,0 +1,141 @@
+- category: "Web Server"
+  description: HTTP web servers
+  projects:
+    - title: "http4s"
+      github: "https://github.com/http4s/http4s"
+    - title: "Finch"
+      github: "https://github.com/finagle/finch"
+- category: "HTTP Client"
+  description: HTTP web clients.
+  projects: 
+    - title: "fetch"
+      github: "https://github.com/47deg/fetch"
+    - title: "Hammock"
+      github: "https://github.com/pepegar/hammock"
+    - title: "http4s"
+      github: "https://github.com/http4s/http4s"
+- category: "JSON"
+  description: Working with JSON.
+  projects:
+    - title: "argonaut-shapeless"
+      github: "https://github.com/alexarchambault/argonaut-shapeless"
+- category: "Functional Reactive Programming"
+  description: Modelling effects, event streams, etc.
+  projects:
+    - title: "cats-effect"
+      github: "https://github.com/typelevel/cats-effect"
+    - title: "fs2"
+      github: "https://github.com/functional-streams-for-scala/fs2"
+    - title: "monix"
+      github: "https://github.com/monix/monix"
+- category: "Database"
+  description: Integrating with databases.
+  projects:
+    - title: "doobie"
+      github: "https://github.com/tpolecat/doobie"
+- category: "Front End"
+  description: Front end development.
+  projects:
+    - title: "OutWatch"
+      github: "https://github.com/OutWatch/outwatch"
+- category: "Configuration"
+  description: Handle application configuration.
+  projects:
+    - title: "Ciris"
+      github: "https://github.com/vlovgr/ciris"
+    - title: "Extruder"
+      github: "https://github.com/janstenpickle/extruder"
+    - title: "PureConfig"
+      github: "https://github.com/pureconfig/pureconfig"
+- category: "Serialization"
+  description: Serializing and deserializing data.
+  projects:
+    - title: "scodec"
+      github: "https://github.com/scodec/scodec"
+- category: "Science and Data Analysis"
+  projects:
+    - title: "Algebird"
+      github: "https://github.com/twitter/algebird"
+    - title: "coulomb"
+      github: "https://github.com/erikerlandson/coulomb"
+    - title: "Frameless"
+      github: "https://github.com/typelevel/frameless"
+    - title: "Libra"
+      github: "https://github.com/to-ithaca/libra"
+    - title: "spire"
+      github: "https://github.com/typelevel/spire"
+    - title: "squants"
+      github: "https://github.com/typelevel/squants"
+- category: "Testing"
+  description: Test frameworks and test utilities.
+  projects:
+    - title: "cats-scalatest"
+      github: "https://github.com/IronCoreLabs/cats-scalatest"
+    - title: "ScalaCheck"
+      github: "https://github.com/typelevel/scalacheck"
+    - title: "scalacheck-shapeless"
+      github: "https://github.com/alexarchambault/scalacheck-shapeless"
+    - title: "Specs2"
+      github: "https://github.com/etorreborre/specs2"
+    - title: "discipline"
+      github: "https://github.com/typelevel/discipline"
+- category: "Linked Data"
+  projects:
+    - title: "banana-rdf"
+      github: "https://github.com/banana-rdf/banana-rdf"
+- category: "Generic Programming"
+  projects:
+    - title: "shapeless"
+      github: "https://github.com/milessabin/shapeless"
+- category: "Command Line"
+  description: Command line applications.
+  projects:
+    - title: "decline"
+      github: "https://github.com/bkirwi/decline"
+- category: "Extensions"
+  description: Language extensions.
+  projects:
+    - title: "cats"
+      github: "https://github.com/typelevel/cats"
+    - title: "cats-tagless"
+      github: "https://github.com/typelevel/cats-tagless"
+    - title: "eff"
+      github: "https://github.com/atnos-org/eff"
+    - title: "kittens"
+      github: "https://github.com/typelevel/kittens"
+    - title: "monocle"
+      github: "https://github.com/julien-truffaut/Monocle"
+    - title: "mouse"
+      github: "https://github.com/typelevel/mouse"
+    - title: "refined"
+      github: "https://github.com/fthomas/refined"
+    - title: "singleton-ops"
+      github: "https://github.com/fthomas/singleton-ops"
+- category: "Misc"
+  description: Projects which don't fit a specific category.
+  projects:
+    - title: "algebra"
+      github: "https://github.com/typelevel/algebra"
+    - title: "paiges"
+      github: "https://github.com/typelevel/paiges"
+    - title: "scala-steward"
+      github: "https://github.com/fthomas/scala-steward"
+    - title: "scala-exercises"
+      github: "https://github.com/scala-exercises/scala-exercises"
+    - title: "Scoverage"
+      github: "https://github.com/scoverage/scalac-scoverage-plugin"
+- category: "Macros and Compiler Plugins"
+  projects:
+    - title: "export-hook"
+      github: "https://github.com/milessabin/export-hook"
+    - title: "imp"
+      github: "https://github.com/non/imp"
+    - title: "kind-projector"
+      github: "https://github.com/typelevel/kind-projector"
+    - title: "macro-compat"
+      github: "https://github.com/milessabin/macro-compat"
+    - title: "simulacrum"
+      github: "https://github.com/typelevel/simulacrum"
+    - title: "TwoTails"
+      github: "https://github.com/wheaties/TwoTails"
+
