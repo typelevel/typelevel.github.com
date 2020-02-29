@@ -20,7 +20,7 @@ val githubToken = sys.env("GITHUB_TOKEN")
 final case class RepoMeta(
   description: String,
   stargazers_count: Long,
-  homepage: Option[String]
+  homepage: String
 )
 
 def fetchRepoMeta(org: String, repo: String): RepoMeta = {
@@ -42,9 +42,10 @@ def transformProjectObj(projectObj: JsonObject): JsonObject = {
   val orgRepo = githubUrl.split("/").takeRight(2)
   val repoMeta = fetchRepoMeta(orgRepo(0), orgRepo(1))
   projectObj.deepMerge(JsonObject.fromMap(Map(
-    "description" -> Json.fromString(repoMeta.description),
-    "stars" -> Json.fromLong(repoMeta.stargazers_count)
-  ) ++ repoMeta.homepage.map(homepage => "homepage" -> Json.fromString(homepage))))
+      "description" -> Json.fromString(repoMeta.description),
+      "stars" -> Json.fromLong(repoMeta.stargazers_count)
+    ) ++ (if (repoMeta.homepage.isEmpty) None else Some("homepage" -> Json.fromString(homepage)))
+  ))
 }
 
 os.write.over(yamlPath, result.right.get.asYaml.spaces2)
