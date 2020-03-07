@@ -57,7 +57,7 @@
   github: "https://github.com/scoverage/scalac-scoverage-plugin"
 - title: "Simulacrum Scalafix"
   description: "Simulacrum as Scalafix rules"
-  github: "https://github.com/travisbrown/simulacrum-scalafix"
+  github: "https://github.com/typelevel/simulacrum-scalafix"
 - title: "singleton-ops"
   description: "Operations for primitive and String singleton types"
   github: "https://github.com/fthomas/singleton-ops"
