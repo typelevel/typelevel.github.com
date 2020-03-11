@@ -25,7 +25,10 @@ The schedule for this year is as follows:
 * March 13 (Friday): NE Scala 2020
 * March 14 (Saturday): Unconference
 
-Stay tuned for more details!
+## Important Update
+
+Due to the current situation regarding COVID-19, we are changing the Typelevel Summit and NE Scala to be online-only. Many attendees have been asked by their employers not to travel or attend conferences. We apologize to anyone who's inconvenienced by this, but we hope you'll still attend remotely.
+For more information please visit the [NE Scala website](https://nescala.io/).
 
 ## Venue
 
