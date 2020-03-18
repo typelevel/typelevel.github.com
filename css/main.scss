@@ -521,13 +521,13 @@ blockquote {
 
 // PROJECTS
 .projects__container[data-columns]:before {
-  content: '3 .column.size-1of3';
+  content: '3 .column.size-1of2';
 
   @include media-query($content) {
     content: '2 .column.size-1of2';
   }
   @include media-query-min($content) {
-    content: '3 .column.size-1of3';
+    content: '3 .column.size-1of2';
   }
   @include media-query-min-max($small, $content) {
     content: '2 .column.size-1of2';
@@ -596,7 +596,6 @@ blockquote {
 
 .projects__project-body {
   position: relative;
-  max-height: 200px;
   padding: $spacing-unit;
   overflow: hidden;
 
@@ -824,78 +823,6 @@ blockquote {
 
 /* PROJECTS PAGE
 ========================================================================== */
-.projects-page {
-  .section {
-    margin-top: $spacing-unit;
-
-    &:first-of-type {
-      margin-top: $spacing-unit * 4;
-    }
-
-    &.macros {
-      margin-top: 0;
-    }
-  }
-}
-
-.projects-core {
-  .projects__project {
-    width: 100%; height: auto;
-  }
-
-  .projects__project-body {
-    max-height: 100%;
-  }
-}
-
-@include media-query($content) {
-  .about-us {
-    padding: 0 $spacing-unit * 2;
-  }
-}
-
-@include media-query($small) {
-  .about-us {
-    padding: 0;
-  }
-}
-
-.list {
-  margin-top: $spacing-unit;
-
-  .list__item {
-    width: 100%;
-    padding: $spacing-unit 0;
-    border-top: 1px solid $border;
-    @include clearfix;
-
-    &:first-child {
-      padding-top: 0;
-      border-top: 0;
-    }
-
-    &:last-child {
-      padding-bottom: 0;
-    }
-
-    .list__item-slug {
-      float: right;
-      color: rgba($black, .6);
-
-      @include media-query($small) {
-        display: none;
-      }
-    }
-
-    h6 {
-      display: inline-block;
-      margin: 0;
-      font-size: 1em;
-      font-weight: normal;
-      color: $black;
-    }
-  }
-}
 
 
 
