@@ -70,3 +70,6 @@
 - title: "TwoTails"
   description: "A compiler plugin adding support for mutual tail recursion"
   github: "https://github.com/wheaties/TwoTails"
+- title: "cron4s"
+  description: "Cross-platform CRON expression parsing for Scala"
+  github: "https://github.com/alonsodomin/cron4s"
