@@ -10,8 +10,6 @@ description: "One day of talks, co-located with the anniversary Scala Days."
 poster_hero: "/img/media/lausanne.jpg"
 poster_thumb: "/img/media/lausanne-thumb.jpg"
 
-featured: true
-
 sponsors_section: true
 
 schedule:
@@ -108,11 +106,7 @@ The Summits are open to all, not just current contributors to and users of the T
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
 
-<a class="btn large" href="https://ti.to/typelevel-summit/typelevel-summit-lausanne-2019">Buy tickets</a>
-
 ## Speakers and Schedule
-
-Stay tuned while we announce the full programme!
 
 {% assign schedule=page.schedule %}
 {% include schedule.html %}
@@ -126,9 +120,5 @@ _Please note that this is a different venue than Scala Days!_
 {% include venue_map.html %}
 
 ## Sponsors
-
-If you would like to talk to us about sponsorship options, please get in touch:
-
-<a class="btn large" href="mailto:info@typelevel.org">Become a sponsor</a>
 
 {% include sponsors.html %}

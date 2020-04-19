@@ -4,15 +4,12 @@ layout: event
 title: "Typelevel Summit New York City"
 short_title: "NYC Summit"
 date_string: "March 12, 2020"
-location: "26 Bridge Street, Brooklyn"
+location: "Online"
 description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
 
 poster_hero: "/img/media/nyc.jpg"
 poster_thumb: "/img/media/nyc-thumb.jpg"
 
-featured: true
-
-papers_section: true
 sponsors_section: false
 ---
 
@@ -30,33 +27,6 @@ The schedule for this year is as follows:
 Due to the current situation regarding COVID-19, we are changing the Typelevel Summit and NE Scala to be online-only. Many attendees have been asked by their employers not to travel or attend conferences. We apologize to anyone who's inconvenienced by this, but we hope you'll still attend remotely.
 For more information please visit the [NE Scala website](https://nescala.io/).
 
-## Venue
+## Speakers and Schedule
 
-This event will take place at 26 Bridge Event Space, 26 Bridge Street, Brooklyn, New York.
-
-{% include venue_map.html %}
-
-## Call for Speakers
-
-We are looking for a variety of things! Possible topic ranges include, but are not limited to:
-
-  - Experience reports:  "How we migrated our code base to shapeless"
-  - Typelevel project updates: "What's new in Typelevel project X"
-  - Your project updates: "What's new in X", where X uses Typelevel heavily
-  - Big picture: "Where is Scala headed for typed FP?"
-  - Non-code issues: "Diversity in the Scala community", "Governance in Typelevel"
-  - Tutorial-style: "Error-handling with cats", "Idiomatic ScalaCheck"
-  - Tooling: "We can now use Metals with Notepad"
-  - Related work: "How language X does typed FP and what we could learn"
-
-Proposals should be related to the Typelevel family in some way or follow the Typelevel spirit.
-
-**We welcome all sorts of talks!** You don't have to write down a perfect abstract. **Submissions by first-time speakers are especially welcome!**
-
-<a class="btn large" href="https://www.papercall.io/typelevel-summit-nyc-2020">Submit your talk here</a>
-
-Please check the linked website for information on when the call ends.
-
-## Code of Conduct
-
-The Typelevel Summit is a community conference and we strive to make it an inclusive and fulfilling event for all participants. All attendees, speakers, and organizers must abide by the [Scala Code of Conduct](https://typelevel.org/code-of-conduct.html)
+For information on the programme and recordings, please visit the [NE Scala website](https://nescala.io/).
