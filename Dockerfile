@@ -1,12 +1,12 @@
 FROM ruby:2.5
 
-ENV SBT_VERSION 1.0.4
+ENV SBT_VERSION 1.3.10
 
 ENV LC_ALL C.UTF-8
 
 RUN \
 apt-get update && \
-apt-get install openjdk-8-jdk -y
+apt-get install openjdk-11-jdk -y
 
 RUN \
 curl -L -o sbt.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
