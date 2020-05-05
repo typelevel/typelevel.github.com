@@ -353,7 +353,7 @@ implicit val game: Game[IO, Position, SameGameState, Int] =
           .flatMap(simulation)
     }
   }
-// game: Game[cats.effect.IO,SameGame.Position,SameGame.SameGameState,Int] = $anon$1@774cca81
+// game: Game[cats.effect.IO,SameGame.Position,SameGame.SameGameState,Int] = $anon$1@7eb48b8b
 ```
 
 We must not forget to also implement an interpreter for `Logger`:
@@ -362,7 +362,7 @@ We must not forget to also implement an interpreter for `Logger`:
 implicit val logger: Logger[IO] = new Logger[IO] {
   def log[T: Show](t: T): IO[Unit] = IO(println(t.show))
 }
-// logger: Logger[cats.effect.IO] = $anon$1@3ba3105b
+// logger: Logger[cats.effect.IO] = $anon$1@3ca24621
 ```
 
 And some `Show` instances to create nicely formatted outputs in a type-safe way:
