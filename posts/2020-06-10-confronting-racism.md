@@ -126,12 +126,12 @@ structures, and how we benefit from the repression of others. Today
 there is no shortage of books and resources to help us. Here are a few
 commonly-cited resources:
 
-* Stamped from the Beginning by [Ibrahim
+* [Stamped from the Beginning](https://www.ibramxkendi.com/stamped) by [Ibrahim
   Kendi](https://www.ibramxkendi.com/)
-* How to Be an Anti-Racist by Ibrahim Kendi
-* So You Want to Talk About Race by [Ijeoma
+* [How to Be an Anti-Racist](https://www.ibramxkendi.com/how-to-be-an-antiracist-1) by Ibrahim Kendi
+* [So You Want to Talk About Race](https://www.hachettebookgroup.com/titles/ijeoma-oluo/so-you-want-to-talk-about-race/9781580056779/) by [Ijeoma
   Oluo](http://www.ijeomaoluo.com/)
-* White Fragility by [Robin DiAngelo](https://robindiangelo.com/)
+* [White Fragility](https://robindiangelo.com/publications/) by [Robin DiAngelo](https://robindiangelo.com/)
 * [Seeing White](https://www.sceneonradio.org/seeing-white/) (podcast)
 
 In addition, we need to look around our own communities for
