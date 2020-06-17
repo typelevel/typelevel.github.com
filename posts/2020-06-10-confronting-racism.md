@@ -143,6 +143,6 @@ movement or to bail funds.
 ### Black Lives Matter.
 
 
-### Acknowlegements
+### Acknowledgments
 This blog post incorporates suggestions and resources provided by Lina
 Dahlberg and Maria Dahlberg.
