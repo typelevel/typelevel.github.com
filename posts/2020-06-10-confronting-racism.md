@@ -38,7 +38,7 @@ A [2016 commissioned
 paper](https://www.nap.edu/read/24926/chapter/14#183) produced by the
 U.S. National Academies of Science found that African American and
 Hispanic people were not underrepresented in terms of computer science
-degrees (about 9.2%), but that they were underreprented in the labor
+degrees (about 9.2%), but that they were underrepresented in the labor
 force (only 5.9%). That study did not address the cause of the
 disparity - we are left to speculate if they encountered bias in
 hiring and interviewing, hostile work environments, or something else.
