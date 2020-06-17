@@ -29,7 +29,7 @@ African Americans represented 14.4 percent of the workforce, but in
 the technology sector that number was just 7.4 percent. For
 comparison, according to [recent census
 data](https://www.census.gov/quickfacts/fact/table/US/RHI225218),
-black or African Americans make up approimately 13.4 percent of the
+black or African Americans make up approximately 13.4 percent of the
 U.S. population. The problem becomes even worse at the executive
 level: African Americans fill between 2 and 5.3 percent of executive
 roles in technology firms.
