@@ -29,7 +29,7 @@ African Americans represented 14.4 percent of the workforce, but in
 the technology sector that number was just 7.4 percent. For
 comparison, according to [recent census
 data](https://www.census.gov/quickfacts/fact/table/US/RHI225218),
-black or African Americans make up approimately 13.4 percent of the
+black or African Americans make up approximately 13.4 percent of the
 U.S. population. The problem becomes even worse at the executive
 level: African Americans fill between 2 and 5.3 percent of executive
 roles in technology firms.
@@ -38,7 +38,7 @@ A [2016 commissioned
 paper](https://www.nap.edu/read/24926/chapter/14#183) produced by the
 U.S. National Academies of Science found that African American and
 Hispanic people were not underrepresented in terms of computer science
-degrees (about 9.2%), but that they were underreprented in the labor
+degrees (about 9.2%), but that they were underrepresented in the labor
 force (only 5.9%). That study did not address the cause of the
 disparity - we are left to speculate if they encountered bias in
 hiring and interviewing, hostile work environments, or something else.
@@ -143,6 +143,6 @@ movement or to bail funds.
 ### Black Lives Matter.
 
 
-### Acknowlegements
+### Acknowledgments
 This blog post incorporates suggestions and resources provided by Lina
 Dahlberg and Maria Dahlberg.
