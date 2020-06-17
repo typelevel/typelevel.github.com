@@ -36,7 +36,7 @@ roles in technology firms.
 
 A [2016 commissioned
 paper](https://www.nap.edu/read/24926/chapter/14#183) produced by the
-U.S. National Academies of Science found that African-American and
+U.S. National Academies of Science found that African American and
 Hispanic people were not underrepresented in terms of computer science
 degrees (about 9.2%), but that they were underreprented in the labor
 force (only 5.9%). That study did not address the cause of the
@@ -63,7 +63,7 @@ confront the racism that appears endemic in our industry?
 #### Workplace culture
 In May, 2020, the Harvard Business Review issued a
 [report](https://www.umass.edu/employmentequity/what-works-evidence-based-ideas-increase-diversity-equity-and-inclusion-workplace)
-entitled "What Works? Evidence-Based Ideas to Increase Diversity,
+titled "What Works? Evidence-Based Ideas to Increase Diversity,
 Equity, and Inclusion in the Workplace". One of the authors, David
 Pedulla, also contributed a
 [summary](https://hbr.org/2020/05/diversity-and-inclusion-efforts-that-really-work)
