@@ -60,7 +60,7 @@ Talk about Scala Future
 
 ## Fibers
 A fiber is a logical thread, or a sequence of effects which are bound together
-via `flatMap`. 
+via `flatMap`. A fiber is an active entity rather than a passive one.
 
 Fibers are a similar construct to goroutines in Go or userland threads 
 elsewhere.
