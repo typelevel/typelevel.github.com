@@ -400,3 +400,6 @@ martinodersky:
   full_name: "Martin Odersky"
   bio: "Martin Odersky is professor at EPFL, coordinating the LAMP group."
   portrait: "/img/media/speakers/martinodersky.jpg"
+rahsan:
+  full_name: "Raas Ahsan"
+  github: "RaasAhsan"
