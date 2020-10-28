@@ -440,6 +440,8 @@ ordering of effects among the fibers; the main fiber will never proceed until
 after the `Latch` is completely released.
 
 ### Scheduling and parallelism
+TODO: finish this section?
+
 We briefly mentioned that fibers run on a small pool of threads and are
 scheduled entirely within the userspace process. We'll explore how that works a
 in more detail here.
