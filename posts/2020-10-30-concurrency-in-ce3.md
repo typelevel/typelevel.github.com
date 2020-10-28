@@ -317,15 +317,127 @@ The final value is: 100
 
 #### `Deferred`
 `Deferred` is a concurrent data structure that represents a condition variable.
-It can be used as a way to semantically block fibers until some arbitrary
-condition has been fulfilled.
+It is used to semantically block fibers until some arbitrary condition has been 
+fulfilled.
 
-`Ref` and `Deferred` are often used as primitives to build more powerful and
+Let's take a look at a simple example.
+
+```scala
+import cats.effect.{IO, IOApp, ExitCode}
+import cats.implicits._
+
+object ExampleFour extends IOApp {
+  override def run(args: List[String]): IO[ExitCode] =
+    for {
+      state <- Ref.of[IO, Int](0)
+      fibers <- state.update(_ + 1).start.replicateA(100)
+      _ <- fibers.traverse(_.join).void
+      value <- state.get
+      _ <- IO.println(s"The final value is: $value")
+    } yield ExitCode.Success
+}
+```
+
+#### 
+
+`Ref` and `Deferred` are often composed together to build more powerful and
 more complex concurrent data structures. Most of the concurrent data types in 
 the `std` module of Cats Effect are implemented in terms of `Ref` and/or 
 `Deferred`: `Semaphore`, `Queue`, `Hotswap`.
 
+In this next example we create simple concurrent data structure called `Latch` 
+that is blocks a waiter until a certain number of internal latches have been 
+released.
 
+```scala
+import cats.effect.kernel.{Ref, Deferred}
+import cats.effect.{IO, IOApp, ExitCode}
+import cats.implicits._
+
+trait Latch {
+  def release: IO[Unit]
+  def await: IO[Unit]
+}
+
+object Latch {
+  sealed trait State
+  final case class Awaiting(latches: Int, waiter: Deferred[IO, Unit]) extends State
+  case object Done extends State
+
+  def apply(latches: Int): IO[Latch] =
+    for {
+      waiter <- Deferred[IO, Unit]
+      state <- Ref.of[IO, State](Awaiting(latches, waiter))
+    } yield new Latch {
+      override def release: IO[Unit] = 
+        state.modify {
+          case Awaiting(n, waiter) => 
+            if (n > 1)
+              (Awaiting(n - 1, waiter), IO.unit)
+            else
+              (Done, waiter.complete(()))
+          case Done => (Done, IO.unit)
+        }.flatten.void
+      override def await: IO[Unit] = 
+        state.get.flatMap {
+          case Done => IO.unit
+          case Awaiting(_, waiter) => waiter.get
+        }
+    }
+}
+
+object ExampleFive extends IOApp {
+  override def run(args: List[String]): IO[ExitCode] =
+    for {
+      latch <- Latch(10)
+      _ <- (1 to 10).toList.traverse { idx => 
+        (IO.println(s"$idx counting down") *> latch.release).start
+      }
+      _ <- latch.await
+      _ <- IO.println("Got past the latch")
+    } yield ExitCode.Success
+}
+```
+
+`Latch` is a concurrent finite state machine represented by the ADT `State`
+which admits two possible states `Awaiting` and `Done`. The `Awaiting` 
+state reflects that the `Latch` is still active and that there are `count` 
+latches left that must be released. `waiter` is used to semantically 
+block fibers that call `await` while still in the `Awaiting` state. The 
+`Done` state reflects that the latch has been released.
+
+The `release` method atomically modifies the state based on its current value:
+if the current state is `Counting` and there is more than one latch remaining, 
+then subtract by one, but if there is only one latch left, then transition to 
+the `Done` state and unblock all the waiters. If the current state is `Done`, 
+then do nothing.
+
+The `await` method inspects the current state; if it is `Done`, then allow the
+current fiber to pass through, otherwise, block the current fiber with the 
+`waiter`.
+
+The example program creates a latch with 10 steps and spawns 10 fibers, each of
+which will release one step. The main fiber awaits against the latch. Once all
+10 fibers have released a step, the main fiber is unblocked and can proceed.
+The output of the program should look something like the following:
+
+```
+1 counting down
+3 counting down
+6 counting down
+2 counting down
+8 counting down
+9 counting down
+10 counting down
+4 counting down
+5 counting down
+7 counting down
+Got past the latch
+```
+
+Notice how the latch serves as a form of synchronization that influences the
+ordering of effects among the fibers; the main fiber will never proceed until
+after all 10 spawned fibers release a step.
 
 ### Scheduling and parallelism
 We briefly mentioned that fibers run on a small pool of threads and are
