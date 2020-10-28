@@ -20,34 +20,16 @@ changes between 2.0 and 3.0, so in an effort to help the ecosystem migrate,
 we will be releasing a series of blog posts that cover topics ranging from 
 the typeclass hierarchy to concurrent data structures to tracing. If you would 
 like to see a blog post about a particular subject, don't hesitate to reach out
-on Github or Gitter!
+to us!
 
 ### Introduction
+In this post, we will cover the basics of the concurrency model that serves as
+a foundation for Cats Effect and many of its abstractions. We will also discuss 
+concurrent state machines and how they are built. Example programs are written 
+in terms of `cats.effect.IO`.
 
-Rewrite the following paragram
-
-Cats Effect presents a simple concurrency model that application and library
-developers can write programs against without having to deal with a wide range
-of problems. Crucially, many of these problems are eliminated because Cats
-Effect and the greater ecosystem adhere to functional programming principles.
-In fact, most application developers need not concern themselves with the
-details of concurrency because libraries or frameworks will often abstract 
-them away! However, having insight into such details like fibers and scheduling
-can be crucial in understanding the runtime and scalability properties of an 
-application.
-
-We are only covering the basics here
-
-In this post, we will focus on the concurrency model that serves as the 
-foundation for Cats Effect and many of its abstractions. We will look at 
-examples of concurrent programs that are written in terms of the 
-`cats.effect.IO` effect type implementation, but many of the concepts we
-discuss are not exclusive to `IO` and are shared by other effect types.
-
-TODO: talk about how http4s abstracts concurrency from users
-
-Before going any further, let's briefly review what concurrency is, why it is
-useful, and why it is notoriously tedious to work with. 
+Before going any further, let's briefly review what concurrency is, how it's
+useful, and why it's tedious to work with. 
 
 ### Concurrency
 Concurrent programming is about designing programs in which multiple logical
@@ -111,22 +93,32 @@ modularity that concurrency affords makes for programs that are much easier to
 understand, maintain, and evolve.
 
 #### Concurrency is hard
-Concurrency is notoriously responsible for 
+TODO: finish this section
 
 bugs, race conditions, deadlocks
 
-partial order, sequential consistency
 blocking threads
 Scala future and asynchronicity
 
-One of the most popular concurrency constructs are OS threads, commonly
-referred to as just "threads." Like its name suggests, threads are a type of
-logical thread
 
-Cats Effect takes the perpsective that concurrency is an necessary technique 
+### Cats Effect Concurrency
+TODO: develop this section more
+
+Cats Effect takes the perpsective that concurrency is a necessary technique 
 for building useful applications, but existing tools for achieving concurrency 
 are largely unsafe and tedious to work with. One of the main goals of Cats 
-Effect is to provide users a concurrency model that is safe and simple to use.
+Effect is to provide library authors and application developers a concurrency 
+model that is safe and simple to work with.
+
+Many users will never directly interact with the concurrency model. For 
+example, http4s spawns a fiber for each request it receives; request handling 
+code is run inside those fibers on behalf of the user. This is completely okay!
+Enabling users to exploit concurrency without pushing that responsibility to
+them is crucial for building safe applications.
+
+However, learning about details like fibers and scheduling provides tremendous 
+insight into how applications behave and perform. It will be necessary to
+understand these concepts to go past what the libraries offer.
 
 ### Fibers
 The concurrency model of Cats Effect is built upon fibers rather than (native) 
@@ -267,7 +259,7 @@ discussed in detail in a future post. In the meantime, visit the Scaladoc for
 `MonadCancel` and `GenSpawn`.
 
 #### Racing fibers
-
+TODO: finish this paragraph
 
 ### Communication
 We have already seen how fibers can directly communicate with each other via
@@ -338,32 +330,53 @@ object ExampleFour extends IOApp {
 }
 ```
 
-#### 
-
+#### Building a concurrent state machine
 `Ref` and `Deferred` are often composed together to build more powerful and
 more complex concurrent data structures. Most of the concurrent data types in 
 the `std` module of Cats Effect are implemented in terms of `Ref` and/or 
 `Deferred`: `Semaphore`, `Queue`, `Hotswap`.
 
-In this next example we create simple concurrent data structure called `Latch` 
+In the next example, we create simple concurrent data structure called `Latch` 
 that is blocks a waiter until a certain number of internal latches have been 
-released.
+released. Here is the interface for `Latch`:
 
 ```scala
-import cats.effect.kernel.{Ref, Deferred}
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
-
 trait Latch {
   def release: IO[Unit]
   def await: IO[Unit]
 }
+```
 
+Next, we need to define the state machine for `Latch`. We can be in two
+possible states. The first state reflects that the `Latch` is still active
+and is waiting for more releases. We need to track how many latches are still
+remaining, as well as a `Deferred` that is used to block new waiters. The 
+second state reflects that the `Latch` has been completely released and will no
+longer block waiters.
+
+```scala
+sealed trait State
+final case class Awaiting(latches: Int, waiter: Deferred[IO, Unit]) extends State
+case object Done extends State
+```
+
+We can implement the `Latch` interface now. We create a `Ref` that holds our 
+state machine, and then a `Deferred` that block waiters. The initial state of 
+a `Latch` is the `Awaiting` state with a user-specified number of latches 
+remaining.
+
+The `release` method atomically modifies the state based on its current value:
+if the current state is `Counting` and there is more than one latch remaining, 
+then subtract by one, but if there is only one latch left, then transition to 
+the `Done` state and unblock all the waiters. If the current state is `Done`, 
+then do nothing.
+
+The `await` method inspects the current state; if it is `Done`, then allow the
+current fiber to pass through, otherwise, block the current fiber with the 
+`waiter`.
+
+```scala
 object Latch {
-  sealed trait State
-  final case class Awaiting(latches: Int, waiter: Deferred[IO, Unit]) extends State
-  case object Done extends State
-
   def apply(latches: Int): IO[Latch] =
     for {
       waiter <- Deferred[IO, Unit]
@@ -385,7 +398,11 @@ object Latch {
         }
     }
 }
+```
 
+Finally, we can use our new concurrent data type in an example:
+
+```scala
 object ExampleFive extends IOApp {
   override def run(args: List[String]): IO[ExitCode] =
     for {
@@ -399,27 +416,10 @@ object ExampleFive extends IOApp {
 }
 ```
 
-`Latch` is a concurrent finite state machine represented by the ADT `State`
-which admits two possible states `Awaiting` and `Done`. The `Awaiting` 
-state reflects that the `Latch` is still active and that there are `count` 
-latches left that must be released. `waiter` is used to semantically 
-block fibers that call `await` while still in the `Awaiting` state. The 
-`Done` state reflects that the latch has been released.
-
-The `release` method atomically modifies the state based on its current value:
-if the current state is `Counting` and there is more than one latch remaining, 
-then subtract by one, but if there is only one latch left, then transition to 
-the `Done` state and unblock all the waiters. If the current state is `Done`, 
-then do nothing.
-
-The `await` method inspects the current state; if it is `Done`, then allow the
-current fiber to pass through, otherwise, block the current fiber with the 
-`waiter`.
-
-The example program creates a latch with 10 steps and spawns 10 fibers, each of
-which will release one step. The main fiber awaits against the latch. Once all
-10 fibers have released a step, the main fiber is unblocked and can proceed.
-The output of the program should look something like the following:
+The program creates a `Latch` with 10 latches and spawns 10 fibers, each of 
+which releases one internal latch. The main fiber awaits against the `Latch`. 
+Once all 10 fibers have released a latch, the main fiber is unblocked and can 
+proceed. The  output of the program should look something like the following:
 
 ```
 1 counting down
@@ -437,7 +437,7 @@ Got past the latch
 
 Notice how the latch serves as a form of synchronization that influences the
 ordering of effects among the fibers; the main fiber will never proceed until
-after all 10 spawned fibers release a step.
+after the `Latch` is completely released.
 
 ### Scheduling and parallelism
 We briefly mentioned that fibers run on a small pool of threads and are
@@ -501,4 +501,3 @@ object Queue {
 to access and manipulate state. This is typically used in monad transformer 
 stacks in conjunction with the `StateT` transformer. Is it possible to create 
 a `Stateful` instance given a `Ref`?
-
