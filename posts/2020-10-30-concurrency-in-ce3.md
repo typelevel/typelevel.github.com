@@ -36,6 +36,8 @@ them away! However, having insight into such details like fibers and scheduling
 can be crucial in understanding the runtime and scalability properties of an 
 application.
 
+We are only covering the basics here
+
 In this post, we will focus on the concurrency model that serves as the 
 foundation for Cats Effect and many of its abstractions. We will look at 
 examples of concurrent programs that are written in terms of the 
@@ -133,9 +135,10 @@ resources; they exist and are scheduled completely within the userspace
 process. These fibers typically run on a small pool of native threads. This mode 
 of concurrency reaps several major benefits:
 
-1. Fibers are incredibly cheap to create so we can create hundreds of 
-thousands of them without thrashing.
-2. It is extremely fast to context-switch between fibers.
+1. Fibers are incredibly cheap so we can create hundreds of thousands of them 
+without thrashing the process. We also don't need to pool them.
+2. It is much faster to context switch between fibers than it is to between
+native threads.
 3. Blocking a fiber doesn't necessarily block a native thread; this is called
 semantic blocking.
 
@@ -156,7 +159,11 @@ possible outcomes, which are encoded by the datatype `OutcomeIO[A]`:
 Additionally, a fiber may never produce an outcome, in which case it is said to 
 be nonterminating.
 
-The three basic actions on fibers are `start`, `join`, and `cancel`.
+The fiber API consists of four primitive functions: `start`, `join`, `cancel`, 
+and `racePair`. We'll explore this API in the following sections. Note that 
+fibers are considered to be an unsafe and low-level feature of Cats Effect and 
+must be dealt with more caution than we do in the examples. Application 
+developers should rarely find themselves interacting with them.
 
 #### Starting fibers
 The most basic action of concurrency in Cats Effect is to start or spawn a new
@@ -170,7 +177,7 @@ fiber that prints `A` 100 times and then prints `B` 100 times, after which it
 exits.
 
 ```scala
-import cats.effect.{IO, ExitCode}
+import cats.effect.{IO, IOApp, ExitCode}
 import cats.implicits._
 
 object ExampleOne extends IOApp {
@@ -197,16 +204,20 @@ _within_ a given fiber are always sequentially consistent, as dictated by
 program order; `A` is never printed after `B`, and `C` is never printed
 after `D`.
 
+`background` is the safer variant of `start` and is generally preferred.
+
 TODO: should we talk about `racePair`?
 TODO: should we combine the join and cancel sections?
 
 #### Joining fibers
+TODO: program for launching a rocket
+
 A fiber can wait on the result of another fiber by calling `FiberIO#join`. 
 This semantically blocks the first fiber until the second fiber has 
 terminated and then returns the outcome of that fiber.
 
 ```scala
-import cats.effect.{IO, ExitCode}
+import cats.effect.{IO, IOApp, ExitCode}
 import cats.implicits._
 
 object ExampleTwo extends IOApp {
@@ -228,44 +239,98 @@ completed.
 #### Canceling fibers
 A fiber can be canceled after its execution begins by calling `FiberIO#cancel`.
 This semantically blocks the current fiber until the target fiber has 
-finalized and terminated, and then returns the outcome of that fiber.
+finalized and terminated, and then returns.
 
-Cats Effect's cancellation model is mostly out-of-scope of this post, but it
-will be discussed in detail in a future post. In the meantime, please visit the
-Scaladoc for `MonadCancel` and `GenSpawn`.
+Let's take a look at a simple example.
 
-cheap, context switching speed, pooling not necessary
+```scala
+import cats.effect.{IO, IOApp, ExitCode}
+import cats.implicits._
 
-#### Costs
-Fibers are exceptionally lightweight compared to OS threads; 
+object ExampleThree extends IOApp {
+  override def run(args: List[String]): IO[ExitCode]
+    for {
+      fiber <- IO.println("hello!").foreverM.start
+      _ <- IO.sleep(5.seconds)
+      _ <- fiber.cancel
+    } yield ExitCode.Success
+}
+```
+
+In this program, the main fiber spawns a second fiber that continuously prints
+`hello!`. After 5 seconds, the main fiber cancels the second fiber and then the
+program exits.
+
+Cats Effect's concurrency model and cancellation model work very closely with
+each other, however, the latter is out of scope for this post, but will be 
+discussed in detail in a future post. In the meantime, visit the Scaladoc for
+`MonadCancel` and `GenSpawn`.
+
+#### Racing fibers
+
 
 ### Communication
 We have already seen how fibers can directly communicate with each other via
-`start`, `join`, and `cancel`. Shared memory is an alternative means by which 
-fibers can indirectly communicate and synchronize with each other.
+`start`, `join`, and `cancel`. These mechanisms enable communication 
+bidirectional communication, but only once at the beginning and end of a 
+fiber's lifetime. It's natural to ask if there are other ways in which fibers 
+can communicate, particularly during their lifetime. Shared memory is an 
+alternative means by which fibers can indirectly communicate and synchronize 
+with each other.
 
-
+Cats Effect exposes two primitive concurrent data structures: `Ref` and
+`Deferred`.
 
 #### `Ref`
-`Ref` is a concurrent data structure that represents a mutable container for
-state. It can be thought of as the pure, functional equivalent of 
-`AtomicReference`.
+`Ref` is a concurrent data structure that represents a mutable variable. It 
+is used to hold state that can be safely accessed and modified by many
+contending fibers.
+
+Let's take a look at a simple example.
+
+```scala
+import cats.effect.{IO, IOApp, ExitCode}
+import cats.implicits._
+
+object ExampleFour extends IOApp {
+  override def run(args: List[String]): IO[ExitCode] =
+    for {
+      state <- Ref.of[IO, Int](0)
+      fibers <- state.update(_ + 1).start.replicateA(100)
+      _ <- fibers.traverse(_.join).void
+      value <- state.get
+      _ <- IO.println(s"The final value is: $value")
+    } yield ExitCode.Success
+}
+```
+
+In this program, the main fiber starts 100 fibers, each of which attempts to
+concurrently update the state by atomically incrementing its value. Next, the
+main fiber joins on each spawned fiber one after the other, waiting for 
+their collective completion. Finally, after the spawned fibers are complete,
+the main fiber retrieves the final value of the state. The program should
+produce the following output:
+
+```
+The final value is: 100
+```
 
 #### `Deferred`
 `Deferred` is a concurrent data structure that represents a condition variable.
 It can be used as a way to semantically block fibers until some arbitrary
 condition has been fulfilled.
 
+`Ref` and `Deferred` are often used as primitives to build more powerful and
+more complex concurrent data structures. Most of the concurrent data types in 
+the `std` module of Cats Effect are implemented in terms of `Ref` and/or 
+`Deferred`: `Semaphore`, `Queue`, `Hotswap`.
 
 
-`Ref` and `Deferred` are commonly used together to build all sorts of 
-concurrent finite state machines.
 
-
-### Scheduling
-In this section, we cover some of the internals of Cats Effect's `IO` runtime
-system. In particular, we will look at how fibers are scheduled on JVM and JS 
-runtimes.
+### Scheduling and parallelism
+We briefly mentioned that fibers run on a small pool of threads and are
+scheduled entirely within the userspace process. We'll explore how that works a
+in more detail here.
 
 Fibers are multiplexed over a pool of OS threads. This is commonly referred to
 as M-to-N scheduling or 
@@ -279,9 +344,7 @@ spawning a fiber
 safely spawning a fiber
 
 
-TODO: should we move this to the beginning?
 
-### Parallelism
 Parallelism is about simultaneous execution whereas concurrency is about
 interleaved execution. Concurrency can be achieved both with and without
 parallelism. JVM and JavaScript platforms as examples.
@@ -290,13 +353,40 @@ Concurrency can exploit parallelism, but parallelism is not necessary to
 achieve concurrency. Concurrency is nondeterminsitic, but parallelism is
 not necessarily nondeterministic.
 
+## Exercises
 
+1. Why is the low-level fiber API unsafe? Hint: consider how the API interacts 
+with cancellation.
+2. Implement `parTraverse` in terms of `IO.both`. `parTraverse` is the same as
+`traverse` except all `IO[B]` are run in parallel.
+```scala
+def parTraverse[A](as: List[A])(f: A => IO[B]): IO[List[B]]
+```
+2. Implement `Semaphore` in terms of `Ref` and `Deferred`.
+```scala
+trait Semaphore {
+  def acquire: IO[Unit]
+  def release: IO[Unit]
+}
+object Semaphore {
+  def apply(permits: Int): IO[Semaphore]
+}
+```
+3. Implement `Queue` in terms of `Ref` and `Deferred`.
+```scala
+trait Queue[A] {
+  def put(a: A): IO[Unit]
+  def tryPut(a: A): IO[Boolean]
+  def take: IO[A]
+  def tryTake: IO[Option[A]]
+  def peek: IO[Option[A]]
+}
+object Queue {
+  def apply[A](length: Int): IO[Queue[A]]
+}
+```
+4. `Stateful` is a typeclass in Cats MTL that characterizes a monad's ability 
+to access and manipulate state. This is typically used in monad transformer 
+stacks in conjunction with the `StateT` transformer. Is it possible to create 
+a `Stateful` instance given a `Ref`?
 
-TODO: background instead of start
-
-## Special thanks
-
-Fabio Labella for his Scala world talk
-
-
-TODO: What is the mean idea of this post?
