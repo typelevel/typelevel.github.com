@@ -12,7 +12,7 @@ tut:
   scalacOptions:
     - -language:higherKinds
   dependencies:
-    - org.typelevel::cats-effect:3.0.0-M1
+    - org.typelevel::cats-effect:3.0.0-M2
 ---
 
 Cats Effect 3 is just around the corner! The library has seen several major 
@@ -23,10 +23,10 @@ like to see a blog post about a particular subject, don't hesitate to reach out
 to us!
 
 ### Introduction
-In this post, we will cover the basics of the concurrency model that serves as
-a foundation for Cats Effect and many of its abstractions. We will also discuss 
-concurrent state machines and how they are built. Example programs are written 
-in terms of `cats.effect.IO`.
+In this post, we provide a broad overview of the concurrency model that serves 
+as a foundation for Cats Effect and its abstractions. We discuss how to 
+leverage the concurrency model to build powerful concurrent state machines. 
+Example programs are written in terms of `cats.effect.IO`.
 
 Before going any further, let's briefly review what concurrency is, how it's
 useful, and why it's tedious to work with. 
@@ -37,31 +37,28 @@ threads of control are executing at the same time. There is a bit to unpack
 in this definition: what are logical threads and what does it mean for them to 
 execute "at the same time?"
 
-TODO: description of a sequence? discrete effects
+A logical thread is merely a description of a sequence of discrete actions. 
+An action is one of the most primitive operations that can be expressed in 
+the host language.
 
-A logical thread is merely a description of a sequence of discrete steps. When 
-writing programs in traditional high-level languages like Java or C++, these 
-"logical threads" are typically represented by native threads that are managed 
-by the operating system. The steps that comprise these threads are native 
-processor instructions or VM bytecode instructions. When writing programs with
-Cats Effect, these "logical" threads are represented by fibers, and the steps
-that comprise them are `IO` instructions.
+In programs that are written in traditional high-level languages like Java or 
+C++, these logical threads are typically represented by native threads that 
+are managed by the operating system. The actions that comprise these threads 
+are native processor instructions or VM bytecode instructions. In programs that
+are written with Cats Effect, these logical threads are represented by fibers, 
+and the actions that comprise them are `IO` instructions.
 
 What does it mean for logical threads to execute at the same time? Because the 
 steps of logical thread are discrete, the steps of many logical threads can be 
 interleaved together. This interleaving is largely influenced by external 
 factors such as scheduler preemption and I/O operations, so it is usually 
 nondeterministic, that is, in the absence of synchronization, there is no 
-guarantee that the effects of distinct logical threads occur in some particular
+guarantee that the actions of distinct logical threads occur in some particular
 order.
 
-TODO: possibly talk about parallelism
-
-TODO: possibly delete this next paragraph
-
-Another perspective is that concurrency generates a partial order 
-among all the effects of all the logical threads in a program. Effects _within_
-a logical thread are ordered with respect to program order. Effects _between_
+Another common perspective is that concurrency generates a partial order among
+all the actions of all the logical threads in a program. Actions _within_ a 
+logical thread are ordered with respect to program order. Actions _between_ 
 multiple logical threads are not ordered unless there is some form of 
 synchronization between them.
 
@@ -93,52 +90,64 @@ modularity that concurrency affords makes for programs that are much easier to
 understand, maintain, and evolve.
 
 #### Concurrency is hard
-TODO: finish this section
+Concurrency is notoriously cumbersome to work with. This is no surprise to any
+developer that has worked with threads and locks in many mainstream programming
+languages. Once we start dealing with concurrency, we have to deal with a slew
+concerns: deadlocks, starvation, race conditions, thread leaks, thread blocking
+and so on. A bug in any one of these concerns can have devastating consequences
+in terms of correctness and performance.
 
-bugs, race conditions, deadlocks
+The most popular method for achieving concurrency in Scala is via `Future`,
+which enables the evaluation of asynchronous operations. However, it is plainly
+insufficient for those of us who practice strict functional programming. 
+Furthermore, `Future` doesn't expose first-class features like cancellation, 
+finalization, or synchronization that are crucial for building safe concurrent
+applications.
 
-blocking threads
-Scala future and asynchronicity
-
+Akka actors are another common way to achieve concurrency in Scala. For similar
+reasons as `Future`, they are also insufficient in functional programming, 
+however, one could certainly devise a typesafe actor model on top of the 
+concurrency model that is presented here.
 
 ### Cats Effect Concurrency
-TODO: develop this section more
-
-Cats Effect takes the perpsective that concurrency is a necessary technique 
+Cats Effect takes the perspective that concurrency is a necessary technique 
 for building useful applications, but existing tools for achieving concurrency 
-are largely unsafe and tedious to work with. One of the main goals of Cats 
-Effect is to provide library authors and application developers a concurrency 
-model that is safe and simple to work with.
+in Scala are tedious to work with. A goal of Cats Effect is then to provide
+library authors and application developers a concurrency model that is safe and
+simple to work with.
 
-Many users will never directly interact with the concurrency model. For 
-example, http4s spawns a fiber for each request it receives; request handling 
-code is run inside those fibers on behalf of the user. This is completely okay!
-Enabling users to exploit concurrency without pushing that responsibility to
-them is crucial for building safe applications.
+Many users will never directly interact with the concurrency model, usually
+because a library assumes that responsibility for them. For example, http4s 
+achieves concurrent request handling by spawning a fiber for every request it 
+receives; users need only specify the request handling code that is eventually 
+run inside the fiber. We consider this to be an advantage; users can exploit 
+concurrency in their programs via safe abstractions that libraries provide 
+without having to directly with it.
 
-However, learning about details like fibers and scheduling provides tremendous 
-insight into how applications behave and perform. It will be necessary to
-understand these concepts to go past what the libraries offer.
+That being said, it can be tremendously helpful to learn about Cats Effect's
+concurrency model, so let's jump into it.
 
 ### Fibers
-The concurrency model of Cats Effect is built upon fibers rather than (native) 
-threads. Unlike native threads, fibers are not associated with any system 
-resources; they exist and are scheduled completely within the userspace 
-process. These fibers typically run on a small pool of native threads. This mode 
-of concurrency reaps several major benefits:
+Cats Effect chooses fibers as the foundation for its concurrency model. The
+main benefit of fibers is that they are conceptually similar to native threads:
+both are types of logical threads that describe a sequence of computations. 
+Unlike native threads, fibers are not associated with any system resources. 
+They exist and are scheduled completely within the userspace process, 
+independently of the operating system. This mode of concurrency reaps major 
+benefits:
 
 1. Fibers are incredibly cheap so we can create hundreds of thousands of them 
-without thrashing the process. We also don't need to pool them.
-2. It is much faster to context switch between fibers than it is to between
-native threads.
+without thrashing the process. This means that we also don't need to pool 
+fibers; we just create a new one whenever we need it.
+2. Context switching between fibers is orders of magnitude faster than context
+switching between threads.
 3. Blocking a fiber doesn't necessarily block a native thread; this is called
-semantic blocking.
-
-TODO: Fibers are the most basic unit of concurrency in Cats Effect.
+semantic blocking. This is particularly true for nonblocking I/O operations.
 
 Concretely, a fiber is a logical thread that encapsulates the execution of an 
-`IO[A]` program, which is a sequence of `IO` effects that are bound together 
-via `flatMap`. Fibers are logical threads, so they execute concurrently.
+`IO[A]` program, which is a sequence of `IO` effects (actions) that are bound 
+together via `flatMap`. Fibers are logical threads, so they can run 
+concurrently.
 
 The active execution of some fiber of an effect `IO[A]` is represented by the 
 type `FiberIO[A]`. The execution of a `FiberIO[A]` terminates with one of three 
@@ -151,22 +160,24 @@ possible outcomes, which are encoded by the datatype `OutcomeIO[A]`:
 Additionally, a fiber may never produce an outcome, in which case it is said to 
 be nonterminating.
 
-The fiber API consists of four primitive functions: `start`, `join`, `cancel`, 
-and `racePair`. We'll explore this API in the following sections. Note that 
-fibers are considered to be an unsafe and low-level feature of Cats Effect and 
-must be dealt with more caution than we do in the examples. Application 
-developers should rarely find themselves interacting with them.
+The fiber API consists of three primitive functions: `start`, `join`, `cancel`. 
+We'll explore this API in the following sections. Surprisingly, fibers are 
+considered to be an unsafe and low-level feature of Cats Effect and must be
+given more caution than we offer in the examples. Accordingly, application 
+developers should rarely find themselves dealing with them directly.
 
-#### Starting fibers
+#### Starting and joining fibers
 The most basic action of concurrency in Cats Effect is to start or spawn a new
 fiber. This requests to the scheduler to begin the concurrent execution of a
-program `IO[A]` inside a new logical thread. The effects of the current fiber
+program `IO[A]` inside a new logical thread. The actions of the current fiber
 and the spawned fiber are interleaved in a nondeterministic fashion.
 
-Let's take a look at an example that demonstrates spawning and the interleaving 
-of multiple fibers. In the following program, the main fiber spawns a second 
-fiber that prints `A` 100 times and then prints `B` 100 times, after which it
-exits.
+After a fiber is `start`ed, it can be `join`ed which semantically blocks the
+joiner until the joinee has terminated, after which `join` will return the 
+outcome of the joinee. Let's take a look at an example.
+
+Let's take a look at an example that demonstrates spawning and joining of 
+fibers, as well as the nondeterministic interleaving of their executions.
 
 ```scala
 import cats.effect.{IO, IOApp, ExitCode}
@@ -174,20 +185,30 @@ import cats.implicits._
 
 object ExampleOne extends IOApp {
   def repeat(letter: String): IO[Unit] =
-    IO.print(letter).replicateA(100)
+    IO.print(letter).replicateA(100).void
 
-  override def run(args: List[String]): IO[ExitCode]
+  override def run(args: List[String]): IO[ExitCode] =
     for {
-      _ <- (repeat("A") *> repeat("B")).start
-      _ <- (repeat("C") *> repeat("D"))
+      fa <- (repeat("A") *> repeat("B")).as("foo!").start
+      fb <- (repeat("C") *> repeat("D")).as("bar!").start
+      // joinAndEmbedNever is a variant of join that asserts
+      // the fiber has an outcome of Succeeded and returns the
+      // associated value.
+      ra <- fa.joinAndEmbedNever
+      rb <- fb.joinAndEmbedNever
+      _ <- IO.println(s"\ndone: a says: $ra, b says: $rb")
     } yield ExitCode.Success
 }
 ```
 
-Here is one possible output from an execution of the program:
+In this program, the main fiber spawns two fibers, one which prints `A` 100 
+times and `B` 100 times, and another which prints `C` 100 times and `D` 100 
+times. It then joins on both fibers, awaiting their termination. Here is one 
+possible output from an execution of the program:
 
 ```
-AAAAAAAAAAACACACACACACACACACACACCCACACACACACACAACACACACACACACACACACACAACACACACACACACACACACACACAACACCACACAACACACACACACACACACACACACACACACACACACACACACACCACACACACACACACACACACACACACACACAACACACCCCBCBCBCBCBCBCBCBBCBCBDBDBDBBDDBDBDBDBDBDBDBDBBDBDBDBDBDBDBDBDBDBDBBDDBDBDBBDBDBBDBDDBBDDBBDBDBDBDDBDBDBDDBDBBDBDBBDBDBDBDDBDBDBDBDBDBDBDBDBDDBDBDBDBDBDBDBDBDBDBDBBDBDDBDBDBDBDBDBBDBDBDDBBDBDBDBDBDDDDDDDDDDDD
+AAAAAAAAAAAAAAAAAAAAAAACACACACACACACACACACACACACACACACACACACACACACAACACACACACACACACACACACAACACAAACACACACACACACACACACACACACACACACACACACACACACACACACACACCACACACACACACACACACACACACCCCCBBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBBBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDDBDBDBDBDBDBDBDBDDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDBDDBDBDBDBDBDBDBDDDDDDDDDDDDDDDDDDDDDD
+done: a says: foo!, b says: bar!
 ```
 
 We can observe that there is no consistent ordering between the effects of
@@ -196,51 +217,21 @@ _within_ a given fiber are always sequentially consistent, as dictated by
 program order; `A` is never printed after `B`, and `C` is never printed
 after `D`.
 
-`background` is the safer variant of `start` and is generally preferred.
-
-TODO: should we talk about `racePair`?
-TODO: should we combine the join and cancel sections?
-
-#### Joining fibers
-TODO: program for launching a rocket
-
-A fiber can wait on the result of another fiber by calling `FiberIO#join`. 
-This semantically blocks the first fiber until the second fiber has 
-terminated and then returns the outcome of that fiber.
-
-```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
-
-object ExampleTwo extends IOApp {
-  def repeat(letter: String): IO[Unit] =
-    IO.print(letter).replicateA(100)
-
-  override def run(args: List[String]): IO[ExitCode]
-    for {
-      _ <- (repeat("A") *> repeat("B")).start
-      _ <- (repeat("C") *> repeat("D"))
-    } yield ExitCode.Success
-}
-```
-
-Notice how `join` imposes an ordering on the execution of the two fibers: the 
-main fiber will never start the rocket until after the countdown sequence has
-completed.
+Notice how `join` imposes an ordering on the execution of the fibers: the 
+main fiber will only ever print the `done:` message after the two spawned 
+fibers have completed.
 
 #### Canceling fibers
 A fiber can be canceled after its execution begins by calling `FiberIO#cancel`.
 This semantically blocks the current fiber until the target fiber has 
-finalized and terminated, and then returns.
-
-Let's take a look at a simple example.
+finalized and terminated, and then returns. Let's take a look at an example.
 
 ```scala
 import cats.effect.{IO, IOApp, ExitCode}
 import cats.implicits._
 
 object ExampleThree extends IOApp {
-  override def run(args: List[String]): IO[ExitCode]
+  override def run(args: List[String]): IO[ExitCode] =
     for {
       fiber <- IO.println("hello!").foreverM.start
       _ <- IO.sleep(5.seconds)
@@ -253,32 +244,26 @@ In this program, the main fiber spawns a second fiber that continuously prints
 `hello!`. After 5 seconds, the main fiber cancels the second fiber and then the
 program exits.
 
-Cats Effect's concurrency model and cancellation model work very closely with
-each other, however, the latter is out of scope for this post, but will be 
-discussed in detail in a future post. In the meantime, visit the Scaladoc for
-`MonadCancel` and `GenSpawn`.
-
-#### Racing fibers
-TODO: finish this paragraph
+Cats Effect's concurrency model and cancellation model interact very closely 
+with each other, however, the latter is out of scope for this post. It will be 
+discussed in detail in a future post, but in the meantime, visit the Scaladoc 
+pages for `MonadCancel` and `GenSpawn`.
 
 ### Communication
-We have already seen how fibers can directly communicate with each other via
-`start`, `join`, and `cancel`. These mechanisms enable communication 
-bidirectional communication, but only once at the beginning and end of a 
-fiber's lifetime. It's natural to ask if there are other ways in which fibers 
-can communicate, particularly during their lifetime. Shared memory is an 
-alternative means by which fibers can indirectly communicate and synchronize 
-with each other.
+We have seen how fibers can directly communicate with each other via `start`, 
+`join`, and `cancel`. These mechanisms enable bidirectional communication, 
+but only at the beginning and end of a fiber's lifetime. It's natural to ask 
+if there are other ways in which fibers can communicate, particularly during 
+their lifetime. 
 
-Cats Effect exposes two primitive concurrent data structures: `Ref` and
-`Deferred`.
+Shared memory is an alternative means by which fibers can indirectly 
+communicate and synchronize with each other. Cats Effect exposes two primitive 
+concurrent data structures that leverage shared memory: `Ref` and `Deferred`.
 
 #### `Ref`
 `Ref` is a concurrent data structure that represents a mutable variable. It 
 is used to hold state that can be safely accessed and modified by many
-contending fibers.
-
-Let's take a look at a simple example.
+contending fibers. Let's take a look at an example.
 
 ```scala
 import cats.effect.{IO, IOApp, ExitCode}
@@ -334,9 +319,9 @@ object ExampleFour extends IOApp {
 `Ref` and `Deferred` are often composed together to build more powerful and
 more complex concurrent data structures. Most of the concurrent data types in 
 the `std` module of Cats Effect are implemented in terms of `Ref` and/or 
-`Deferred`: `Semaphore`, `Queue`, `Hotswap`.
+`Deferred`. Example include `Semaphore`, `Queue`, and `Hotswap`.
 
-In the next example, we create simple concurrent data structure called `Latch` 
+In our next example, we create simple concurrent data structure called `Latch` 
 that is blocks a waiter until a certain number of internal latches have been 
 released. Here is the interface for `Latch`:
 
@@ -439,38 +424,58 @@ Notice how the latch serves as a form of synchronization that influences the
 ordering of effects among the fibers; the main fiber will never proceed until
 after the `Latch` is completely released.
 
-### Scheduling and parallelism
-TODO: finish this section?
+### Scheduling
+We've talked about fibers as a conceptual model with which Cats Effect
+implements concurrency. One aspect of this that we haven't addressed is: how do
+fibers actually execute? Our Scala applications ultimately run on the JVM (or a 
+JavaScript runtime if we're using Scala.js), so fibers must ultimately be 
+mapped to native threads in order for them to actually run. The scheduler is
+responsible for determining how this mapping takes place.
 
-We briefly mentioned that fibers run on a small pool of threads and are
-scheduled entirely within the userspace process. We'll explore how that works a
-in more detail here.
+On the JVM, Cats Effect uses an M:N scheduling model to map fibers to threads.
+In practice, this means that a large number of fibers is multiplexed onto 
+much smaller pools of native threads. A typical application will reserve a 
+fixed-size pool for CPU-bound tasks, an unbounded pool for blocking tasks,
+and several event handler pools for asynchronous tasks. Throughout its 
+lifetime, a fiber will migrate between these pools to accomplish its various
+tasks. In JavaScript runtimes, a M:1 scheduling model is employed, where all 
+active fibers are scheduled onto a single native thread for execution.
 
-Fibers are multiplexed over a pool of OS threads. This is commonly referred to
-as M-to-N scheduling or 
+Another aspect of scheduling is how context switching of fibers takes place,
+which has many implications around the fairness and throughput properties of a
+concurrent application. Like many other lightweight thread runtimes, Cats 
+Effect's default scheduler exhibits cooperative multitasking in which fibers 
+can explicitly "yield" back to the scheduler, allowing a waiting fiber to run. 
+The yielded fiber will be scheduled to resume execution at some later time.
+This is achieved with the `IO.cede` function. 
 
-Preemptive multitasking
-Cooperative multitasking
+Cats Effect's default scheduler also supports autoyielding which is a form of 
+preemptive multitasking. As we mentioned earlier, logical threads are composed
+of a possibly infinite sequence of actions. Autoyielding "preempts" or forcibly
+yields a fiber after it runs a certain number of actions, enabling waiting 
+fibers to proceed. This is particularly important on runtimes that run with 1
+or 2 native threads; a fiber that runs forever but never `cede`s will starve
+other fibers of compute time.
 
-autoyielding
-`cede`
-spawning a fiber
-safely spawning a fiber
+### Parallelism
+One aspect of multithreaded programming that we have neglected to mention so 
+far is parallelism. In theory, parallelism is completely independent of 
+concurrency; parallelism is about simultaneous execution whereas concurrency
+is about nondeterministic, interleaved execution.
 
-
-
-Parallelism is about simultaneous execution whereas concurrency is about
-interleaved execution. Concurrency can be achieved both with and without
-parallelism. JVM and JavaScript platforms as examples.
-
-Concurrency can exploit parallelism, but parallelism is not necessary to
-achieve concurrency. Concurrency is nondeterminsitic, but parallelism is
-not necessarily nondeterministic.
+An obscure but crucial point here is that concurrency can be achieved without
+parallelism; this is called single-threaded concurrency. We've already seen an 
+example of this: JavaScript runtimes run on a single compute thread, so the 
+execution of all fibers must take place on that thread as well!
+ 
+Concurrency can also exploit the parallelism afforded by multiple threads. We 
+can run more fibers simultaneously, resulting in higher throughput of tasks, 
+which is exactly what JVM runtimes do.
 
 ## Exercises
 
-1. Why is the low-level fiber API unsafe? Hint: consider how the API interacts 
-with cancellation.
+1. Why do you think the low-level fiber API unsafe? Hint: consider how the
+fiber API interacts with cancellation.
 2. Implement `parTraverse` in terms of `IO.both`. `parTraverse` is the same as
 `traverse` except all `IO[B]` are run in parallel.
 ```scala
