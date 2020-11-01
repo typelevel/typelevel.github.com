@@ -216,13 +216,12 @@ We can observe that there is no consistent ordering between the effects of
 separate fibers; it is completely nondeterministic! However, the effects
 _within_ a given fiber are always sequentially consistent, as dictated by 
 program order; `A` is never printed after `B`, and `C` is never printed
-after `D`.
+after `D`. This is how `join` imposes an ordering on the execution of the 
+fibers: the main fiber will only ever print the `done:` message after the 
+two spawned fibers have completed.
 
-Notice how `join` imposes an ordering on the execution of the fibers: the 
-main fiber will only ever print the `done:` message after the two spawned 
-fibers have completed.
-
-
+It is recommended to use the safer `IO.background` instead of `IO.start` for 
+spawning fibers.
 
 #### Canceling fibers
 A fiber can be canceled after its execution begins with the `FiberIO#cancel`
