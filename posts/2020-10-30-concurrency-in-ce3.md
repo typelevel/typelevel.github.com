@@ -17,18 +17,17 @@ tut:
 
 Cats Effect 3 is just around the corner! The library has seen several major 
 changes between 2.0 and 3.0, so in an effort to highlight those changes, we
-will be releasing a series of blog posts that cover topics ranging from the
-typeclass hierarchy to concurrent data structures to tracing. If you would like
-to see a blog post about a particular subject, don't hesitate to reach out! You
-can try out early Cats Effect 3 releases 
+will be releasing a series of blog posts covering a range of topics. If you 
+would like to see a blog post about a particular subject, don't hesitate to 
+reach out! You can try out early Cats Effect 3 releases 
 [here](https://github.com/typelevel/cats-effect/releases).
 
 ### Introduction
 In this post, we offer a broad overview of the concurrency model that serves 
 as a foundation for Cats Effect and its abstractions. We discuss what fibers
-are and how to use them. We also talk about how to leverage the concurrency
-model to build powerful concurrent state machines. Example programs are written 
-in terms of `cats.effect.IO`.
+are and how to interact with them. We also talk about how to leverage the 
+concurrency model to build powerful concurrent state machines. Example programs 
+are written in terms of `cats.effect.IO`.
 
 Before going any further, let's briefly review what concurrency is, how it's
 useful, and why it's tedious to work with. 
