@@ -105,9 +105,9 @@ finalization, or synchronization that are crucial for building safe concurrent
 applications.
 
 Akka actors are another common way to achieve concurrency in Scala. For similar
-reasons as `Future`, they are also insufficient in functional programming, 
-however, one could certainly devise a typesafe actor model on top of the 
-concurrency model that is presented here.
+reasons as `Future`, they are also insufficient in strict functional 
+programming, however, one could certainly build a pure actor library on top of 
+the Cats Effect's concurrency model.
 
 ### Cats Effect Concurrency
 Cats Effect takes the perspective that concurrency is a necessary technique 
@@ -160,11 +160,12 @@ possible outcomes, which are encoded by the datatype `OutcomeIO[A]`:
 Additionally, a fiber may never produce an outcome, in which case it is said to 
 be nonterminating.
 
-The fiber API consists of three primitive functions: `start`, `join`, `cancel`. 
-We'll explore this API in the following sections. Surprisingly, fibers are 
-considered to be an unsafe and low-level feature of Cats Effect and must be
-given more caution than we offer in the examples. Accordingly, application 
-developers should rarely find themselves dealing with them directly.
+Cats Effect exposes several functions for interacting with fibers directly.
+We'll explore parts of this API in the following sections. Surprisingly, 
+fibers are considered to be an unsafe and low-level feature of Cats Effect and 
+must be given more caution than we offer in the examples. Accordingly, 
+application developers should rarely find themselves dealing with them 
+directly.
 
 #### Starting and joining fibers
 The most basic action of concurrency in Cats Effect is to start or spawn a new
@@ -179,15 +180,15 @@ outcome of the joinee. Let's take a look at an example.
 Let's take a look at an example that demonstrates spawning and joining of 
 fibers, as well as the nondeterministic interleaving of their executions.
 
-```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
+```tut:silent
+import cats.effect.{IO, IOApp}
+import cats.syntax.all._
 
-object ExampleOne extends IOApp {
+object ExampleOne extends IOApp.Simple {
   def repeat(letter: String): IO[Unit] =
     IO.print(letter).replicateA(100).void
 
-  override def run(args: List[String]): IO[ExitCode] =
+  override def run: IO[Unit] =
     for {
       fa <- (repeat("A") *> repeat("B")).as("foo!").start
       fb <- (repeat("C") *> repeat("D")).as("bar!").start
@@ -197,7 +198,7 @@ object ExampleOne extends IOApp {
       ra <- fa.joinAndEmbedNever
       rb <- fb.joinAndEmbedNever
       _ <- IO.println(s"\ndone: a says: $ra, b says: $rb")
-    } yield ExitCode.Success
+    } yield ()
 }
 ```
 
@@ -221,22 +222,26 @@ Notice how `join` imposes an ordering on the execution of the fibers: the
 main fiber will only ever print the `done:` message after the two spawned 
 fibers have completed.
 
+
+
 #### Canceling fibers
-A fiber can be canceled after its execution begins by calling `FiberIO#cancel`.
-This semantically blocks the current fiber until the target fiber has 
-finalized and terminated, and then returns. Let's take a look at an example.
+A fiber can be canceled after its execution begins with the `FiberIO#cancel`
+function. This semantically blocks the current fiber until the target fiber 
+has finalized and terminated, and then returns. Let's take a look at an 
+example.
 
-```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
+```tut:silent
+import cats.effect.{IO, IOApp}
+import cats.syntax.all._
+import scala.concurrent.duration._
 
-object ExampleThree extends IOApp {
-  override def run(args: List[String]): IO[ExitCode] =
+object ExampleTwo extends IOApp.Simple {
+  override def run: IO[Unit] =
     for {
       fiber <- IO.println("hello!").foreverM.start
       _ <- IO.sleep(5.seconds)
       _ <- fiber.cancel
-    } yield ExitCode.Success
+    } yield ()
 }
 ```
 
@@ -248,6 +253,51 @@ Cats Effect's concurrency model and cancellation model interact very closely
 with each other, however, the latter is out of scope for this post. It will be 
 discussed in detail in a future post, but in the meantime, visit the Scaladoc 
 pages for `MonadCancel` and `GenSpawn`.
+
+#### Racing fibers
+Cats Effect exposes several utility functions for racing `IO` actions (or their
+fibers) against eachother. Let's take a look at some of them:
+
+```scala
+object IO {
+  def racePair[A, B](left: IO[A], right: IO[B]): IO[Either[(OutcomeIO[A], FiberIO[B]), (FiberIO[A], OutcomeIO[B])]]
+  // higher-level functions
+  def race[A, B](left: IO[A], right: IO[B]): IO[Either[A, B]]
+  def both[A, B](left: IO[A], right: IO[B]): IO[(A, B)]
+}
+```
+
+`racePair` races two fiber and returns the outcome of the winner along with a 
+`FiberIO` handle to the loser. `race` races two fibers and returns the 
+successful outcome of the winner after canceling the loser. `both` races two 
+fibers and returns the successful outcome of both (in other words, it runs both
+fibers concurrently and waits for both of them to complete).
+
+`racePair` seems a bit hairy to work with, so let's try an example out with 
+`race`:
+
+```tut:silent
+import cats.effect.{IO, IOApp}
+import cats.syntax.all._
+
+object ExampleThree extends IOApp.Simple {
+  def factorial(n: Long): Long =
+    if (n == 0) 1 else n * factorial(n - 1)
+
+  override def run: IO[Unit] =
+    for {
+      res <- IO.race(IO(factorial(20)), IO(factorial(20)))
+      _ <- res.fold(
+        a => IO.println(s"Left hand side won: $a"), 
+        b => IO.println(s"Right hand side won: $b")
+      )
+    } yield ()
+}
+```
+
+In this program, we're racing two fibers, both of which calculate the 20th 
+factorial. Running this program with many iterations demonstrates that either 
+fiber can win.
 
 ### Communication
 We have seen how fibers can directly communicate with each other via `start`, 
@@ -263,21 +313,33 @@ concurrent data structures that leverage shared memory: `Ref` and `Deferred`.
 #### `Ref`
 `Ref` is a concurrent data structure that represents a mutable variable. It 
 is used to hold state that can be safely accessed and modified by many
-contending fibers. Let's take a look at an example.
+contending fibers. Let's take a look at its basic API:
 
 ```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
+trait Ref[A] {
+  def get: IO[A]
+  def set(a: A): IO[Unit]
+  def update(f: A => A): IO[Unit]
+}
+```
 
-object ExampleFour extends IOApp {
-  override def run(args: List[String]): IO[ExitCode] =
+`get` reads and returns the current value of the `Ref`. `set` sets the current 
+value of the `Ref`. `update` atomically reads and sets the current value of the 
+`Ref`. Let's take a look at an example.
+
+```tut:silent
+import cats.effect.{IO, IOApp}
+import cats.syntax.all._
+
+object ExampleFour extends IOApp.Simple {
+  override def run: IO[Unit] =
     for {
-      state <- Ref.of[IO, Int](0)
+      state <- IO.ref(0)
       fibers <- state.update(_ + 1).start.replicateA(100)
       _ <- fibers.traverse(_.join).void
       value <- state.get
       _ <- IO.println(s"The final value is: $value")
-    } yield ExitCode.Success
+    } yield ()
 }
 ```
 
@@ -295,37 +357,78 @@ The final value is: 100
 #### `Deferred`
 `Deferred` is a concurrent data structure that represents a condition variable.
 It is used to semantically block fibers until some arbitrary condition has been 
-fulfilled.
-
-Let's take a look at a simple example.
+fulfilled. Let's take a look at its basic API:
 
 ```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.implicits._
-
-object ExampleFour extends IOApp {
-  override def run(args: List[String]): IO[ExitCode] =
-    for {
-      state <- Ref.of[IO, Int](0)
-      fibers <- state.update(_ + 1).start.replicateA(100)
-      _ <- fibers.traverse(_.join).void
-      value <- state.get
-      _ <- IO.println(s"The final value is: $value")
-    } yield ExitCode.Success
+trait Deferred[A] {
+  def complete(a: A): IO[Unit]
+  def get: IO[A]
 }
+```
+
+`get` blocks all calling fibers until the `Deferred` has been completed with a
+value, after which it will return that value. `complete` completes the 
+`Deferred`, unblocking all waiters. A `Deferred` can not be completed more than
+once. Let's take a look at an example.
+
+```tut:silent
+import cats.effect.{IO, IOApp}
+import cats.effect.kernel.Deferred
+import cats.syntax.all._
+import scala.concurrent.duration._
+
+object ExampleFive extends IOApp.Simple {
+  def countdown(n: Int, pause: Int, waiter: Deferred[IO, Unit]): IO[Unit] = 
+    IO.println(n) *> IO.defer {
+      if (n == 0) IO.unit
+      else if (n == pause) IO.println("paused...") *> waiter.get *> countdown(n - 1, pause, waiter)
+      else countdown(n - 1, pause, waiter)
+    } 
+
+  override def run: IO[Unit] =
+    for {
+      waiter <- IO.deferred[Unit]
+      f <- countdown(10, 5, waiter).start
+      _ <- IO.sleep(5.seconds)
+      _ <- waiter.complete(())
+      _ <- f.join
+      _ <- IO.println("blast off!")
+    } yield ()
+}
+```
+
+In this program, the main fiber spawns a fiber that initiates a countdown. When
+the countdown reaches 5, it waits on a `Deferred` which is completed 5 seconds
+later by the main fiber. The main fiber then waits for the countdown to 
+complete before exiting. The program should produce the following output:
+
+```
+10
+9
+8
+7
+6
+5
+paused...
+4
+3
+2
+1
+0
+blast off!
 ```
 
 #### Building a concurrent state machine
 `Ref` and `Deferred` are often composed together to build more powerful and
 more complex concurrent data structures. Most of the concurrent data types in 
-the `std` module of Cats Effect are implemented in terms of `Ref` and/or 
+the `std` module in Cats Effect are implemented in terms of `Ref` and/or 
 `Deferred`. Example include `Semaphore`, `Queue`, and `Hotswap`.
 
 In our next example, we create simple concurrent data structure called `Latch` 
 that is blocks a waiter until a certain number of internal latches have been 
 released. Here is the interface for `Latch`:
 
-```scala
+```tut:silent
 trait Latch {
   def release: IO[Unit]
   def await: IO[Unit]
@@ -339,7 +442,7 @@ remaining, as well as a `Deferred` that is used to block new waiters. The
 second state reflects that the `Latch` has been completely released and will no
 longer block waiters.
 
-```scala
+```tut:silent
 sealed trait State
 final case class Awaiting(latches: Int, waiter: Deferred[IO, Unit]) extends State
 case object Done extends State
@@ -360,12 +463,12 @@ The `await` method inspects the current state; if it is `Done`, then allow the
 current fiber to pass through, otherwise, block the current fiber with the 
 `waiter`.
 
-```scala
+```tut:silent
 object Latch {
   def apply(latches: Int): IO[Latch] =
     for {
-      waiter <- Deferred[IO, Unit]
-      state <- Ref.of[IO, State](Awaiting(latches, waiter))
+      waiter <- IO.deferred[Unit]
+      state <- IO.ref(Awaiting(latches, waiter))
     } yield new Latch {
       override def release: IO[Unit] = 
         state.modify {
@@ -385,11 +488,11 @@ object Latch {
 }
 ```
 
-Finally, we can use our new concurrent data type in an example:
+Finally, we can use our new concurrent data type in a runnable example:
 
-```scala
-object ExampleFive extends IOApp {
-  override def run(args: List[String]): IO[ExitCode] =
+```tut:silent
+object ExampleSix extends IOApp.Simple {
+  override def run: IO[Unit] =
     for {
       latch <- Latch(10)
       _ <- (1 to 10).toList.traverse { idx => 
@@ -397,7 +500,7 @@ object ExampleFive extends IOApp {
       }
       _ <- latch.await
       _ <- IO.println("Got past the latch")
-    } yield ExitCode.Success
+    } yield ()
 }
 ```
 
@@ -474,8 +577,13 @@ which is exactly what JVM runtimes do.
 
 ## Exercises
 
-1. Why do you think the low-level fiber API unsafe? Hint: consider how the
+1. Why is the low-level fiber API designated as unsafe? Hint: consider how the
 fiber API interacts with cancellation.
+2. Implement `timeout` in terms of `IO.both`. `timeout` runs some action for up
+to a specified duration, after which it throws an errors.
+```scala
+def timeout[A](io: IO[A], duration: FiniteDuration): IO[A]
+```
 2. Implement `parTraverse` in terms of `IO.both`. `parTraverse` is the same as
 `traverse` except all `IO[B]` are run in parallel.
 ```scala
