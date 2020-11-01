@@ -16,17 +16,19 @@ tut:
 ---
 
 Cats Effect 3 is just around the corner! The library has seen several major 
-changes between 2.0 and 3.0, so in an effort to help the ecosystem migrate, 
-we will be releasing a series of blog posts that cover topics ranging from 
-the typeclass hierarchy to concurrent data structures to tracing. If you would 
-like to see a blog post about a particular subject, don't hesitate to reach out
-to us!
+changes between 2.0 and 3.0, so in an effort to highlight those changes, we
+will be releasing a series of blog posts that cover topics ranging from the
+typeclass hierarchy to concurrent data structures to tracing. If you would like
+to see a blog post about a particular subject, don't hesitate to reach out! You
+can try out early Cats Effect 3 releases 
+[here](https://github.com/typelevel/cats-effect/releases).
 
 ### Introduction
-In this post, we provide a broad overview of the concurrency model that serves 
-as a foundation for Cats Effect and its abstractions. We discuss how to 
-leverage the concurrency model to build powerful concurrent state machines. 
-Example programs are written in terms of `cats.effect.IO`.
+In this post, we offer a broad overview of the concurrency model that serves 
+as a foundation for Cats Effect and its abstractions. We discuss what fibers
+are and how to use them. We also talk about how to leverage the concurrency
+model to build powerful concurrent state machines. Example programs are written 
+in terms of `cats.effect.IO`.
 
 Before going any further, let's briefly review what concurrency is, how it's
 useful, and why it's tedious to work with. 
@@ -59,8 +61,7 @@ order.
 Another common perspective is that concurrency generates a partial order among
 all the actions of all the logical threads in a program. Actions _within_ a 
 logical thread are ordered with respect to program order. Actions _between_ 
-multiple logical threads are not ordered unless there is some form of 
-synchronization between them.
+multiple logical threads are not ordered in the absence of synchronization.
 
 #### Concurrency is useful
 Concurrency is a necessary tool for designing high-performance applications
@@ -468,7 +469,7 @@ object Latch {
   def apply(latches: Int): IO[Latch] =
     for {
       waiter <- IO.deferred[Unit]
-      state <- IO.ref(Awaiting(latches, waiter))
+      state <- IO.ref[State](Awaiting(latches, waiter))
     } yield new Latch {
       override def release: IO[Unit] = 
         state.modify {
@@ -504,10 +505,10 @@ object ExampleSix extends IOApp.Simple {
 }
 ```
 
-The program creates a `Latch` with 10 latches and spawns 10 fibers, each of 
-which releases one internal latch. The main fiber awaits against the `Latch`. 
-Once all 10 fibers have released a latch, the main fiber is unblocked and can 
-proceed. The  output of the program should look something like the following:
+This program creates a `Latch` with 10 internal latches and spawns 10 fibers, 
+each of which releases one internal latch. The main fiber awaits against the `
+Latch`. Once all 10 fibers have released a latch, the main fiber is unblocked 
+and can proceed. The output of the program should resemble the following:
 
 ```
 1 counting down
@@ -563,17 +564,20 @@ other fibers of compute time.
 ### Parallelism
 One aspect of multithreaded programming that we have neglected to mention so 
 far is parallelism. In theory, parallelism is completely independent of 
-concurrency; parallelism is about simultaneous execution whereas concurrency
-is about nondeterministic, interleaved execution.
+concurrency; parallelism is about simultaneous execution whereas concurrency 
+is about interleaved execution. 
+
+Parallelism is typically achieved by exploiting multiple CPU cores or even 
+multiple, independent machines to run a set of tasks much faster. Parallelism 
+is also not necessarily nondeterministic. For our purposes, parallelism can be 
+paired with concurrency to speed up the execution of many logical threads. This 
+is exactly what JVMs already do: multiple native threads run simultaneously, 
+resulting in higher throughput of actions.
 
 An obscure but crucial point here is that concurrency can be achieved without
 parallelism; this is called single-threaded concurrency. We've already seen an 
 example of this: JavaScript runtimes run on a single compute thread, so the 
 execution of all fibers must take place on that thread as well!
- 
-Concurrency can also exploit the parallelism afforded by multiple threads. We 
-can run more fibers simultaneously, resulting in higher throughput of tasks, 
-which is exactly what JVM runtimes do.
 
 ## Exercises
 
@@ -589,7 +593,7 @@ def timeout[A](io: IO[A], duration: FiniteDuration): IO[A]
 ```scala
 def parTraverse[A](as: List[A])(f: A => IO[B]): IO[List[B]]
 ```
-2. Implement `Semaphore` in terms of `Ref` and `Deferred`.
+3. Implement `Semaphore` in terms of `Ref` and `Deferred`.
 ```scala
 trait Semaphore {
   def acquire: IO[Unit]
@@ -599,7 +603,7 @@ object Semaphore {
   def apply(permits: Int): IO[Semaphore]
 }
 ```
-3. Implement `Queue` in terms of `Ref` and `Deferred`.
+4. Implement `Queue` in terms of `Ref` and `Deferred`.
 ```scala
 trait Queue[A] {
   def put(a: A): IO[Unit]
@@ -612,7 +616,7 @@ object Queue {
   def apply[A](length: Int): IO[Queue[A]]
 }
 ```
-4. `Stateful` is a typeclass in Cats MTL that characterizes a monad's ability 
+5. `Stateful` is a typeclass in Cats MTL that characterizes a monad's ability 
 to access and manipulate state. This is typically used in monad transformer 
 stacks in conjunction with the `StateT` transformer. Is it possible to create 
 a `Stateful` instance given a `Ref`?
