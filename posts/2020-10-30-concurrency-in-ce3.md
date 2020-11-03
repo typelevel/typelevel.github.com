@@ -24,7 +24,7 @@ reach out! You can try out early Cats Effect 3 releases
 
 ### Introduction
 In this post, we offer a broad overview of the concurrency model that serves 
-as a foundation for Cats Effect and its abstractions. We discuss what fibers
+as the foundation for Cats Effect and its abstractions. We discuss what fibers
 are and how to interact with them. We also talk about how to leverage the 
 concurrency model to build powerful concurrent state machines. Example programs 
 are written in terms of `cats.effect.IO`.
@@ -47,29 +47,28 @@ C++, these logical threads are typically represented by native threads that
 are managed by the operating system. The actions that comprise these threads 
 are native processor instructions or VM bytecode instructions. In programs that
 are written with Cats Effect, these logical threads are represented by fibers, 
-and the actions that comprise them are `IO` instructions.
+and the actions that comprise them are `IO` values.
 
 What does it mean for logical threads to execute at the same time? Because the 
-steps of logical thread are discrete, the steps of many logical threads can be 
-interleaved together. This interleaving is largely influenced by external 
-factors such as scheduler preemption and I/O operations, so it is usually 
-nondeterministic, that is, in the absence of synchronization, there is no 
-guarantee that the actions of distinct logical threads occur in some particular
-order.
+actions of a logical thread are discrete, the actions of many logical threads 
+can be interleaved into one or more streams of actions. This interleaving is 
+largely influenced by external factors such as scheduler preemption and I/O 
+operations, so it is usually nondeterministic. More specifically, in the 
+absence of synchronization, there is no guarantee that the actions of distinct 
+logical threads occur in some particular order.
 
 Another common perspective is that concurrency generates a partial order among
 all the actions of all the logical threads in a program. Actions _within_ a 
-logical thread are ordered with respect to program order. Actions _between_ 
+logical thread are ordered consistently with program order. Actions _between_ 
 multiple logical threads are not ordered in the absence of synchronization.
 
 #### Concurrency is useful
-Concurrency is a necessary tool for designing high-performance applications
-that are responsive and resilient. These applications typically involve 
-multiple interactions or tasks that must happen at the same time. For example, 
-a computer game needs to listen for keyboard input, play sound effects, and 
-run game loop logic, all while rendering graphics to the screen. A multiplayer 
-game must also communicate with a network server to exchange game state 
-information.
+Concurrency is a tool for designing high-performance applications that are 
+responsive and resilient. These applications typically involve multiple 
+interactions or tasks that must happen at the same time. For example, a 
+computer game needs to listen for keyboard input, play sound effects, and run 
+game loop logic, all while rendering graphics to the screen. A multiplayer game 
+must also communicate with a network server to exchange game state information.
 
 Traditional sequential programming models quickly become inadequate when 
 applied to building these kinds of responsive programs. The computer game 
@@ -91,13 +90,13 @@ understand, maintain, and evolve.
 
 #### Concurrency is hard
 Concurrency is notoriously cumbersome to work with. This is no surprise to any
-developer that has worked with threads and locks in many mainstream programming
-languages. Once we start dealing with concurrency, we have to deal with a slew
+developer that has worked with threads and locks in any mainstream programming
+language. Once we start dealing with concurrency, we have to deal with a slew
 concerns: deadlocks, starvation, race conditions, thread leaks, thread blocking
 and so on. A bug in any one of these concerns can have devastating consequences
 in terms of correctness and performance.
 
-The most popular method for achieving concurrency in Scala is via `Future`,
+The most popular method for achieving concurrency in Scala is with `Future`,
 which enables the evaluation of asynchronous operations. However, it is plainly
 insufficient for those of us who practice strict functional programming. 
 Furthermore, `Future` doesn't expose first-class features like cancellation, 
@@ -116,33 +115,37 @@ in Scala are tedious to work with. A goal of Cats Effect is then to provide
 library authors and application developers a concurrency model that is safe and
 simple to work with.
 
-Many users will never directly interact with the concurrency model, usually
-because a library assumes that responsibility for them. For example, http4s 
-achieves concurrent request handling by spawning a fiber for every request it 
-receives; users need only specify the request handling code that is eventually 
-run inside the fiber. We consider this to be an advantage; users can exploit 
-concurrency in their programs via safe abstractions that libraries provide 
-without having to directly with it.
+Most users should never directly interact with the concurrency model of Cats
+Effect because it is a low-level API. This is intentional: low-level 
+concurrency constructs are inherently unsafe and effectful, so forcing users 
+to touch it would only be a burden for them. Cats Effect and other libraries 
+provide higher-level and safer abstractions that users can exploit to achieve 
+concurrency without having to understand what's happening under the hood.
+For example, http4s achieves concurrency on requests by spawning a fiber for 
+every request it receives; users need only specify the request handling code 
+that is eventually run inside the fiber.
 
 That being said, it can be tremendously helpful to learn about Cats Effect's
-concurrency model, so let's jump into it.
+internals and concurrency model to understand how our applications behave and
+how to tune them, so let's jump into it.
 
 ### Fibers
-Cats Effect chooses fibers as the foundation for its concurrency model. The
-main benefit of fibers is that they are conceptually similar to native threads:
+Cats Effect chooses fibers as the foundation for its concurrency model. The 
+main benefit of fibers is that they are conceptually similar to native threads: 
 both are types of logical threads that describe a sequence of computations. 
 Unlike native threads, fibers are not associated with any system resources. 
-They exist and are scheduled completely within the userspace process, 
+They coexist and are scheduled completely within the userspace process, 
 independently of the operating system. This mode of concurrency reaps major 
-benefits:
+benefits for users and performance:
 
-1. Fibers are incredibly cheap so we can create hundreds of thousands of them 
-without thrashing the process. This means that we also don't need to pool 
-fibers; we just create a new one whenever we need it.
+1. Fibers are incredibly cheap in terms of memory overhead so we can create 
+hundreds of thousands of them without thrashing the process. This means that we
+also don't need to pool fibers; we just create a new one whenever we need it.
 2. Context switching between fibers is orders of magnitude faster than context
 switching between threads.
 3. Blocking a fiber doesn't necessarily block a native thread; this is called
-semantic blocking. This is particularly true for nonblocking I/O operations.
+semantic blocking. This is particularly true for nonblocking I/O and other
+asynchronous operations.
 
 Concretely, a fiber is a logical thread that encapsulates the execution of an 
 `IO[A]` program, which is a sequence of `IO` effects (actions) that are bound 
@@ -161,11 +164,10 @@ Additionally, a fiber may never produce an outcome, in which case it is said to
 be nonterminating.
 
 Cats Effect exposes several functions for interacting with fibers directly.
-We'll explore parts of this API in the following sections. Surprisingly, 
-fibers are considered to be an unsafe and low-level feature of Cats Effect and 
-must be given more caution than we offer in the examples. Accordingly, 
-application developers should rarely find themselves dealing with them 
-directly.
+We'll explore parts of this API in the following sections. Again, fibers are
+considered to be an unsafe and low-level feature and must be given more caution 
+than we offer in the examples. Users are encouraged to use the higher-level 
+concurrency constructs that Cats Effect provides.
 
 #### Starting and joining fibers
 The most basic action of concurrency in Cats Effect is to start or spawn a new
@@ -566,11 +568,13 @@ concurrency; parallelism is about simultaneous execution whereas concurrency
 is about interleaved execution. 
 
 Parallelism is typically achieved by exploiting multiple CPU cores or even 
-multiple, independent machines to run a set of tasks much faster. Parallelism 
-is also not necessarily nondeterministic. For our purposes, parallelism can be 
-paired with concurrency to speed up the execution of many logical threads. This 
-is exactly what JVMs already do: multiple native threads run simultaneously, 
-resulting in higher throughput of actions.
+multiple, independent machines to run a set of tasks much faster than they 
+would run on a single CPU or machine. Parallelism is also not necessarily
+nondeterministic; we can run a set of deterministic tasks in parallel multiple
+times and expect to get back the same result every time. For our purposes, 
+parallelism can be paired with concurrency to speed up the execution of many 
+logical threads. This is exactly what JVMs already do: multiple native threads 
+run simultaneously, resulting in higher throughput of tasks.
 
 An obscure but crucial point here is that concurrency can be achieved without
 parallelism; this is called single-threaded concurrency. We've already seen an 
