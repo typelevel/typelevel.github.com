@@ -581,7 +581,7 @@ parallelism; this is called single-threaded concurrency. We've already seen an
 example of this: JavaScript runtimes run on a single compute thread, so the 
 execution of all fibers must take place on that thread as well!
 
-## Exercises
+### Exercises
 
 1. Why is the low-level fiber API designated as unsafe? Hint: consider how the
 fiber API interacts with cancellation.
