@@ -585,7 +585,7 @@ execution of all fibers must take place on that thread as well!
 
 1. Why is the low-level fiber API designated as unsafe? Hint: consider how the
 fiber API interacts with cancellation.
-2. Implement `timeout` in terms of `IO.both`. `timeout` runs some action for up
+2. Implement `timeout` in terms of `IO.race`. `timeout` runs some action for up
 to a specified duration, after which it throws an errors.
 ```scala
 def timeout[A](io: IO[A], duration: FiniteDuration): IO[A]
