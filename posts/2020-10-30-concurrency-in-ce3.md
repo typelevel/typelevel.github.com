@@ -455,7 +455,7 @@ a `Latch` is the `Awaiting` state with a user-specified number of latches
 remaining.
 
 The `release` method atomically modifies the state based on its current value:
-if the current state is `Counting` and there is more than one latch remaining, 
+if the current state is `Awaiting` and there is more than one latch remaining, 
 then subtract by one, but if there is only one latch left, then transition to 
 the `Done` state and unblock all the waiters. If the current state is `Done`, 
 then do nothing.
@@ -506,8 +506,8 @@ object ExampleSix extends IOApp.Simple {
 ```
 
 This program creates a `Latch` with 10 internal latches and spawns 10 fibers, 
-each of which releases one internal latch. The main fiber awaits against the `
-Latch`. Once all 10 fibers have released a latch, the main fiber is unblocked 
+each of which releases one internal latch. The main fiber awaits against the 
+`Latch`. Once all 10 fibers have released a latch, the main fiber is unblocked 
 and can proceed. The output of the program should resemble the following:
 
 ```
@@ -585,7 +585,7 @@ execution of all fibers must take place on that thread as well!
 
 1. Why is the low-level fiber API designated as unsafe? Hint: consider how the
 fiber API interacts with cancellation.
-2. Implement `timeout` in terms of `IO.both`. `timeout` runs some action for up
+2. Implement `timeout` in terms of `IO.race`. `timeout` runs some action for up
 to a specified duration, after which it throws an errors.
 ```scala
 def timeout[A](io: IO[A], duration: FiniteDuration): IO[A]
