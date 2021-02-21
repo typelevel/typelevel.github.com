@@ -42,6 +42,8 @@ To understand this more concretely, we need to think about what we *could* be do
 
 The most direct and naive way to approach this is to allocate one thread per connection. When a client connection comes in, we allocate a thread and hand off the connection for handling, and that thread will live until the response is fully generated. When we make network calls to downstream services, this thread will block on the responses, giving us a nice linear application control flow.
 
+### Unbounded Threads
+
 <!-- loads of threads diagram -->
 ![](https://i.imgur.com/Ct8tZG6.png)
 
@@ -51,7 +53,9 @@ The JVM is a bit easier to understand here. Whenever you create a new thread, th
 
 In practice, on most *practical* hardware, you really can't have more than a few hundred threads before the JVM starts to behave poorly. Keeping things bounded to around a few *dozen* threads is generally considered best practice.
 
-This is a huge problem, and we run face-first into it in architectures like the above where every request is given its own thread. How can we possibly serve tens of thousands of requests simultaneously when each request implies the allocation and maintenance of such an expensive resource? We need some way of handling multiple requests on the *same* thread, or at the very least *bounding* the number of threads we have floating around. Enter thread pools and the famous "disruptor pattern":
+This is a huge problem, and we run face-first into it in architectures like the above where every request is given its own thread. How can we possibly serve tens of thousands of requests simultaneously when each request implies the allocation and maintenance of such an expensive resource? We need some way of handling multiple requests on the *same* thread, or at the very least *bounding* the number of threads we have floating around. Enter thread pools and the famous "disruptor pattern".
+
+### Bounded Threads
 
 <!-- thread pool diagram -->
 ![](https://i.imgur.com/ImCE0cF.png)
@@ -60,7 +64,9 @@ In this kind of architecture, incoming requests are handed off to a scheduler (u
 
 The problem is that it *still* doesn't quite resolve the issue. Notice how we're still making that network call to **downstream**, which presumably doesn't return instantaneously. We have to block our *carrier thread* (the worker responsible for handling our specific request) while waiting for that downstream to respond. This creates a situation generally known as "starvation", where every thread in the pool is wasted on blocking operations, waiting for the downstream to respond, while new requests are continuing to flood in at the top waiting for worker to pick them up.
 
-This is extremely wasteful, because we have a scarce resource (threads) which *could* be utilized to make some progress on our ever-filling request queue, but instead is just sitting there in `BLOCKED` state waiting for **downstream** to respond and just generally being a nuisance. The classic solution to this problem is to evolve to an *asynchronous* model for the network connections, allowing the downstream to take as long as it needs to get back to us, and only using the thread when we actually have real work to do:
+This is extremely wasteful, because we have a scarce resource (threads) which *could* be utilized to make some progress on our ever-filling request queue, but instead is just sitting there in `BLOCKED` state waiting for **downstream** to respond and just generally being a nuisance. The classic solution to this problem is to evolve to an *asynchronous* model for the network connections, allowing the downstream to take as long as it needs to get back to us, and only using the thread when we actually have real work to do.
+
+### Improved Thread Utilization
 
 <!-- async pool diagram -->
 ![](https://i.imgur.com/GrNJuJC.png)
@@ -70,6 +76,8 @@ This is much more efficient! It's also incredibly confusing, and it gets exponen
 However, this is essentially what modern systems look like *without* Cats Effect. It's incredibly complicated to reason about it, you pretty much always get it wrong in some way, and it's actually *still* very wasteful and naive in terms of resource efficiency! For example, imagine if any one of these pipelines takes a particularly long time to execute. While it's executing on a thread, everything else that might be waiting for that thread has to sit there in the queue, not receiving a response. This is another form of starvation and it leads to the problem space of *fairness* and related questions. When this happens in your system, you could see extremely high CPU utilization (since all the worker threads are trying very hard to answer requests as quickly as possible) and very *very* good p50 response times, but your p99 and maybe even p90 response times climb into the stratosphere since a subset of requests under load end up sitting in the work queue for a long time, just waiting for a thread.
 
 All in all, this is very bad, and it starts to hint at *why* it is that Cats Effect is able to do so much better. The above architecture is already insane and effectively impossible to get right if you're doing it by hand. Cats Effect raises your program up to a higher abstraction layer and allows you to think about things in terms of a simpler model: fibers.
+
+### Many Fibers, Fewer Threads, One Scheduler
 
 <!-- fiber diagram -->
 ![](https://i.imgur.com/IVPMO2O.png)
@@ -86,7 +94,9 @@ This is already a significant improvement over what we can do by hand, not only 
 
 The above diagram is basically how Cats Effect 2, Vert.x, Project Loom, and almost every other asynchronous framework on the JVM behaves. There are some refinements that you can apply by trying to make the scheduler a bit smarter and such, but the state of the art on the JVM is basically what you see above.
 
-That is, until Cats Effect 3:
+That is, until Cats Effect 3.
+
+### Many Fibers, Fewer Threads, Many Schedulers
 
 <!-- work-stealing diagram -->
 ![](https://i.imgur.com/y6aY3ZH.png)
@@ -104,9 +114,9 @@ Work-stealing, for contrast, allows the individual worker threads to manage thei
 
 Work-stealing is simply very, very, very good. But we can do even better.
 
-Most work-stealing implementations on the JVM delegate to `WorkStealingThreadPool`. There are a number of problems with this thread pool implementation, not the least of which is that it tries to be a little too clever around thread blocking. In essence, the work-stealing implementation in the JDK has to render itself through a highly generic interface – literally just `execute(Runnable): Unit`! – and cannot take advantage of the deep system knowledge that we have within the Cats Effect framework. Specifically, we know some very important things:
+Most work-stealing implementations on the JVM delegate to `ForkJoinThreadPool`. There are a number of problems with this thread pool implementation, not the least of which is that it tries to be a little too clever around thread blocking. In essence, the work-stealing implementation in the JDK has to render itself through a highly generic interface – literally just `execute(Runnable): Unit`! – and cannot take advantage of the deep system knowledge that we have within the Cats Effect framework. Specifically, we know some very important things:
 
-- **Hard-blocking threads is very rare, if it exists at all.** Users of Cats Effect tend to be quite good about leveraging `blocking` and other tools to avoid hard-blocking the main compute pool, meaning that we can optimize *assuming* that this case is exceptionally rare and we don't need to try to detect blocked threads and speculatively grow the pool. This keeps our worker thread count exactly where it should be: pinned to the number of physical CPUs.
+- **Hard-blocking threads are very rare, if it exists at all.** Users of Cats Effect tend to be quite good about leveraging `blocking` and other tools to avoid hard-blocking the main compute pool, meaning that we can optimize *assuming* that this case is exceptionally rare and we don't need to try to detect blocked threads and speculatively grow the pool. This keeps our worker thread count exactly where it should be: pinned to the number of physical CPUs.
 - **Fibers represent *sequential* workflows that maintain working memory sets across suspension boundaries.** This is a more complicated thing to conceptualize, but it makes a lot of intuitive sense. When our request/response fiber in our running example hears back from **downstream**, it's going to pick up exactly where it left off *with the same data* that it was touching prior to its suspension. This is a *huge* thing to optimize for, because memory working sets are very expensive, and we can leverage this knowledge to reduce page faults and improve CPU cache utilization.
 
 The way in which we optimize for fibers specifically is by ensuring that fiber suspension and wake-up is kept pinned to a single worker thread per fiber *as much as possible*. Obviously, if one thread is completely overloaded by work and the other threads are idle, then the fiber is going to move over to those other threads and the result is going to be a page fault, but in the *common* case this simply doesn't happen. Each thread is responsible for some number of fibers, and those fibers remain on that thread as long as possible. This allows the operating system thread scheduler in turn to live within its happy-path assumptions about memory utilization, keeping fiber memory state resident within the L3 and L2 caches for longer, even across asynchronous boundaries! This has a massive impact on application performance, because it means that fibers are able to avoid round-trips to system main memory in the common case.
@@ -114,5 +124,7 @@ The way in which we optimize for fibers specifically is by ensuring that fiber s
 This is in contrast to the single shared queue implementation that is all-too common in this space. With a single shared work queue, once a fiber suspends, there is no guarantee that it will be reallocated back to the thread it *was* on prior to suspension. In fact, the odds of this drop to almost nothing as you increase the number of workers, and so again the general pattern gets much *worse* as you scale up the number of CPUs. Remember that any time semantically-sequential work is moved from one thread to another, that work is *usually* also going to be moving from one *CPU* to another, meaning that all of the nice caching benefits that we normally get from the memory cache hierarchy are blown away as we have to laboriously re-build our working set from main memory (a page fault). A fiber-aware work-stealing scheduler avoids this problem almost all of the time.
 
 This also means that the fairness problem can be solved *effectively for free*, since a fiber is able to yield control back to its worker thread without incurring the penalty of a page fault or even a memory barrier! In the event that the worker thread has other fibers waiting for time, those fibers will take over at the yield and the starvation is averted (keeping your p99s low!). If the worker thread does *not* have other fibers waiting for time, then the yielding fiber picks up right where it left off with almost exactly zero cost, meaning that we're able to solve fairness with no cost to throughput.
+
+## Conclusion
 
 There's a lot more going on in this layer than just what I've described, but hopefully this gives a rough intuition as to *why* Cats Effect 3's scheduler is able to achieve the crazy performance numbers we see in practice, and also why it is that fibers are not only an easier model for writing highly scalable modern applications, they are also a *faster* and more efficient model for running those applications at scale.
