@@ -45,7 +45,7 @@ The most direct and naive way to approach this is to allocate one thread per con
 ### Unbounded Threads
 
 <!-- loads of threads diagram -->
-![](https://i.imgur.com/Ct8tZG6.png)
+![](/img/media/fibers/many-threads.png)
 
 Implementation-wise, this is very easy to reason about. Your code will all take on a highly imperative structure, with *A* followed by *B* followed by *C*, etc, and it will behave entirely reasonably at small scales! Unfortunately, the problem here is that threads are not particularly cheap. The reasons for this are relatively complex, but they manifest in two places: the OS kernel scheduler, and the JVM itself. 
 
@@ -58,7 +58,7 @@ This is a huge problem, and we run face-first into it in architectures like the 
 ### Bounded Threads
 
 <!-- thread pool diagram -->
-![](https://i.imgur.com/ImCE0cF.png)
+![](/img/media/fibers/few-threads.png)
 
 In this kind of architecture, incoming requests are handed off to a scheduler (usually a shared lock-free work queue) which then hands them off to a fixed set of worker threads for processing. This is the kind of thing you'll see in almost every JVM application written in the past decade or so.
 
@@ -69,7 +69,7 @@ This is extremely wasteful, because we have a scarce resource (threads) which *c
 ### Improved Thread Utilization
 
 <!-- async pool diagram -->
-![](https://i.imgur.com/GrNJuJC.png)
+![](/img/media/fibers/async.png)
 
 This is much more efficient! It's also incredibly confusing, and it gets exponentially worse the more complexity you have in your control flow. In practice most systems like this one have *multiple* downstreams that they need to talk to, often in parallel, which makes this whole thing get crazy in a hurry. It also doesn't get any easier when you add in the fact that just talking to a downstream (like a database) often involves some form of resource management which has to be correctly threaded across these asynchronous boundaries and carried between threads, not to mention problems like timeouts and fallback races and such. It's a mess.
 
@@ -80,7 +80,7 @@ All in all, this is very bad, and it starts to hint at *why* it is that Cats Eff
 ### Many Fibers, Fewer Threads, One Scheduler
 
 <!-- fiber diagram -->
-![](https://i.imgur.com/IVPMO2O.png)
+![](/img/media/fibers/fibers.png)
 
 This diagram looks a lot like the first one! In here, we're just allocating a new fiber for each request that comes in, much like how we *tried* to allocate a new thread per request. Each fiber is a self-contained, sequential unit which *semantically* runs from start to finish and we don't really need to think about what's going on under the surface. Once the response has been produced to the client, the fiber goes away and we never have to think about it again.
 
@@ -99,7 +99,7 @@ That is, until Cats Effect 3.
 ### Many Fibers, Fewer Threads, Many Schedulers
 
 <!-- work-stealing diagram -->
-![](https://i.imgur.com/y6aY3ZH.png)
+![](/img/media/fibers/work-stealing.png)
 
 Cats Effect 3 has a *much* smarter and more efficient scheduler than any other asynchronous framework on the JVM. It was heavily inspired by the [Tokio](https://tokio.rs) Rust framework, which is fairly close to Cats Effect's problem space. As you might infer from the diagram, the scheduler is no longer a central clearing house for work, and instead is dispersed among the worker threads. This *immediately* results in some massive efficiency wins, but the real magic is still to come.
 
@@ -110,7 +110,7 @@ In a conventional implementation of the disruptor pattern (which is what a fixed
 Work-stealing, for contrast, allows the individual worker threads to manage their own *local* queue, and when that queue runs out, they simply take work from each other on a one-to-one basis. Thus, the only contention that exists is between the stealer and the "stealee", entirely avoiding the quadratic growth problem. In fact, contention becomes *less* frequent as the number of workers and the load on the pool increases. You can conceptualize this with the following extremely silly plot (higher numbers are *bad* because they represent overhead):
 
 <!-- plot of work stealing overhead vs standard disruptor pattern -->
-![](https://i.imgur.com/FlMx9eR.png)
+![](/img/media/fibers/overhead.png)
 
 Work-stealing is simply very, very, very good. But we can do even better.
 
