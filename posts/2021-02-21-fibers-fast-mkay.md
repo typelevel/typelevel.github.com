@@ -1,6 +1,6 @@
 # Why Are Fibers Fast?
 
-With Cats Effect 3.0.0 right around the corner, we've been publishing a lot of numbers and scenarios which demonstrate disorientingly high performance in a lot of realistic setups. At first glance, this seems to defy intuition. After all, `IO` is quite a heavyweight abstraction; how is it that it can be competitive with hand-written and hand-tuned code for the same use-case?
+With Cats Effect 3.0 right around the corner, we've been publishing a lot of numbers and scenarios which demonstrate disorientingly high performance in a lot of realistic setups. At first glance, this seems to defy intuition. After all, `IO` is quite a heavyweight abstraction; how is it that it can be competitive with hand-written and hand-tuned code for the same use-case?
 
 There are a lot of ways to answer this question, and they get both complex *and* depend heavily on exactly what use-case you're talking about, but we can get a general idea of what's going on here by zooming out a bit on the problem space.
 
@@ -82,7 +82,7 @@ Critically, fibers are free to *suspend* at any time. In our example, fibers sus
 
 Raising the level of abstraction here isn't just good for users who write programs (you!) in this model, it's also good for the runtime itself. The scheduler is able to solve problems such as fairness in a more general way – for example, by preventing a fiber from hogging its worker thread for too long and artificially suspending that fiber and sending it to the back of the work queue. The system is also able to contemplate other, vastly more complex problems such as resource management and interruption (for timeouts), simply because the scheduler is taking care of all of these low-level details related to keeping the workers busy.
 
-This is already a significant improvement over what we can do by hand, not only cognatively but also in terms of runtime performance. The scheduler is able to solve a very complicated problem space in a nice, general fashion given global knowledge of the fiber space, and this results in dramatically improved efficiency in resource utilization throughout the system. We're not done though.
+This is already a significant improvement over what we can do by hand, not only cognitively but also in terms of runtime performance. The scheduler is able to solve a very complicated problem space in a nice, general fashion given global knowledge of the fiber space, and this results in dramatically improved efficiency in resource utilization throughout the system. We're not done though.
 
 The above diagram is basically how Cats Effect 2, Vert.x, Project Loom, and almost every other asynchronous framework on the JVM behaves. There are some refinements that you can apply by trying to make the scheduler a bit smarter and such, but the state of the art on the JVM is basically what you see above.
 
