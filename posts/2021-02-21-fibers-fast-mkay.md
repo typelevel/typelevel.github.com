@@ -1,4 +1,11 @@
-# Why Are Fibers Fast?
+---
+layout: post
+title: Why Are Fibers Fast?
+
+meta:
+  nav: blog
+  author: djspiewak
+---
 
 With Cats Effect 3.0 right around the corner, we've been publishing a lot of numbers and scenarios which demonstrate disorientingly high performance in a lot of realistic setups. At first glance, this seems to defy intuition. After all, `IO` is quite a heavyweight abstraction; how is it that it can be competitive with hand-written and hand-tuned code for the same use-case?
 
