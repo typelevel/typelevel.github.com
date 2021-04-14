@@ -55,7 +55,7 @@ And this is exactly what we want to achieve here. Writing polymorphic code using
 
 In the previous blog post we defined the algebras as a single trait. In this case we are going to try a different encoding but first we need to introduce an `ErrorChannel[F, E]` typeclass where the error type is a subtype of `Throwable` to be compatible with the error type of the `cats-effect` typeclasses:
 
-```tut:book:silent
+```scala
 trait ErrorChannel[F[_], E <: Throwable] {
   def raise[A](e: E): F[A]
 }
@@ -63,7 +63,7 @@ trait ErrorChannel[F[_], E <: Throwable] {
 
 An instance can be derived for any `ApplicativeError[F, Throwable]` so we don't need to write it manually for every error type.
 
-```tut:book:silent
+```scala
 import cats.ApplicativeError
 
 object ErrorChannel {
@@ -86,7 +86,7 @@ object ErrorChannel {
 
 Our `UserAlg` will now be defined as an `abstract class` instead in order to be able to add typeclass constraint.
 
-```tut:book:silent
+```scala
 case class User(username: String, age: Int)
 case class UserUpdateAge(age: Int)
 
@@ -99,7 +99,7 @@ abstract class UserAlg[F[_]: ErrorChannel[?[_], E], E <: Throwable] {
 
 And here's the ADT of the possible errors that may arise (notice the `extends Exception` part):
 
-```tut:book:silent
+```scala
 sealed trait UserError extends Exception
 case class UserAlreadyExists(username: String) extends UserError
 case class UserNotFound(username: String) extends UserError
@@ -114,7 +114,7 @@ Here's a similar `UserAlg` interpreter to the one presented in the previous post
 
 The interesting part is that in order to construct a `UserAlg[F, UserError]` we now need an `ErrorChannel[F, UserError]` instance in scope. This will be the chosen strategy to report errors in the context of `F`.
 
-```tut:book:silent
+```scala
 import cats.effect.{ Concurrent, Sync }
 import cats.effect.concurrent.Ref
 import cats.syntax.all._
@@ -161,7 +161,7 @@ Notice that we could still call `Sync[F].raiseError(new Exception("boom"))` and 
 
 Here's the same `HttpErrorHandler` defined in the previous blog post:
 
-```tut:book:silent
+```scala
 import cats.{ ApplicativeError, MonadError }
 import cats.data.{ Kleisli, OptionT }
 import org.http4s._
@@ -195,7 +195,7 @@ object HttpErrorHandler {
 
 Now let's look at the new implementation of `UserRoutes` using the error-type algebra:
 
-```tut:book:silent
+```scala
 import cats.effect.Sync
 import cats.syntax.all._
 import io.circe.generic.auto._
@@ -236,7 +236,7 @@ Notice that in contrast to the example shown in the previous blog post there is 
 
 We could define a generic `Routes[F, E]`:
 
-```tut:book:silent
+```scala
 abstract class Routes[F[_], E <: Throwable](implicit H: HttpErrorHandler[F, E]) extends Http4sDsl[F] {
   protected def httpRoutes: HttpRoutes[F]
   val routes: HttpRoutes[F] = H.handle(httpRoutes)
@@ -245,7 +245,7 @@ abstract class Routes[F[_], E <: Throwable](implicit H: HttpErrorHandler[F, E]) 
 
 But we'll also need something else to connect the error types of the algebra and the http error handler:
 
-```tut:book:silent
+```scala
 abstract class UserRoutes[F[_]: HttpErrorHandler[?[_], E], E <: Throwable](
     users: UserAlg[F, E]
 ) extends Routes[F, E]
@@ -253,7 +253,7 @@ abstract class UserRoutes[F[_]: HttpErrorHandler[?[_], E], E <: Throwable](
 
 That's it! We are now enforcing this relationship at compile time. Let's see how the `HttpRoutes` looks like:
 
-```tut:book:silent
+```scala
 class UserRoutesAlt[F[_]: HttpErrorHandler[?[_], UserError]: Sync](
     users: UserAlg[F, UserError]
 ) extends UserRoutes(users) {
@@ -294,7 +294,7 @@ Let's first define a new ADT of errors and a new algebra to illustrate the probl
 
 #### Catalog Error
 
-```tut:book:silent
+```scala
 sealed trait CatalogError extends Exception
 case class ItemAlreadyExists(item: String) extends CatalogError
 case class CatalogNotFound(id: Long) extends CatalogError
@@ -302,7 +302,7 @@ case class CatalogNotFound(id: Long) extends CatalogError
 
 #### CatalogAlg
 
-```tut:book:silent
+```scala
 case class Item(name: String) extends AnyVal
 
 abstract class CatalogAlg[F[_]: ErrorChannel[?[_], E], E <: Throwable] {
@@ -315,7 +315,7 @@ abstract class CatalogAlg[F[_]: ErrorChannel[?[_], E], E <: Throwable] {
 
 Here we have an `HttpRoutes` that makes use of two algebras with different error types:
 
-```tut:book:silent
+```scala
 class UserRoutesMTL[F[_]: Sync](
     users: UserAlg[F, UserError],
     catalog: CatalogAlg[F, CatalogError]
@@ -350,7 +350,7 @@ However, this doesn't compile because the error type is no longer a subtype of `
 
 But we might be able to derive an instance for a coproduct of errors if we have an instance of `HttpErrorHandler[F, E]` for each error type. Let's give it a try! We need to define a new typeclass `CoHttpErrorHandler`:
 
-```tut:book:silent
+```scala
 import shapeless._
 
 trait CoHttpErrorHandler[F[_], Err <: Coproduct] {
@@ -375,7 +375,7 @@ Voilà! We introduced a `CoHttpErrorHandler` where the error type is a coproduct
 
 ### HttpRoutes for a coproduct of errors
 
-```tut:book:silent
+```scala
 class CoUserRoutesMTL[F[_]: Sync](
     users: UserAlg[F, UserError],
     catalog: CatalogAlg[F, CatalogError]
@@ -395,7 +395,7 @@ It's possible but in the case of coproducts we need to introduce some boilerplat
 
 #### CoRoutes
 
-```tut:book:silent
+```scala
 abstract class CoRoutes[F[_], E <: Coproduct](implicit CH: CoHttpErrorHandler[F, E]) extends Http4sDsl[F] {
   protected def httpRoutes: HttpRoutes[F]
   val routes: HttpRoutes[F] = CH.handle(httpRoutes)
@@ -406,7 +406,7 @@ This one is pretty basic and similar to `Routes` defined before.
 
 #### CoUserRoutes
 
-```tut:book:silent
+```scala
 abstract class CoUserRoutes[
     F[_]: CoHttpErrorHandler[?[_], E],
     A <: Throwable,
@@ -428,7 +428,7 @@ Here we have a couple of constraints:
 
 #### HttpRoutes with multiple algebras - Strict version
 
-```tut:book:silent
+```scala
 class CoUserRoutesMTL[F[_]: CoHttpErrorHandler[?[_], CustomError]: Sync](
     users: UserAlg[F, UserError],
     catalog: CatalogAlg[F, CatalogError]

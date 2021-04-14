@@ -30,7 +30,7 @@ it some simple questions.
 
 ## One value with class, many variables with type
 
-```tut:silent
+```scala
 val greeting: String = "hi there!"
 ```
 
@@ -64,8 +64,9 @@ res3: (String, java.io.Serializable, CharSequence,
 
 So we have exhausted the classes, but aren’t quite done with types.
 
-```tut
-greeting: greeting.type
+```scala
+scala> greeting: greeting.type
+res0: greeting.type = hi there!
 ```
 
 `greeting.type` is not like the other five types we just tested. It is
@@ -86,8 +87,9 @@ Fine, we can accept that object identity is represented at the type
 level without our universe imploding, by inventing the theory that
 this is about object identity; hold on, though:
 
-```tut
-val salutation = greeting
+```scala
+scala> val salutation = greeting
+salutation: String = hi there!
 ```
 
 Fine, `salutation` is just another name for `greeting`, right?
@@ -276,7 +278,7 @@ phenomenon, though.
 Suppose we’d like to wait a while to compute our greeting. We can
 define a type-and-class to represent that conveniently.
 
-```tut:silent
+```scala
 // like Coyoneda Id, if that helps
 sealed abstract class Later[A] {
   type I
@@ -307,8 +309,11 @@ How many types?
 
 The first difference is that `greeting3.I` is not `Int`.
 
-```tut:fail
-implicitly[greeting3.I =:= Int]
+```scala
+scala> implicitly[greeting3.I =:= Int]
+<console>:14: error: Cannot prove that greeting3.I =:= Int.
+       implicitly[greeting3.I =:= Int]
+                 ^
 ```
 
 They are unrelated for much the same reason as `G` was unrelated to
@@ -365,7 +370,7 @@ immutable `val`. Why is this enough to throw a wrench in the works?
 
 Suppose you had another _value_ of the `Later[String]` type.
 
-```tut:silent
+```scala
 val bhello = later("olleh")(_.reverse)
 ```
 
@@ -479,7 +484,7 @@ will make a value of class `Blob`, we assign it the type `Blob` too.
 There’s a common way to throw away type information in Scala,
 especially popular in object-oriented style.
 
-```tut:silent
+```scala
 val absGreeting: CharSequence = greeting
 ```
 
@@ -606,8 +611,11 @@ When you are creating a value, you must ultimately be concrete about
 its class, at the bottom of all the abstractions and indirections used
 to hide this potentially messy detail.
 
-```tut:fail
-def pickGreeting4[G]: G = new G
+```scala
+scala> def pickGreeting4[G]: G = new G
+<console>:12: error: class type required but G found
+       def pickGreeting4[G]: G = new G
+                                     ^
 ```
 
 You’ll have to do something else here, like take an argument
@@ -636,8 +644,11 @@ not change this restriction. When you add a `ClassTag` or `TypeTag`
 context bound, you also prevent that type parameter from working with
 most types.
 
-```tut:fail
-implicitly[reflect.ClassTag[greeting3.I]]
+```scala
+scala> implicitly[reflect.ClassTag[greeting3.I]]
+<console>:14: error: No ClassTag available for greeting3.I
+       implicitly[reflect.ClassTag[greeting3.I]]
+                 ^
 ```
 
 As such, judicious use of `ClassTag` is not a great solution to

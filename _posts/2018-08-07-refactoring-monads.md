@@ -14,29 +14,8 @@ tut:
     - org.typelevel::cats-core:1.2.0
 ---
 
-```tut:invisible
-import cats.MonadError
 
-import scala.util.Try
 
-case class Sql(s: String) extends AnyVal
-
-class Row {
-  def apply[A](k: String): A = ???
-}
-
-object DB {
-
-  def unsafeQueryUnique(q: Sql): Try[Row] = ???
-
-  def queryUnique[F[_]](q: Sql)(implicit me: MonadError[F, Throwable]): F[Row] = ???
-
-}
-
-implicit class SqlHelper(private val sc: StringContext) extends AnyVal {
-  def sql(args: Any*): Sql = Sql(args.mkString)
-}
-```
 
 I was recently cleaning up some Scala code I'd written a few months
 ago when I realized I had been structuring code in a very confusing
@@ -89,7 +68,7 @@ Here's a simple table
 
 We can define a simple domain model:
 
-```tut:silent
+```scala
 sealed trait Format
 case object Print extends Format
 case object Digital extends Format
@@ -139,7 +118,7 @@ def findBookById(id: Int): Try[Book] = ???
 ### Monolithic function
 One trivial definition of `findBookById` might be:
 
-```tut:silent
+```scala
 import scala.util.{Failure, Success, Try}
 
 def findBookById(id: Int): Try[Book] = {
@@ -188,7 +167,7 @@ functions occasionally have to carry along additional parameters that
 they will ignore except to pass deeper into the call chain. Let's take
 a look at an example refactoring:
 
-```tut:silent
+```scala
 import scala.util.{Failure, Success, Try}
 
 def extractEBook(
@@ -247,7 +226,7 @@ effects that take place in sequence.
 Let's try to factor out smaller functions, each returning `Try`, and
 then use a for-comprehension to specify the sequence of operations:
 
-```tut:silent
+```scala
 import scala.util.{Failure, Success, Try}
 
 def parseDownloadType(o: Option[String], id: Int): Try[DownloadType] = {
@@ -298,7 +277,7 @@ describing interpreters here).
 
 Here we go:
 
-```tut:silent
+```scala
 import cats.MonadError
 import cats.implicits._
 

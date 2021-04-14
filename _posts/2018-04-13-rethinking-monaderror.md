@@ -75,10 +75,12 @@ Here there is no way the outer `F` still has any errors, so why does it have the
 Shouldn't we represent the fact that we handled all the errors in the type system?
 This means you can't actually observe that the errors are now inside `Either`. That leads to this being fully legal code:
 
-```tut:book
+```scala
 import cats.implicits._
+// import cats.implicits._
 
 Option(42).attempt.attempt.attempt.attempt
+// res0: Option[Either[Unit,Either[Unit,Either[Unit,Either[Unit,Int]]]]] = Some(Right(Right(Right(Right(42)))))
 ```
 
 Another example that demonstrates this is the fact that calling `handleError`, which looks like this:

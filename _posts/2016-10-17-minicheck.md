@@ -32,7 +32,7 @@ I hope that by clearing up some of the concepts it will become easier to read th
 
 The basic point of a property testing library is providing an interface looking roughly like this:
 
-```tut:book:silent
+```scala
 class Prop {
   def check(): Unit = ???
 }
@@ -44,7 +44,7 @@ object Prop {
 
 Now, you can use that in your test code:
 
-```tut:book:fail:silent
+```scala
 Prop.forAll { (x: Int) =>
   x == x
 }
@@ -91,7 +91,7 @@ To understand the design space here, let's focus on the smallest building block:
 There are two possible ways to model this.
 The _mutable_ way is what Java, Scala and many other languages offer in their libraries:
 
-```tut:book:silent
+```scala
 trait Random {
   def nextInt(min: Int, max: Int): Int
   def nextFloat(): Float
@@ -103,7 +103,7 @@ By looking at the types alone, we can already see that two subsequent calls of `
 
 The _pure_ way is to make the internal state (also known as “seed” in the context of random generators) explicit:
 
-```tut:book:silent:reset
+```scala
 trait Seed {
   def nextInt(min: Int, max: Int): (Int, Seed)
   def nextFloat: (Float, Seed)
@@ -117,7 +117,7 @@ object Seed {
 
 Because this is difficult to actually use (don't mix up the `Seed` instances and use them twice!), one would wrap this into a state monad:
 
-```tut:book:silent
+```scala
 class Random[A](private val op: Seed => (A, Seed)) { self =>
   def run(): A = op(Seed.init())._1
 
@@ -144,11 +144,12 @@ object Random {
 
 Now we can use Scala's `for` comprehensions:
 
-```tut:book
+```scala
 for {
   x <- Random.int(-5, 5)
   y <- Random.int(-3, 3)
 } yield (x, y)
+// res2: Random[(Int, Int)] = <random>
 ```
 
 The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
@@ -219,7 +220,7 @@ Earlier, we've only seen random integer and floating-point numbers, but of cours
 It is convenient to abstract over this and specify the concept of a _generator_ for type `A`.
 The idea is to make a generator for a type as “general” as possible and then provide combinators to compose them.
 
-```tut:book:silent:reset
+```scala
 import scala.util.Random
 
 trait Gen[T] {
@@ -236,7 +237,7 @@ object Gen {
 
 An obvious combinator is a generator for tuples:
 
-```tut:book:silent
+```scala
 def zip[T, U](genT: Gen[T], genU: Gen[U]): Gen[(T, U)] = new Gen[(T, U)] {
   def generate(rnd: Random): (T, U) =
     (genT.generate(rnd), genU.generate(rnd))
@@ -255,7 +256,7 @@ But we'd like to do better here:
 
 Here's how we can do that:
 
-```tut:book:silent:reset
+```scala
 import scala.util.Random
 
 trait Gen[T] {
@@ -285,7 +286,7 @@ object Gen {
 
 We can now check this (note that for the purpose of this post we'll be using fixed seeds):
 
-```tut:book:silent
+```scala
 def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
   val rnd = new Random(0)
   for (i <- 0 until size)
@@ -293,11 +294,40 @@ def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
 }
 ```
 
-```tut
-printSample(Gen.int, 10)
-printSample(Gen.int, 3)
-printSample(Gen.list(Gen.int), 10)
-printSample(Gen.list(Gen.int), 3)
+```scala
+scala> printSample(Gen.int, 10)
+2
+6
+-6
+-8
+1
+4
+-8
+5
+-4
+-8
+
+scala> printSample(Gen.int, 3)
+2
+-1
+1
+
+scala> printSample(Gen.list(Gen.int), 10)
+List()
+List(-6, -8, 1, 4, -8, 5)
+List(-8, -2)
+List(4, 6)
+List(4, 0)
+List(10, 4, -9, -7, 7)
+List(-8, 6, -4, 9, -1, 10, 4, 7, -8)
+List(1, 7, -7, 4, 0, 5, 4, 9, 7, 4)
+List(5, 9, -3, 3, -10)
+List()
+
+scala> printSample(Gen.list(Gen.int), 3)
+List(-1, 1)
+List(1, -3)
+List(-2, 3)
 ```
 
 That's already pretty cool.
@@ -312,7 +342,7 @@ For example, the value `List(1, 2)` has size $2$ in our framework (length of the
 Of course, our design decision might mean that stuff grows too fast.
 The explicit size parameter can be used to alleviate that, especially for writing recursive generators:
 
-```tut:book
+```scala
 def recList[T](genT: Gen[T]): Gen[List[T]] = new Gen[List[T]] {
   // extremely stupid implementation, don't use it
   def generate(size: Int, rnd: Random): List[T] =
@@ -321,13 +351,24 @@ def recList[T](genT: Gen[T]): Gen[List[T]] = new Gen[List[T]] {
     else
       Nil
 }
+// recList: [T](genT: Gen[T])Gen[List[T]]
 
 printSample(recList(Gen.int), 10)
+// List()
+// List(-6, 1, -6)
+// List(-8, 8, 4, 7, 0, 5, -4)
+// List(-8)
+// List(9, -3, 4)
+// List(1, 3, -7, -2, -3, 0, -3, 3)
+// List()
+// List(10, 5, -8, -4, -5, 4, -1)
+// List(-5, 9, 7)
+// List(-8)
 ```
 
 We can also provide a combinator for this:
 
-```tut:book:silent
+```scala
 def resize[T](genT: Gen[T], newSize: Int): Gen[T] = new Gen[T] {
   def generate(size: Int, rnd: Random): T =
     genT.generate(newSize, rnd)
@@ -342,7 +383,7 @@ Some readers might be reminded that this is just the reader monad and its `local
 In order to make these generators nicely composable, we can leverage `for` comprehensions.
 We just need to implement `map`, `flatMap` and `withFilter`:
 
-```tut:book:silent:reset
+```scala
 import scala.util.Random
 
 trait Gen[T] { self =>
@@ -399,16 +440,12 @@ object Gen {
 
 Look how simple composition is now:
 
-```tut:invisible
-def printSample[T](genT: Gen[T], size: Int, count: Int = 10): Unit = {
-  val rnd = new Random(0)
-  for (i <- 0 until size)
-    println(genT.generate(size, rnd))
-}
-```
 
-```tut:book
+
+
+```scala
 case class Frac(numerator: Int, denominator: Int)
+// defined class Frac
 
 val fracGen: Gen[Frac] =
   for {
@@ -416,8 +453,19 @@ val fracGen: Gen[Frac] =
     den <- Gen.int
     if den != 0
   } yield Frac(num, den)
+// fracGen: Gen[Frac] = <gen>
 
 printSample(fracGen, 10)
+// Frac(2,6)
+// Frac(-6,-8)
+// Frac(1,4)
+// Frac(-8,5)
+// Frac(-4,-8)
+// Frac(-2,-8)
+// Frac(4,6)
+// Frac(1,4)
+// Frac(0,-10)
+// Frac(10,4)
 ```
 
 And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
@@ -443,7 +491,7 @@ Both QuickCheck and ScalaCheck introduce a thin layer atop generators, called `A
 This is just a type class which contains a generator, nothing more.
 Here's how it would look like in Scala:
 
-```tut:book:silent
+```scala
 trait Arbitrary[T] {
   def gen: Gen[T]
 }
@@ -484,7 +532,7 @@ But one of the main features of any property testing library is that it will ret
 Hence, we need to store this counterexample in the failure case.
 In practice, the result type would be much richer, with attached labels, reasons, expectations, counters, ... and more diagnostic fields.
 
-```tut:book:silent
+```scala
 sealed trait Result
 case object Success extends Result
 final case class Failure(counterexample: List[String]) extends Result
@@ -506,7 +554,7 @@ We could do even more fancy things here if we wanted to, but let's keep it simpl
 
 Now we define the `Prop` type:
 
-```tut:book:silent
+```scala
 trait Prop {
   def run(size: Int, rnd: Random): Result
 
@@ -519,7 +567,7 @@ Sure, we could implement the trait manually in our tests, but that would be tedi
 Type classes to the rescue!
 We call something _testable_ if it can be converted to a `Prop`:
 
-```tut:book:silent
+```scala
 trait Testable[T] {
   def asProp(t: T): Prop
 }
@@ -547,7 +595,7 @@ trait Testable[T] {
 
 Now we're all set:
 
-```tut:book:silent
+```scala
 def forAll[I, O](prop: I => O)(implicit arbI: Arbitrary[I], testO: Testable[O]): Prop =
   new Prop {
     def run(size: Int, rnd: Random): Result = {
@@ -582,11 +630,12 @@ Let's unpack this step by step.
 
 At this point we should look at an example.
 
-```tut:book
+```scala
 val propReflexivity =
   forAll { (x: Int) =>
     x == x
   }
+// propReflexivity: Prop = <prop>
 ```
 
 Cool, but how do we run this?
@@ -596,7 +645,7 @@ All these evaluations will produce a `Result`.
 Hence, we need to merge those together into a single result.
 We'll also define a convenient function that runs a property multiple times on different sizes:
 
-```tut:book:silent
+```scala
 def merge(rs: List[Result]): Result =
   rs.foldLeft(Success: Result) {
     case (Failure(cs), _) => Failure(cs)
@@ -632,16 +681,18 @@ What is happening here?
 
 Let's check our property!
 
-```tut
-check(propReflexivity)
+```scala
+scala> check(propReflexivity)
+✓ Property successfully checked
 ```
 
 ... and how about something wrong?
 
-```tut
-check(forAll { (x: Int) =>
-  x > x
-})
+```scala
+scala> check(forAll { (x: Int) =>
+     |   x > x
+     | })
+✗ Property failed with counterexample: (0)
 ```
 
 ## Some more sugar
@@ -651,7 +702,7 @@ The only tedious thing that remains is that we have to use the `forAll` combinat
 It would be great if we could just use `check` and pass it a function.
 But since we've used type classes for everything, we're in luck!
 
-```tut:book:silent
+```scala
 implicit def funTestable[I : Arbitrary, O : Testable]: Testable[I => O] = new Testable[I => O] {
   def asProp(f: I => O): Prop =
     // wait for it ...
@@ -664,27 +715,31 @@ implicit def funTestable[I : Arbitrary, O : Testable]: Testable[I => O] = new Te
 
 Now we can check our functions even easier!
 
-```tut
-check { (x: Int) =>
-  x == x
-}
+```scala
+scala> check { (x: Int) =>
+     |   x == x
+     | }
+✓ Property successfully checked
 
-check { (x: Int) =>
-  x > x
-}
+scala> check { (x: Int) =>
+     |   x > x
+     | }
+✗ Property failed with counterexample: (0)
 
-check { (x: Int) => (y: Int) =>
-  x + y == y + x
-}
+scala> check { (x: Int) => (y: Int) =>
+     |   x + y == y + x
+     | }
+✓ Property successfully checked
 
-check { (x: Int) => (y: Int) =>
-  x + y == x * y
-}
+scala> check { (x: Int) => (y: Int) =>
+     |   x + y == x * y
+     | }
+✗ Property failed with counterexample: (0, 1)
 ```
 
 Now, if you look closely, you can basically get rid of the `Prop` class and define it as
 
-```tut:book:silent
+```scala
 type Prop = Gen[Result]
 ```
 

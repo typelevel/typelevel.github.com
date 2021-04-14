@@ -41,7 +41,7 @@ Just like with numeric types the laws of `Semiring` state that multiplication ha
 There are different ways to encode this as type classes and different libraries handle this differently, but let's look at how the [algebra](https://typelevel.org/algebra/) project handles this.
 Specifically, it defines a separate `AdditiveSemigroup` and `MultiplicativeSemigroup` and goes from there.
 
-```tut:silent
+```scala
 import simulacrum._
 
 @typeclass trait AdditiveSemigroup[A] {
@@ -72,7 +72,7 @@ A `Semiring` is then just an `AdditiveMonoid` coupled with a `MultiplicativeMono
 
 To define it as a type class, we simply extend from both additive and multiplicative monoid:
 
-```tut:silent
+```scala
 @typeclass trait Semiring[A] extends MultiplicativeMonoid[A] with AdditiveMonoid[A]
 ```
 
@@ -100,7 +100,7 @@ Well a couple of easy ones are `Unit`, which has exactly one value it can take a
 That's neat, maybe we can encode this in actual code.
 We could create a type class that should be able to give us the number of inhabitants for any type we give it:
 
-```tut:silent
+```scala
 trait Cardinality[A] {
   def cardinality: BigInt
 }
@@ -115,7 +115,7 @@ object Cardinality {
 Awesome!
 Now let's try to define some instances for this type class:
 
-```tut:silent
+```scala
 implicit def booleanCardinality = new Cardinality[Boolean] {
   def cardinality: BigInt = BigInt(2)
 }
@@ -147,12 +147,15 @@ implicit def nothingCardinality = new Cardinality[Nothing] {
 
 Alright, this is cool, let's try it out in the REPL!
 
-```tut
-Cardinality.of[Int]
+```scala
+scala> Cardinality.of[Int]
+res11: BigInt = 4294967296
 
-Cardinality.of[Unit]
+scala> Cardinality.of[Unit]
+res12: BigInt = 1
 
-Cardinality.of[Long]
+scala> Cardinality.of[Long]
+res13: BigInt = 18446744073709551616
 ```
 
 Cool, but this is all very simple, what about things like ADTs?
@@ -171,7 +174,7 @@ Hmmm....
 If you try this with other examples, you'll see that it's exactly true, awesome!
 Let's encode that fact in a type class instance:
 
-```tut:silent
+```scala
 implicit def tupleCardinality[A: Cardinality, B: Cardinality] =
   new Cardinality[(A, B)] {
     def cardinality: BigInt = Cardinality[A].cardinality * Cardinality[B].cardinality
@@ -184,19 +187,22 @@ So `Either[Boolean, Byte]` should have `2 + 256 = 258` number of inhabitants. Co
 
 Let's also code that up and try and confirm what we learned in the REPL:
 
-```tut:silent
+```scala
 implicit def eitherCardinality[A: Cardinality, B: Cardinality] =
   new Cardinality[Either[A, B]] {
     def cardinality: BigInt = Cardinality[A].cardinality + Cardinality[B].cardinality
   }
 ```
 
-```tut
-Cardinality.of[(Boolean, Byte)]
+```scala
+scala> Cardinality.of[(Boolean, Byte)]
+res14: BigInt = 512
 
-Cardinality.of[Either[Boolean, Byte]]
+scala> Cardinality.of[Either[Boolean, Byte]]
+res15: BigInt = 258
 
-Cardinality.of[Either[Int, (Boolean, Unit)]]
+scala> Cardinality.of[Either[Int, (Boolean, Unit)]]
+res16: BigInt = 4294967298
 ```
 
 So using sum types seem to add the number of inhabitants whereas product types seem to multiply the number of inhabitants.
@@ -225,12 +231,15 @@ If `Unit` is `one` then a product type of any type with `Unit` should be equival
 
 Turns out, it is, we can easily go from something like `(Int, Unit)` to `Int` and back without losing anything and the number of inhabitants also stay exactly the same.
 
-```tut
-Cardinality.of[Int]
+```scala
+scala> Cardinality.of[Int]
+res17: BigInt = 4294967296
 
-Cardinality.of[(Unit, Int)]
+scala> Cardinality.of[(Unit, Int)]
+res18: BigInt = 4294967296
 
-Cardinality.of[(Unit, (Unit, Int))]
+scala> Cardinality.of[(Unit, (Unit, Int))]
+res19: BigInt = 4294967296
 ```
 
 Okay, not bad, but how about `Nothing`?
@@ -267,11 +276,12 @@ The only thing left now is distributivity.
 In type form this means that `(A, Either[B, C])` should be equal to `Either[(A, B), (A, C)]`.
 If we think about it, these two types should also be exactly equivalent, woohoo!
 
-```tut
+```scala
+scala> Cardinality.of[(Boolean, Either[Byte, Short])]
+res20: BigInt = 131584
 
-Cardinality.of[(Boolean, Either[Byte, Short])]
-
-Cardinality.of[Either[(Boolean, Byte), (Boolean, Short)]]
+scala> Cardinality.of[Either[(Boolean, Byte), (Boolean, Short)]]
+res21: BigInt = 131584
 ```
 
 ## Higher kinded algebraic structures
@@ -294,7 +304,7 @@ So far so good, but the name `product` seems a bit weird.
 It makes sense given we combine the `A` and the `B` in a tuple, which is a product type, but if we're using products, maybe this isn't a generic `Semigroupal` but actually a multiplicative one? 
 Let's fix this and rename it!
 
-```tut:silent
+```scala
 @typeclass trait MultiplicativeSemigroupal[F[_]] {
   def product[A, B](fa: F[A], fb: F[B]): F[(A, B)]
 }
@@ -303,7 +313,7 @@ Let's fix this and rename it!
 Next, let us have a look at what an additive `Semigroupal` might look like.
 Surely, the only thing we'd have to change is going from a product type to a sum type:
 
-```tut:silent
+```scala
 @typeclass trait AdditiveSemigroupal[F[_]] {
   def sum[A, B](fa: F[A], fb: F[B]): F[Either[A, B]]
 }
@@ -312,7 +322,7 @@ Surely, the only thing we'd have to change is going from a product type to a sum
 Pretty interesting so far, can we top this and add identities to make `Monoidal`s?
 Surely we can! For addition this should again be `Nothing` and `Unit` for multiplication:
 
-```tut:silent
+```scala
 @typeclass trait AdditiveMonoidal[F[_]] extends AdditiveSemigroupal[F] {
   def nothing: F[Nothing]
 }
@@ -390,7 +400,7 @@ So in cats right now we have `<+>` and `<*>`, is there also a type class that co
 There is, it is called `Alternative`, it extends `Applicative` and `MonoidK` and if we were super consistent we'd call it a `Semiringal`:
 
 
-```tut:silent
+```scala
 @typeclass 
 trait Semiringal[F[_]] extends MultiplicativeMonoidal[F] with AdditiveMonoidal[F]
 ```

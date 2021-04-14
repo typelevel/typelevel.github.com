@@ -61,7 +61,7 @@ There is an analogy in programming where:
 
 The [type classes provided by Cats](https://typelevel.org/cats/typeclasses.html) follow exactly this pattern. Cats provides representations of many algebraic structures, one of which is `Group[A]`. It is defined by a *type* `A` and an *operator* `combine`:
 
-```tut:silent
+```scala
 trait Group[A] {
   def empty: A
   def combine(x: A, y: A): A
@@ -73,14 +73,14 @@ trait Group[A] {
 
 E.g. for all objects `x`, `y`, `z` of type `A`, the ([associative property](https://github.com/typelevel/cats/blob/master/kernel-laws/src/main/scala/cats/kernel/laws/SemigroupLaws.scala#L8)) must hold:
 
-```tut:fail:silent
+```scala
 def semigroupAssociative(x: A, y: A, z: A): IsEq[A] =
   S.combine(S.combine(x, y), z) <-> S.combine(x, S.combine(y, z))
 ```
 
 We can create a concrete instance of `Group[A]`, e.g. according to $(\mathbb{Z}, +)$:
 
-```tut:silent
+```scala
 import cats.Group
 
 implicit val group: Group[Int] = new Group[Int] {
@@ -173,19 +173,20 @@ That's all we need to know so let's implement this in a purely functional way us
 
 First we define a type that represents the game state:
 
-```tut:reset:book
+```scala
 final case class GameState[Move, BoardPosition, Score](
     playedMoves: List[Move],
     score: Score,
     position: BoardPosition,
 )
+// defined class GameState
 ```
 
 `GameState` consists of `playedMoves` (the list of moves that have been played), `score` (the current score), and `position` (the current board position).
 
 With `GameState` we can now express a game algebra like this:
 
-```tut:book
+```scala
 trait Game[F[_], Move, BoardPosition, Score] {
   type GS = GameState[Move, BoardPosition, Score]
 
@@ -193,6 +194,7 @@ trait Game[F[_], Move, BoardPosition, Score] {
   def legalMoves(gameState: GS): List[Move]
   def simulation(gameState: GS): F[GS]
 }
+// defined trait Game
 ```
 
 The type alias `GS` only serves better readability.
@@ -216,7 +218,7 @@ For the sake of brevity let's consider only two properties:
 
 These rules are expressed as predicates inside the companion object of `Game` like this:
 
-```tut:silent
+```scala
 object Game {
   // let's follow the naming convention used by Cats and call this 'laws'
   object laws {
@@ -252,7 +254,7 @@ The `Game` properties are expressed solely in terms of the `Game` algebra. We ha
 
 Before we do this, we will define another algebra that describes logging, simply for convenience. Especially during long running searches it is useful to be able to output intermediate results and search states:
 
-```tut:silent
+```scala
 import cats.Show
 
 trait Logger[F[_]] {
@@ -266,9 +268,12 @@ object Logger {
 
 With the two algebras `Game` and `Logger` we can now implement the nested Monte Carlo tree search.
 
-```tut:book
+```scala
 import cats.Monad
+// import cats.Monad
+
 import cats.implicits._
+// import cats.implicits._
 
 def nestedSearch[F[_]: Monad: Logger, Move, Position, Score](
     numLevels: Int,
@@ -300,6 +305,7 @@ def nestedSearch[F[_]: Monad: Logger, Move, Position, Score](
         }
   } yield result
 }
+// nestedSearch: [F[_], Move, Position, Score](numLevels: Int, level: Int, gameState: GameState[Move,Position,Score])(implicit evidence$1: cats.Monad[F], implicit evidence$2: Logger[F], implicit g: Game[F,Move,Position,Score], implicit ord: Ordering[Score], implicit show: cats.Show[GameState[Move,Position,Score]])F[GameState[Move,Position,Score]]
 ```
 
 This program describes the nested Monte Carlo tree search algorithm from above. The biggest difference is that this description is statically type checked by the Scala compiler. The effect of mutating the game state is modelled in a purely functional way with recursion. In fact, the state modifications could be modelled with the State Monad as well, but this makes things a bit more complicated especially when we try to parallelize the search.
@@ -310,258 +316,19 @@ Moreover, the `nestedSearch` function implies additional constraints for `Score`
 
 ## The Game interpreter
 
-```tut:invisible
 
-object SameGame {
-  final case class Position(col: Int, row: Int)
 
-  sealed trait Color
-  case object Green extends Color
-  case object Blue  extends Color
-  case object Red   extends Color
-  case object Brown extends Color
-  case object Gray  extends Color
-
-  sealed trait CellState
-  final case class Filled(color: Color) extends CellState
-  case object Empty                     extends CellState
-
-  final case class Cell(position: Position, state: CellState)
-  final case class Group(color: Color, positions: Set[Position])
-  final case class Column(cells: List[CellState]) extends AnyVal
-  final case class Board(columns: List[Column])   extends AnyVal
-
-  sealed trait SameGameState
-  final case class InProgress(board: Board, score: Int) extends SameGameState
-  final case class Finished(board: Board, score: Int)   extends SameGameState
-
-  object Color {
-    def apply(n: Int): Color = {
-      n % 5 match {
-        case 0 => Green
-        case 1 => Blue
-        case 2 => Red
-        case 3 => Brown
-        case 4 => Gray
-      }
-    }
-  }
-
-  object Position {
-    def left(pos: Position): Position = {
-      Position(pos.col - 1, pos.row)
-    }
-
-    def right(pos: Position): Position = {
-      Position(pos.col + 1, pos.row)
-    }
-
-    def up(pos: Position): Position = {
-      Position(pos.col, pos.row + 1)
-    }
-
-    def down(pos: Position): Position = {
-      Position(pos.col, pos.row - 1)
-    }
-  }
-
-  object Column {
-    implicit class CellMapper(column: Column) {
-      def map(f: (CellState, Int) => CellState): Column = {
-        Column(column.cells.zipWithIndex.map { case (cs, i) => f(cs, i) })
-      }
-
-      def shiftDown: Column = {
-        val nonEmptyCells = column.cells
-          .filter(!CellState.isEmpty(_))
-
-        val diff = column.cells.length - nonEmptyCells.length
-
-        Column(nonEmptyCells ++ List.fill(diff)(Empty))
-      }
-    }
-
-    def empty(height: Int): Column = Column((1 to height).map(_ => Empty).toList)
-  }
-
-  object CellState {
-    def isEmpty(cellState: CellState): Boolean = {
-      cellState match {
-        case Empty => true
-        case _     => false
-      }
-    }
-  }
-
-  object Board {
-    implicit class ColumnMapper(board: Board) {
-      def map(f: (Column, Int) => Column): Board = {
-        Board(board.columns.zipWithIndex.map { case (c, i) => f(c, i) })
-      }
-
-      def shiftLeft: Board = {
-        val nonEmptyColumns = board.columns
-          .filter(column => !CellState.isEmpty(column.cells.head))
-
-        val diff   = board.columns.length - nonEmptyColumns.length
-        val height = board.columns.head.cells.length
-        Board(nonEmptyColumns ++ List.fill(diff)(Column.empty(height)))
-      }
-    }
-  }
-
-  private val bonus = 1000
-
-  private def sqr(x: Int): Int = x * x
-
-  private def calcScore(group: Group): Int = sqr(group.positions.size - 2)
-
-  private def penalty(numberOfFilledCells: Int): Int = -sqr(numberOfFilledCells - 2)
-
-  private def getCellState(board: Board, position: Position): CellState = {
-    val width  = board.columns.length
-    val height = board.columns.head.cells.length
-    if (position.col >= 0 && position.col < width && position.row >= 0 && position.row < height) {
-      board.columns(position.col).cells(position.row)
-    } else {
-      Empty
-    }
-  }
-
-  private def findAdjacentWithSameColor(board: Board, position: Position): Set[Position] = {
-    getCellState(board, position) match {
-      case Filled(color) =>
-        Set(
-          Position.up(position),
-          Position.right(position),
-          Position.down(position),
-          Position.left(position)
-        ).map(p => (getCellState(board, p), p))
-          .filter {
-            case (Filled(c), _) => c == color
-            case _              => false
-          }
-          .map(_._2)
-
-      case Empty => Set()
-    }
-  }
-
-  private def hasValidMoves(board: Board): Boolean = {
-    board.columns.zipWithIndex
-      .exists {
-        case (column, colIndex) =>
-          column.cells.zipWithIndex
-            .exists {
-              case (_, rowIndex) =>
-                findAdjacentWithSameColor(board, Position(colIndex, rowIndex)).nonEmpty
-            }
-      }
-  }
-
-  private def filledCells(board: Board): Int = {
-    board.columns
-      .foldLeft(0)((total, column) =>
-        column.cells.foldLeft(total)((count, cell) =>
-          cell match {
-            case Filled(_) => count + 1
-            case Empty     => count
-        }))
-  }
-
-  private def findGroup(board: Board, position: Position): Option[Group] = {
-    def find(toSearch: Set[Position], group: Set[Position]): Set[Position] = 
-      toSearch.headOption.fold(group) { head =>
-        val cellsWithSameColor = findAdjacentWithSameColor(board, head)
-        val cellsFoundSoFar    = group + head
-        val stillToSearch      = (cellsWithSameColor ++ toSearch.tail) -- cellsFoundSoFar
-        find(stillToSearch, cellsFoundSoFar)
-      }
-
-    getCellState(board, position) match {
-      case Filled(color) =>
-        val positions = find(Set(position), Set.empty)
-        if (positions.size > 1) {
-          Some(Group(color, positions))
-        } else {
-          None
-        }
-      case _ => None
-    }
-  }
-
-  private def removeGroup(board: Board, group: Group): Board = {
-    board.map {
-      case (column, colIndex) =>
-        column.map {
-          case (cell, rowIndex) =>
-            if (group.positions.contains(Position(colIndex, rowIndex))) {
-              Empty
-            } else {
-              cell
-            }
-        }.shiftDown
-    }.shiftLeft
-  }
-
-  private def play(board: Board, position: Position): Option[(Board, Int)] = {
-    findGroup(board, position)
-      .map(g => (removeGroup(board, g), calcScore(g)))
-  }
-
-  def evaluateGameState(board: Board, score: Int): SameGameState = {
-    def isEmpty(board: Board): Boolean = filledCells(board) == 0
-
-    if (hasValidMoves(board)) {
-      InProgress(board, score)
-    } else if (isEmpty(board)) {
-      Finished(board, score + bonus)
-    } else {
-      Finished(board, score + penalty(filledCells(board)))
-    }
-  }
-
-  def applyMove(position: Position, game: SameGameState): SameGameState =
-    game match {
-      case InProgress(board, score) =>
-        play(board, position)
-          .map { case (b, s) => evaluateGameState(b, s + score) }
-          .getOrElse(game)
-      case Finished(_, _) => game
-    }
-
-  def legalMoves(game: SameGameState): List[Position] =
-    game match {
-      case InProgress(board, _) =>
-        board.columns.zipWithIndex
-          .flatMap {
-            case (col, colIndex) =>
-              col.cells.zipWithIndex.map { case (_, rowIndex) => Position(colIndex, rowIndex) }
-          }
-          .flatMap(pos => findGroup(board, pos).toList)
-          .distinct
-          .flatMap(g => g.positions.headOption.toList)
-      case Finished(_, _) => Nil
-    }
-
-  def score(game: SameGameState): Int =
-    game match {
-      case InProgress(_, score) => score
-      case Finished(_, score)   => score
-    }
-
-  def apply(board: List[List[Int]]): SameGameState =
-    SameGame.evaluateGameState(Board(board.map(c => Column(c.map(s => Filled(Color(s)))))), 0)
-}
-```
 
 The game logic itself is defined in the object `SameGame` which is not shown here for the sake of brevity. You can find the implementation in [this Gist](https://gist.github.com/battermann/24d3318ec0cc3de84bfc7e696284aa60).
 
 With `SameGame` we are able write to an interpreter for `Game` that implements the SameGame rules. For the type constructor `F[_]` we will choose `IO`, so that we can model the side effect of a random number generator in a referentially transparent way. There are other options, like `State` e.g. that we will not discuss here. The point is that we are free to use whatever effect type serves our needs, as long as the implementation is pure and the properties of the `Game` algebra hold.
 
-```tut:book
+```scala
 import cats.effect.IO
+// import cats.effect.IO
+
 import SameGame._
+// import SameGame._
 
 implicit val game: Game[IO, Position, SameGameState, Int] =
   new Game[IO, Position, SameGameState, Int] {
@@ -586,19 +353,21 @@ implicit val game: Game[IO, Position, SameGameState, Int] =
           .flatMap(simulation)
     }
   }
+// game: Game[cats.effect.IO,SameGame.Position,SameGame.SameGameState,Int] = $anon$1@2fd961b3
 ```
 
 We must not forget to also implement an interpreter for `Logger`:
 
-```tut:book
+```scala
 implicit val logger: Logger[IO] = new Logger[IO] {
   def log[T: Show](t: T): IO[Unit] = IO(println(t.show))
 }
+// logger: Logger[cats.effect.IO] = $anon$1@32e5f76d
 ```
 
 And some `Show` instances to create nicely formatted outputs in a type-safe way:
 
-```tut:silent
+```scala
 implicit val showCell: Show[CellState] = Show.show {
   case Empty         => "-"
   case Filled(Green) => "0"
@@ -638,7 +407,7 @@ implicit val showGameState: Show[GameState[Position, SameGameState, Int]] =
 
 Now that we have defined the interpreter for `Game`, it is time to ensure that `Game` properties are satisfied. We will do this with property-based testing and the library ScalaCheck. ScalaCheck uses a large number of randomly generated test cases to verify that the given properties hold.
 
-```tut:silent
+```scala
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Gen._
 import org.scalatest._
@@ -647,7 +416,7 @@ import org.scalatest.prop.PropertyChecks
 
 To generate test cases, we have to define how to construct the test inputs. ScalaCheck provides numerous combinators that can be composed to create generators for our domain objects. Here are basic implementations of generators for `GameState` and `Postion`:
 
-```tut:silent
+```scala
 def colEmpty(size: Int): List[CellState] = List.fill(size)(Empty)
 
 def colNonEmpty(size: Int): Gen[List[CellState]] =
@@ -679,7 +448,7 @@ def move(boardSize: Int): Gen[Position] =
 
 Implementing the property checks is now straight forward:
 
-```tut:book
+```scala
 class GameTests extends PropSpec with PropertyChecks with Matchers {
   property("simulation is terminal") {
     forAll(gameState(4, 8)) { gs =>
@@ -697,12 +466,16 @@ class GameTests extends PropSpec with PropertyChecks with Matchers {
     }
   }
 }
+// defined class GameTests
 ```
 
 Finally we run our tests. In the Scala REPL this can be done like this:
 
-```tut:book
+```scala
 run(new GameTests)
+// GameTests:
+// - simulation is terminal
+// - legal move modifies game state
 ```
 
 Of course, there are additional test strategies that can be employed. In particular, it is useful to test not only the interpreters, but to test the program, too. However, this goes beyond the scope of this post. For more information on testing in the world of functional programming please, refer to the links in the resource section below.
@@ -711,8 +484,9 @@ Of course, there are additional test strategies that can be employed. In particu
 
 With `cats.effect.IOApp` we describe a purely functional program that performs a Monte Carlo tree search for a given initial board position. For demonstration purposes we use a smaller board of size $6 \times 6$ to shorten the search time.
 
-```tut:book
+```scala
 import cats.effect._
+// import cats.effect._
 
 object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
@@ -734,6 +508,7 @@ object Main extends IOApp {
       .as(ExitCode.Success)
   }
 }
+// defined object Main
 ```
 
 When we look at the code we cannot explicitly see that the instances of `Game`, `Logger`, `Ordering`, and `Show` are passed to the `nestedSearch` function as implicit parameters. They have been defined above and can be successfully resolved by the compiler because of the REPL style code, presented here. In a normal Scala application those instances are imported into the scope in the main method - at the entry point of the application.

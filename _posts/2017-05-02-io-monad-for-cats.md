@@ -98,7 +98,7 @@ The notable element here is the use of the `IO.apply` constructor to wrap the `p
 
 For example, here's a program that performs some simple user interaction in the shell:
 
-```tut:silent
+```scala
 import cats.effect.IO
 
 val program = for {
@@ -110,7 +110,7 @@ val program = for {
 
 We could have just as easily written this program in the following way:
 
-```tut:silent
+```scala
 val program = IO {
   println("Welcome to Scala!  What's your name?")
   val name = Console.readLine
@@ -122,7 +122,7 @@ But this gives us less flexibility for composition.  Remember that even though `
 
 As a sidebar that is actually kinda cool, we can implement a `readString` `IO` action that wraps `Console.readLine` *as a `val`!*
 
-```tut:silent
+```scala
 val readString = IO { Console.readLine }
 ```
 
@@ -181,23 +181,25 @@ Specifically, `cats.effect.IO` provides an additional constructor, `async`, whic
 
 Consider the following somewhat-realistic NIO API (translated to Scala):
 
-```tut:book
+```scala
 trait Response[T] {
   def onError(t: Throwable): Unit
   def onSuccess(t: T): Unit
 }
+// defined trait Response
 
 trait Channel {
   def sendBytes(chunk: Array[Byte], handler: Response[Unit]): Unit
   def receiveBytes(handler: Response[Array[Byte]]): Unit
 }
+// defined trait Channel
 ```
 
 This is an asynchronous API.  Neither of the functions `sendBytes` or `receiveBytes` attempt to block on completion.  Instead, they *schedule* their operations via some underlying mechanism.  This interface could be implemented on top of `java.io` (which is a synchronous API) through the use of an internal thread pool, but most NIO implementations are actually going to delegate their scheduling all the way down to the kernel layer, avoiding the consumption of a precious thread while waiting for the underlying IO – which, in the case of network sockets, may be a very long wait indeed!
 
 Wrapping this sort of API in a referentially transparent and uniform fashion is a very important feature of `IO`, *precisely* because of Scala's underlying platform constraints.  Clearly, `sendBytes` and `receiveBytes` both represent side-effects, but they're different than `println` and `readLine` in that they don't produce their results in a sequentially returned value.  Instead, they take a callback, `Response`, which will eventually be notified (likely on some other thread!) when the result is available.  The `IO.async` constructor is designed for precisely these situations:
 
-```tut:book
+```scala
 def send(c: Channel, chunk: Array[Byte]): IO[Unit] = {
   IO async { cb =>
     c.sendBytes(chunk, new Response[Unit] {
@@ -206,6 +208,7 @@ def send(c: Channel, chunk: Array[Byte]): IO[Unit] = {
     })
   }
 }
+// send: (c: Channel, chunk: Array[Byte])cats.effect.IO[Unit]
 
 def receive(c: Channel): IO[Array[Byte]] = {
   IO async { cb =>
@@ -215,6 +218,7 @@ def receive(c: Channel): IO[Array[Byte]] = {
     })
   }
 }
+// receive: (c: Channel)cats.effect.IO[Array[Byte]]
 ```
 
 Obviously, this is a little more daunting than the `println` examples from earlier, but that's mostly the fault of the anonymous inner class syntactic ceremony.  The `IO` interaction is actually quite simple!
@@ -223,7 +227,7 @@ The `async` constructor takes a function which is handed a *callback* (represent
 
 Now remember, `IO` is still a monad, and `IO` values constructed with `async` are perfectly capable of all of the things that "normal", synchronous `IO` values are, which means that you can use these values inside `for`-comprehensions and other conventional composition!  This is incredibly, unbelievably nice in practice, because it takes your complex, nested, callback-driven code and flattens it into simple, easy-to-read sequential composition.  For example:
 
-```tut:silent
+```scala
 val c: Channel = null // pretend this is an actual channel
 
 for {
@@ -253,7 +257,7 @@ We definitely want to run nearly everything on that first pool (which is probabl
 
 The answer is the `shift` function.
 
-```tut:silent
+```scala
 import scala.concurrent._
 implicit val ec = ExecutionContext.global
 
@@ -272,8 +276,9 @@ for {
 
 Another possible application of thread shifting is ensuring that a blocking `IO` action is relocated from the main, CPU-bound thread pool onto one of the pools designated for blocking IO.  An example of this would be any interaction with `java.io`:
 
-```tut:book
+```scala
 import java.io.{BufferedReader, FileReader}
+// import java.io.{BufferedReader, FileReader}
 
 def readLines(name: String): IO[Vector[String]] = IO {
   val reader = new BufferedReader(new FileReader(name))
@@ -291,9 +296,10 @@ def readLines(name: String): IO[Vector[String]] = IO {
 
   back
 }
+// readLines: (name: String)cats.effect.IO[Vector[String]]
 ```
 
-```tut:silent
+```scala
 for {
   _ <- IO { println("Name, pls.") }
   name <- IO { Console.readLine }
@@ -308,7 +314,7 @@ for {
 
 Clearly, `readLines` is blocking the underlying thread while it waits for the disk to return the file contents to us, and for a large file, we might be blocking the thread for quite a long time!  Now if we're treating our thread pools with respect (as described above), then we probably have a pair of `ExecutionContext`(s) sitting around in our code somewhere:
 
-```tut:silent
+```scala
 import java.util.concurrent.Executors
 
 implicit val Main = ExecutionContext.global
@@ -319,7 +325,7 @@ We want to ensure that `readLines` runs on the `BlockingFileIO` pool, while ever
 
 With `shift`!
 
-```tut:silent
+```scala
 for {
   _ <- IO { println("Name, pls.") }
   name <- IO { Console.readLine }
@@ -334,7 +340,7 @@ for {
 
 Now we're definitely in bizarro land.  *Two* calls to `shift`, one after the other?  Let's break this apart:
 
-```tut:silent
+```scala
 readLines("names.txt").shift(BlockingFileIO)
 ```
 
@@ -342,7 +348,7 @@ One of the functions of `shift` is to take the `IO` action it is given and reloc
 
 *Additionally*, the continuation of this work will also be relocated onto the `BlockingFileIO` pool, and that's definitely not what we want.  The evaluation of the `contains` function is definitely CPU-bound, and should be run on the `Main` pool.  So we need to `shift` a second time, but only the *continuation* of the `readLines` action, not `readLines` itself.  As it turns out, we can achieve this just by adding the second `shift` call:
 
-```tut:silent
+```scala
 readLines("names.txt").shift(BlockingFileIO).shift(Main)
 ```
 
@@ -364,9 +370,10 @@ As a sidebar that will be important in a few paragraphs, `IO` also defines a *sa
 
 Another way to look at this is in terms of `unsafeRunAsync`.  You can define `unsafeRunAsync` in terms of `runAsync` and `unsafeRunSync()`:
 
-```tut:book
+```scala
 def unsafeRunAsync[A](ioa: IO[A])(cb: Either[Throwable, A] => Unit): Unit =
   ioa.runAsync(e => IO { cb(e) }).unsafeRunSync()
+// unsafeRunAsync: [A](ioa: cats.effect.IO[A])(cb: Either[Throwable,A] => Unit)Unit
 ```
 
 This isn't the actual definition, but it would be a valid one, and it would run correctly on every platform.
@@ -383,7 +390,7 @@ As mentioned earlier (about 10000 words ago…), the cats-effect project not onl
 
 `Effect` is where everything is brought together.  In addition to being able to suspend synchronous and asynchronous side-effecting code, anything that has an `Effect` instance may also be *asynchronously interpreted* into an `IO`.  The way this is specified is using the `runAsync` function:
 
-```tut:silent
+```scala
 import cats.effect.{Async, LiftIO, Sync}
 
 trait Effect[F[_]] extends Sync[F] with Async[F] with LiftIO[F] {

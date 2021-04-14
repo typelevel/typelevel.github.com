@@ -25,15 +25,17 @@ A question that [repeatedly](https://github.com/typelevel/cats/issues/556) [pops
 
 What does it mean to say that `Option` is covariant? It means that an `Option[B]` is allowed to be treated as an `Option[A]` if `B` is a subtype of `A`. For example:
 
-```tut:silent
+```scala
 abstract class Err(val msg: String)
 final case class NotFound(id: Long) extends Err(s"Not found: $id")
 ```
 
-```tut:book
+```scala
 val optionNotFound: Option[NotFound] = Some(NotFound(42L))
+// optionNotFound: Option[NotFound] = Some(NotFound(42))
 
 optionNotFound: Option[Err]
+// res0: Option[Err] = Some(NotFound(42))
 ```
 
 Great. If you want to treat your `Option[NotFound]` as an `Option[Err]`, you are free to.
@@ -42,17 +44,25 @@ This is made possible because the `Option` type is declared as `sealed abstract 
 
 What happens if we try to do the same with `OptionT`?
 
-```tut:silent
+```scala
 import cats.Eval
 import cats.data.OptionT
 ```
 
-```tut:book
+```scala
 val optionTNotFound: OptionT[Eval, NotFound] = OptionT(Eval.now(optionNotFound))
+// optionTNotFound: cats.data.OptionT[cats.Eval,NotFound] = OptionT(Now(Some(NotFound(42))))
 ```
 
-```tut:book:fail
+```scala
 optionTNotFound: OptionT[Eval, Err]
+// <console>:17: error: type mismatch;
+//  found   : cats.data.OptionT[cats.Eval,NotFound]
+//  required: cats.data.OptionT[cats.Eval,Err]
+// Note: NotFound <: Err, but class OptionT is invariant in type A.
+// You may wish to define A as +A instead. (SLS 4.5)
+//        optionTNotFound: OptionT[Eval, Err]
+//        ^
 ```
 
 The compiler complains that an `OptionT[Eval, NotFound]` is _not_ an `OptionT[Eval, Err]`, but it also suggests that we may be able to fix this by using `+A` like is done with `Option`.
@@ -65,27 +75,32 @@ final case class OptionT[F[_], A](value: F[Option[A]])
 
 Let's try to make the suggested change with an experimental `MyOptionT` structure:
 
-```tut:book:fail
+```scala
 final case class MyOptionT[F[_], +A](value: F[Option[A]])
+// <console>:14: error: covariant type A occurs in invariant position in type => F[Option[A]] of value value
+//        final case class MyOptionT[F[_], +A](value: F[Option[A]])
+//                                             ^
 ```
 
 Now it's complaining that `A` is a covariant type but shows up in an invariant position. We'll discuss more about what this means later in the post, but for now let's just try declaring `F` as covariant:
 
-```tut:silent
+```scala
 final case class CovariantOptionT[F[+_], +A](value: F[Option[A]])
 ```
 
-```tut:book
+```scala
 val covOptionTNotFound: CovariantOptionT[Eval, NotFound] = CovariantOptionT(Eval.now(optionNotFound))
+// covOptionTNotFound: CovariantOptionT[cats.Eval,NotFound] = CovariantOptionT(Now(Some(NotFound(42))))
 
 covOptionTNotFound: CovariantOptionT[Eval, Err]
+// res2: CovariantOptionT[cats.Eval,Err] = CovariantOptionT(Now(Some(NotFound(42))))
 ```
 
 Woohoo! Problem solved, right?
 
 Well, not exactly. This works great if `F` is in fact covariant, but what if it's not? For example, the JSON library [circe](https://circe.github.io/circe/) has a `Decoder` type that _could_ be covariant but isn't (at least as of circe 0.10.0). With the invariant `OptionT` in Cats we can do something like this:
 
-```tut:silent
+```scala
 import io.circe.Decoder
 
 def defaultValueDecoder[A](defaultValue: A, optionDecoder: Decoder[Option[A]]): Decoder[A] =
@@ -94,9 +109,14 @@ def defaultValueDecoder[A](defaultValue: A, optionDecoder: Decoder[Option[A]]): 
 
 However, we can't do the same with our `CovariantOptionT`, because we can't even create an `OptionT` where the `F` type isn't covariant:
 
-```tut:book:fail
+```scala
 def wrap[A](optionDecoder: Decoder[Option[A]]): CovariantOptionT[Decoder, A] =
   CovariantOptionT[Decoder, A](optionDecoder)
+// <console>:18: error: kinds of the type arguments (io.circe.Decoder,A) do not conform to the expected kinds of the type parameters (type F,type A).
+// io.circe.Decoder's type parameters do not match type F's expected parameters:
+// type A is invariant, but type _ is declared covariant
+//          CovariantOptionT[Decoder, A](optionDecoder)
+//                          ^
 ```
 
 In this particular case, `Decoder` _could_ be declared as covariant, but it's not. It would be unfortunate to lose the ability to use a monad transformer because a 3rd party library chose not to make a type covariant. And perhaps more importantly, sometimes you might want to use an `OptionT` with an `F` type that fundamentally isn't covariant in nature, such as `Monoid` (which is invariant) or `Order` (which is contravariant in nature and is declared as invariant in its type definition). Later in this post there will be some examples of using `OptionT` with a contravariant functor type (`Eq`) to gain acess to a handy `contramap` operation.
@@ -105,38 +125,44 @@ In this particular case, `Decoder` _could_ be declared as covariant, but it's no
 
 It's completely reasonable to want to be able to take your `OptionT[Eval, NotFound]` and treat it as an `OptionT[Eval, Err]`, and in some cases it may only be typed as `OptionT[Eval, NotFound]` because of type inference picking a more specific type than you intended. Luckily Cats has some handy methods to make this easy:
 
-```tut:silent
+```scala
 import cats.implicits._
 ```
 
-```tut:book
+```scala
 optionTNotFound.widen[Err]
+// res4: cats.data.OptionT[cats.Eval,Err] = OptionT(Now(Some(NotFound(42))))
 ```
 
 The `.widen` method is available for any type that has a `Functor`. If you are working with a type that represents a `Bifunctor`, such as `EitherT`, then you can use `widen` for the type on the right and `leftWiden` for the type on the left:
 
-```tut:silent
+```scala
 import cats.data.EitherT
 ```
 
-```tut:book
+```scala
 val eitherTNotFound: EitherT[Eval, NotFound, Some[Int]] = EitherT.leftT[Eval, Some[Int]](NotFound(42L))
+// eitherTNotFound: cats.data.EitherT[cats.Eval,NotFound,Some[Int]] = EitherT(Now(Left(NotFound(42))))
 
 eitherTNotFound.widen[Option[Int]]
+// res5: cats.data.EitherT[cats.Eval,NotFound,Option[Int]] = EitherT(Now(Left(NotFound(42))))
 
 eitherTNotFound.leftWiden[Err]
+// res6: cats.data.EitherT[cats.Eval,Err,Some[Int]] = EitherT(Now(Left(NotFound(42))))
 ```
 
 Similarly there is a `narrow` method for contravariant functors:
 
-```tut:silent
+```scala
 import cats.Eq
 ```
 
-```tut:book
+```scala
 val optionTEqErr: OptionT[Eq, Err] = OptionT(Eq[Option[String]]).contramap((err: Err) => err.msg)
+// optionTEqErr: cats.data.OptionT[cats.Eq,Err] = OptionT(cats.kernel.Eq$$anon$103@65c9a471)
 
 optionTEqErr.narrow[NotFound]
+// res7: cats.data.OptionT[cats.Eq,NotFound] = OptionT(cats.kernel.Eq$$anon$103@65c9a471)
 ```
 
 # Back to that compile error...
@@ -145,7 +171,7 @@ Let's return to that `covariant type A occurs in invariant position` compile err
 
 Pretend for a minute that the Scala compiler _did_ allow us to do this. We could then write:
 
-```tut:silent
+```scala
 val eqOptionNotFound: Eq[Option[NotFound]] = Eq.instance[Option[NotFound]]{
   case (None, None) => true
   case (None, Some(_)) => false
@@ -154,7 +180,7 @@ val eqOptionNotFound: Eq[Option[NotFound]] = Eq.instance[Option[NotFound]]{
 }
 ```
 
-```tut:silent:fail
+```scala
 val optionTEqNotFound: MyOptionT[Eq, NotFound] = MyOptionT(eqOptionNotfound) // only allowed in our pretend world
 
 val optionTEqErr: MyOptionT[Eq, Err] = optionTEqNotFound // only allowed in our pretend world

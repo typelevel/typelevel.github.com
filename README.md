@@ -26,11 +26,11 @@ You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` f
 
 ### Previewing your changes
 
-To preview your changes, you have to install [Rake](https://ruby.github.io/rake/) and [Bundler](https://bundler.io/) first.
+To preview your changes, you have to install [Bundler](https://bundler.io/) first.
 To download and set up all necessary dependencies, run
 
 ```bash
-$ rake init
+$ bundle install
 ... lots of text ...
 Bundle complete! 1 Gemfile dependency, 81 gems now installed.
 Bundled gems are installed into `./vendor/bundle`
@@ -39,41 +39,14 @@ Bundled gems are installed into `./vendor/bundle`
 Then, you can generate the site by running
 
 ```
-$ rake build
+$ bundle exec jekyll serve -wl --baseurl ''
 ```
 
 The generated site will end up in the `_site` directory.
 
-For a local development cycle (i.e., edit, recompile post, serve website), use
-
-```
-$ rake dev
-```
-
-This will spin up an sbt and a Jekyll instance in parallel.
-When making changes to a post, sbt will re-run tut, after which Jekyll will re-render (which takes a moment).
-
-#### Running in Docker
-
-Build the docker image:
-
-    docker build . -t typelevel-blog
-    
-Start the container like this:
-
-    docker run -it -v $(pwd):/app -p 4000:4000 typelevel-blog bin/bash
-    
-From inside the container run:
-
-    cd /app && rake init && rake build && rake dev
-    
-On your host browse to `http://localhost:4000`.
-
 ## License
 
-Two different licenses apply:
-* The Scala code, including the SBT build definition, is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-* Unless otherwise noted, all website content is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/deed.en_US).
+Unless otherwise noted, all website content is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/deed.en_US).
 
 ## Development
 

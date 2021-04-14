@@ -44,7 +44,7 @@ As an example, let's imagine we want to make a call to a service, but to make th
 
 First, some imports and some declarations:
 
-```tut:silent
+```scala
 import cats._
 import cats.data._
 import cats.implicits._
@@ -57,11 +57,13 @@ type Result = String
 ```
 
 Now let's say we have these two functions for the service we want to call and the configuration we want to read from.
-```tut:book
+```scala
 
 def getConfig: IO[Config] = ???
+// getConfig: cats.effect.IO[Config]
 
 def serviceCall(c: Config): IO[Result] = ???
+// serviceCall: (c: Config)cats.effect.IO[Result]
 ```
 
 The easiest thing would be to just pass down the configuration from the very top of your application.
@@ -74,11 +76,12 @@ def ask[F[_]: Applicative, E]: ReaderT[F, E, E]
 
 We can then use `flatMap`, `map` or for-comprehensions to actually use that value and do things with it: 
 
-```tut:book
+```scala
 def readerProgram: ReaderT[IO, Config, Result] = for {
   config <- ReaderT.ask[IO, Config]
   result <- ReaderT.liftF(serviceCall(config))
 } yield result
+// readerProgram: cats.data.ReaderT[cats.effect.IO,Config,Result]
 ```
 
 Now that we have a value of `ReaderT` that gives us back our result, the next step is to actually "inject" the dependency.
@@ -90,8 +93,9 @@ def run(e: E): F[A]
 
 Combined with our `getConfig` function we can now write the entry point to our program:
 
-```tut:book
+```scala
 def main: IO[Result] = getConfig.flatMap(readerProgram.run)
+// main: cats.effect.IO[Result]
 ```
 
 And that is how we can do functional dependency injection in Scala.
@@ -113,7 +117,7 @@ Let's look at an abstract example, that showcases this ability.
 
 First, we'll define a function that calls our external service which will take the environment into account.
 
-```tut:silent
+```scala
 // Again we use String here for simplicity, in real code this would be something else
 type Env = String
 type Request = String
@@ -126,7 +130,7 @@ def request(r: Request, env: Env): IO[Response] = ???
 
 Next, we'll also need a function that given a response and an old environment will return a new updated environment.
 
-```tut:silent
+```scala
 def updateEnv(r: Response, env: Env): Env = ???
 
 // We also need some fake requests
@@ -139,7 +143,7 @@ def req4: Request = ???
 Now we can get started with `StateT`.
 To do so, we'll create a new request function that will make the request with the current environment and update it after we've received the response:
 
-```tut:silent
+```scala
 def requestWithState(r: Request): StateT[IO, Env, Response] = for {
   env <- StateT.get[IO, Env]
   resp <- StateT.liftF(request(r, env))
@@ -152,7 +156,7 @@ We can get the current state by using `StateT.get` (which returns a `StateT[IO, 
 
 Now, if we wanted to make those different requests, we could just reuse that `requestWithState` function N number of times:
 
-```tut:silent
+```scala
 def stateProgram: StateT[IO, Env, Response] = for {
   resp1 <- requestWithState(req1)
   resp2 <- requestWithState(req2)
@@ -168,8 +172,9 @@ Of course, just like `ReaderT`, we can turn `StateT` into `IO` by using the `run
 Let's try that out!
 
 
-```tut:book
+```scala
 def main: IO[(Env, Response)] = stateProgram.run(initialEnv)
+// main: cats.effect.IO[(Env, Response)]
 ```
 
 And that gives us a fully working stateful application. Cool.
@@ -213,17 +218,21 @@ Ideally, you'd write all your code using only an abstract type constructor `F[_]
 So without further ado, let's try to convert our `Reader` program from earlier into mtl-style.
 First, I'll include the original program again:
 
-```tut:book
+```scala
 def getConfig: IO[Config] = ???
+// getConfig: cats.effect.IO[Config]
 
 def serviceCall(c: Config): IO[Result] = ???
+// serviceCall: (c: Config)cats.effect.IO[Result]
 
 def readerProgram: ReaderT[IO, Config, Result] = for {
   config <- ReaderT.ask[IO, Config]
   result <- ReaderT.liftF(serviceCall(config))
 } yield result
+// readerProgram: cats.data.ReaderT[cats.effect.IO,Config,Result]
 
 def main: IO[Result] = getConfig.flatMap(readerProgram.run)
+// main: cats.effect.IO[Result]
 ```
 
 Now we should just replace that `ReaderT` with an `F` and add an `ApplicativeAsk[F, Config]` constraint, right?
@@ -242,7 +251,7 @@ Furthermore `IO` defines a method `to` which makes use of this type class to pro
 
 With this in mind, we can now define our `readerProgram` fully using MTL:
 
-```tut:silent
+```scala
 import cats.mtl._
 import cats.mtl.instances.all._
 
@@ -256,7 +265,7 @@ We replaced our call to `ReaderT.ask` with a call to `ask` provided by `Applicat
 
 Now to run it, all we need to do is specify the target `F` to run in, in our case `ReaderT[IO, Config, Result]` fits perfectly:
 
-```tut:silent
+```scala
 val materializedProgram = readerProgram[ReaderT[IO, Config, ?]]
 
 def main: IO[Result] = getConfig.flatMap(materializedProgram.run)
@@ -266,7 +275,7 @@ This process of turning a program defined by an abstract type constructor with a
 
 Another thing we can do is define a type alias for `ApplicativeAsk[F, Config]` so that we can more easily use it with the context bound syntax:
 
-```tut:silent
+```scala
 type ApplicativeConfig[F[_]] = ApplicativeAsk[F, Config]
 
 def readerProgram[F[_]: Monad: LiftIO: ApplicativeConfig]: F[Result] = ???
@@ -281,13 +290,13 @@ To do so, we'll use `MonadError`, which can be found in cats-core instead of mtl
 To keep things simple for now, we want to raise an error if the configuration we got was invalid somehow.
 For this purpose we'll have this simple function that will simply return if a `Config` is valid or not:
 
-```tut:silent
+```scala
 def validConfig(c: Config): Boolean = ???
 ```
 
 Then we'll also want to define an error ADT for our app:
 
-```tut:silent
+```scala
 sealed trait AppError
 case object InvalidConfig extends AppError
 ```
@@ -295,7 +304,7 @@ case object InvalidConfig extends AppError
 Now we can go and extend our program from earlier. 
 We'll add a `MonadError[F, AppError]` type alias, `MonadAppError` and then add a constraint for it in our program.
 
-```tut:silent
+```scala
 type MonadAppError[F[_]] = MonadError[F, AppError]
 
 def program[F[_]: MonadAppError: ApplicativeConfig: LiftIO]: F[Result] = ???
@@ -312,12 +321,13 @@ def ensure(error: => E)(predicate: A => Boolean): F[A]
 And it fills our need exactly. It will raise the passed `error`, if the `predicate` function returns `false`.
 Let's go and try it out:
 
-```tut:book
+```scala
 def program[F[_]: MonadAppError: ApplicativeConfig: LiftIO]: F[Result] = for {
   config <- ApplicativeAsk[F, Config].ask
               .ensure(InvalidConfig)(validConfig)
   result <- serviceCall(config).to[F]
 } yield result
+// program: [F[_]](implicit evidence$1: MonadAppError[F], implicit evidence$2: ApplicativeConfig[F], implicit evidence$3: cats.effect.LiftIO[F])F[Result]
 ```
 
 Pretty simple, now let's materialize it!
@@ -327,7 +337,7 @@ Unwrapped it should look like this `IO[Either[AppError, Reader[Config, A]]]`.
 We'll create some type aliases to get a better overview:
 
 
-```tut:silent
+```scala
 type EitherApp[A] = EitherT[IO, AppError, A]
 type Stack[A] = ReaderT[EitherApp, Config, A]
 
@@ -368,9 +378,12 @@ The implicit search used by the type class mechanic takes care of it.
 Pretty neat, I think.
 Now contrast this lack of lifting, with the same program written without mtl:
 
-```tut:book
+```scala
 type EitherApp[A] = EitherT[IO, AppError, A]
+// defined type alias EitherApp
+
 type Stack[A] = ReaderT[EitherApp, Config, A]
+// defined type alias Stack
 
 def program: Stack[Result] = for {
   config <- ReaderT.ask[EitherApp, Config]
@@ -378,6 +391,7 @@ def program: Stack[Result] = for {
        else ReaderT.liftF[EitherApp, Config, Unit](EitherT.leftT(InvalidConfig))
   result <- ReaderT.liftF(EitherT.liftF[IO, AppError, Result](serviceCall(config)))
 } yield result
+// program: Stack[Result]
 ```
 
 It's the same program, but now we have to add type annotations and `liftF`s everywhere.
@@ -405,7 +419,7 @@ trait MonadState[F[_], S] {
 Let's imagine we have a list of requests, where we want to update the environment after each request, and we also want to use the environment to create the next request.
 At the very end we want to return the list of all the responses we got:
 
-```tut:silent
+```scala
 type Result = List[Response]
 
 def updateEnv(r: Response, env: Env): Env = ???
@@ -418,14 +432,16 @@ def newServiceCall(c: Config, req: Request, e: Env): IO[Response] = ???
 So far, so good, next we'll use `MonadState` to create a new function that will wrap `newServiceCall` with the addition of modifying the environment using `updateEnv`.
 To do so, we'll create a new type alias for `MonadState[F, Env]`:
 
-```tut:book
+```scala
 type MonadStateEnv[F[_]] = MonadState[F, Env]
+// defined type alias MonadStateEnv
 
 def requestWithState[F[_]: Monad: MonadStateEnv: LiftIO](c: Config, req: Request): F[Response] = for {
   env <- MonadState[F, Env].get
   response <- newServiceCall(c, req, env).to[F]
   _ <- MonadState[F, Env].modify(updateEnv(response, _))
 } yield response
+// requestWithState: [F[_]](c: Config, req: Request)(implicit evidence$1: cats.Monad[F], implicit evidence$2: MonadStateEnv[F], implicit evidence$3: cats.effect.LiftIO[F])F[Response]
 ```
 
 Here, we use `get` to retrieve the current state of the environment, then we use `newServiceCall` and lift it into `F` and use the response to modify the environment with `updateEnv`.
@@ -434,19 +450,20 @@ Now, we can use  `requestWithState` on our list of requests and embed this new p
 The best way to do that, is of course `traverse`, as we want to go from a `List[Request]` and a function `Request => F[Response]` to an `F[List[Response]]`.
 So without further ado, this is our final program, using all three different mtl type classes we learned about in this article: 
 
-```tut:book
+```scala
 def program[F[_]: MonadAppError: MonadStateEnv: ApplicativeConfig: LiftIO]: F[Result] = for {
   config <- ApplicativeAsk[F, Config].ask
     .ensure(InvalidConfig)(validConfig)
   responses <- requests.traverse(req => requestWithState[F](config, req))
 } yield responses
+// program: [F[_]](implicit evidence$1: MonadAppError[F], implicit evidence$2: MonadStateEnv[F], implicit evidence$3: ApplicativeConfig[F], implicit evidence$4: cats.effect.LiftIO[F])F[Result]
 ```
 
 And that is it! 
 Of course, we still have to run it, so let's materialize our `F` into an appropriate data type.
 We'll be using a stack of `EitherT`, `StateT` and `ReaderT`, with `IO` as our base to satisfy `LiftIO`:
 
-```tut:silent
+```scala
 def materializedProgram = program[StateT[EitherT[ReaderT[IO, Config, ?], AppError, ?], Env, ?]]
 ```
 
@@ -454,7 +471,7 @@ And now we have a fully applied transformer stack.
 
 The only thing left is to turn that stack back into an `IO` by running the individual layers.
 
-```tut:silent
+```scala
 def main: IO[Either[AppError, (Env, Result)]] = 
   getConfig.flatMap(conf => 
     materializedProgram.run(initialEnv) //Run the StateT layer

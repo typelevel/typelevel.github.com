@@ -38,7 +38,7 @@ If you are one of those who don't like to read and prefer to jump straight into 
 
 We have a simple `UserAlgebra` that let us perform some actions such as finding and persisting users.
 
-```tut:book:silent
+```scala
 case class User(username: String, age: Int)
 case class UserUpdateAge(age: Int)
 
@@ -51,7 +51,7 @@ trait UserAlgebra[F[_]] {
 
 And also an ADT of the possible errors that may arise. I'll explain later in this post why it extends `Exception`.
 
-```tut:book:silent
+```scala
 sealed trait UserError extends Exception
 case class UserAlreadyExists(username: String) extends UserError
 case class UserNotFound(username: String) extends UserError
@@ -62,7 +62,7 @@ case class InvalidUserAge(age: Int) extends UserError
 
 And here we have a simple interpreter for our `UserAlgebra` for demonstration purposes so you can have an idea on how the logic would look like. In a real-life project an interpreter will more likely connect to a database instead of using an in-memory representaion based on `Ref`.
 
-```tut:book:silent
+```scala
 import cats.effect.Sync
 import cats.effect.concurrent.Ref
 import cats.syntax.all._
@@ -105,7 +105,7 @@ object UserInterpreter {
 
 The following implementation of `UserRoutes` applies the tagless final encoding and the concept of "abstracting over the effect type" where we do not commit to a particular effect until the edge of our application.
 
-```tut:book:silent
+```scala
 import io.circe.generic.auto._
 import io.circe.syntax._
 import org.http4s._
@@ -145,7 +145,7 @@ Now this particular implementation is missing a very important part: error handl
 
 Okay let's just go ahead and add some error handling to our http route by taking advantange of the `MonadError` instance defined by our constraint `Sync[F]` and making use of the syntax provided by `cats`:
 
-```tut:book:silent
+```scala
 class UserRoutesAlt[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
   val routes: HttpRoutes[F] = HttpRoutes.of[F] {
@@ -212,7 +212,7 @@ Fortunately our friend [Oleg Pyzhcov](https://twitter.com/oleg_pyzhcov) has crea
 
 And two of the supported typeclasses are `ApplicativeError` and `MonadError` as long as the error type is a subtype of `Throwable` to make it compatible with `cats-effect`. So we can do something like this:
 
-```tut:book:silent
+```scala
 import cats.MonadError
 import cats.effect.IO
 import com.olegpy.meow.hierarchy._ // All you need is this import!
@@ -231,7 +231,7 @@ customHandle(io, IO.pure(123))
 
 Now back to our use case. We can't have a `MonadError[F, UserError]` constraint because there's already a `MonadError[F, Throwable]` in scope given our `Sync[F]` constraint. But it turns out we can make this work if we also abstract over the error handling by introducing an `HttpErrorHandler` algebra where the error type is a subtype of `Throwable`.
 
-```tut:book:silent
+```scala
 trait HttpErrorHandler[F[_], E <: Throwable] {
   def handle(routes: HttpRoutes[F]): HttpRoutes[F]
 }
@@ -243,7 +243,7 @@ object HttpErrorHandler {
 
 `UserRoutes` can now have an additional constraint of type `HttpErrorHandler[F, UserError]` so we clearly know what kind of errors we are dealing with and can have the Scala compiler on our side.
 
-```tut:book:silent
+```scala
 class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(implicit H: HttpErrorHandler[F, UserError]) extends Http4sDsl[F] {
 
   private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
@@ -274,7 +274,7 @@ We are basically delegating the error handling (AKA mapping business errors to a
 
 We also need an implementation for this algebra in order to handle errors of type `UserError` but first we can introduce a `RoutesHttpErrorHandler` object that encapsulates the repetitive task of handling errors given an `HttpRoutes[F]`:
 
-```tut:book:silent
+```scala
 import cats.ApplicativeError
 import cats.data.{Kleisli, OptionT}
 
@@ -290,7 +290,7 @@ object RoutesHttpErrorHandler {
 
 And our implementation:
 
-```tut:book:silent
+```scala
 class UserHttpErrorHandler[F[_]](implicit M: MonadError[F, UserError]) extends HttpErrorHandler[F, UserError] with Http4sDsl[F] {
   private val handler: UserError => F[Response[F]] = {
     case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
@@ -309,7 +309,7 @@ If we forget to handle some errors the compiler will shout at us ***"match may n
 
 And the last part will be the wiring of all these components where we need to include the `meow-mtl` import to figure out the derivation of the instances we need in order to make this work. It'll look something like this if using `cats.effect.IO`:
 
-```tut:book:silent
+```scala
 import com.olegpy.meow.hierarchy._
 
 implicit val userHttpErrorHandler: HttpErrorHandler[IO, UserError] = new UserHttpErrorHandler[IO]

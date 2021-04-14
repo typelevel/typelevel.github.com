@@ -27,7 +27,7 @@ fact gives us a certain cleanliness in the code, but at what cost?
 Consider the following hierarchy of type classes. A similar hierarchy can be
 found in both [Cats][cats] and [Scalaz 7][scalaz7].
 
-```tut:book:silent
+```scala
 trait Functor[F[_]]
 
 trait Applicative[F[_]] extends Functor[F]
@@ -45,7 +45,7 @@ us to call methods like `map`, `flatMap`, and `traverse` directly on some
 `F[A]`, provided `F` has the appropriate type class instances (`Functor`,
 `Monad`, and `Traverse`, respectively).
 
-```tut:reset:book:silent
+```scala
 import cats._
 import cats.implicits._
 ```
@@ -53,7 +53,7 @@ import cats.implicits._
 One important consequence is we can use for comprehensions in methods
 parameterized over some `Monad`.
 
-```tut:book:silent
+```scala
 def foo[F[_]: Monad]: F[Int] = for {
   a <- Monad[F].pure(10)
   b <- Monad[F].pure(20)
@@ -68,9 +68,17 @@ Or is it?
 Consider a case where we want to abstract over a data type that has
 both `Monad` and `Traverse`.
 
-```tut:book:fail
+```scala
 // Ignore the fact we're not even using `Traverse` - we can't even call `map`!
 def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].pure(10).map(identity)
+// <console>:19: error: value map is not a member of type parameter F[Int]
+//        def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].pure(10).map(identity)
+//                                                                   ^
+// <console>:19: error: missing argument list for method identity in object Predef
+// Unapplied methods are only converted to functions when a function type is expected.
+// You can make this conversion explicit by writing `identity _` or `identity(_)` instead of `identity`.
+//        def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].pure(10).map(identity)
+//                                                                       ^
 ```
 
 We're already in trouble. In order to call `map` we need `F` to have a
@@ -86,20 +94,26 @@ knowing that.
 This problem generalizes to anytime the compiler decides an implicit is ambiguous,
 such as method calls.
 
-```tut:book:silent
+```scala
 // The fact we don't actually use `Functor` here is irrelevant.
 def bar[F[_]: Applicative: Functor]: F[Int] = Applicative[F].pure(10)
 ```
 
-```tut:book:fail
+```scala
 def callBar[F[_]: Monad: Traverse]: F[Int] = bar[F]
+// <console>:19: error: ambiguous implicit values:
+//  both value evidence$2 of type cats.Traverse[F]
+//  and value evidence$1 of type cats.Monad[F]
+//  match expected type cats.Functor[F]
+//        def callBar[F[_]: Monad: Traverse]: F[Int] = bar[F]
+//                                                        ^
 ```
 
 What do we do? For `map` it is easy enough to arbitrarily pick one
 of the instances and call `map` on that. For function calls you
 can thread the implicit through explicitly.
 
-```tut:book:silent
+```scala
 def foo[F[_]: Monad: Traverse]: F[Int] = Monad[F].map(Monad[F].pure(10))(identity)
 
 def callBar[F[_]: Monad: Traverse]: F[Int] = bar(Monad[F], Monad[F])
@@ -119,11 +133,14 @@ if we had three, four, five?
 And the trouble doesn't end there. We asked for a `Monad` so let's try using
 a for comprehension.
 
-```tut:book:fail
+```scala
 def foo[F[_]: Monad: Traverse]: F[Int] = for {
   a <- Monad[F].pure(10)
   b <- Monad[F].pure(20)
 } yield a + b
+// <console>:21: error: value map is not a member of type parameter F[Int]
+//          b <- Monad[F].pure(20)
+//                            ^
 ```
 
 This is also broken! Because of how [for comprehensions][forcomp] desugar, a
@@ -133,7 +150,7 @@ This drastically reduces the ergonomics of doing anything monadic.
 As with `map` we could call `flatMap` on `Monad` directly, but this quickly
 becomes cumbersome.
 
-```tut:book:silent
+```scala
 def foo[F[_]: Monad: Traverse]: F[Int] = {
   val M = Monad[F]
   M.flatMap(M.pure(10)) { a =>
@@ -165,7 +182,7 @@ an interesting alternative prototyped in [scato][scato], now making its way to
 encoding completely throws out the notion of subtyping, encoding the hierarchy
 via members instead.
 
-```tut:reset:book:silent
+```scala
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
@@ -189,7 +206,7 @@ danger of implicit ambiguity. However, for that very reason, having a
 anyway. What we can do is use implicit conversions to re-encode the
 hierarchy.
 
-```tut:book:silent
+```scala
 implicit def applicativeIsFunctor[F[_]: Applicative]: Functor[F] =
   implicitly[Applicative[F]].functor
 
@@ -199,23 +216,31 @@ implicit def traverseIsFunctor[F[_]: Traverse]: Functor[F] =
 
 But now we're back to square one.
 
-```tut:book:silent
+```scala
 // Syntax for Functor
 implicit class FunctorOps[F[_], A](fa: F[A])(implicit F: Functor[F]) {
   def map[B](f: A => B): F[B] = F.map(fa)(f)
 }
 ```
 
-```tut:book:fail
+```scala
 def foo[F[_]: Applicative: Traverse]: F[Int] =
   implicitly[Applicative[F]].pure(10).map(identity)
+// <console>:18: error: value map is not a member of type parameter F[Int]
+//          implicitly[Applicative[F]].pure(10).map(identity)
+//                                              ^
+// <console>:18: error: missing argument list for method identity in object Predef
+// Unapplied methods are only converted to functions when a function type is expected.
+// You can make this conversion explicit by writing `identity _` or `identity(_)` instead of `identity`.
+//          implicitly[Applicative[F]].pure(10).map(identity)
+//                                                  ^
 ```
 
 Since both implicits have equal priority, the compiler
 doesn't know which one to pick. **However**, Scala has mechanisms for
 [prioritizing implicits][implicits] which solves the problem.
 
-```tut:reset:book:silent
+```scala
 object Prioritized { // needed for tut, irrelevant to demonstration
   trait Functor[F[_]] {
     def map[A, B](fa: F[A])(f: A => B): F[B]
@@ -275,7 +300,7 @@ sources. This can be solved by removing the hierarchy from the superclasses
 (removing `Functor`'s `extends FunctorConversions0`), but comes at
 the cost of needing an import at use sites to bring the implicits into scope.
 
-```tut:reset:book:silent
+```scala
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }
@@ -308,7 +333,7 @@ trait FunctorConversions0 extends FunctorConversions1 {
 object Prelude extends FunctorConversions0
 ```
 
-```tut:book:silent
+```scala
 // Need this import to get implicit conversions in scope
 import Prelude._
 
@@ -336,7 +361,7 @@ Another thing we can try is to make some compromise of the two. We can
 continue to use subtyping for a blessed subset of the hierarchy, and use
 members for any branching type class.
 
-```tut:reset:book:silent
+```scala
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 }

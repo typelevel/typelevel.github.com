@@ -182,7 +182,7 @@ outcome of the joinee. Let's take a look at an example.
 Let's take a look at an example that demonstrates spawning and joining of 
 fibers, as well as the nondeterministic interleaving of their executions.
 
-```tut:silent
+```scala
 import cats.effect.{IO, IOApp}
 import cats.syntax.all._
 
@@ -231,7 +231,7 @@ function. This semantically blocks the current fiber until the target fiber
 has finalized and terminated, and then returns. Let's take a look at an 
 example.
 
-```tut:silent
+```scala
 import cats.effect.{IO, IOApp}
 import cats.syntax.all._
 import scala.concurrent.duration._
@@ -277,7 +277,7 @@ fibers concurrently and waits for both of them to complete).
 `racePair` seems a bit hairy to work with, so let's try an example out with 
 `race`:
 
-```tut:silent
+```scala
 import cats.effect.{IO, IOApp}
 import cats.syntax.all._
 
@@ -328,7 +328,7 @@ trait Ref[A] {
 value of the `Ref`. `update` atomically reads and sets the current value of the 
 `Ref`. Let's take a look at an example.
 
-```tut:silent
+```scala
 import cats.effect.{IO, IOApp}
 import cats.syntax.all._
 
@@ -372,7 +372,7 @@ value, after which it will return that value. `complete` completes the
 `Deferred`, unblocking all waiters. A `Deferred` can not be completed more than
 once. Let's take a look at an example.
 
-```tut:silent
+```scala
 import cats.effect.{IO, IOApp}
 import cats.effect.kernel.Deferred
 import cats.syntax.all._
@@ -429,7 +429,7 @@ In our next example, we create simple concurrent data structure called `Latch`
 that is blocks a waiter until a certain number of internal latches have been 
 released. Here is the interface for `Latch`:
 
-```tut:silent
+```scala
 trait Latch {
   def release: IO[Unit]
   def await: IO[Unit]
@@ -443,7 +443,7 @@ remaining, as well as a `Deferred` that is used to block new waiters. The
 second state reflects that the `Latch` has been completely released and will no
 longer block waiters.
 
-```tut:silent
+```scala
 sealed trait State
 final case class Awaiting(latches: Int, waiter: Deferred[IO, Unit]) extends State
 case object Done extends State
@@ -464,7 +464,7 @@ The `await` method inspects the current state; if it is `Done`, then allow the
 current fiber to pass through, otherwise, block the current fiber with the 
 `waiter`.
 
-```tut:silent
+```scala
 object Latch {
   def apply(latches: Int): IO[Latch] =
     for {
@@ -491,7 +491,7 @@ object Latch {
 
 Finally, we can use our new concurrent data type in a runnable example:
 
-```tut:silent
+```scala
 object ExampleSix extends IOApp.Simple {
   override def run: IO[Unit] =
     for {

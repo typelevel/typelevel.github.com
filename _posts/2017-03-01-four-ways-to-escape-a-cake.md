@@ -37,7 +37,7 @@ Let’s set aside the heavyweight real-world examples I mentioned above
 in favor of a small example. Then, we should be able to explore the
 possibilities in this simpler space.
 
-```tut:silent
+```scala
 final case class LittleUniverse() {
   val haystack: Haystack = Haystack()
 
@@ -56,8 +56,9 @@ programmer of pure, virtuous heart ought to!*
 
 Suppose we have a universe.
 
-```tut
-val lu: LittleUniverse = LittleUniverse()
+```scala
+scala> val lu: LittleUniverse = LittleUniverse()
+lu: LittleUniverse = LittleUniverse()
 ```
 
 The thing that Scala does for us is not let `Haystack`s and `Needle` s
@@ -88,7 +89,7 @@ here `lu.type` or `anotherU.type`.
 Refactoring in macro-writing style seems to be based upon passing the
 universe around everywhere. We can do that.
 
-```tut:silent
+```scala
 def twoInits(u: LittleUniverse): (u.Needle, u.Needle) =
   (u.haystack.init, u.haystack.init)
   
@@ -190,7 +191,7 @@ tricky, but quite doable if you have the universe’s value.
 With the advent of `implicit class`, this became a little easier to do
 wrongly, but it’s a good start.
 
-```tut:silent
+```scala
 implicit class NonWorkingStepTwice(val u: LittleUniverse) {
   def stepTwiceOops(n: u.Needle): u.Needle =
     u.haystack.iter(u.haystack.iter(n))
@@ -199,8 +200,13 @@ implicit class NonWorkingStepTwice(val u: LittleUniverse) {
 
 That compiles okay, but seemingly can’t actually be used!
 
-```tut:fail
-lu stepTwiceOops lu.haystack.init
+```scala
+scala> lu stepTwiceOops lu.haystack.init
+<console>:15: error: type mismatch;
+ found   : lu.Needle
+ required: _1.u.Needle where val _1: NonWorkingStepTwice
+       lu stepTwiceOops lu.haystack.init
+                                    ^
 ```
 
 There’s a hint in that we had to write `val u`, not `u`, nor `private
@@ -218,7 +224,7 @@ Instead, we have to expand a little bit, and take advantage of a very
 interesting, if obscure, element of the type equivalence rules in the
 Scala language.
 
-```tut:silent
+```scala
 class WorkingStepTwice[U <: LittleUniverse](val u: U) {
   def stepTwice(n: u.Needle): u.Needle =
     u.haystack.iter(u.haystack.iter(n))
@@ -308,7 +314,7 @@ refer to `u` in the method signature anymore, so let’s try the same
 conversion we used with `twoInitsFromAHaystack`. We already have the
 `U` type parameter, after all.
 
-```tut:silent
+```scala
 class CleanerStepTwice[U <: LittleUniverse](private val u: U) {
   def stepTwiceLively(n: U#Needle): U#Needle =
     ???
@@ -327,8 +333,9 @@ further, and replace it with a `U#Haystack`, just as with
 This gives us the same interface, with all the index preservation we
 need. Even better, it infers a nicer return type.
 
-```tut
-def trial = lu stepTwiceLively lu.haystack.init
+```scala
+scala> def trial = lu stepTwiceLively lu.haystack.init
+trial: lu.Needle
 ```
 
 Now, let’s turn to implementation.
@@ -421,15 +428,16 @@ As a workaround, it is commonly suggested to extract the member types
 in question into separate type variables. This works in some cases,
 but let’s see how it goes in this one.
 
-```tut:silent
+```scala
 def stepTwiceExUnim[N, U <: LittleUniverse{type Needle = N}](
     h: U#Haystack, n: N): N = ???
 ```
 
 This looks a lot weirder, but should be able to return the right type.
 
-```tut
-def trial2 = stepTwiceExUnim[lu.Needle, lu.type](lu.haystack, lu.haystack.init)
+```scala
+scala> def trial2 = stepTwiceExUnim[lu.Needle, lu.type](lu.haystack, lu.haystack.init)
+trial2: lu.Needle
 ```
 
 But this situation is complex enough for the technique to not work.

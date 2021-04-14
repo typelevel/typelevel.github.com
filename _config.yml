@@ -14,8 +14,7 @@ kramdown:
   syntax_highlighter: rouge
   hard_wrap: false
 highlighter: rouge
-exclude: ["README.md", "vendor", "src", "project/", "build.sbt", "posts", "Rakefile", "sbt", "gh-pages"]
-include: ["_redirects", "_posts"]
+exclude: ["README.md", "vendor", "Rakefile"]
 permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "/blog/:num/"
@@ -35,5 +34,3 @@ collections:
     layout: event
   projects:
     output: false
-
-host: 0.0.0.0

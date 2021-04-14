@@ -16,7 +16,7 @@ A somewhat common Scala idiom is to make an `abstract` type extend `Product with
 
 Let's say that I'm writing a simple enum-like `Status` type:
 
-```tut:silent
+```scala
 object EnumExample1 {
   sealed abstract class Status
   case object Pending extends Status
@@ -27,12 +27,13 @@ object EnumExample1 {
 
 Now let's create a `Set` of statuses that represent incomplete items:
 
-```tut:silent
+```scala
 import EnumExample1._
 ```
 
-```tut:book
+```scala
 val incomplete = Set(Pending, InProgress)
+// incomplete: scala.collection.immutable.Set[Product with Serializable with EnumExample1.Status] = Set(Pending, InProgress)
 ```
 
 Here, I didn't give in explicit return type to `incomplete` and you may have noticed that the compiler inferred a somewhat bizarre one: `Set[Product with Serializable with Status]`. Why is that?
@@ -41,7 +42,7 @@ The compiler generally tries to infer the most specific type possible. Usually t
 
 While there's nothing inherently wrong with the return type of `Product with Serializable with Status`, it is verbose, it wasn't what I intended, and in certain situations it might cause inference issues. Luckily there's a simple workaround to get the inferred type that I want:
 
-```tut:silent
+```scala
 object EnumExample2 {
   // note the `extends` addition here
   sealed abstract class Status extends Product with Serializable
@@ -51,12 +52,13 @@ object EnumExample2 {
 }
 ```
 
-```tut:silent
+```scala
 import EnumExample2._
 ```
 
-```tut:book
+```scala
 val incomplete = Set(Pending, InProgress)
+// incomplete: scala.collection.immutable.Set[EnumExample2.Status] = Set(Pending, InProgress)
 ```
 
 Now since `Status` itself already includes `Product` and `Serializable`, `Status` is the LUB type of `Pending`, `InProgress`, and `Finished`.
