@@ -15,6 +15,7 @@ Our efforts have been insufficient.
 We pledge to review our process and practices for event safety, and will provide details on concrete actions in this space before the next Typelevel Summit is held.
 
 The Typelevel Steering Committee:
+* Alexandru Nedelcu
 * Christopher Davenport
 * Daniel Spiewak
 * Kailuo Wang
