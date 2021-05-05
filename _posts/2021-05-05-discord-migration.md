@@ -11,7 +11,7 @@ Hello Community!
 
 We have a new Typelevel discord server.
 
-There is a large and growing community of scala developers on Discord.
+There is a large and growing community of Scala developers on Discord.
 
 Gitter has struggled as a platform for Typelevel for many reasons. We have received feedback that the platform is hard to approach,
 and that the sense of community is fractured by being in seperate rooms, and difficult for beginners since you have to know where to get started.
