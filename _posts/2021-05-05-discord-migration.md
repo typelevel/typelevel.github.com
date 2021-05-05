@@ -24,7 +24,7 @@ It additionally can support new types of engagement like pairing, voice chat, pr
 We hope Discord will help allow us to build even better spaces.
 
 Discord has some disadvantages compared to gitter, its not indexed by google and you must have an account to read. 
-We hope the advantages outweight the disadvantages, 
+We hope the advantages outweigh the disadvantages, 
 and we also hope that other tools like Github Discussions and FAQ's/project docs can be a home for permanent documentation.
 
 We encourage typelevel projects to create channels there and to give it a try for a few months and see how it goes.
