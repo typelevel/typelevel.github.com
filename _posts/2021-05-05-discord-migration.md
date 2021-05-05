@@ -27,6 +27,6 @@ Discord has some disadvantages compared to gitter, its not indexed by google and
 We hope the advantages outweight the disadvantages, 
 and we also hope that other tools like Github Discussions and FAQ's/project docs can be a home for permanent documentation.
 
-We encourage typelevel projects  to create channels there and to give it a try for a ferw months and see how it goes.
+We encourage typelevel projects to create channels there and to give it a try for a few months and see how it goes.
 
 ### [We hope you'll join us over on the new Discord - https://discord.gg/XF3CXcMzqD](https://discord.gg/XF3CXcMzqD)
