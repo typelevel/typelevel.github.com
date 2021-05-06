@@ -80,7 +80,7 @@ Images for styling purposes are located inside `img/`, photos inside `img/media/
 
 ### Adding a project
 
-There are three types of projects: core/featured projects, regular projecs, and macros.
+There are four types of projects: core/featured projects, regular projects, incubator projects, and macros.
 
 To add a regular project, create a new markdown file in the `_projects` folder with the following front matter:
 
@@ -105,7 +105,7 @@ extensions:
     github: "https://github.com/non/alleycats"
 ```
 
-Macros are created a little differently. They are located in `_data/macros.yml` and look like this:
+Incubator projects and macros are created a little differently. They are located in `_data/incubator.yml` and `_data/macros.yml` respectively, and look like this:
 
 ```yml
 - title: "imp"
@@ -115,7 +115,7 @@ Macros are created a little differently. They are located in `_data/macros.yml` 
 
 ### Adding a page
 
-To add a page, create a HTML or Markdown file in the root of the project. The site navgation is not fully dynamic for simplification purposes. It can be changed in the default layout (`_layouts/default.html`).
+To add a page, create a HTML or Markdown file in the root of the project. The site navigation is not fully dynamic for simplification purposes. It can be changed in the default layout (`_layouts/default.html`).
 
 Sample front matter for a page:
 
