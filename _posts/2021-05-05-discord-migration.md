@@ -23,7 +23,7 @@ best-in-class moderation tools both personally and administratively, and builds 
 It additionally can support new types of engagement like pairing, voice chat, presentations, and casting.
 We hope Discord will help allow us to build even better spaces.
 
-Discord has some disadvantages compared to gitter: it's not indexed by Google, and you must have an account to read.
+Discord has some disadvantages compared to Gitter: it's not indexed by Google, and you must have an account to read.
 We hope the advantages outweigh the disadvantages, 
 and we also hope that other tools like Github Discussions and FAQ's/project docs can be a home for permanent documentation.
 
