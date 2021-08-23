@@ -88,6 +88,9 @@
 - title: "TwoTails"
   description: "A compiler plugin adding support for mutual tail recursion"
   github: "https://github.com/wheaties/TwoTails"
+- title: "uniform-scala
+  description: "Functional user journeys"
+  github: "https://github.com/ltbs/uniform-scala"
 - title: "unique"
   description: "Unique Functional Values for Scala"
   github: "https://github.com/typelevel/unique"
