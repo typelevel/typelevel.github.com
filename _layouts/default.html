@@ -10,17 +10,17 @@
 
     <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
     <link href="/img/favicon.png" rel="icon" type="image/x-icon">
-    <link rel="alternate" href="/blog/feed.rss" title="RSS feed" type="application/rss+xml">
+    <link rel="alternate" href="{{ '/blog/feed.rss' | relative_url }}" title="RSS feed" type="application/rss+xml">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
 
-    <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="{{ '/js/jquery.min.js' | relative_url }}"></script>
+    <script type="text/javascript" src="{{ '/js/app.js' | relative_url }}"></script>
   </head>
   <body class="no-js {%if page.class %} {{ page.class }} {% endif %}">
-   <div class="header">
+    <div class="header">
       <div class="wrapper">
         <a href="/">
           <div class="header__logo">
@@ -46,7 +46,7 @@
         </ul>
       </div>
     </div>
-    
+
     <div class="wrapper">
       {{ content }}
     </div>
@@ -62,9 +62,9 @@
         </ul>
       </div>
     </div>
-    
+
   <!-- Salvattore.js for the masonry layout -->
-  <script type="text/javascript" src="/js/salvattore.min.js"></script>
+  <script type="text/javascript" src="{{ '/js/salvattore.min.js' | relative_url }}"></script>
   <!-- Salvattore.js for the masonry layout -->
   </body>
 </html>
