@@ -1,0 +1,60 @@
+// VARIABLES
+// =====================================================================
+// =====================================================================
+
+
+// Google Fonts
+// ---------------------------------------------------------------------
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Open+Sans+Condensed:wght@700&display=swap');
+
+
+// Colors
+// ---------------------------------------------------------------------
+
+// General
+$brand-primary:               #FE465B;
+$gray-primary:                #21303F;
+$white:                       #ffff;
+// Link
+$link-color:                  $brand-primary;
+$link-hover:                  darken($brand-primary, 4%);
+
+// Typography
+// ---------------------------------------------------------------------
+
+// Base
+$base-font-family:            'Mulish', sans-serif;
+$base-font-color:             $gray-primary;
+$base-font-size:              16px;
+$base-line-height:            1.6;
+
+// Heading
+$heading-font-family:         'Open Sans Condensed', sans-serif;
+$font-family:                 'Open Sans Condensed', sans-serif;
+$heading-font-color:          $gray-primary;
+$heading-font-transform:      uppercase;
+$heading-line-height:         1.3;
+
+// Font weight
+$font-weight-regular:         400;
+$font-weight-bold:            700;
+$base-font-weight:            $font-weight-regular;
+$heading-font-weight:         $font-weight-bold;
+
+// Sizes
+// ---------------------------------------------------------------------
+$base-point-grid:             0.25rem;
+$size-max-width:              1080px;
+
+// Animations
+// ---------------------------------------------------------------------
+$base-duration:               350ms;
+$base-timing:                 ease;
+
+// Breakpoint
+// ---------------------------------------------------------------------
+$bp-small:                    480px;
+$bp-medium:                   768px;
+$bp-large:                    992px;
+$bp-xlarge:                   1130px;

@@ -7,17 +7,17 @@ title: Blog
     {% for post in paginator.posts %}
     <div class="post js-fade-in">
       <h2>
-        <a href="{{ post.url }}">{{ post.title }}</a>
+        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
       </h2>
       <p>{{post.content | strip_html | truncatewords: 50}}</p>
       <div class="post__meta">
         {% assign author = site.data.authors[post.meta.author] %}
         {% if author %}
           {% if author.portrait %}
-            <img class="portrait" src="{{ author.portrait }}" />
+            <img class="portrait" src="{{ site.baseurl }}{{ author.portrait }}" />
             <p>
           {% endif %}
-            by {{ author.full_name }} 
+            by {{ author.full_name }}
         {% endif %}
         on {{ post.date | date: "%b %d, %Y" }}</p>
       </div>
