@@ -20,7 +20,32 @@
     <script type="text/javascript" src="{{ '/js/app.js' | relative_url }}"></script>
   </head>
   <body class="no-js {%if page.class %} {{ page.class }} {% endif %}">
-      {% include _nav.html %}
+    <div class="header">
+      <div class="wrapper">
+        <a href="/">
+          <div class="header__logo">
+            {{ site.name }}
+          </div>
+        </a>
+        <a href="#" class="header__menu">
+          Menu
+        </a>
+        <ul class="navigation" role="navigation">
+          <li {% if page.path contains 'projects' %} class="active" {% endif %}>
+            <a href="{{ '/projects/' | relative_url }}">Projects</a>
+          </li>
+          <li {% if page.path contains 'events' or page.path contains '_event' %} class="active" {% endif %}>
+            <a href="{{ '/events/' | relative_url }}">Events</a>
+          </li>
+          <li {% if page.path contains 'blog' or page.path contains '_posts' %} class="active" {% endif %}>
+            <a href="{{ '/blog/' | relative_url }}">Blog</a>
+          </li>
+          <li {% if page.path contains 'about' %} class="active" {% endif %}>
+            <a href="{{ '/about.html' | relative_url }}">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <div class="wrapper">
       {{ content }}

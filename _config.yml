@@ -6,7 +6,7 @@ email: info@typelevel.org
 gitter: "https://gitter.im/orgs/typelevel/rooms"
 google_groups: "https://groups.google.com/group/typelevel"
 # baseurl: https://typelevel.org
-baseurl: 
+baseurl: "/typelevel.github.com"
 googlemaps_apikey: "AIzaSyAgMQPpkd_Qq-NYcCggh28PaS82oG-9YoA"
 
 markdown: kramdown
