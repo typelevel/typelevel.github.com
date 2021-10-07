@@ -6,4 +6,6 @@ css/main.css
 target
 .deploy
 .jekyll-metadata
+.jekyll-cache/
 .metals
+.DS_Store

@@ -1,18 +1,18 @@
 <nav id="navigation">
   <div class="wrapper">
-    <div class="nav">
+    <div class="navbar">
       <div class="navbar-brand">
-        <a href="#">Brand</a>
+        <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg" title="{{ site.title }}" /></a>
       </div>
       <ul id="myNavbar" class="navbar-nav">
         <i onclick="myFunction()" class="fal fa-bars fa-times navbar-open"></i>
-        {% for item in site.data.nav.nav %}
+        {% for item in site.data.nav %}
         <li>
-          <a href="{{ site.baseurl }}{{item.url}}">{{item.title}}</a>
+          <a class="{% if item.url == page.url %}active{% endif %}" href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
         </li>
         {% endfor %}
       </ul>
-      <i onclick="myFunction()" class="fal fa-bars navbar-open"></i>
+      <!-- <i onclick="myFunction()" class="fal fa-bars navbar-ope"></i> -->
     </div>
   </div>
 </nav>
