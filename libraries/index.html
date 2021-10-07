@@ -2,12 +2,13 @@
 layout: default
 title: Projects
 class: projects-page
+
 ---
 
 <div class="section projects-core js-fade-in">
   <h2>Libraries</h2>
   <p>Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.</p>
-  
+
   {% for project in site.projects %}
     <!-- Core Projects / Featured (have the option core: true) -->
     {% if project.core %}

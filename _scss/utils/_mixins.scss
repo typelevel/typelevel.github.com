@@ -1,0 +1,68 @@
+// MIXINS
+// =====================================================================
+// =====================================================================
+
+// Grid
+// ---------------------------------------------------------------------
+
+@mixin border-nav {
+  display: block;
+  content: '';
+  border-bottom: ($base-point-grid / 2) solid $brand-primary;
+}
+
+
+// Grid
+// ---------------------------------------------------------------------
+
+
+
+@mixin grid {
+  display: grid;
+  gap: $grid-line-base;
+}
+
+@mixin col-1 {
+  grid-template-columns: 1fr;
+}
+
+@mixin col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@mixin col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@mixin col-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+// Breakpoint
+// ---------------------------------------------------------------------
+
+@mixin bp($point) {
+  @if $point==xlarge {
+    @media (max-width: $bp-xlarge) {
+      @content;
+    }
+  }
+
+  @if $point==large {
+    @media (max-width: $bp-large) {
+      @content;
+    }
+  }
+
+  @if $point==medium {
+    @media (max-width: $bp-medium) {
+      @content;
+    }
+  }
+
+  @if $point==small {
+    @media (max-width: $bp-small) {
+      @content;
+    }
+  }
+}
