@@ -1,0 +1,65 @@
+// Base
+// -----------------------------------------------
+// -----------------------------------------------
+
+
+// Body, html
+// -----------------------------------------------
+html {
+  box-sizing: border-box;
+  font-size: $base-font-size;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+
+// Typography
+// -----------------------------------------------
+body {
+  color: $base-font-color;
+  background: rgba($gray-primary, 0.08);
+  font-family: $base-font-family;
+  line-height: $base-line-height;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+  color: $heading-font-color;
+  line-height: $heading-line-height;
+}
+
+
+a {
+  color: $link-color;
+  text-decoration: none;
+  transition: $base-duration $base-timing;
+  transition-property: color, box-shadow;
+
+  &:visited {
+    color: $link-color;
+  }
+
+  &:hover {
+    color: $link-hover;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: $link-color;
+  }
+}

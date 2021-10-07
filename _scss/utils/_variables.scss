@@ -31,9 +31,8 @@ $base-line-height:            1.6;
 
 // Heading
 $heading-font-family:         'Open Sans Condensed', sans-serif;
-$font-family:                 'Open Sans Condensed', sans-serif;
 $heading-font-color:          $gray-primary;
-$heading-font-transform:      uppercase;
+$heading-text-transform:      uppercase;
 $heading-line-height:         1.3;
 
 // Font weight
@@ -45,7 +44,7 @@ $heading-font-weight:         $font-weight-bold;
 // Sizes
 // ---------------------------------------------------------------------
 $base-point-grid:             0.25rem;
-$size-max-width:              1080px;
+$size-max-width:              $base-point-grid * 292;
 
 // Animations
 // ---------------------------------------------------------------------
@@ -58,3 +57,11 @@ $bp-small:                    480px;
 $bp-medium:                   768px;
 $bp-large:                    992px;
 $bp-xlarge:                   1130px;
+
+// Navigation
+// ---------------------------------------------------------------------
+$navigation-padding:          $base-point-grid * 8;
+$navigation-background:       $white;
+$navigation-font-family:      $heading-font-family;
+$navigation-text-transform:   uppercase;
+$navigation-link-color:       $gray-primary;
