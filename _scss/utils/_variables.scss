@@ -44,7 +44,7 @@ $heading-font-weight:         $font-weight-bold;
 // Sizes
 // ---------------------------------------------------------------------
 $base-point-grid:             0.25rem;
-$size-max-width:              $base-point-grid * 292;
+$size-max-width:              $base-point-grid * 290; // 1160px
 
 // Animations
 // ---------------------------------------------------------------------
@@ -53,10 +53,11 @@ $base-timing:                 ease;
 
 // Breakpoint
 // ---------------------------------------------------------------------
-$bp-small:                    480px;
+$bp-small:                    576px;
 $bp-medium:                   768px;
 $bp-large:                    992px;
-$bp-xlarge:                   1130px;
+$bp-xlarge:                   1200px;
+$bp-xlarge:                   1400px;
 
 // Navigation
 // ---------------------------------------------------------------------
@@ -65,3 +66,4 @@ $navigation-background:       $white;
 $navigation-font-family:      $heading-font-family;
 $navigation-text-transform:   uppercase;
 $navigation-link-color:       $gray-primary;
+$navigation-link-hover:       $brand-primary;

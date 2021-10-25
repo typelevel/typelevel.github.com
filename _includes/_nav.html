@@ -1,10 +1,10 @@
 <nav id="navigation">
   <div class="wrapper">
-    <div class="navbar">
+    <div class="navbar" id="navbar-main" >
       <div class="navbar-brand">
         <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg" title="{{ site.title }}" /></a>
       </div>
-      <ul id="myNavbar" class="navbar-nav">
+      <ul class="navbar-nav">
         <i onclick="myFunction()" class="fal fa-bars fa-times navbar-open"></i>
         {% for item in site.data.nav %}
         <li>
@@ -12,7 +12,11 @@
         </li>
         {% endfor %}
       </ul>
-      <!-- <i onclick="myFunction()" class="fal fa-bars navbar-ope"></i> -->
+      <div class="navbar-icon">
+       <a href="javascript:void(0);" onclick="myFunction()">
+         <img src="{{ site.baseurl }}/img/assets/navbar-icon.svg"/>
+       </a>
+     </div>
     </div>
   </div>
 </nav>
