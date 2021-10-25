@@ -9,14 +9,21 @@
 }
 
 #navigation {
-  padding: $navigation-padding 0;
+  position: fixed;
   top: 0;
+  z-index: 10;
+  padding: $navigation-padding 0;
   width: 100%;
   background: $navigation-background;
-  z-index: 10;
+  transition: padding $base-duration $base-timing;
+
+  &.navigation-scroll {
+    padding: ($navigation-padding / 2) 0;
+  }
 
   .navbar {
     display: flex;
+    position: relative;
     justify-content: space-between;
     align-items: center;
 
@@ -51,6 +58,7 @@
 
           &.active {
             cursor: default;
+
             &:after {
               @include border-nav;
               transform: scaleX(1);
@@ -66,6 +74,63 @@
           &:hover {
             &:after {
               transform: scaleX(1);
+            }
+          }
+        }
+      }
+    }
+    .navbar-icon {
+      display: none;
+    }
+  }
+}
+// Responsive
+@include bp(medium) {
+  #navigation {
+    .navbar {
+      align-items: flex-start;
+
+      .navbar-nav {
+        margin-top: $base-point-grid * 8;
+
+        li {
+          display: none;
+
+          a {
+            &:after {
+              display: none;
+            }
+
+            &.active {
+              border-bottom: 2px solid $brand-primary;
+
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+
+      .navbar-icon {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 12px;
+      }
+
+      &.responsive {
+        flex-direction: column;
+        justify-content: flex-start;
+
+        .navbar-nav {
+          flex-direction: column;
+
+          li {
+            display: block;
+
+            &:not(:last-child) {
+              margin-bottom: $base-point-grid * 4;
             }
           }
         }

@@ -16,7 +16,6 @@
 // ---------------------------------------------------------------------
 
 
-
 @mixin grid {
   display: grid;
   gap: $grid-line-base;
@@ -62,6 +61,12 @@
 
   @if $point==small {
     @media (max-width: $bp-small) {
+      @content;
+    }
+  }
+
+  @if $point==small {
+    @media (min-width: $bp-small) {
       @content;
     }
   }
