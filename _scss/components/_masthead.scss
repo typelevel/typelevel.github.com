@@ -1,0 +1,47 @@
+// MASTHEAD
+// =====================================================================
+// =====================================================================
+
+#masthead {
+  padding-top: $base-point-grid * 58;
+  height: 900px;
+
+  .masthead-inner {
+    @include grid;
+    @include col-2;
+
+    .masthead-text {
+      padding-top: 240px;
+      h1 {
+        position: relative;
+        margin-bottom: $base-point-grid * 7;
+        font-size: 4.25rem;
+      }
+      p {
+        font-size: 1.125rem;
+      }
+    }
+
+    .masthead-image {
+      position: relative;
+
+      .image-position {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 870px;
+        height: 690px;
+        img {
+          width: 870px;
+          height: auto;
+        }
+        svg {
+          position: absolute;
+        }
+        .mask {
+          clip-path: url(#polygon);
+        }
+      }
+    }
+  }
+}

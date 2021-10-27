@@ -1,15 +1,13 @@
 // Base
 // -----------------------------------------------
 // -----------------------------------------------
-
-
 // Body, html
 // -----------------------------------------------
+
 html {
   box-sizing: border-box;
   font-size: $base-font-size;
 }
-
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -21,15 +19,15 @@ html {
 *::before {
   box-sizing: inherit;
 }
-
-
 // Typography
 // -----------------------------------------------
+
 body {
   color: $base-font-color;
-  background: rgba($gray-primary, 0.08);
+  background: url("../img/assets/background-pattern.svg") no-repeat top center rgba($gray-primary, 0.08);
   font-family: $base-font-family;
   line-height: $base-line-height;
+  overflow-x: hidden;
 }
 
 h1,
@@ -39,10 +37,22 @@ h4,
 h5 {
   font-family: $heading-font-family;
   font-weight: $heading-font-weight;
+  text-transform: uppercase;
   color: $heading-font-color;
   line-height: $heading-line-height;
 }
 
+h1 {
+  font-size: 3.75rem;
+}
+
+h1,
+h2 {
+  z-index: 1;
+  &::after {
+    @include title-path;
+  }
+}
 
 a {
   color: $link-color;

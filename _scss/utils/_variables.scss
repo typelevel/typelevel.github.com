@@ -51,8 +51,12 @@ $size-max-width:              $base-point-grid * 290; // 1160px
 $base-duration:               350ms;
 $base-timing:                 ease;
 
-// Breakpoint
-// ---------------------------------------------------------------------
+
+// Layout
+
+$grid-line-base: $base-point-grid * 8;
+$grid-line-large: $base-point-grid * 10;
+
 $bp-small:                    576px;
 $bp-medium:                   768px;
 $bp-large:                    992px;
@@ -67,3 +71,6 @@ $navigation-font-family:      $heading-font-family;
 $navigation-text-transform:   uppercase;
 $navigation-link-color:       $gray-primary;
 $navigation-link-hover:       $brand-primary;
+
+// Masthead
+// ---------------------------------------------------------------------
