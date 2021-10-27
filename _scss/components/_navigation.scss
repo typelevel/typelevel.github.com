@@ -2,12 +2,6 @@
 // =====================================================================
 // =====================================================================
 
-.wrapper {
-  padding: 0 $base-point-grid * 6;
-  margin: 0 auto;
-  max-width: $size-max-width;
-}
-
 #navigation {
   position: fixed;
   top: 0;
@@ -89,13 +83,10 @@
   #navigation {
     .navbar {
       align-items: flex-start;
-
       .navbar-nav {
+        display: none;
         margin-top: $base-point-grid * 8;
-
         li {
-          display: none;
-
           a {
             &:after {
               display: none;
@@ -124,11 +115,10 @@
         justify-content: flex-start;
 
         .navbar-nav {
+          display: block;
           flex-direction: column;
 
           li {
-            display: block;
-
             &:not(:last-child) {
               margin-bottom: $base-point-grid * 4;
             }
