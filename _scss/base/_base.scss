@@ -58,7 +58,7 @@ a {
   color: $link-color;
   text-decoration: none;
   transition: $base-duration $base-timing;
-  transition-property: color, box-shadow;
+  transition-property: color, background, box-shadow;
 
   &:visited {
     color: $link-color;

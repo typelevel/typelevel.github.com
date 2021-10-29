@@ -3,8 +3,9 @@
 // =====================================================================
 
 #masthead {
-  padding-top: $base-point-grid * 28;
-  height: 900px;
+  padding: $masthead-padding 0;
+  //background: rgba($gray-primary, 0.1);
+  min-height: 900px;
 
   .masthead-inner {
     @include grid;
@@ -18,26 +19,47 @@
         font-size: 4.25rem;
       }
       p {
+        margin-bottom: $base-point-grid * 10;
         font-size: 1.125rem;
+      }
+
+      .masthead-cta {
+        display: flex;
+        a {
+          &:first-child {
+            margin-right: $base-point-grid * 3;
+          }
+        }
       }
     }
 
     .masthead-image {
       position: relative;
-
-      .image-position {
+      .masthead-image-path {
         position: absolute;
-        left: 0;
+        bottom: - $base-point-grid * 49;
+        left: $base-point-grid * 11;
+        z-index: 8;
+        opacity: 0.8;
+      }
+      .masthead-image-position {
+        position: absolute;
         top: 0;
+        left: 0;
+        z-index: 4;
         width: 870px;
         height: 690px;
+
+
         img {
           width: 870px;
           height: auto;
         }
+
         svg {
           position: absolute;
         }
+
         .mask {
           clip-path: url(#polygon);
         }

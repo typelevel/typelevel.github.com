@@ -26,7 +26,7 @@ $link-hover:                  darken($brand-primary, 4%);
 // Base
 $base-font-family:            'Mulish', sans-serif;
 $base-font-color:             $gray-primary;
-$base-font-size:              16px;
+$base-font-size:              16 px;
 $base-line-height:            1.6;
 
 // Heading
@@ -41,27 +41,25 @@ $font-weight-bold:            700;
 $base-font-weight:            $font-weight-regular;
 $heading-font-weight:         $font-weight-bold;
 
-// Sizes
+
+// Layout
 // ---------------------------------------------------------------------
 $base-point-grid:             0.25rem;
 $size-max-width:              $base-point-grid * 290; // 1160px
+
+$grid-line-base:              $base-point-grid * 8;
+$grid-line-large:             $base-point-grid * 10;
+
+$bp-small:                    $base-point-grid * 144; // 576
+$bp-medium:                   $base-point-grid * 192; // 768
+$bp-large:                    $base-point-grid * 248; // 992
+$bp-xlarge:                   $base-point-grid * 300; // 1200
+$bp-xlarge:                   $base-point-grid * 350; // 1400
 
 // Animations
 // ---------------------------------------------------------------------
 $base-duration:               350ms;
 $base-timing:                 ease;
-
-
-// Layout
-
-$grid-line-base: $base-point-grid * 8;
-$grid-line-large: $base-point-grid * 10;
-
-$bp-small:                    576px;
-$bp-medium:                   768px;
-$bp-large:                    992px;
-$bp-xlarge:                   1200px;
-$bp-xlarge:                   1400px;
 
 // Navigation
 // ---------------------------------------------------------------------
@@ -74,3 +72,13 @@ $navigation-link-hover:       $brand-primary;
 
 // Masthead
 // ---------------------------------------------------------------------
+$masthead-padding:            $base-point-grid * 28;
+
+// Buttons
+// ---------------------------------------------------------------------
+$button-padding-x:            $base-point-grid * 4;
+$button-padding-y:            $base-point-grid * 10;
+$button-font-family:          $heading-font-family;
+$button-primary-color:        $white;
+$button-primary-background:   $brand-primary;
+$button-primary-hover:        darken($button-primary-background, 15%);
