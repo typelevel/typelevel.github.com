@@ -24,25 +24,6 @@
   <body class="no-js {%if page.class %} {{ page.class }} {% endif %}">
       {% include _nav.html %}
       {% include _masthead.html %}
-
-    <div class="wrapper">
-      {{ content }}
-    </div>
-
-    <div class="footer">
-      <div class="wrapper">
-        <p>Copyright &copy; 2013-{{ site.time | date: '%Y' }} the <a href="/">typelevel.org</a> <a href="/contributors.html">contributors</a>.</p>
-        <ul class="navigation">
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/events">Events</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-        </ul>
-      </div>
-    </div>
-
-  <!-- Salvattore.js for the masonry layout -->
-  <script type="text/javascript" src="{{ '/js/salvattore.min.js' | relative_url }}"></script>
-  <!-- Salvattore.js for the masonry layout -->
+      {% include _section-about.html %}
   </body>
 </html>

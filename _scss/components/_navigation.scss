@@ -41,7 +41,7 @@
 
         a {
           text-decoration: none;
-          letter-spacing: 1px;
+          letter-spacing: $base-point-grid / 4;
           color: $navigation-link-color;
 
           &:after {
@@ -107,7 +107,7 @@
         display: block;
         position: absolute;
         right: 0;
-        top: 12px;
+        top: $base-point-grid * 3;
       }
 
       &.responsive {

@@ -12,13 +12,14 @@
 // Colors
 // ---------------------------------------------------------------------
 
-// General
 $brand-primary:               #FE465B;
 $gray-primary:                #21303F;
 $white:                       #ffff;
-// Link
+
 $link-color:                  $brand-primary;
 $link-hover:                  darken($brand-primary, 4%);
+
+$body-background:             $white;
 
 // Typography
 // ---------------------------------------------------------------------
@@ -49,6 +50,12 @@ $size-max-width:              $base-point-grid * 290; // 1160px
 
 $grid-line-base:              $base-point-grid * 8;
 $grid-line-large:             $base-point-grid * 10;
+
+$section-small-padding:       $base-point-grid * 6;
+$section-normal-padding:      $section-small-padding * 2;
+$section-large-padding:       $section-normal-padding * 2;
+
+$section-header-width:        $base-point-grid * 141;
 
 $bp-small:                    $base-point-grid * 144; // 576
 $bp-medium:                   $base-point-grid * 192; // 768
