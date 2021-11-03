@@ -23,6 +23,7 @@ html {
 // -----------------------------------------------
 
 body {
+  margin: 0;
   color: $base-font-color;
   background: url("../img/assets/background-pattern.svg") no-repeat top center $body-background;
   font-family: $base-font-family;
@@ -49,6 +50,11 @@ h1 {
 h2 {
   margin-bottom: $base-point-grid * 5;
   font-size: 2rem;
+}
+
+h3 {
+  margin-bottom: $base-point-grid * 3;
+  font-size: 1.25rem;
 }
 
 a {

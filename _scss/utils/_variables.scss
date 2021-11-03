@@ -27,8 +27,8 @@ $body-background:             $white;
 // Base
 $base-font-family:            'Mulish', sans-serif;
 $base-font-color:             $gray-primary;
-$base-font-size:              16 px;
-$base-line-height:            1.6;
+$base-font-size:              16px;
+$base-line-height:            1.5;
 
 // Heading
 $heading-font-family:         'Open Sans Condensed', sans-serif;
@@ -67,6 +67,11 @@ $bp-xlarge:                   $base-point-grid * 350; // 1400
 // ---------------------------------------------------------------------
 $base-duration:               350ms;
 $base-timing:                 ease;
+
+// Effect
+// ---------------------------------------------------------------------
+
+$box-shadow: 0 $base-point-grid * 5 $base-point-grid * 12 rgba($gray-primary, 0.16);
 
 // Navigation
 // ---------------------------------------------------------------------

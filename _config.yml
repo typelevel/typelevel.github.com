@@ -34,5 +34,9 @@ collections:
     layout: event
   projects:
     output: false
-  about:
+  staff_members:
     output: true
+  abouts:
+    output: true
+
+collections_dir: my_collections

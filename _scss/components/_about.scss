@@ -1,0 +1,40 @@
+// About
+// =====================================================================
+// =====================================================================
+
+#section-about {
+  .about-list {
+    @include grid;
+    @include col-3;
+
+    .about-item {
+      @extend .hexagon;
+      img {
+        margin: $base-point-grid * 17 0 $base-point-grid * 3 0;
+      }
+      p {
+        max-width: $base-point-grid * 80;
+        margin: 0 auto;
+        //background: $brand-primary;
+        padding: 0 $base-point-grid * 18;
+      }
+    }
+  }
+}
+
+// Responsive
+@include bp(large) {
+  #section-about {
+    .about-list {
+      @include col-2;
+    }
+  }
+}
+
+@include bp(medium) {
+  #section-about {
+    .about-list {
+      @include col-1;
+    }
+  }
+}

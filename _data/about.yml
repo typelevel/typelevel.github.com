@@ -1,7 +1,30 @@
-title: About
-description: Learn more about the organization. Here you can see the main goals we are pursuing, ways to contact us.
+aboutHeader:
 
-about-list:
-  - title: "Open source"
-    description: "Independent, free/libre and open-source software"
-    icon-item: ""
+- title: About
+  description: Learn more about the organization. Here you can see the main goals we are pursuing, ways to contact us.
+
+  aboutList:
+
+    - title: "Open source"
+      description: "Independent, free/libre and open-source software"
+      icon: /img/assets/icon-about-open-source.svg
+
+    - title: "Functional"
+      description: "Pure, typeful, functional programming in Scala"
+      icon: /img/assets/icon-about-functional.svg
+
+    - title: "Shared"
+      description: "A desire to share ideas and code"
+      icon: /img/assets/icon-about-shared.svg
+
+    - title: "Resources"
+      description: "Accessible and idiomatic learning resources"
+      icon: /img/assets/about-icon.svg
+
+    - title: "Friendly"
+      description: "An inclusive, welcoming and safe environment"
+      icon: /img/assets/about-icon.svg
+
+    - title: "Modular"
+      description: "Focused, separate modules designed to work together"
+      icon: /img/assets/about-icon.svg

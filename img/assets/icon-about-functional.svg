@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-about-functional</title>
+    <g id="icon-about-functional" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" transform="translate(8.000000, 3.000000)">
+            <path d="M44.2706229,24.665022 L32.7675582,24.665022 L27.2810626,41.9381498 L34.04,41.938 L30.167562,61.1193023 L49.8263846,31.8015859 L42.53,31.801 L44.2706229,24.665022 Z M34.962,27.665 L40.451,27.665 L38.7112971,34.8015859 L44.202,34.801 L36.103,46.88 L37.7069121,38.9381498 L31.381,38.938 L34.962,27.665 Z" id="Stroke-2670" fill="#FE465B" fill-rule="nonzero"></path>
+            <g id="Group-4">
+                <polyline id="Path-3" stroke="#FE465B" stroke-width="3" points="22.5708984 38.061674 0 38.061674 0 -4.22569468e-15 48 0 48 21.9404297"></polyline>
+                <circle id="Oval" fill="#FE465B" cx="7.2" cy="5.4" r="1.8"></circle>
+                <circle id="Oval-Copy" fill="#FE465B" cx="13.2" cy="5.4" r="1.8"></circle>
+                <circle id="Oval-Copy-2" fill="#FE465B" cx="19.2" cy="5.4" r="1.8"></circle>
+                <line x1="0" y1="10.7154185" x2="48" y2="10.7154185" id="Path-4" stroke="#FE465B" stroke-width="3"></line>
+            </g>
+        </g>
+    </g>
+</svg>
