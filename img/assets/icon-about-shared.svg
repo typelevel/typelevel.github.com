@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-about-shared</title>
+    <g id="icon-about-shared" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3" transform="translate(19.145652, 23.304348)"></g>
+        <path d="M24.3913043,48.3043478 C24.3913043,53.1086957 20.4978261,57 15.6956522,57 C10.8934783,57 7,53.1086957 7,48.3043478 C7,43.5 10.8934783,39.6086957 15.6956522,39.6086957 C20.4978261,39.6086957 24.3913043,43.5 24.3913043,48.3043478 L24.3913043,48.3043478 Z" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></path>
+        <path d="M57,48.3043478 C57,53.1086957 53.1065217,57 48.3043478,57 C43.5021739,57 39.6086957,53.1086957 39.6086957,48.3043478 C39.6086957,43.5 43.5021739,39.6086957 48.3043478,39.6086957 C53.1065217,39.6086957 57,43.5 57,48.3043478 L57,48.3043478 Z" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></path>
+        <path d="M40.6956522,15.6956522 C40.6956522,20.5 36.8021739,24.3913043 32,24.3913043 C27.1956522,24.3913043 23.3043478,20.5 23.3043478,15.6956522 C23.3043478,10.8913043 27.1956522,7 32,7 C36.8021739,7 40.6956522,10.8913043 40.6956522,15.6956522 L40.6956522,15.6956522 Z" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></path>
+        <line x1="24.3913043" y1="48.3043478" x2="39.6086957" y2="48.3043478" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></line>
+        <line x1="36.313913" y1="23.2002174" x2="44.8573913" y2="40.3176087" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></line>
+        <line x1="27.6521739" y1="23.3043478" x2="19.1456522" y2="40.3173913" id="path" stroke="#FE4559" stroke-width="3" stroke-linejoin="round"></line>
+    </g>
+</svg>

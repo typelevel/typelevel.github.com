@@ -11,17 +11,6 @@
   border-bottom: $base-point-grid / 2 solid $brand-primary;
 }
 
-//  Mixin Title path
-// ---------------------------------------------------------------------
-
-@mixin title-path {
-  position: absolute;
-  top: - $base-point-grid * 3;
-  left: 0;
-  z-index: -1;
-  content: url(../img/assets/title-path.svg);
-}
-
 
 
 //  Mixin Grid

@@ -23,8 +23,9 @@ html {
 // -----------------------------------------------
 
 body {
+  margin: 0;
   color: $base-font-color;
-  background: url("../img/assets/background-pattern.svg") no-repeat top center rgba($gray-primary, 0.08);
+  background: url("../img/assets/background-pattern.svg") no-repeat top center $body-background;
   font-family: $base-font-family;
   line-height: $base-line-height;
   overflow-x: hidden;
@@ -46,12 +47,14 @@ h1 {
   font-size: 3.75rem;
 }
 
-h1,
 h2 {
-  z-index: 1;
-  &::after {
-    @include title-path;
-  }
+  margin-bottom: $base-point-grid * 5;
+  font-size: 2rem;
+}
+
+h3 {
+  margin-bottom: $base-point-grid * 3;
+  font-size: 1.25rem;
 }
 
 a {

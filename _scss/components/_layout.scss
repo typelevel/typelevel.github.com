@@ -7,3 +7,21 @@
   margin: 0 auto;
   max-width: $size-max-width;
 }
+
+.section-small {
+  padding: $section-small-padding 0;
+}
+
+.section-normal {
+  padding: $section-normal-padding 0;
+}
+
+.section-large {
+  padding: $section-large-padding 0;
+}
+
+.section-header {
+  margin: 0 auto $base-point-grid * 16 auto;
+  max-width: $section-header-width;
+  text-align: center;
+}

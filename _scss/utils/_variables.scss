@@ -12,13 +12,14 @@
 // Colors
 // ---------------------------------------------------------------------
 
-// General
 $brand-primary:               #FE465B;
 $gray-primary:                #21303F;
 $white:                       #ffff;
-// Link
+
 $link-color:                  $brand-primary;
 $link-hover:                  darken($brand-primary, 4%);
+
+$body-background:             $white;
 
 // Typography
 // ---------------------------------------------------------------------
@@ -26,8 +27,8 @@ $link-hover:                  darken($brand-primary, 4%);
 // Base
 $base-font-family:            'Mulish', sans-serif;
 $base-font-color:             $gray-primary;
-$base-font-size:              16 px;
-$base-line-height:            1.6;
+$base-font-size:              16px;
+$base-line-height:            1.5;
 
 // Heading
 $heading-font-family:         'Open Sans Condensed', sans-serif;
@@ -50,6 +51,12 @@ $size-max-width:              $base-point-grid * 290; // 1160px
 $grid-line-base:              $base-point-grid * 8;
 $grid-line-large:             $base-point-grid * 10;
 
+$section-small-padding:       $base-point-grid * 6;
+$section-normal-padding:      $section-small-padding * 2;
+$section-large-padding:       $section-normal-padding * 2;
+
+$section-header-width:        $base-point-grid * 141;
+
 $bp-small:                    $base-point-grid * 144; // 576
 $bp-medium:                   $base-point-grid * 192; // 768
 $bp-large:                    $base-point-grid * 248; // 992
@@ -60,6 +67,11 @@ $bp-xlarge:                   $base-point-grid * 350; // 1400
 // ---------------------------------------------------------------------
 $base-duration:               350ms;
 $base-timing:                 ease;
+
+// Effect
+// ---------------------------------------------------------------------
+
+$box-shadow: 0 $base-point-grid * 5 $base-point-grid * 12 rgba($gray-primary, 0.16);
 
 // Navigation
 // ---------------------------------------------------------------------

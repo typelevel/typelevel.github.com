@@ -1,0 +1,23 @@
+<section id="section-about" class="section-large">
+  <div class="container">
+    {% for header in site.data.about.aboutHeader %}
+    <div class="section-header">
+      <h2><span>{{header.title}}</span></h2>
+      <p>{{header.description}}</p>
+    </div>
+    <div class="about-list">
+      {% assign initialItems = header.aboutList | slice: 0,3 %}
+      {% for item in initialItems %}
+      <div class="about-item">
+          <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
+          <h3>{{item.title}}</h3>
+          <p>{{item.description}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div class="section-cta">
+        <a class="button button-primary" href="#" class="button">See about</a>
+    </div>
+  </div>
+</section
