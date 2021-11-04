@@ -8,7 +8,7 @@
     <div class="about-list">
       {% assign initialItems = header.aboutList | slice: 0,3 %}
       {% for item in initialItems %}
-      <div class="about-item">
+      <div class="about-item" data-aos="fade-down">
           <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
           <h3>{{item.title}}</h3>
           <p>{{item.description}}</p>
@@ -20,4 +20,4 @@
         <a class="button button-primary" href="#" class="button">See about</a>
     </div>
   </div>
-</section
+</section>

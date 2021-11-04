@@ -94,3 +94,10 @@ $button-font-family:          $heading-font-family;
 $button-primary-color:        $white;
 $button-primary-background:   $brand-primary;
 $button-primary-hover:        darken($button-primary-background, 15%);
+
+// Card
+// ---------------------------------------------------------------------
+
+$card-padding:                $base-point-grid * 7;
+$card-background:             $white;
+$card-shadow:                 $box-shadow;

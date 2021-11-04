@@ -2,6 +2,7 @@
 // =====================================================================
 // =====================================================================
 .card {
-  background: $white;
-  box-shadow: $box-shadow);
+  padding: $card-padding;
+  background: $card-background;
+  box-shadow: $card-shadow;
 }
