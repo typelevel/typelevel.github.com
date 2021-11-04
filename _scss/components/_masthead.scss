@@ -13,6 +13,8 @@
 
     .masthead-text {
       padding-top: $base-point-grid * 58;
+      transition-duration: 1000ms;
+      transition-delay: 0.4s;
       h1 {
         position: relative;
         margin-bottom: $base-point-grid * 7;
@@ -35,6 +37,7 @@
 
     .masthead-image {
       position: relative;
+
       .masthead-image-path {
         position: absolute;
         bottom: - $base-point-grid * 49;

@@ -5,7 +5,7 @@ twitter: typelevel
 email: info@typelevel.org
 gitter: "https://gitter.im/orgs/typelevel/rooms"
 google_groups: "https://groups.google.com/group/typelevel"
-baseurl: "/typelevel.github.com"
+baseurl: "/typelevel.github.com/"
 googlemaps_apikey: "AIzaSyAgMQPpkd_Qq-NYcCggh28PaS82oG-9YoA"
 
 markdown: kramdown
@@ -33,10 +33,10 @@ collections:
     permalink: /event/:year-:month-:title/
     layout: event
   projects:
-    output: false
+    output: true
   staff_members:
     output: true
   abouts:
     output: true
 
-collections_dir: my_collections
+collections_dir: collections
