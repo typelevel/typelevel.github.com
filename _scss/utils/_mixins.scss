@@ -1,4 +1,4 @@
-// MIXINS & EXTEND
+// MIXINS
 // =====================================================================
 // =====================================================================
 
@@ -12,6 +12,26 @@
 }
 
 
+// Mixin Card
+// ---------------------------------------------------------------------
+
+@mixin card {
+  padding: $card-padding;
+  background: $card-background;
+  box-shadow: $card-shadow;
+}
+
+// Tag
+// ---------------------------------------------------------------------
+
+@mixin tag {
+  display: inline-block;
+  padding: $tag-padding-x $tag-padding-y;
+  text-transform: $tag-text-transform;
+  font-size: $tag-font-size;
+  background: $tag-background;
+  border-radius: $tag-border-radius;
+}
 
 //  Mixin Grid
 // ---------------------------------------------------------------------

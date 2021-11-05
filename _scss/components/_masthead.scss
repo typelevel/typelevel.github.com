@@ -4,8 +4,7 @@
 
 #masthead {
   padding: $masthead-padding 0;
-  //background: rgba($gray-primary, 0.1);
-  min-height: 900px;
+  min-height: $base-point-grid * 225;
 
   .masthead-inner {
     @include grid;

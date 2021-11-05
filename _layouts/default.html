@@ -1,39 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{{ site.name }} | {% if page.path contains '_event' %}{{ page.short_title }}{% else %}{{ page.title }}{% endif %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ site.description }}">
-
-
-    <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
-    <link href="/img/favicon.png" rel="icon" type="image/x-icon">
-    <link rel="alternate" href="{{ '/blog/feed.rss' | relative_url }}" title="RSS feed" type="application/rss+xml">
-
-    <!-- Custom CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
-
-
-    <script type="text/javascript" src="{{ '/js/jquery.min.js' | relative_url }}"></script>
-    <script type="text/javascript" src="{{ '/js/app.js' | relative_url }}"></script>
-    <script type="text/javascript" src="{{ '/js/functions.js' | relative_url }}"></script>
-
-  </head>
+      {% include _head.html %}
   <body>
       {% include _nav.html %}
       {% include _masthead.html %}
       {% include _section-about.html %}
       {% include _section-libraries.html %}
+      {% include _section-newsletter.html %}
+      {% include _section-libraries.html %}
+      {% include _js-bottom.html %}
 
-      <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-AOS.init({
-  duration: 700
-});
-</script>
   </body>
 </html>

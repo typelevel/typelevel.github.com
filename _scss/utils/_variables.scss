@@ -72,6 +72,7 @@ $base-timing:                 ease;
 // ---------------------------------------------------------------------
 
 $box-shadow: 0 $base-point-grid * 5 $base-point-grid * 12 rgba($gray-primary, 0.16);
+$box-shadow-hover: 0 $base-point-grid * 2 $base-point-grid * 8 rgba($gray-primary, 0.16);
 
 // Navigation
 // ---------------------------------------------------------------------
@@ -101,3 +102,13 @@ $button-primary-hover:        darken($button-primary-background, 15%);
 $card-padding:                $base-point-grid * 7;
 $card-background:             $white;
 $card-shadow:                 $box-shadow;
+
+// Tag
+// ---------------------------------------------------------------------
+
+$tag-padding-x:               $base-point-grid * 2;
+$tag-padding-y:               $base-point-grid * 4;
+$tag-font-size:               0.625rem;
+$tag-text-transform:          uppercase;
+$tag-background:              rgba($gray-primary, 0.08);
+$tag-border-radius:           $base-point-grid * 25;
