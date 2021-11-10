@@ -5,7 +5,7 @@ twitter: typelevel
 email: info@typelevel.org
 gitter: "https://gitter.im/orgs/typelevel/rooms"
 google_groups: "https://groups.google.com/group/typelevel"
-baseurl: "/typelevel.github.com/"
+baseurl: "/typelevel.github.com"
 googlemaps_apikey: "AIzaSyAgMQPpkd_Qq-NYcCggh28PaS82oG-9YoA"
 
 markdown: kramdown
@@ -15,7 +15,6 @@ kramdown:
   hard_wrap: false
 highlighter: rouge
 exclude: ["README.md", "vendor", "Rakefile"]
-permalink: /blog/:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "/blog/:num/"
 sass:
@@ -34,9 +33,14 @@ collections:
     layout: event
   projects:
     output: true
+    permalink: /libraries/:title/
   staff_members:
     output: true
   abouts:
     output: true
+  post:
+    output: true
+    permalink: /blog/:year/:month/:day/:title.html
+
 
 collections_dir: collections

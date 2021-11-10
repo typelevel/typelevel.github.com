@@ -1,12 +1,12 @@
 <section id="section-libraries" class="section-large">
   <div class="container">
     <div class="section-header">
-      <h2><span>Libraries</span></h2>
-      <p>Our libraries cover a wide range of domains, from general functional programming to tooling.</p>
+      <h2><span>{{site.data.description.librariesTitle}}</span></h2>
+      <p>{{site.data.description.librariesDescription}}</p>
     </div>
     <div class="libraries-list">
       {% for project in site.projects limit:3 %}
-      <div class="library-item" data-aos="fade-down">
+      <a href="{{ project.github }}" class="library-item" data-aos="fade-down">
         <div class="library-item-content">
           <div>
             <img src="{{ site.baseurl }}/img/assets/icon-library.svg" alt="">
@@ -14,16 +14,15 @@
           </div>
           <p>{{ project.description }}</p>
         </div>
-        <a href="{{ project.github }}">Github</a>
         <div class="library-item-tag">
           <p>{{ project.category }}</p>
         </div>
-      </div>
+      </a>
       {% endfor %}
     </div>
     <div class="section-cta">
         <a class="button button-primary" href="#" class="button">See all libraries</a>
     </div>
-    <p class="lead">Are you interested in submitting yout library to the Typevelel Ecosystem? <a href="#">Contact us</a></p>
+    <p class="sub-cta">Are you interested in submitting yout library to the Typevelel Ecosystem? <a href="#">Contact us</a></p>
   </div>
 </section>

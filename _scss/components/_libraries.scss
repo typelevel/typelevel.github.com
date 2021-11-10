@@ -8,10 +8,11 @@
     @include col-3;
 
     .library-item {
-      @extend .card;
+      @include card;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: $base-font-color;
 
       .library-item-content {
         > div {
@@ -25,15 +26,18 @@
         }
       }
 
-      .library-item-content {}
+      .library-item-content {
+        //background-color: $bse;
+      }
 
       .library-item-tag {
         margin-top: 20px;
 
         p {
-          @extend .tag;
+          @include tag;
         }
       }
+
       &:nth-child(1) {
         transition-delay: 0.2s;
       }
@@ -45,12 +49,33 @@
       &:nth-child(3) {
         transition-delay: 0.6s;
       }
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
-  .lead {
+  .sub-cta {
     max-width: $base-point-grid * 91;
     margin: $base-point-grid * 8 auto 0 auto;
     text-align: center;
+  }
+}
+
+// Responsive
+@include bp(large) {
+  #section-libraries {
+    .libraries-list {
+      @include col-2;
+    }
+  }
+}
+
+@include bp(medium) {
+  #section-libraries {
+    .libraries-list {
+      @include col-1;
+    }
   }
 }

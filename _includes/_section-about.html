@@ -1,13 +1,12 @@
 <section id="section-about" class="section-large">
   <div class="container">
-    {% for header in site.data.about.aboutHeader %}
+    
     <div class="section-header">
-      <h2><span>{{header.title}}</span></h2>
-      <p>{{header.description}}</p>
+      <h2><span>{{site.data.description.aboutTitle}}</span></h2>
+      <p>{{{site.data.description.aboutDescription}}</p>
     </div>
     <div class="about-list">
-      {% assign initialItems = header.aboutList | slice: 0,3 %}
-      {% for item in initialItems %}
+      {% for item in site.data.about limit:3 %}
       <div class="about-item" data-aos="fade-down">
           <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
           <h3>{{item.title}}</h3>
@@ -15,7 +14,6 @@
       </div>
       {% endfor %}
     </div>
-    {% endfor %}
     <div class="section-cta">
         <a class="button button-primary" href="#" class="button">See about</a>
     </div>

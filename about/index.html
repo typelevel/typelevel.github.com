@@ -1,0 +1,14 @@
+---
+layout: about
+title: About
+---
+
+<div class="about-list">
+    {% for item in site.data.about %}
+    <div class="about-item" data-aos="fade-down">
+        <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
+        <h3>{{item.title}}</h3>
+        <p>{{item.description}}</p>
+    </div>
+    {% endfor %}
+  </div>
