@@ -2,3 +2,20 @@
 layout: libraries
 title: Projects
 ---
+
+<div class="libraries-list">
+    {% for project in site.projects %}
+    <a href="{{ project.github }}" class="library-item" data-aos="fade-down">
+      <div class="library-item-content">
+        <div>
+          <img src="{{ site.baseurl }}/img/assets/icon-library.svg" alt="">
+          <h3>{{ project.title }}</h3>
+        </div>
+        <p>{{ project.description }}</p>
+      </div>
+      <div class="library-item-tag">
+        <p>{{ project.category }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>

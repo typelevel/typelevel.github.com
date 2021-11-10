@@ -13,6 +13,7 @@
       flex-direction: column;
       justify-content: space-between;
       color: $base-font-color;
+
       .library-item-content {
         > div {
           display: flex;
@@ -25,7 +26,9 @@
         }
       }
 
-      .library-item-content {}
+      .library-item-content {
+        //background-color: $bse;
+      }
 
       .library-item-tag {
         margin-top: 20px;
