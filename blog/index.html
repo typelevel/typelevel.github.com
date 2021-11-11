@@ -1,20 +1,29 @@
 ---
-layout: post
+layout: page
 title: Blog
 ---
-<div class="libraries-list">
-  {% for post in site.posts  %}
-  <a href="{{ site.baseurl }}{{ post.url }}" class="library-item" data-aos="fade-down">
-    <div class="library-item-content">
-      <div>
-        <img src="{{ site.baseurl }}/img/assets/icon-library.svg" alt="">
-        <h3>{{ post.title }}</h3>
-      </div>
-      <p>{{ post.content | truncatewords: 20 }}</p>
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.blogDescription}}</p>
     </div>
-    <div class="library-item-tag">
-      <p>{{ project.category }}</p>
+    <div class="blog-list" data-aos="fade-down">
+      {% for post in site.posts %}
+      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item">
+        <div class="blog-item-content">
+          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+          <div>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.content | truncatewords: 8 }}</p>
+          </div>
+        </div>
+        <div class="blog-item-tag">
+          <p>{{ post.category }}</p>
+        </div>
+      </a>
+      {% endfor %}
     </div>
-  </a>
-  {% endfor %}
+  </div>
 </div>
