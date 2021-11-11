@@ -8,7 +8,7 @@
     @include col-3;
 
     .about-item {
-      @extend .hexagon;
+      @include hexagon;
 
       img {
         margin: $base-point-grid * 17 0 $base-point-grid * 3 0;

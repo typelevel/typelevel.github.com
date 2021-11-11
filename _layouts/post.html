@@ -5,6 +5,19 @@
 <body>
   {% include _nav.html %}
   {{ content }}
+  <h2>{{ page.title }}</h2>
+  <p>{{site.data.description.blogDescription}}</p>
+  <p>{{ page.category }}</p>
+  {% assign author = site.data.authors[page.meta.author] %}
+  {% if author %}
+    {% if author.portrait %}
+      <img class="portrait" src="{{ author.portrait }}" />
+    {% endif %}
+    <p>by {{ author.full_name }}
+  {% endif %}
+  on {{ page.date | date: "%b %d, %Y" }}</p>
+
+  
   {% include _js-bottom.html %}
 </body>
 

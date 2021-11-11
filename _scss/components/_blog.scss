@@ -1,33 +1,36 @@
-// LIBRARIES
+// BLOG
 // =====================================================================
 // =====================================================================
 
-#section-libraries {
-  .libraries-list {
+#section-blog {
+  .blog-list {
     @include grid;
     @include col-3;
 
-    .library-item {
+    .blog-item {
       @include card;
+      padding: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       color: $base-font-color;
+      position: relative;
+ 
 
-      .library-item-content {
-        > div {
-          display: flex;
-          margin: 0 0 $base-point-grid * 5 0;
-          align-items: center;
-
-          h3 {
-            margin: 0 0 0 $base-point-grid * 4;
-          }
-        }
+      img {
+        width: 100%;
+        height: auto;
       }
 
-      .library-item-tag {
-        margin-top: 20px;
+      .blog-item-content {
+          >div {
+              padding: $card-padding $card-padding 0;
+          }
+      }
+
+      .blog-item-tag {
+        padding: 0 $card-padding $card-padding;
+        margin-top: $base-point-grid * 5;
 
         p {
           @include tag;
@@ -51,27 +54,21 @@
       }
     }
   }
-
-  .sub-cta {
-    max-width: $base-point-grid * 91;
-    margin: $base-point-grid * 8 auto 0 auto;
-    text-align: center;
-  }
 }
 
 // Responsive
 @include bp(large) {
-  #section-libraries {
-    .libraries-list {
-      @include col-2;
+    #section-blog {
+      .blog-list {
+        @include col-2;
+      }
     }
   }
-}
-
-@include bp(medium) {
-  #section-libraries {
-    .libraries-list {
-      @include col-1;
+  
+  @include bp(medium) {
+    #section-blog {
+      .blog-list {
+        @include col-1;
+      }
     }
   }
-}

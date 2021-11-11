@@ -33,12 +33,11 @@ collections:
     layout: event
   projects:
     output: true
-    permalink: /libraries/:title/
   staff_members:
     output: true
   abouts:
     output: true
-  post:
+  posts:
     output: true
     permalink: /blog/:year/:month/:day/:title.html
 
