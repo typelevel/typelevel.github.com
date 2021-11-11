@@ -4,20 +4,25 @@
 
 <body>
   {% include _nav.html %}
-  {{ content }}
-  <h2>{{ page.title }}</h2>
-  <p>{{site.data.description.blogDescription}}</p>
-  <p>{{ page.category }}</p>
-  {% assign author = site.data.authors[page.meta.author] %}
-  {% if author %}
-    {% if author.portrait %}
+  <div id="section-page">
+    <div class="container container-blog">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.blogDescription}}</p>
+      {% assign author = site.data.authors[page.meta.author] %}
+      {% if author %}
+      {% if author.portrait %}
       <img class="portrait" src="{{ author.portrait }}" />
-    {% endif %}
-    <p>by {{ author.full_name }}
-  {% endif %}
-  on {{ page.date | date: "%b %d, %Y" }}</p>
+      {% endif %}
+      <p>by {{ author.full_name }}
+        {% endif %}
+        on {{ page.date | date: "%b %d, %Y" }}</p>
+      <p>{{ page.category }}</p>
+      <img src="{{ site.baseurl }}{{ page.image }}" alt="">
+      {{ content }}
+    </div>
+  </div>
+  {% include _footer.html %}
 
-  
   {% include _js-bottom.html %}
 </body>
 

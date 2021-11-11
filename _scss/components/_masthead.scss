@@ -69,3 +69,18 @@
     }
   }
 }
+
+.masthead-page {
+  margin-bottom: $base-point-grid * 22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h1  {
+    margin-bottom: $base-point-grid * 6;
+  }
+  p {
+    max-width: $base-point-grid * 140;
+    text-align: center;
+    font-size: 1.125rem;
+  }
+}

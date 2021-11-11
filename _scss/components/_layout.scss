@@ -6,6 +6,9 @@
   padding: 0 $base-point-grid * 6;
   margin: 0 auto;
   max-width: $size-max-width;
+  &.container-blog {
+    max-width: $base-point-grid * 191;
+  }
 }
 
 .section-small {
@@ -24,4 +27,8 @@
   margin: 0 auto $base-point-grid * 16 auto;
   max-width: $section-header-width;
   text-align: center;
+}
+
+#section-page {
+  padding: $base-point-grid * 44 0 $base-point-grid * 22 0;
 }

@@ -1,10 +1,10 @@
----
-layout: default
----
-
-<div class="content js-fade-in">
-  <h2>{{ page.title }}</h2>
-
-  {{ content }}
-
-</div>
+<!DOCTYPE html>
+<html>
+  {% include _head.html %}
+  <body>
+    {% include _nav.html %}
+    {{ content }}
+    {% include _footer.html %}
+    {% include _js-bottom.html %}
+  </body>
+</html>

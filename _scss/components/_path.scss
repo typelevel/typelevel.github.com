@@ -18,8 +18,8 @@ h2 {
 h1 {
   span {
     &::after {
-      top: - $base-point-grid * 3;
-      left: 0;
+      top: - $base-point-grid * 5;
+      left: - $base-point-grid;
       content: url("../img/assets/title-path.svg");
     }
   }
