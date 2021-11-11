@@ -1,28 +1,28 @@
-<section id="section-libraries" class="section-large">
-    <div class="container">
-      <div class="section-header">
-        <h2><span>{{site.data.description.blogTitle}}</span></h2>
-        <p>{{site.data.description.blogDescription}}</p>
-      </div>
-      <div class="libraries-list">
-        {% for post in site.posts limit:3 %}
-        <a href="{{ site.baseurl }}{{ post.url }}" class="library-item" data-aos="fade-down">
-          <div class="library-item-content">
-            <div>
-              <img src="{{ site.baseurl }}/img/assets/icon-library.svg" alt="">
-              <h3>{{ post.title }}</h3>
-            </div>
-            <p>{{ post.content | truncatewords: 20 }}</p>
-          </div>
-          <div class="library-item-tag">
-            <p>{{ project.category }}</p>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
-      <div class="section-cta">
-          <a class="button button-primary" href="#" class="button">See all libraries</a>
-      </div>
-      <p class="sub-cta">Are you interested in submitting yout library to the Typevelel Ecosystem? <a href="#">Contact us</a></p>
+<section id="section-blog" class="section-large">
+  <div class="container">
+    <div class="section-header">
+      <h2><span>{{site.data.description.blogTitle}}</span></h2>
+      <p>{{site.data.description.blogDescription}}</p>
     </div>
-  </section>
+    <div class="blog-list">
+      {% for post in site.posts limit:3 %}
+      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item" data-aos="fade-down">
+
+        <div class="blog-item-content">
+          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+          <div>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.content | truncatewords: 8 }}</p>
+          </div>
+        </div>
+        <div class="blog-item-tag">
+          <p>{{ post.category }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="section-cta">
+      <a class="button button-primary" href="#" class="button">See all libraries</a>
+    </div>
+  </div>
+</section>

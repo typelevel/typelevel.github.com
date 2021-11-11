@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Discord Migration
+image: /img/blog/discord-migration.jpg
+category: social
+
 
 meta:
   nav: blog

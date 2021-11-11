@@ -1,0 +1,37 @@
+<div id="footer">
+    <div class="container">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg"
+                        title="{{ site.title }}" /></a>
+            </div>
+
+            <ul class="footer-nav">
+                <h3>Typelevel</h3>
+                {% for item in site.data.nav.navbarNav %}
+                <li>
+                    <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="footer-nav-scala">
+                <h3>Scala</h3>
+                {% for item in site.data.nav.navScala %}
+                <li>
+                    <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="footer-social">
+                
+                {% for item in site.data.nav.social %}
+                <li>
+                    <a href="{{ site.baseurl }}{{ item.url }}">
+                    <i class="{{ item.icon }}"></i>
+                </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

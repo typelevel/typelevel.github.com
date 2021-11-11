@@ -100,6 +100,7 @@ $button-primary-hover:        darken($button-primary-background, 15%);
 // ---------------------------------------------------------------------
 
 $card-padding:                $base-point-grid * 7;
+$card-font-size:              0.938rem;
 $card-background:             $white;
 $card-shadow:                 $box-shadow;
 
@@ -112,3 +113,8 @@ $tag-font-size:               0.625rem;
 $tag-text-transform:          uppercase;
 $tag-background:              rgba($gray-primary, 0.08);
 $tag-border-radius:           $base-point-grid * 25;
+
+// Footer
+// ---------------------------------------------------------------------
+
+$footer-padding-y:            $base-point-grid * 16;

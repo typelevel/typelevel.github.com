@@ -1,6 +1,8 @@
 ---
 layout: post
 title: "Community Safety"
+image: /img/blog/discord-migration.jpg
+category: Technical
 
 meta:
   nav: blog

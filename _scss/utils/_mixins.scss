@@ -12,11 +12,24 @@
 }
 
 
+// Mixin Hexagon
+// ---------------------------------------------------------------------
+
+@mixin hexagon {
+  min-height: $base-point-grid * 80;
+  font-size: 0.938rem;
+  text-align: center;
+  background: url("../img/assets/hexagon-path.svg") no-repeat center center;
+  filter: drop-shadow($box-shadow);
+}
+
+
 // Mixin Card
 // ---------------------------------------------------------------------
 
 @mixin card {
   padding: $card-padding;
+  font-size: $card-font-size;
   background: $card-background;
   box-shadow: $card-shadow;
 }
