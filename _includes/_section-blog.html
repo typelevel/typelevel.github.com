@@ -6,19 +6,22 @@
     </div>
     <div class="blog-list">
       {% for post in site.posts limit:3 %}
-      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item" data-aos="fade-down">
-
+      <div class="blog-item" data-aos="fade-down">
         <div class="blog-item-content">
-          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+          <a href="{{ site.baseurl }}{{ post.url }}">
+            <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+          </a>
           <div>
-            <h3>{{ post.title }}</h3>
+            <a href="{{ site.baseurl }}{{ post.url }}">
+              <h3>{{ post.title }}</h3>
+            </a>
             <p>{{ post.content | truncatewords: 8 }}</p>
           </div>
         </div>
         <div class="blog-item-tag">
           <p>{{ post.category }}</p>
         </div>
-      </a>
+      </div>
       {% endfor %}
     </div>
     <div class="section-cta">

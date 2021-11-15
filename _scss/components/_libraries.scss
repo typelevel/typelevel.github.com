@@ -50,27 +50,27 @@
       text-decoration: none;
     }
   }
+}
 
-  .sub-cta {
-    max-width: $base-point-grid * 91;
-    margin: $base-point-grid * 8 auto 0 auto;
-    text-align: center;
-  }
+.sub-cta {
+  max-width: $base-point-grid * 91;
+  margin: $base-point-grid * 8 auto 0 auto;
+  text-align: center;
 }
 
 // Responsive
 @include bp(large) {
-  #section-libraries {
+
     .libraries-list {
       @include col-2;
     }
-  }
+
 }
 
 @include bp(medium) {
-  #section-libraries {
+
     .libraries-list {
       @include col-1;
     }
-  }
+
 }
