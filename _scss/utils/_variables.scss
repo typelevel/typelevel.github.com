@@ -114,6 +114,16 @@ $tag-text-transform:          uppercase;
 $tag-background:              rgba($gray-primary, 0.08);
 $tag-border-radius:           $base-point-grid * 25;
 
+// Tab
+// ---------------------------------------------------------------------
+$tab-font-size:               1.125rem;
+$tab-font-family:             $heading-font-family;
+$tab-color:                   $base-font-color;
+$tab-text-transform:          uppercase;
+$tab-border:                  $base-point-grid / 2;
+$tab-padding:                 $base-point-grid;
+
+
 // Footer
 // ---------------------------------------------------------------------
 

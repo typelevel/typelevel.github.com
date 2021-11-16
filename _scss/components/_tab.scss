@@ -1,0 +1,27 @@
+// TABS
+// =====================================================================
+// =====================================================================
+
+.tab {
+  display: flex;
+  margin-top: $base-point-grid * 16;
+  justify-content: center;
+  li {
+    font-size: $tab-font-size;
+    font-family: $tab-font-family;
+    text-transform: $tab-text-transform;
+    &:not(:last-child) {
+      margin-right: $base-point-grid * 18;
+    }
+    a {
+      padding-bottom: $base-point-grid;
+      color: $tab-color;
+      &:hover {
+        text-decoration: none;
+      }
+      &.active {
+        border-bottom: $tab-border solid $brand-primary;
+      }
+    }
+  }
+}
