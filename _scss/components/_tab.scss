@@ -14,9 +14,13 @@
       margin-right: $base-point-grid * 18;
     }
     a {
+      padding-bottom: $base-point-grid;
       color: $tab-color;
       &:hover {
         text-decoration: none;
+      }
+      &.active {
+        border-bottom: $tab-border solid $brand-primary;
       }
     }
   }
