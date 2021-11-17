@@ -29,10 +29,23 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed vehicula li
 
 ## Emphasis
 
-Lorem ipsum dolor sit amet, *consectetur* adipiscing elit. Integer _sed vehicula_ ligula.
+Lorem ipsum dolor sit amet, *consectetur* adipiscing elit. Integer _sed vehicula_ ligula. Lorem ipsum dolor sit amet, **consectetur** adipiscing elit. Integer __sed vehicula__ ligula. Lorem ipsum dolor sit amet, **consectetur _adipiscing_** elit. Integer sed vehicula ligula. Lorem ipsum dolor sit amet, consectetur ~~adipiscing~~ elit. Integer sed vehicula ligula.
 
-Strong emphasis, aka bold, with **asterisks** or __underscores__.
+## List
 
-Combined emphasis with **asterisks and _underscores_**.
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
 
-Strikethrough uses two tildes. ~~Scratch this.~~
+1. Lorem ipsum dolor sit amet, consectetur adipiscing elit
+2. Lorem ipsum dolor sit amet, consectetur adipiscing elit
+3. Lorem ipsum dolor sit amet, consectetur adipiscing elit
+4. Lorem ipsum dolor sit amet, consectetur adipiscing elit
+
+## Code
+
+```javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+```

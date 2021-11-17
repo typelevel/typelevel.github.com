@@ -101,19 +101,37 @@
   h5 {
     font-size: 1.125rem;
   }
-  p {
-    margin-bottom: $base-point-grid * 6;
+  
+  p,
+  ul,
+  ol {
+    margin-bottom: $base-point-grid * 8;
   }
   em {
     font-style: italic;
   }
 
+  strong {
+    font-weight: $font-weight-bold;
+  }
+
+  ul,
+  ol {
+    padding-left: $base-point-grid * 5;
+  }    
+
   ul {
     li {
-      list-style-type: circle;
+      list-style-type: disc;
     }
   }
-  
+
+  ol {
+    li {
+      list-style-type: decimal;
+    }
+  }
+
 }
 
 // Responsive
