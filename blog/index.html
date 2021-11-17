@@ -10,7 +10,9 @@ title: Blog
       <p>{{site.data.description.blogDescription}}</p>
       {% include _tab.html %}
     </div>
+
     <div class="blog-list">
+
       {% for post in site.posts %}
       <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item">
         <div class="blog-item-content">
@@ -29,6 +31,7 @@ title: Blog
           <p>{{ post.category }}</p>
         </div>
       </a>
+    
       {% endfor %}
     </div>
   </div>

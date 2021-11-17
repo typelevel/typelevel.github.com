@@ -11,6 +11,7 @@
   <link rel="alternate" href="{{ '/blog/feed.rss' | relative_url }}" title="RSS feed" type="application/rss+xml">
 
   <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/monokai.min.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700' rel='stylesheet' type='text/css'>
@@ -19,5 +20,10 @@
   <script type="text/javascript" src="{{ '/js/jquery.min.js' | relative_url }}"></script>
   <script type="text/javascript" src="{{ '/js/app.js' | relative_url }}"></script>
   <script type="text/javascript" src="{{ '/js/functions.js' | relative_url }}"></script>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/go.min.js"></script>
+<script>hljs.highlightAll();</script>
 
 </head>

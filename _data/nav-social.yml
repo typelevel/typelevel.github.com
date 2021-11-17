@@ -1,0 +1,19 @@
+- title: Github
+  url: #
+  icon: "fab fa-github"
+
+- title: Twitter
+  url: #
+  icon: "fab fa-twitter"
+
+- title: Gitter
+  url: #
+  icon: "fab fa-gitter"
+
+- title: Email
+  url: #
+  icon: "fas fa-envelope"
+  
+- title: RSS
+  url: #
+  icon: "fas fa-rss"
