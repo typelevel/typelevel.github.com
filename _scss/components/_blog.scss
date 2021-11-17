@@ -118,17 +118,37 @@
   ul,
   ol {
     padding-left: $base-point-grid * 5;
-  }    
+    li {
+      margin-bottom: $base-point-grid * 3;
+    }
+  }
 
   ul {
     li {
       list-style-type: disc;
+      &::marker {
+        color: $brand-primary;
+      }
     }
   }
 
   ol {
     li {
       list-style-type: decimal;
+    }
+  }
+
+  table {
+    width: 100%;
+    text-align: left;
+    th {
+      font-weight: $font-weight-bold;
+    }
+    th,
+    td {
+      padding: $base-point-grid * 2 $base-point-grid * 4;
+      border-top: 1px solid rgba($gray-primary, 0.18);
+      border-bottom: 1px solid rgba($gray-primary, 0.18);
     }
   }
 

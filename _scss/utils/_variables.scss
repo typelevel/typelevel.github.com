@@ -7,6 +7,7 @@
 // ---------------------------------------------------------------------
 
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Open+Sans+Condensed:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
 
 
 // Colors
@@ -26,7 +27,7 @@ $body-background:             $white;
 
 // Base
 $base-font-family:            'Mulish', sans-serif;
-$base-font-color:             $gray-primary;
+$base-font-color:             rgba($gray-primary, 0.8);
 $base-font-size:              16px;
 $base-line-height:            1.5;
 
@@ -35,6 +36,10 @@ $heading-font-family:         'Open Sans Condensed', sans-serif;
 $heading-font-color:          $gray-primary;
 $heading-text-transform:      uppercase;
 $heading-line-height:         1.3;
+
+// Code
+$code-font-family:            'Fira Code', monospace;
+$code-font-color:             rgba($white, 0.8);
 
 // Font weight
 $font-weight-regular:         400;
