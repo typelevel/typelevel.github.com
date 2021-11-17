@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-about-modular</title>
+    <g id="icon-about-modular" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <polyline id="path" stroke="#FE4559" stroke-width="3" points="44 16.2631579 44 27.8454737 32 35.6315789 20 27.8454737 20 16.2631579"></polyline>
+        <polygon id="path" stroke="#FE4559" stroke-width="3" points="44 16.2631579 32 23.5263158 20 16.2631579 32 9"></polygon>
+        <line x1="32" y1="23.5263158" x2="32" y2="35.6315789" id="path" stroke="#FE4559" stroke-width="3"></line>
+        <polyline id="path" stroke="#FE4559" stroke-width="3" points="56 35.6315789 56 47.2138947 44 55 32 47.2138947 32 35.6315789"></polyline>
+        <polygon id="path" stroke="#FE4559" stroke-width="3" points="56 35.6315789 44 42.8947368 32 35.6315789 44 27.8454737"></polygon>
+        <line x1="44" y1="42.8947368" x2="44" y2="55" id="path" stroke="#FE4559" stroke-width="3"></line>
+        <polyline id="path" stroke="#FE4559" stroke-width="3" points="32 35.6315789 32 47.2138947 20 55 8 47.2138947 8 35.6315789"></polyline>
+        <polygon id="path" stroke="#FE4559" stroke-width="3" points="32 35.6315789 20 42.8947368 8 35.6315789 20 27.8454737"></polygon>
+        <line x1="20" y1="42.8947368" x2="20" y2="55" id="path" stroke="#FE4559" stroke-width="3"></line>
+    </g>
+</svg>

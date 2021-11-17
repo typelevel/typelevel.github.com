@@ -3,5 +3,86 @@
 // =====================================================================
 
 pre {
-    margin-bottom: $base-point-grid * 8;
+  margin-bottom: $base-point-grid * 8;
+}
+
+code {
+  font-family: $code-font-family;
+  font-size: 1rem;
+}
+
+
+:not(pre) {
+    >code {
+        padding: 0 $base-point-grid;
+        color: $gray-primary;
+        background: rgba($gray-primary, 0.06);
+    }
+}
+
+
+.hljs {
+  font-family: $code-font-family;
+  background: $gray-primary;
+  color: $code-font-color;
+}
+
+.hljs-tag,
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-strong,
+.hljs-name {
+  color: $brand-primary;
+}
+
+.hljs-code {
+  color: #66d9ef;
+}
+
+.hljs-attribute,
+.hljs-symbol,
+.hljs-regexp,
+.hljs-link {
+  color: #bf79db;
+}
+
+.hljs-string,
+.hljs-bullet,
+.hljs-subst,
+.hljs-title,
+.hljs-section,
+.hljs-emphasis,
+.hljs-type,
+.hljs-built_in,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+  color: #a6e22e;
+}
+
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: white;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: rgba($white, 0.3);
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-selector-id {
+  font-weight: $font-weight-regular;
 }

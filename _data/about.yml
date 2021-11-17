@@ -12,12 +12,12 @@
 
 - title: "Resources"
   description: "Accessible and idiomatic learning resources"
-  icon: /img/assets/about-icon.svg
+  icon: /img/assets/icon-about-resources.svg
 
 - title: "Friendly"
   description: "An inclusive, welcoming and safe environment"
-  icon: /img/assets/about-icon.svg
+  icon: /img/assets/icon-about-friendly.svg
 
 - title: "Modular"
   description: "Focused, separate modules designed to work together"
-  icon: /img/assets/about-icon.svg
+  icon: /img/assets/icon-about-modular.svg

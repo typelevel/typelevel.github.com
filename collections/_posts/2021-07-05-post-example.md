@@ -45,7 +45,21 @@ Lorem ipsum dolor sit amet, *consectetur* adipiscing elit. Integer _sed vehicula
 
 ## Code
 
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
+Lorem `ipsum dolor` sit amet, consectetur adipiscing elit
+
+```scala
+val data: Array[Int] = // ...
+var i = 0
+while (i < data.length) {
+  data(i) *= 2
+  i += 1
+}
 ```
+
+## Tables
+
+| First         | Second        | Third       |
+| ------------- |---------------| ------------|
+| Lorem         | ipsum dolor   | ipsum dolor |
+| Lorem         | `ipsum dolor` | ipsum dolor |
+| ipsum dolor   | ipsum dolor   | ipsum dolor |
