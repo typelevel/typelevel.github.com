@@ -1,0 +1,9 @@
+- title: All Posts
+  url: /blog/
+  category: allPosts
+- title: Technical
+  url: /blog/technical/
+  category: technical
+- title: Social
+  url: /blog/social/
+  category: social

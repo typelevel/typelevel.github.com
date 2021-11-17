@@ -8,7 +8,7 @@
 
             <ul class="footer-nav">
                 <h3>Typelevel</h3>
-                {% for item in site.data.nav.navbarNav %}
+                {% for item in site.data.nav %}
                 <li>
                     <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
                 </li>
@@ -16,7 +16,7 @@
             </ul>
             <ul class="footer-nav-scala">
                 <h3>Scala</h3>
-                {% for item in site.data.nav.navScala %}
+                {% for item in site.data.nav-scala %}
                 <li>
                     <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
                 </li>
@@ -24,7 +24,7 @@
             </ul>
             <ul class="footer-social">
                 
-                {% for item in site.data.nav.social %}
+                {% for item in site.data.nav-social %}
                 <li>
                     <a href="{{ site.baseurl }}{{ item.url }}">
                     <i class="{{ item.icon }}"></i>

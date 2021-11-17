@@ -1,4 +1,3 @@
-navbarNav:
 - title: Home
   url: /
 
@@ -10,34 +9,3 @@ navbarNav:
 
 - title: About
   url: /about/
-
-navScala:
-- title: Contributors
-  url: /
-
-- title: Code of Conduct
-  url: /libraries/
-
-- title: License
-  url: /blog/
-
-social:
-- title: Github
-  url: #
-  icon: "fab fa-github"
-
-- title: Twitter
-  url: #
-  icon: "fab fa-twitter"
-
-- title: Gitter
-  url: #
-  icon: "fab fa-gitter"
-
-- title: Email
-  url: #
-  icon: "fas fa-envelope"
-  
-- title: RSS
-  url: #
-  icon: "fas fa-rss"
