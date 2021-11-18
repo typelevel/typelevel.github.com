@@ -100,6 +100,9 @@ $button-font-family:          $heading-font-family;
 $button-primary-color:        $white;
 $button-primary-background:   $brand-primary;
 $button-primary-hover:        darken($button-primary-background, 15%);
+$button-secondary-color:      $brand-primary;
+$button-secondary-background: $white;
+$button-secondary-hover:      rgba($white, 0.9);
 
 // Card
 // ---------------------------------------------------------------------
