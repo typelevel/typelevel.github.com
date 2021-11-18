@@ -21,8 +21,13 @@
       {% endfor %}
     </div>
     <div class="section-cta">
-        <a class="button button-primary" href="#" class="button">See all libraries</a>
+        <a class="button button-primary" href="{{ site.baseurl }}/libraries/">See all libraries</a>
     </div>
-    <p class="sub-cta">Are you interested in submitting yout library to the Typevelel Ecosystem? <a href="#">Contact us</a></p>
+    <p class="sub-cta">Are you interested in submitting yout library to the Typevelel Ecosystem?
+      {% for item in site.data.nav-social %}
+      {% if item.title == "Email" %}
+      <a href="{{item.url}}">Contact us</a></p>
+      {% endif %}
+      {% endfor %}
   </div>
 </section>

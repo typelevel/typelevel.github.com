@@ -1,19 +1,16 @@
 - title: Github
-  url: #
+  url: https://github.com/typelevel
   icon: "fab fa-github"
 
 - title: Twitter
-  url: #
+  url: https://twitter.com/typelevel
   icon: "fab fa-twitter"
 
 - title: Gitter
-  url: #
+  url: https://gitter.im/typelevel/home
   icon: "fab fa-gitter"
 
 - title: Email
-  url: #
+  url: "mailto:info@typelevel.org"
   icon: "fas fa-envelope"
   
-- title: RSS
-  url: #
-  icon: "fas fa-rss"
