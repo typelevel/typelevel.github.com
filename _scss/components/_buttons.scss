@@ -19,4 +19,12 @@
       background: $button-primary-hover;
     }
   }
+
+  &.button-secondary {
+    background: $button-secondary-background;
+    color: $button-secondary-color;
+    &:hover {
+      background: $button-secondary-hover;
+    }
+  }
 }
