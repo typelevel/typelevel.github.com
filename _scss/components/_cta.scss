@@ -11,11 +11,14 @@
   p {
     color: $white;
   }
+
+  p {
+    margin-bottom: $base-point-grid * 8;
+  }
   .section-header {
     margin-bottom: 0;
   }
   .newsletter-control {
-    margin-top: $base-point-grid * 8;
     display: flex;
   }
 }

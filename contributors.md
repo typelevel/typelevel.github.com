@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: coc
 title: Contributors
 ---
 

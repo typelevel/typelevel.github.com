@@ -6,9 +6,9 @@
     </div>
     <div class="blog-list">
       {% for post in site.posts limit:3 %}
-      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item" data-aos="fade-down">
+      <a href="{{ post.url | relative_url }}" class="blog-item" data-aos="fade-down">
         <div class="blog-item-content">
-            <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+            <img src="{{ site.url }}{{ post.image }}" alt="">
           <div>
               <h3>{{ post.title }}</h3>
               {% assign author = site.data.authors[post.meta.author] %}
@@ -26,7 +26,7 @@
       {% endfor %}
     </div>
     <div class="section-cta">
-      <a class="button button-primary" href="#" class="button">See all libraries</a>
+      <a class="button button-primary" href="{{ site.baseurl }}/blog/">See all posts</a>
     </div>
   </div>
 </section>

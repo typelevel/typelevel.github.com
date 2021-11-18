@@ -54,7 +54,7 @@ The most direct and naive way to approach this is to allocate one thread per con
 ### Unbounded Threads
 
 <!-- loads of threads diagram -->
-![](/img/media/fibers/many-threads.png)
+![]({{ site.url }}/img/media/fibers/many-threads.png)
 
 Implementation-wise, this is very easy to reason about. Your code will all take on a highly imperative structure, with *A* followed by *B* followed by *C*, etc, and it will behave entirely reasonably at small scales! Unfortunately, the problem here is that threads are not particularly cheap. The reasons for this are relatively complex, but they manifest in two places: the OS kernel scheduler, and the JVM itself. 
 

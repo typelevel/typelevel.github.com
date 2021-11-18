@@ -2,7 +2,7 @@
     <div class="container">
         <div class="footer-container">
             <div class="footer-brand">
-                <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg"
+                <a href="/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg"
                         title="{{ site.title }}" /></a>
             </div>
 
@@ -10,7 +10,7 @@
                 <h3>Typelevel</h3>
                 {% for item in site.data.nav %}
                 <li>
-                    <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
+                    <a href="{{ item.url | relative_url }}">{{item.title}}</a>
                 </li>
                 {% endfor %}
             </ul>
@@ -18,7 +18,7 @@
                 <h3>Scala</h3>
                 {% for item in site.data.nav-scala %}
                 <li>
-                    <a href="{{ site.baseurl }}{{ item.url }}">{{item.title}}</a>
+                    <a href="{{ item.url | relative_url }}">{{item.title}}</a>
                 </li>
                 {% endfor %}
             </ul>
@@ -26,7 +26,7 @@
                 
                 {% for item in site.data.nav-social %}
                 <li>
-                    <a href="{{ site.baseurl }}{{ item.url }}">
+                    <a href="{{ item.url | relative_url }}" target="_blank">
                     <i class="{{ item.icon }}"></i>
                 </a>
                 </li>

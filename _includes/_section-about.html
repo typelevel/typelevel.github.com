@@ -7,14 +7,14 @@
     <div class="about-list">
       {% for item in site.data.about limit:3 %}
       <div class="about-item" data-aos="fade-down">
-          <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
+          <img src="{{ site.baseurl }}{{ item.icon  }}" title="{{ item.title }}" />
           <h3>{{item.title}}</h3>
           <p>{{item.description}}</p>
       </div>
       {% endfor %}
     </div>
     <div class="section-cta">
-        <a class="button button-primary" href="#" class="button">See about</a>
+        <a class="button button-primary" href="{{ site.baseurl }}/about/">See about</a>
     </div>
   </div>
 </section>
