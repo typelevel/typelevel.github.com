@@ -15,7 +15,7 @@
           on {{ page.date | date: "%b %d, %Y" }}
         </p>
         <p class="blog-detail-tag">{{ page.category }}</p>
-        <img src="{{ site.baseurl }}{{ page.image }}" alt="">
+        <img src="{{ site.url }}{{ page.image }}" alt="">
       </div>
       <div class="blog-detail-content">
       {{ content }}
