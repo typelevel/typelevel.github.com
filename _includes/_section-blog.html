@@ -8,7 +8,7 @@
       {% for post in site.posts limit:3 %}
       <a href="{{ post.url | relative_url }}" class="blog-item" data-aos="fade-down">
         <div class="blog-item-content">
-            <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+            <img src="{{ site.url }}{{ post.image }}" alt="">
           <div>
               <h3>{{ post.title }}</h3>
               {% assign author = site.data.authors[post.meta.author] %}
