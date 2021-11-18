@@ -1,5 +1,5 @@
 {% for item in site.data.nav-social %}
 {% if item.title == "Email" %}
-<a class="button button-secondary" href="{{item.url}}">contact us</a>
+<a class="button button-secondary" href="{{ item.url | relative_url }}">contact us</a>
 {% endif %}
 {% endfor %}

@@ -5,7 +5,7 @@
             <p>{{site.data.cta.conductDescription}}</p>
             {% for item in site.data.nav-scala %}
             {% if item.title == "Code of Conduct" %}
-            <a class="button button-secondary" href="{{ site.baseurl }}{{item.url}}">Read full Code of Conduct</a>
+            <a class="button button-secondary" href="{{item.url | relative_url }}">Read full Code of Conduct</a>
             {% endif %}
             {% endfor %}
         </div>

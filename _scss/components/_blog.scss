@@ -129,6 +129,12 @@
       &::marker {
         color: $brand-primary;
       }
+      ul {
+        margin-top: $base-point-grid * 6;
+        li {
+          list-style-type: circle;
+        }
+      }
     }
   }
 

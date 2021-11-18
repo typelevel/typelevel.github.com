@@ -6,7 +6,7 @@
     </div>
     <div class="blog-list">
       {% for post in site.posts limit:3 %}
-      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item" data-aos="fade-down">
+      <a href="{{ post.url | relative_url }}" class="blog-item" data-aos="fade-down">
         <div class="blog-item-content">
             <img src="{{ site.baseurl }}{{ post.image }}" alt="">
           <div>
