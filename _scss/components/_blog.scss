@@ -22,6 +22,7 @@
     }
 
     .blog-item-content {
+      margin-bottom: $base-point-grid * 6;
       > div {
         padding: $card-padding $card-padding 0;
       }
@@ -29,7 +30,6 @@
 
     .blog-item-tag {
       padding: 0 $card-padding $card-padding;
-      margin-top: $base-point-grid * 5;
 
       p {
         @include tag;

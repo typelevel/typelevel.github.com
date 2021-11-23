@@ -16,11 +16,24 @@
     a {
       padding-bottom: $base-point-grid;
       color: $tab-color;
-      &:hover {
-        text-decoration: none;
+      &:after {
+        @include border-nav;
+        transform: scaleX(0);
+        transition: transform $base-duration $base-timing;
       }
       &.active {
-        border-bottom: $tab-border solid $brand-primary;
+        cursor: default;
+
+        &:after {
+          @include border-nav;
+          transform: scaleX(1);
+        }
+      }
+      &:hover {
+        text-decoration: none;
+        &:after {
+          transform: scaleX(1);
+        }
       }
     }
   }
