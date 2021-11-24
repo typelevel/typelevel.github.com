@@ -4,22 +4,32 @@ title: About
 ---
 
 
-  <div id="section-page">
-    <div class="container">
-      <div class="masthead-page">
-        <h1><span>{{ page.title }}</span></h1>
-        <p>{{site.data.description.aboutDescription}}</p>
-      </div>
-  
-      <div class="about-list">
-        {% for item in site.data.about %}
-        <div class="about-item" data-aos="fade-down">
-            <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
-            <h3>{{item.title}}</h3>
-            <p>{{item.description}}</p>
-        </div>
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.aboutDescription}}</p>
+      <ul class="masthead-social">
+
+        {% for item in site.data.nav-social %}
+        <li>
+          <a href="{{ item.url | relative_url }}" target="_blank">
+            <i class="{{ item.icon }}"></i>
+          </a>
+        </li>
         {% endfor %}
+      </ul>
+    </div>
+
+    <div class="about-list">
+      {% for item in site.data.about %}
+      <div class="about-item" data-aos="fade-down">
+        <img src="{{ site.baseurl }}{{ item.icon }}" title="{{ item.title }}" />
+        <h3>{{item.title}}</h3>
+        <p>{{item.description}}</p>
       </div>
+      {% endfor %}
     </div>
   </div>
-  {% include _cta-conduct.html %}
+</div>
+{% include _cta-conduct.html %}

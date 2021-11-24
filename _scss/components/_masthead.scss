@@ -83,4 +83,29 @@
     text-align: center;
     font-size: 1.125rem;
   }
+
+  .masthead-social {
+    display: flex;
+    margin-top: $base-point-grid * 6;
+    li {
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 48px;
+        height: 48px;
+        color: $white;
+        background: url("../img/assets/background-social.svg") no-repeat center center;
+        transition: $base-duration $base-timing;
+        transition-property: margin;
+        &:hover {
+          margin-top: - $base-point-grid * 2;
+          text-decoration: none;
+        }
+      }
+      &:not(last-child) {
+        margin-right: $base-point-grid * 4;
+      }
+    }
+  }
 }
