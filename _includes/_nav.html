@@ -5,7 +5,7 @@
         <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/img/assets/typelevel-brand.svg" title="{{ site.title }}" /></a>
       </div>
       <ul class="navbar-nav">
-        {% for item in site.data.nav %}
+        {% for item in site.data.nav.navMain %}
         <li>
           <a class="{% if item.url == page.url %}active{% endif %}" href="{{ item.url | relative_url }}">{{item.title}}</a>
         </li>

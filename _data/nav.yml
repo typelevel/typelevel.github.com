@@ -1,11 +1,40 @@
-- title: Home
-  url: /
+navMain:
+  - title: Home
+    url: /
 
-- title: Libraries
-  url: /libraries/
+  - title: Libraries
+    url: /libraries/
 
-- title: Blog
-  url: /blog/
+  - title: Blog
+    url: /blog/
 
-- title: About
-  url: /about/
+  - title: About
+    url: /about/
+
+navSocial:
+  - title: Github
+    url: https://github.com/typelevel
+    icon: "fab fa-github"
+
+  - title: Twitter
+    url: https://twitter.com/typelevel
+    icon: "fab fa-twitter"
+
+  - title: Gitter
+    url: https://gitter.im/typelevel/home
+    icon: "fab fa-gitter"
+
+  - title: Email
+    url: "mailto:info@typelevel.org"
+    icon: "fas fa-envelope"
+
+navScala:
+  - title: Contributors
+    url: /contributors
+
+  - title: Code of Conduct
+    url: /code-of-conduct
+
+  - title: License
+    url: "https://creativecommons.org/licenses/by-sa/3.0/"
+
