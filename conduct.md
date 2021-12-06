@@ -19,7 +19,8 @@ Community staff will be happy to help participants contact local law enforcement
 
 We expect participants to follow these rules at all Typelevel-supported venues --including online venues-- and social events associated with Typelevel. These venues include but are not necessarily limited to: 
 
-- All GitHub repositories and comments under the [Typelevel organization](https://github.com/typelevel)
+- All GitHub repositories and comments under the [Typelevel organization](https://github.com/typelevel),
+- All Discord channels under the [Typelevel organization]({{ site.discord }}),
 - All Gitter channels under the [Typelevel organization]({{ site.gitter }}),
 - The #typelevel IRC channel on Freenode,
 - The [Typelevel Google Group]({{ site.google_groups }}), and
