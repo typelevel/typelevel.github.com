@@ -80,4 +80,4 @@ For individual developers, another way to support us monetarily is to help our f
 Please don't hesitate to reach out with questions. Our contact address is sponsor-contact@typelevel.org.
 Thank you for reading this and considering supporting us.
 
-<a class="dbox-donation-button" href="https://donorbox.org/typelevel-sustainability-program-2019?default_interval=m" style="background:#F95A66 url(https://d1iczxrky3cnb2.cloudfront.net/white_logo.png) no-repeat 37px center; color: #fff;text-decoration: none;font-family: Verdana,sans-serif;display: inline-block;font-size: 16px;padding: 15px 38px 15px 75px; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; box-shadow: 0 1px 0 0 #ae3e47; text-shadow: 0 1px rgba(0, 0, 0, 0.3);" >Donate</a>
+<a href="https://opencollective.com/typelevel">Donate at OpenCollective</a>
