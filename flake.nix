@@ -23,6 +23,20 @@
           };
         in
         {
+          checks = {
+            build-site = pkgs.stdenv.mkDerivation {
+              name = "build-site";
+              buildInputs = [ gems pkgs.glibcLocales ];
+              src = ./.;
+              buildPhase = ''
+                export LANG=en_US.UTF-8
+                ${gems}/bin/jekyll build
+                cp -a _site $out
+              '';
+              dontInstall = true;
+            };
+          };
+
           devShell = pkgs.devshell.mkShell {
             name = "typelevel-org-shell";
             commands = [
