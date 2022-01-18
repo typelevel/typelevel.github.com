@@ -26,10 +26,12 @@ You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` f
 
 ### Previewing your changes
 
+#### Bundler
+
 To preview your changes, you have to install [Bundler](https://bundler.io/) first.
 To download and set up all necessary dependencies, run
 
-```bash
+```console
 $ bundle install
 ... lots of text ...
 Bundle complete! 1 Gemfile dependency, 81 gems now installed.
@@ -38,11 +40,38 @@ Bundled gems are installed into `./vendor/bundle`
 
 Then, you can generate the site by running
 
-```
+```console
 $ bundle exec jekyll serve -wl --baseurl ''
 ```
 
 The generated site will end up in the `_site` directory.
+
+#### Nix
+
+Alternatively, a fully configured Jekyll is provided through a Nix devshell:
+
+```console
+$ nix develop github:typelevel/typelevel.github.com
+🔨 Welcome to typelevel-org-shell
+
+[general commands]
+
+  jekyll     - a jekyll bundled with this site's dependencies
+  menu       - prints this menu
+  tl-preview - preview the Jekyll site
+
+$ tl-preview
+Configuration file: /home/you/src/typelevel.github.com/_config.yml
+            Source: /home/you/src/typelevel.github.com
+       Destination: /home/you/src/typelevel.github.com/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 3.336 seconds.
+ Auto-regeneration: enabled for '/home/you/src/typelevel.github.com'
+LiveReload address: http://127.0.0.1:35729
+    Server address: http://127.0.0.1:4000/
+  Server running... press ctrl-c to stop.
+```
 
 ## License
 
