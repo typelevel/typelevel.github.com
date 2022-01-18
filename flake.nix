@@ -23,6 +23,11 @@
           };
         in
         {
+          apps.jekyll = {
+            type = "app";
+            program = "${gems}/bin/jekyll";
+          };
+
           checks = {
             build-site = pkgs.stdenv.mkDerivation {
               name = "build-site";

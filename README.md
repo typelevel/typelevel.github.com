@@ -48,7 +48,21 @@ The generated site will end up in the `_site` directory.
 
 #### Nix
 
-Alternatively, a fully configured Jekyll is provided through a Nix devshell:
+A fully configured Jekyll is available as a Nix app.  Flakes required:
+
+```console
+$ nix run github:typelevel/typelevel.github.com#jekyll build
+warning: Git tree '/Users/ross.baker/src/typelevel.github.com' is dirty
+Configuration file: /Users/ross.baker/src/typelevel.github.com/_config.yml
+            Source: /Users/ross.baker/src/typelevel.github.com
+       Destination: /Users/ross.baker/src/typelevel.github.com/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+                    done in 3.635 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.
+```
+
+There is also a devshell for direct invocation, and a convenient alias:
 
 ```console
 $ nix develop github:typelevel/typelevel.github.com
@@ -72,6 +86,8 @@ LiveReload address: http://127.0.0.1:35729
     Server address: http://127.0.0.1:4000/
   Server running... press ctrl-c to stop.
 ```
+
+
 
 ## License
 
