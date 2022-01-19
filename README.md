@@ -48,7 +48,7 @@ The generated site will end up in the `_site` directory.
 
 #### Nix
 
-A fully configured Jekyll is available as a Nix app.  Flakes required:
+A fully configured Jekyll is available as a Nix app.  Assumes that you have [installed Nix](https://nixos.org/download.html) and [enabled flakes](https://nixos.wiki/wiki/Flakes#Installing_flakes):
 
 ```console
 $ nix run github:typelevel/typelevel.github.com#jekyll build
