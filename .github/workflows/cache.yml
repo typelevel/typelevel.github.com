@@ -26,5 +26,5 @@ jobs:
           name: typelevel
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: "Build dev shells"
-        run: for shell in library application; do nix develop .#${shell} -c true; done
+      - name: "Build dev shell"
+        run: nix develop -c true
