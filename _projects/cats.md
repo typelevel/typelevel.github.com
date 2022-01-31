@@ -28,7 +28,7 @@ extensions:
     link: "https://github.com/typelevel/cats"
   - title: "Mouse"
     description: "Enrichments to standard library classes to ease functional programming"
-    link: "https://github.com/typelevel/mouse"
+    link: "https://typelevel.org/mouse/"
   - title: "Kittens"
     description: "Automatic type class derivation"
     link: "https://github.com/milessabin/kittens"
