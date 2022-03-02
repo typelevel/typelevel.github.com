@@ -168,3 +168,12 @@ Sample front matter for a page:
 layout: page
 title: "Code of Conduct"
 ```
+
+### Help, CI is failing on a Dependabot PR
+
+We need to update the gemset as well.
+
+```sh
+nix run nixpkgs#bundix
+git commit -am "Update gemset"
+```
