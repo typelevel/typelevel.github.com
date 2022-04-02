@@ -46,7 +46,7 @@ programming in Scala.
 
 ## Applying
 
-Send an e-mail to [volunteer@typelevel.org][volunteer@typelevel.org]
+Send an e-mail to [volunteer@typelevel.org](mailto:volunteer@typelevel.org)
 to put yourself forward for consideration, optionally with a brief
 case why you wish to serve.  The e-mail is visible only to the
 [committee membership][committee].  We will thoughtfully consider all
