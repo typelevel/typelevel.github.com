@@ -56,7 +56,7 @@
   description: "Logging Tools For Interaction with cats-effect"
   github: "https://github.com/typelevel/log4cats"
 - title: "Outwatch"
-  description: "The Functional and Reactive Web-Frontend Library for ScalaJS"
+  description: "The Functional and Reactive Web-Frontend Library for Scala.js"
   github: "https://github.com/outwatch/outwatch"
 - title: "PureConfig"
   description: "A boilerplate-free library for loading configuration files"
