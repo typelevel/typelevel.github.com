@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Concurrency in Cats Effect 3
+category: technical
 
 meta:
   nav: blog

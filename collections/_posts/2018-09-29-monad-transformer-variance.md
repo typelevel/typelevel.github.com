@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Variance of Monad Transformers
+category: technical
 
 meta:
   nav: blog

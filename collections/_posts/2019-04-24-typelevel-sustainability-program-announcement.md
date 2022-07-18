@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Typelevel Sustainability Program Announcement
+category: governance
 
 meta:
   nav: blog

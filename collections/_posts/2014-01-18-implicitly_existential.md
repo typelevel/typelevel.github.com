@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When implicitly isn't specific enough
+category: technical
 
 meta:
   nav: blog

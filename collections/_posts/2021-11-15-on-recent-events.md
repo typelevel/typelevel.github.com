@@ -1,6 +1,7 @@
 ---
 layout: post
 title: On Recent Events
+category: governance
 
 meta:
   nav: blog

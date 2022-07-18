@@ -1,6 +1,7 @@
 ---
 layout: post
 title: It’s existential on the inside
+category: technical
 
 meta:
   nav: blog

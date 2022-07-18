@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Subtype type classes don't work
+category: technical
 
 meta:
   nav: blog

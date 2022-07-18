@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Announcement: Typelevel Summits coming up in 2016"
+category: summits
 
 meta:
   nav: blog

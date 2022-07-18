@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Shared State in Functional Programming
+category: technical
 
 meta:
   nav: blog

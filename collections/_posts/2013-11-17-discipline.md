@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Law Enforcement using Discipline
+category: technical
 
 meta:
   nav: blog

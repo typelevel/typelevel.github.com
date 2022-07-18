@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Why is ADT pattern matching allowed?
+category: technical
 
 meta:
   nav: blog

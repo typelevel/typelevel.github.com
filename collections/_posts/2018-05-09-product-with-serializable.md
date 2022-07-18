@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Product with Serializable
+category: technical
 
 meta:
   nav: blog

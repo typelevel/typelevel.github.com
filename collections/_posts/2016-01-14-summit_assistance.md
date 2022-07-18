@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Assistance and Bursaries for the Typelevel Summits"
+category: summits
 
 meta:
   nav: blog

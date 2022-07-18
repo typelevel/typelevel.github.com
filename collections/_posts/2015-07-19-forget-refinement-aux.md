@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What happens when I forget a refinement?
+category: technical
 
 meta:
   nav: blog

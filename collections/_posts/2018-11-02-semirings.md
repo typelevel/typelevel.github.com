@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A tale on Semirings
+category: technical
 
 meta:
   nav: blog

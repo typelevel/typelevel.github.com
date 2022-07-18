@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Let's build ourselves a small ScalaCheck
+category: technical
 
 meta:
   nav: blog

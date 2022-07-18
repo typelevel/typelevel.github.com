@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Machinist vs. value classes
+category: technical
 
 meta:
   nav: blog

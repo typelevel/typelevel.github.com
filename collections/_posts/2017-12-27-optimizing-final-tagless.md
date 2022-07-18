@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Optimizing Tagless Final – Saying farewell to Free
+category: technical
 
 meta:
   nav: blog

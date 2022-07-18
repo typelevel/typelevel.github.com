@@ -1,6 +1,7 @@
 ---
 layout: post
 title: An IO monad for cats
+category: technical
 
 meta:
   nav: blog

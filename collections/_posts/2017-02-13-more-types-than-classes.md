@@ -1,6 +1,7 @@
 ---
 layout: post
 title: There are more types than classes
+category: technical
 
 meta:
   nav: blog

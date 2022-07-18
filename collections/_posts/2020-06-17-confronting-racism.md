@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Confronting Racism
+category: social
 
 meta:
   nav: blog

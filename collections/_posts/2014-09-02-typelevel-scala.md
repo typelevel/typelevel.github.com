@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Typelevel Scala and the future of the Scala ecosystem
+category: technical
 
 meta:
   nav: blog

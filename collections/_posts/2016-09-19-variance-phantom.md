@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Choosing variance for a phantom type
+category: technical
 
 meta:
   nav: blog

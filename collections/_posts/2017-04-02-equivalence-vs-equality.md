@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Equivalence versus Equality
+category: technical
 
 meta:
   nav: blog

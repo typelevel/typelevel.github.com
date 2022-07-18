@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Call for Steering Committee Members
+category: governance
 
 meta:
   nav: blog

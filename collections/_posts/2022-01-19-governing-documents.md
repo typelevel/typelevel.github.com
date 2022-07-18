@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Governing Documents
+category: governance
 
 meta:
   nav: blog

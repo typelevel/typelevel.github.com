@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Four ways to escape a cake
+category: technical
 
 meta:
   nav: blog

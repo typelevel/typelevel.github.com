@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Refactoring with Monads
+category: technical
 
 meta:
   nav: blog

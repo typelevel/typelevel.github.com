@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Blog
+permalink: /blog/summits/
 ---
 
 <div id="section-page">
@@ -15,13 +16,18 @@ title: Blog
 
      
       {% for post in site.posts %}
+      {% if post.category == "summits" %}
       <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item">
         <div class="blog-item-content">
-          {% if post.image contains ".jpg" or post.image contains ".png" %}
-          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
-          {% else %}
-          <img src="{{ site.baseurl }}/img/blog/placeholder-typelevel.jpg" alt="">
-          {% endif %}
+            
+
+            {% if post.image contains ".jpg" or post.image contains ".png" %}
+            <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+            {% else %}
+            <img src="{{ site.baseurl }}/img/blog/placeholder-typelevel.jpg" alt="">
+            {% endif %}
+
+
           <div>
               <h3>{{ post.title }}</h3>
               {% assign author = site.data.authors[post.meta.author] %}
@@ -32,17 +38,13 @@ title: Blog
               on {{ post.date | date: "%b %d, %Y" }}</p>
           </div>
         </div>
-
-        {% if post.category %}
         <div class="blog-item-tag">
           <p>{{ post.category }}</p>
-          </div>
-        {% else %}
-      
-        {% endif %}
+        </div>
       </a>
+      {% endif %}
       {% endfor %}
     </div>
   </div>
 </div>
-{% include _cta-blog.html %}
+{% include _cta-newsletter.html %}

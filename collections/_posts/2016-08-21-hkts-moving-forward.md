@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Higher-kinded types: the difference between giving up, and moving forward"
+category: technical
 
 meta:
   nav: blog

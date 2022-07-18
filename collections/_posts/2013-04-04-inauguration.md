@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Inaugurating the typelevel.scala blog
+category: governance
 
 meta:
   nav: blog

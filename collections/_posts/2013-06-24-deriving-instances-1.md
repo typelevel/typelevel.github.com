@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Deriving Type Class Instances
+category: technical
 
 meta:
   nav: blog

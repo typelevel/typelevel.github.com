@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Tagless Final algebras and Streaming
+title: Tagless Final Algebras and Streaming
+category: technical
 
 meta:
   nav: blog
