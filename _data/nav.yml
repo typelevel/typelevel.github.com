@@ -2,8 +2,8 @@ navMain:
   - title: Home
     url: /
 
-  - title: Libraries
-    url: /libraries/
+  - title: Projects
+    url: /projects/
 
   - title: Blog
     url: /blog/

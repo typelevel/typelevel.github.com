@@ -1,0 +1,33 @@
+<section id="section-projects" class="section-large">
+  <div class="container">
+    <div class="section-header">
+      <h2><span>{{site.data.description.projectsTitle}}</span></h2>
+      <p>{{site.data.description.projectsDescription}}</p>
+    </div>
+    <div class="projects-list">
+      {% for project in site.projects limit:3 %}
+      <a href="{{ project.github }}" class="project-item" data-aos="fade-down">
+        <div class="project-item-content">
+          <div>
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+            <h3>{{ project.title }}</h3>
+          </div>
+          <p>{{ project.description }}</p>
+        </div>
+        <div class="project-item-tag">
+          <p>{{ project.category }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="section-cta">
+        <a class="button button-primary" href="{{ site.baseurl }}/projects/">See all projects</a>
+    </div>
+    <p class="sub-cta">Are you interested in submitting yout projects to the Typevelel Ecosystem?
+      {% for item in site.data.nav-social %}
+      {% if item.title == "Email" %}
+      <a href="{{item.url}}">Contact us</a></p>
+      {% endif %}
+      {% endfor %}
+  </div>
+</section>
