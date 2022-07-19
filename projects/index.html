@@ -18,9 +18,11 @@ title: Projects
           </div>
           <p>{{ project.description }}</p>
         </div>
+        {% if project.category %}
         <div class="project-item-tag">
           <p>{{ project.category }}</p>
         </div>
+        {% endif %}
       </a>
       {% endfor %}
     </div>
