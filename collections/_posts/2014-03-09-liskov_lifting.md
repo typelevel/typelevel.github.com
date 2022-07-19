@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When can Liskov be lifted?
+category: technical
 
 meta:
   nav: blog

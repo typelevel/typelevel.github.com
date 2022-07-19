@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Towards Scalaz (Part 2)
+category: technical
 
 meta:
   nav: blog

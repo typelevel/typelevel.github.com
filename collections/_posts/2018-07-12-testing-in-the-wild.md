@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Testing in the wild
+category: technical
 
 meta:
   nav: blog

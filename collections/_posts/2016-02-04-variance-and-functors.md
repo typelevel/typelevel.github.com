@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Of variance and functors
+category: technical
 
 meta:
   nav: blog

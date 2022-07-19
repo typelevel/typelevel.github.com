@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How do I error handle thee?
+category: technical
 meta:
   nav: blog
   author: adelbertc

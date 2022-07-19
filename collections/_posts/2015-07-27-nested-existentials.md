@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Nested existentials
+category: technical
 
 meta:
   nav: blog

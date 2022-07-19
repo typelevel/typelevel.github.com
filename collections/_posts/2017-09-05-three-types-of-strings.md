@@ -1,6 +1,7 @@
 ---
 layout: post
 title: There are at least three types of strings
+category: technical
 
 meta:
   nav: blog

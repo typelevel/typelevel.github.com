@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to use Spire's Ops macros in your own project
+category: technical
 
 meta:
   nav: blog

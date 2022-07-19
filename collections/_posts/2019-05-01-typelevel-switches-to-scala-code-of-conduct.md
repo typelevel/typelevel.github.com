@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Typelevel Switches to the Scala Code of Conduct
+category: governance
 
 meta:
   nav: blog

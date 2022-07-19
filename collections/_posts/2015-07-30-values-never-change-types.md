@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Values never change types
+category: technical
 
 meta:
   nav: blog

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Keynote at the Philadelphia Summit"
+category: summits
 
 meta:
   nav: blog

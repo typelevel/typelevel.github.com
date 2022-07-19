@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The singleton instance trick is unsafe
+category: technical
 
 meta:
   nav: blog

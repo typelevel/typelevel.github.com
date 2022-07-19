@@ -33,7 +33,7 @@ title: Blog
           </div>
         </div>
 
-        {% if post.category == "social" or post.category == "technical"  %}
+        {% if post.category %}
         <div class="blog-item-tag">
           <p>{{ post.category }}</p>
           </div>

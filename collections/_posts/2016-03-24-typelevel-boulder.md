@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The Typelevel Summit in Boulder is Cancelled"
+category: summits
 
 meta:
   nav: blog

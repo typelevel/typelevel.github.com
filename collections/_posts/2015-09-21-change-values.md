@@ -1,6 +1,7 @@
 ---
 layout: post
 title: To change types, change values
+category: technical
 
 meta:
   nav: blog

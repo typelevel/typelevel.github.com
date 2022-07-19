@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A comprehensive introduction to Cats-mtl
+category: technical
 
 meta:
   nav: blog

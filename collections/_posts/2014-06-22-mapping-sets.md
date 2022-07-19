@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How can we map a Set?
+category: technical
 
 meta:
   nav: blog

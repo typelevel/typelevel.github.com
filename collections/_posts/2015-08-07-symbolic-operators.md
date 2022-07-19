@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Symbolic operators and type classes for Cats
+category: technical
 
 meta:
   nav: blog

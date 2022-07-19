@@ -6,11 +6,10 @@
   url: https://twitter.com/typelevel
   icon: "fab fa-twitter"
 
-- title: Gitter
-  url: https://gitter.im/typelevel/home
-  icon: "fab fa-gitter"
+- title: Discord
+  url: https://discord.gg/XF3CXcMzqD
+  icon: "fab fa-discord"
 
 - title: Email
   url: "mailto:info@typelevel.org"
   icon: "fas fa-envelope"
-  

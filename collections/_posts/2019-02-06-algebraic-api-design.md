@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Algebraic API Design - Types, Functions, Properties
+category: technical
 
 meta:
   nav: blog

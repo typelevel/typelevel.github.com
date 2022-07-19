@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Who implements the typeclass instance?
+category: technical
 
 meta:
   nav: blog

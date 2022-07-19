@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Confronting Racism
+category: social
 
 meta:
   nav: blog
@@ -128,7 +129,7 @@ commonly-cited resources:
 
 * [Stamped from the Beginning](https://www.ibramxkendi.com/stamped) by [Ibrahim
   Kendi](https://www.ibramxkendi.com/)
-* [How to Be an Anti-Racist](https://www.ibramxkendi.com/how-to-be-an-antiracist-1) by Ibrahim Kendi
+* [How to Be an Anti-Racist](https://web.archive.org/web/20201001105306/https://www.ibramxkendi.com/how-to-be-an-antiracist-1) by Ibrahim Kendi
 * [So You Want to Talk About Race](https://www.hachettebookgroup.com/titles/ijeoma-oluo/so-you-want-to-talk-about-race/9781580056779/) by [Ijeoma
   Oluo](http://www.ijeomaoluo.com/)
 * [White Fragility](https://robindiangelo.com/publications/) by [Robin DiAngelo](https://robindiangelo.com/)

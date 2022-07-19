@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Making internal state functional
+category: technical
 
 meta:
   nav: blog

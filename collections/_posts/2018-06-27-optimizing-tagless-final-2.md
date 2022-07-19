@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Optimizing Tagless Final – Part 2 – Monadic programs
+category: technical
 
 meta:
   nav: blog

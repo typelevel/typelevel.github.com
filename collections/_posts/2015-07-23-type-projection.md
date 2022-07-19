@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Type projection isn't that specific
+category: technical
 
 meta:
   nav: blog

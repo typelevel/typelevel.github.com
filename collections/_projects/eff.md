@@ -6,4 +6,5 @@ description: "Extensible effects are an alternative to monad transformers for co
 
 permalink: "http://atnos-org.github.io/eff"
 github: "https://github.com/atnos-org/eff"
+affiliate: true
 ---

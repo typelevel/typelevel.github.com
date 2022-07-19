@@ -1,6 +1,7 @@
 ---
 layout: post
 title: An Intro to Generic Numeric Programming with Spire
+category: technical
 
 meta:
   nav: blog

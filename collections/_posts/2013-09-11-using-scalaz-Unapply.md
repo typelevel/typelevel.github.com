@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Using scalaz.Unapply
+category: technical
 
 meta:
   nav: blog

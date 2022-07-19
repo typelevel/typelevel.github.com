@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Higher Leibniz
+category: technical
 
 meta:
   nav: blog

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Error handling in Http4s with classy optics – Part 2
+category: technical
 
 meta:
   nav: blog

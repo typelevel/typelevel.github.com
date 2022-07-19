@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "First batch of talks at the Philadelphia Summit"
+category: summits
 
 meta:
   nav: blog

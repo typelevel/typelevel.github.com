@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Rethinking MonadError
+category: technical
 
 meta:
   nav: blog

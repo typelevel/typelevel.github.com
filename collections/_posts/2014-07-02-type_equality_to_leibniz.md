@@ -1,6 +1,7 @@
 ---
 layout: post
 title: A function from type equality to Leibniz
+category: technical
 
 meta:
   nav: blog

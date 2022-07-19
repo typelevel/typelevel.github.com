@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Information hiding, enforced
+category: technical
 
 meta:
   nav: blog

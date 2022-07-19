@@ -1,6 +1,7 @@
 ---
 layout: post
 title: When are two methods alike?
+category: technical
 
 meta:
   nav: blog

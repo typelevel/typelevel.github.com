@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Update About Sustainability Program"
+category: governance
 
 meta:
   nav: blog

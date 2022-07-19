@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Chain – Replacing the List Monoid
+category: technical
 
 meta:
   nav: blog
