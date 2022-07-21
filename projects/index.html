@@ -1,29 +1,31 @@
 ---
 layout: page
-title: Libraries
+title: Projects
 ---
 <div id="section-page">
   <div class="container">
     <div class="masthead-page">
       <h1><span>{{ page.title }}</span></h1>
-      <p>{{site.data.description.librariesDescription}}</p>
+      <p>{{site.data.description.projectsDescription}}</p>
     </div>
-    <div class="libraries-list">
+    <div class="projects-list">
       {% for project in site.projects %}
-      <a href="{{ project.github }}" class="library-item">
-        <div class="library-item-content">
+      <a href="{{ project.github }}" class="project-item">
+        <div class="project-item-content">
           <div>
-            <img src="{{ site.baseurl }}/img/assets/icon-library.svg" alt="">
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
             <h3>{{ project.title }}</h3>
           </div>
           <p>{{ project.description }}</p>
         </div>
-        <div class="library-item-tag">
+        {% if project.category %}
+        <div class="project-item-tag">
           <p>{{ project.category }}</p>
         </div>
+        {% endif %}
       </a>
       {% endfor %}
     </div>
   </div>
 </div>
-{% include _cta-libraries.html %}
+{% include _cta-projects.html %}
