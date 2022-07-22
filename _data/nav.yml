@@ -32,9 +32,6 @@ navSocial:
     icon: "fas fa-envelope"
 
 navScala:
-  - title: Contributors
-    url: /contributors
-
   - title: Code of Conduct
     url: /code-of-conduct
 
