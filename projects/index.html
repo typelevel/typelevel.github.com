@@ -23,6 +23,13 @@ title: Projects
           <p>{{ project.category }}</p>
         </div>
         {% endif %}
+        <div class="project-membership">
+          {% if project.affiliate %}
+          <img src="https://img.shields.io/badge/typelevel-affiliate-FFB4B5" alt="Typelevel affiliate" />
+          {% else %}
+          <img src="https://img.shields.io/badge/typelevel-member-FF6169" alt="Typelevel member" />
+          {% endif %}
+        </div>
       </a>
       {% endfor %}
     </div>
