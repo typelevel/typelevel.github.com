@@ -34,6 +34,14 @@
       }
     }
 
+    .project-membership {
+      margin-top: 20px;
+
+      p {
+        @include tag;
+      }
+    }
+
     &:nth-child(1) {
       transition-delay: 0.2s;
     }
