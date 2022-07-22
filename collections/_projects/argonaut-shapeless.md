@@ -1,6 +1,6 @@
 ---
-title: "scalacheck-shapeless"
-description: "Automatic derivation for ScalaCheck"
-github: "https://github.com/alexarchambault/scalacheck-shapeless"
+title: "argonaut-shapeless"
+description: "Automatic derivation for argonaut"
+github: "https://github.com/alexarchambault/argonaut-shapeless"
 affiliate: true
 ---
