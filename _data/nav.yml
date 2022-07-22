@@ -36,5 +36,4 @@ navScala:
     url: /code-of-conduct
 
   - title: License
-    url: "https://creativecommons.org/licenses/by-sa/3.0/"
-
+    url: /license
