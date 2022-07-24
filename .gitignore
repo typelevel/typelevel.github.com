@@ -7,3 +7,4 @@ target
 .deploy
 .jekyll-metadata
 .metals
+.jekyll-cache/
