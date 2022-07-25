@@ -2,6 +2,7 @@
 layout: post
 title: Call for Steering Committee Members
 category: governance
+image: /img/blog/governance-placeholder.jpg
 
 meta:
   nav: blog

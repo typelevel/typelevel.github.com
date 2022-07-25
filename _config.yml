@@ -58,7 +58,7 @@ collections_dir: collections
 
 
 paginate: 10
-paginate_path: "/blog/:num/"
+paginate_path: "/blog/page:num/"
 
 # PLUGIN
 # ---------------------------------------------------------------

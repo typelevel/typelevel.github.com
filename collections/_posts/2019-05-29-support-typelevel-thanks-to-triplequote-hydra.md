@@ -2,6 +2,7 @@
 layout: post
 title: Support Typelevel thanks to Triplequote Hydra and compile Scala faster!
 category: governance
+image: /img/blog/governance-placeholder.jpg
 
 meta:
   nav: blog
