@@ -2,7 +2,6 @@
 layout: post
 title: Typelevel representative at the Scala Center Advisory Board
 category: governance
-image: /img/blog/governance-placeholder.jpg
 
 meta:
   nav: blog
