@@ -6,6 +6,7 @@
   display: flex;
   margin-top: $base-point-grid * 16;
   justify-content: center;
+  flex-wrap: wrap;
   li {
     font-size: $tab-font-size;
     font-family: $tab-font-family;
@@ -34,6 +35,18 @@
         &:after {
           transform: scaleX(1);
         }
+      }
+    }
+  }
+}
+
+@include bp(medium) {
+  .tab {
+    li {
+      padding: 0 $base-point-grid * 4;
+      margin-bottom: $base-point-grid * 2;
+      &:not(:last-child) {
+        margin-right: 0;
       }
     }
   }

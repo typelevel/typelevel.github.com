@@ -35,15 +35,15 @@
     }
 
     &:nth-child(1) {
-      transition-delay: 0.2s;
+      transition-delay: 0.1s;
     }
 
     &:nth-child(2) {
-      transition-delay: 0.4s;
+      transition-delay: 0.2s;
     }
 
     &:nth-child(3) {
-      transition-delay: 0.6s;
+      transition-delay: 0.3s;
     }
 
     &:hover {
@@ -60,17 +60,14 @@
 
 // Responsive
 @include bp(large) {
-
     .libraries-list {
       @include col-2;
     }
 
 }
 
-@include bp(medium) {
-
-    .libraries-list {
-      @include col-1;
-    }
-
+@include bp(small) {
+  .libraries-list {
+    @include col-1;
+  }
 }

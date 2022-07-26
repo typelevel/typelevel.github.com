@@ -14,9 +14,11 @@
           </div>
           <p>{{ project.description }}</p>
         </div>
+        {% if project.category %}
         <div class="library-item-tag">
           <p>{{ project.category }}</p>
         </div>
+        {% endif %}
       </a>
       {% endfor %}
     </div>

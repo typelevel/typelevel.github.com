@@ -100,10 +100,4 @@
       @content;
     }
   }
-
-  @if $point==small {
-    @media (min-width: $bp-small) {
-      @content;
-    }
-  }
 }
