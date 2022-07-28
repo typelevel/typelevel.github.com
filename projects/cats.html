@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Projects
+category: cats
 ---
 <div id="section-page">
   <div class="container">
@@ -11,6 +12,7 @@ title: Projects
     </div>
     <div class="projects-list">
       {% for project in site.projects %}
+      {% if project.categories contains 'cats' %}
       <a href="{{ project.github }}" class="project-item">
         <div class="project-item-content">
           <div>
@@ -19,11 +21,11 @@ title: Projects
           </div>
           <p>{{ project.description }}</p>
         </div>
-        <div class="project-item-categories">
-          {% for category in project.categories %}
-          <span class="project-item-tag">{{ category }}</span>
-          {% endfor %}
+        {% if project.category %}
+        <div class="project-item-tag">
+          <p>{{ project.category }}</p>
         </div>
+        {% endif %}
         <div class="project-membership">
           {% if project.affiliate %}
           <img src="https://img.shields.io/badge/typelevel-affiliate-FFB4B5" alt="Typelevel affiliate" />
@@ -32,6 +34,7 @@ title: Projects
           {% endif %}
         </div>
       </a>
+      {% endif %}
       {% endfor %}
     </div>
   </div>

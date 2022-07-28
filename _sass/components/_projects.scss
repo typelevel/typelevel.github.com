@@ -26,10 +26,10 @@
       }
     }
 
-    .project-item-tag {
+    .project-item-categories {
       margin-top: 20px;
 
-      p {
+      span {
         @include tag;
       }
     }
