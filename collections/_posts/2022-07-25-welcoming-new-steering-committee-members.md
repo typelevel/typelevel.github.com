@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Welcoming New Steering Committee Members
+category: governance
 
 meta:
   nav: blog

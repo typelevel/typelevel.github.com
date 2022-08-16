@@ -8,11 +8,6 @@
       {% for post in site.posts limit:3 %}
       <a href="{{ post.url | relative_url }}" class="blog-item" data-aos="fade-down">
         <div class="blog-item-content">
-          {% if post.image contains ".jpg" or post.image contains ".png" %}
-          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
-          {% else %}
-          <img src="{{ site.baseurl }}/img/blog/placeholder-typelevel.jpg" alt="">
-          {% endif %}
           <div>
               <h3>{{ post.title }}</h3>
               {% assign author = site.data.authors[post.meta.author] %}
