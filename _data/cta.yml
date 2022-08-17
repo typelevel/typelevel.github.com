@@ -1,8 +1,8 @@
 newsTitle: Newsletter
 newsDescription: Learn more about the organization. Here you can see the main goals we are pursuing.
 
-libraryTitle: Submitting
-libraryDescription: Are you interested in submitting yout library to the Typevelel Ecosystem?
+submittingTitle: Submitting
+submittingDescription: Are you interested in submitting your library to the Typelevel Ecosystem?
 
 blogTitle: Contribute to the blog
 blogDescription:  If you want to share something about a library or Scala topics in general (e.g. type classes), case studies, examples, or other related content, please do not hesitate to contact us. 

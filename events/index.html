@@ -1,0 +1,29 @@
+---
+layout: page
+title: Events
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.eventsDescription}}</p>
+    </div>
+
+    <div class="event-list">
+      {% for event in site.events reversed %}
+      <a href="{{ site.baseurl }}{{ event.url }}" class="event-item">
+        <div class="event-item-content">
+          <img src="{{ site.baseurl }}{{ event.poster_thumb }}" alt="">
+          <div>
+              <h3>{{ event.short_title }}</h3>
+              {{ event.date_string }}<br />
+              {{ event.location }}
+          </div>
+        </div>
+
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>

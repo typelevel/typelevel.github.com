@@ -1,7 +1,7 @@
 # Ttitle, description...
 # ---------------------------------------------------------------
-name: Typelevel.scala
-title: Typelevel.scala
+name: Typelevel
+title: Typelevel
 description: Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.
 author: Israel Pérez
 keywords: theme, jekyll, unstyle

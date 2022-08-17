@@ -9,7 +9,7 @@ If you just want to add a blog post or fix a typo in the content, here's how to 
 
 ### Creating a blog post
 
-1. Create a new file in the `posts` directory or copy an existing post. Its name should have the format `YYYY-MM-DD-short_title.md`.
+1. Create a new file in the [`_posts`](./_posts/) directory or copy an existing post. Its name should have the format `YYYY-MM-DD-short_title.md`.
 2. Set the `title` (short title of the post, appears as the HTML `<title>`) and `author` (your GitHub user name) in the front matter. MathJax is available via `mathjax: true` inside the front matter.
 3. If this is your first blog post, please indicate if you want your name and a profile picture to appear on the post. If not, you can remove the `author` field from the front matter. Add your details in `_data/authors.yml`.
 4. Write your content using Markdown. For code highlighting, use the usual GitHub syntax:

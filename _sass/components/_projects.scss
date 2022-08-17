@@ -1,20 +1,20 @@
-// LIBRARIES
+// PROJECTS
 // =====================================================================
 // =====================================================================
 
-#section-libraries {}
-.libraries-list {
+#section-projects {}
+.projects-list {
   @include grid;
   @include col-3;
 
-  .library-item {
+  .project-item {
     @include card;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: $base-font-color;
 
-    .library-item-content {
+    .project-item-content {
       > div {
         display: flex;
         margin: 0 0 $base-point-grid * 5 0;
@@ -26,7 +26,15 @@
       }
     }
 
-    .library-item-tag {
+    .project-item-tag {
+      margin-top: 20px;
+
+      p {
+        @include tag;
+      }
+    }
+
+    .project-membership {
       margin-top: 20px;
 
       p {
@@ -60,14 +68,15 @@
 
 // Responsive
 @include bp(large) {
-    .libraries-list {
+
+    .projects-list {
       @include col-2;
     }
 
 }
 
 @include bp(small) {
-  .libraries-list {
+  .projects-list {
     @include col-1;
   }
 }

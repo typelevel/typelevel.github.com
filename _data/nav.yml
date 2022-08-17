@@ -2,11 +2,14 @@ navMain:
   - title: Home
     url: /
 
-  - title: Libraries
-    url: /libraries/
+  - title: Projects
+    url: /projects/
 
   - title: Blog
     url: /blog/
+
+  - title: Events
+    url: /events/
 
   - title: About
     url: /about/
@@ -29,12 +32,8 @@ navSocial:
     icon: "fas fa-envelope"
 
 navScala:
-  - title: Contributors
-    url: /contributors
-
   - title: Code of Conduct
     url: /code-of-conduct
 
   - title: License
-    url: "https://creativecommons.org/licenses/by-sa/3.0/"
-
+    url: /license
