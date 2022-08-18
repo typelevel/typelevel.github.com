@@ -1,0 +1,15 @@
+- title: All Posts
+  url: /blog/
+  category: allPosts
+- title: Governance
+  url: /blog/governance/
+  category: governance
+- title: Social
+  url: /blog/social/
+  category: social
+- title: Technical
+  url: /blog/technical/
+  category: technical
+- title: Summits
+  url: /blog/summits/
+  category: summits

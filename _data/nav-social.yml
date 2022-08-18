@@ -1,0 +1,15 @@
+- title: Github
+  url: https://github.com/typelevel
+  icon: "fab fa-github"
+
+- title: Twitter
+  url: https://twitter.com/typelevel
+  icon: "fab fa-twitter"
+
+- title: Discord
+  url: https://discord.gg/XF3CXcMzqD
+  icon: "fab fa-discord"
+
+- title: Email
+  url: "mailto:info@typelevel.org"
+  icon: "fas fa-envelope"

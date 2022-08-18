@@ -1,0 +1,36 @@
+// FORM
+// =====================================================================
+// =====================================================================
+
+
+input {
+    padding: 0 $base-point-grid * 6;
+    margin-right: $base-point-grid * 3;
+    height: $base-point-grid * 14;
+    width: 100%;
+    font-size: 1rem;
+    font-family: $base-font-family;
+    color: $white;
+    border: none;
+    background-color: rgba($white, 0.2);
+    
+    &::placeholder {
+        color: rgba($white, 0.6);
+    }
+
+    &:focus {
+        outline-width: 0;
+    }
+}
+
+button {
+    padding: 0;
+    background: none;
+    border: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    transition: $base-duration $base-timing;
+    transition-property: background;
+}

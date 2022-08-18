@@ -1,0 +1,24 @@
+// CTA
+// =====================================================================
+// =====================================================================
+
+#section-cta {
+  background-color: $brand-primary;
+  background-image: url("../img/assets/background-pattern-news-left.svg"), url("../img/assets/background-pattern-news-right.svg");
+  background-position: left top, right bottom;
+  background-repeat: no-repeat;
+  h2,
+  p {
+    color: $white;
+  }
+
+  p {
+    margin-bottom: $base-point-grid * 8;
+  }
+  .section-header {
+    margin-bottom: 0;
+  }
+  .newsletter-control {
+    display: flex;
+  }
+}

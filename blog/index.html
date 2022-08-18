@@ -1,57 +1,48 @@
 ---
-layout: default
+layout: page
 title: Blog
 ---
-<div class="content content-small pull-left">
-  <div class="posts">
-    {% for post in paginator.posts %}
-    <div class="post js-fade-in">
-      <h2>
-        <a href="{{ post.url }}">{{ post.title }}</a>
-      </h2>
-      <p>{{post.content | strip_html | truncatewords: 50}}</p>
-      <div class="post__meta">
-        {% assign author = site.data.authors[post.meta.author] %}
-        {% if author %}
-          {% if author.portrait %}
-            <img class="portrait" src="{{ author.portrait }}" />
-            <p>
-          {% endif %}
-            by {{ author.full_name }} 
-        {% endif %}
-        on {{ post.date | date: "%b %d, %Y" }}</p>
-      </div>
-    </div>
-    {% endfor %}
 
-    <!-- Pagination links -->
-    <div class="pagination js-fade-in">
-      {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path }}" class="btn text prev">Previous</a>
-      {% endif %}
-      {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path }}" class="btn text next">Next</a>
-      {% endif %}
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.blogDescription}}</p>
+      {% include _tab.html %}
+    </div>
+
+    <div class="blog-list">
+
+     
+      {% for post in site.posts %}
+      <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item">
+        <div class="blog-item-content">
+          {% if post.image %}
+          <img src="{{ site.baseurl }}{{ post.image }}" alt="">
+          {% else %}
+          <img src="{{ site.baseurl }}/img/blog/typelevel-placeholder.png" alt="">
+          {% endif %}
+          <div>
+              <h3>{{ post.title }}</h3>
+              {% assign author = site.data.authors[post.meta.author] %}
+              {% if author %}
+
+                  by {{ author.full_name }} 
+              {% endif %}
+              on {{ post.date | date: "%b %d, %Y" }}</p>
+          </div>
+        </div>
+
+        {% if post.category %}
+        <div class="blog-item-tag">
+          <p>{{ post.category }}</p>
+          </div>
+        {% else %}
+      
+        {% endif %}
+      </a>
+      {% endfor %}
     </div>
   </div>
 </div>
-
-<div class="sidebar js-fade-in">
-  <h4>About the Blog</h4>
-  <p class="sidebar__about">
-    Here, we would like to show how to use our libraries in your code, provide examples, collect learning resources, and explore implementation details.<br><br>
-
-    Contributed blog posts are welcome.
-    If you want to share something about a library or Scala topics in general (e.g. type classes), case studies, examples, or other related content, please do not hesitate to contact us.
-    This blog (and in fact, the whole web site) is built using Jekyll on GitHub pages, so you can just <a href="https://github.com/typelevel/typelevel.github.com">fork the repository</a>, add a post, and create a pull request.<br><br>
-  </p>
-
-	<h4>Archive</h4>
-	<p class="sidebar__about">
-		<a href="/blog/archive.html">All posts</a>
-	</p>
-
-  <h4>Follow Us</h4>
-  <a class="btn text" href="/blog/feed.rss">Subscribe via RSS</a>
-  <a class="btn text" href="//twitter.com/{{ site.twitter }}">Follow us on Twitter</a>
-</div>
+{% include _cta-blog.html %}

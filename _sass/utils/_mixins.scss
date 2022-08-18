@@ -1,0 +1,103 @@
+// MIXINS
+// =====================================================================
+// =====================================================================
+
+// Mixin Border nav
+// ---------------------------------------------------------------------
+
+@mixin border-nav {
+  display: block;
+  content: '';
+  border-bottom: $base-point-grid / 2 solid $brand-primary;
+}
+
+
+// Mixin Hexagon
+// ---------------------------------------------------------------------
+
+@mixin hexagon {
+  min-height: $base-point-grid * 80;
+  font-size: 0.938rem;
+  text-align: center;
+  background: url("../img/assets/hexagon-path.svg") no-repeat top center;
+  filter: drop-shadow($box-shadow);
+}
+
+
+// Mixin Card
+// ---------------------------------------------------------------------
+
+@mixin card {
+  padding: $card-padding;
+  font-size: $card-font-size;
+  background: $card-background;
+  box-shadow: $card-shadow;
+}
+
+// Tag
+// ---------------------------------------------------------------------
+
+@mixin tag {
+  display: inline-block;
+  padding: $tag-padding-x $tag-padding-y;
+  text-transform: $tag-text-transform;
+  font-size: $tag-font-size;
+  background: $tag-background;
+  border-radius: $tag-border-radius;
+}
+
+
+
+//  Mixin Grid
+// ---------------------------------------------------------------------
+
+
+@mixin grid {
+  display: grid;
+  gap: $grid-line-base;
+}
+
+@mixin col-1 {
+  grid-template-columns: 1fr;
+}
+
+@mixin col-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@mixin col-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@mixin col-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+//  Mixin Breakpoint
+// ---------------------------------------------------------------------
+
+@mixin bp($point) {
+  @if $point==xlarge {
+    @media (max-width: $bp-xlarge) {
+      @content;
+    }
+  }
+
+  @if $point==large {
+    @media (max-width: $bp-large) {
+      @content;
+    }
+  }
+
+  @if $point==medium {
+    @media (max-width: $bp-medium) {
+      @content;
+    }
+  }
+
+  @if $point==small {
+    @media (max-width: $bp-small) {
+      @content;
+    }
+  }
+}

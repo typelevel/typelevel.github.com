@@ -1,37 +1,67 @@
-name: Typelevel.scala
-title: Typelevel.scala
+# Ttitle, description...
+# ---------------------------------------------------------------
+name: Typelevel
+title: Typelevel
 description: Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.
-twitter: typelevel
-email: info@typelevel.org
-gitter: "https://gitter.im/orgs/typelevel/rooms"
-discord: "https://sca.la/typeleveldiscord"
-google_groups: "https://groups.google.com/group/typelevel"
-baseurl: https://typelevel.org
-googlemaps_apikey: "AIzaSyAgMQPpkd_Qq-NYcCggh28PaS82oG-9YoA"
+author: Israel Pérez
+keywords: theme, jekyll, unstyle
 
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-  hard_wrap: false
-highlighter: rouge
-exclude: ["README.md", "vendor", "Rakefile"]
-permalink: /blog/:year/:month/:day/:title.html
-paginate: 10
-paginate_path: "/blog/:num/"
+# Where things are (styles, site...)
+# ---------------------------------------------------------------
 sass:
-  sass_dir: _scss
-  style: compressed
-future: true
+  sass_dir: _sass
+  sourcemap: never
 
-plugins:
-  - jekyll-paginate
-  - jekyll-redirect-from
+permalink: pretty
 
+# Serving, url
+# ---------------------------------------------------------------
+baseurl: "/typelevel.github.com"
+url: ""
+
+# Conversion
+# ---------------------------------------------------------------
+markdown: kramdown
+
+# Handling Reading
+# ---------------------------------------------------------------
+exclude:
+  [
+    "config.ru",
+    "Gemfile",
+    "Gemfile.lock",
+    "vendor",
+    "Procfile",
+    "Rakefile",
+    ".bundle",
+    "extra",
+  ]
+
+# Collections
+# ---------------------------------------------------------------
 collections:
   events:
     output: true
     permalink: /event/:year-:month-:title/
     layout: event
   projects:
-    output: false
+    output: true
+  staff_members:
+    output: true
+  abouts:
+    output: true
+  posts:
+    output: true
+    permalink: /blog/:year/:month/:day/:title.html
+
+collections_dir: collections
+
+
+# paginate: 5
+# paginate_path: "/blog/:num/"
+
+# PLUGIN
+# ---------------------------------------------------------------
+
+plugins:
+  - jekyll-paginate

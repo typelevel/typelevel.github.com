@@ -1,34 +1,38 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html>
+{% include _head.html %}
 
-<div class="content post js-fade-in">
-  <h2>{{ page.title }}</h2>
-
-  {{ content }}
-
-{% include license.html %}
-
-  <div class="post__author js-fade-in">
-    {% assign author = site.data.authors[page.meta.author] %}
-    {% if author %}
-      {% if author.portrait %}
-        <img class="portrait" src="{{ author.portrait }}" />
-      {% endif %}
-      <p>by {{ author.full_name }}
-    {% endif %}
-    on {{ page.date | date: "%b %d, %Y" }}</p>
-
-    {% include social.html person=author %}
+<body>
+  {% include _nav.html %}
+  <div id="section-page">
+    <div class="container container-blog">
+      <div class="masthead-blog-detal">
+        <h1><span>{{ page.title }}</span></h1>
+        {% assign author = site.data.authors[page.meta.author] %}
+        {% if author %}
+        <p class="blog-detail-date">by {{ author.full_name }}
+          {% endif %}
+          on {{ page.date | date: "%b %d, %Y" }}
+        </p>
+        <p class="blog-detail-tag">{{ page.category }}</p>
+        {% if page.image %} 
+        <img src="{{ site.baseurl }}{{ page.image }}" alt="">
+        {% else %}
+        <img src="{{ site.baseurl }}/img/blog/typelevel-placeholder.png" alt="">
+        {% endif %}
+      </div>
+      <div class="blog-detail-content">
+      {{ content }}
+      
+    </div>
+    
+    </div>
   </div>
-  <a class="btn text" href="/blog">Back to blog</a>
-</div>
 
-{% if page.meta.mathjax %}
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$']]}
-  });
-</script>
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-{% endif %}
+  {% include _cta-newsletter.html %}
+  {% include _footer.html %}
+
+  {% include _js-bottom.html %}
+</body>
+
+</html>

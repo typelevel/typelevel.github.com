@@ -1,0 +1,52 @@
+// FOOTER
+// =====================================================================
+// =====================================================================
+
+#footer {
+  padding: $footer-padding-y 0;
+  background: rgba($gray-primary, 0.04);
+  .footer-container {
+    @include grid;
+    @include col-4;
+
+    a {
+      color: $base-font-color;
+    }
+    .footer-nav,
+    .footer-nav-scala {
+      font-size: 0.938rem;
+      li {
+        &:not(:last-child) {
+          margin-bottom: $base-point-grid;
+        }
+      }
+    }
+
+    .footer-social {
+      display: flex;
+      justify-content: flex-end;
+
+      li {
+        font-size: 1.125rem;
+
+        &:not(:last-child) {
+          margin-right: $base-point-grid * 4;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+
+
+@include bp(medium) {
+  #footer {
+    .footer-container {
+      @include col-1;
+      .footer-social {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

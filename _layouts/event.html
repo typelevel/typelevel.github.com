@@ -1,46 +1,32 @@
----
-layout: default
-menu: event
----
-</div> <!-- close wrapper -->
+<!DOCTYPE html>
+<html>
+{% include _head.html %}
 
-<div class="event__hero" style="background-image: url({{ page.poster_hero }});">
-  <div class="wrapper">
-    <div class="event__header js-fade-in">
-      <div class="wrapper">
-        <p>{{ page.short_title }}</p>
-        <ul class="navigation">
-          <li><a href="#about">About the event</a></li>
-          {% if page.papers_section %}
-            <li><a href="#call-for-speakers">Call for Speakers</a></li>
-          {% endif %}
-          {% if page.schedule %}
-            <li><a href="#speakers-and-schedule">Speakers and Schedule</a></li>
-          {% endif %}
-          {% if page.schedule_section %}
-            <li><a href="#schedule">Schedule</a></li>
-          {% endif %}
-          {% if page.location_section %}
-            <li><a href="#venue">Venue</a></li>
-          {% endif %}
-          {% if page.sponsors_section %}
-            <li><a href="#sponsors">Sponsors</a></li>
-          {% endif %}
-        </ul>
+<body>
+  {% include _nav.html %}
+  <div id="section-page">
+    <div class="container container-blog">
+      <div class="masthead-blog-detal">
+        <h1><span>{{ page.title }}</span></h1>
+
+        <p class="blog-detail-date">
+          on {{ page.date_string }}
+          at {{ page.location }}
+        </p>
+        <img src="{{ site.baseurl }}{{ page.poster_hero }}" alt="">
       </div>
+      <div class="blog-detail-content">
+      {{ content }}
+
     </div>
-    <h1 class="js-fade-in">{{ page.title }}</h1>
-    <p class="hero__lead js-fade-in">
-      <strong>{{ page.date_string }}</strong>
-      at {{ page.location }}
-    </p>
-  </div>
-</div>
 
-<div class="wrapper">
-  <div class="content content-small js-fade-in" id="about">
-    {{ content }}
+    </div>
   </div>
-</div>
 
-<div> <!-- open dummy -->
+  {% include _cta-newsletter.html %}
+  {% include _footer.html %}
+
+  {% include _js-bottom.html %}
+</body>
+
+</html>

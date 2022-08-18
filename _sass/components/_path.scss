@@ -1,0 +1,36 @@
+// PATH
+// =====================================================================
+// =====================================================================
+
+h1,
+h2 {
+  span {
+    position: relative;
+    //z-index: 1;
+
+    &::after {
+      position: absolute;
+      z-index: -1;
+    }
+  }
+}
+
+h1 {
+  span {
+    &::after {
+      top: - $base-point-grid * 5;
+      left: - $base-point-grid;
+      content: url("../img/assets/title-path.svg");
+    }
+  }
+}
+
+h2 {
+  span {
+    &::after {
+      top: - $base-point-grid;
+      left: - $base-point-grid * 2;
+      content: url("../img/assets/title-path-small.svg");
+    }
+  }
+}

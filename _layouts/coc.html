@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+{% include _head.html %}
+
+<body>
+  {% include _nav.html %}
+  <div id="section-page">
+    <div class="container container-blog">
+      <div class="masthead-page">
+        <h1><span>{{ page.title }}</span></h1>
+      </div>
+      <div class="blog-detail-content">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+
+  {% include _cta-projects.html %}
+  {% include _footer.html %}
+
+  {% include _js-bottom.html %}
+</body>
+
+</html>

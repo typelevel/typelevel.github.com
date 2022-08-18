@@ -1,0 +1,53 @@
+// TABS
+// =====================================================================
+// =====================================================================
+
+.tab {
+  display: flex;
+  margin-top: $base-point-grid * 16;
+  justify-content: center;
+  flex-wrap: wrap;
+  li {
+    font-size: $tab-font-size;
+    font-family: $tab-font-family;
+    text-transform: $tab-text-transform;
+    &:not(:last-child) {
+      margin-right: $base-point-grid * 18;
+    }
+    a {
+      padding-bottom: $base-point-grid;
+      color: $tab-color;
+      &:after {
+        @include border-nav;
+        transform: scaleX(0);
+        transition: transform $base-duration $base-timing;
+      }
+      &.active {
+        cursor: default;
+
+        &:after {
+          @include border-nav;
+          transform: scaleX(1);
+        }
+      }
+      &:hover {
+        text-decoration: none;
+        &:after {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+}
+
+@include bp(medium) {
+  .tab {
+    li {
+      padding: 0 $base-point-grid * 4;
+      margin-bottom: $base-point-grid * 2;
+      &:not(:last-child) {
+        margin-right: 0;
+      }
+    }
+  }
+}
