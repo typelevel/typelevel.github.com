@@ -6,7 +6,7 @@ h1,
 h2 {
   span {
     position: relative;
-    z-index: 1;
+    //z-index: 1;
 
     &::after {
       position: absolute;

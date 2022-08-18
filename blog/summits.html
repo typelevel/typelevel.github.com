@@ -19,12 +19,10 @@ permalink: /blog/summits/
       {% if post.category == "summits" %}
       <a href="{{ site.baseurl }}{{ post.url }}" class="blog-item">
         <div class="blog-item-content">
-            
-
-            {% if post.image contains ".jpg" or post.image contains ".png" %}
+            {% if post.image %}
             <img src="{{ site.baseurl }}{{ post.image }}" alt="">
             {% else %}
-            <img src="{{ site.baseurl }}/img/blog/placeholder-typelevel.jpg" alt="">
+            <img src="{{ site.baseurl }}/img/blog/typelevel-placeholder.png" alt="">
             {% endif %}
 
 

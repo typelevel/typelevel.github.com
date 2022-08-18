@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Why Are Fibers Fast?
-image: /img/blog/discord-migration.jpg
 category: technical
 
 meta:

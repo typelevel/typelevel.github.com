@@ -37,15 +37,15 @@
     }
 
     &:nth-child(1) {
-      transition-delay: 0.2s;
+      transition-delay: 0.1s;
     }
 
     &:nth-child(2) {
-      transition-delay: 0.4s;
+      transition-delay: 0.2s;
     }
 
     &:nth-child(3) {
-      transition-delay: 0.6s;
+      transition-delay: 0.3s;
     }
 
     &:hover {
@@ -168,7 +168,26 @@
 }
 
 @include bp(medium) {
+  .masthead-blog-detal {
+    h1 {
+      font-size: 2.25rem;
+      span {
+        &::after {
+          top: - $base-point-grid * 10;
+          left: - $base-point-grid * 9;
+          content: url("../img/assets/title-path.svg");
+          transform: scale(.5);
+        }
+      }
+    }
+  }
+}
+
+
+@include bp(small) {
   .blog-list {
     @include col-1;
   }
 }
+
+

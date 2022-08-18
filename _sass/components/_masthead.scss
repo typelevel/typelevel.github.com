@@ -109,3 +109,45 @@
     }
   }
 }
+
+// Responsive
+@include bp(large) {
+  #masthead {
+    padding: $masthead-padding / 4 0;
+    min-height: auto;
+    .masthead-inner  {
+      @include col-1;
+      .masthead-text {
+        padding-top: $base-point-grid * 40;
+        text-align: center;
+        .masthead-cta {
+          justify-content: center;
+        }
+      }
+      .masthead-image {
+        display: none;
+      }
+    }
+  }
+}
+
+@include bp(medium) {
+  #masthead {
+    .masthead-inner  {
+      .masthead-text {
+        h1 {
+          font-size: 2.25rem;
+          span {
+            &::after {
+              top: - $base-point-grid * 10;
+              left: - $base-point-grid * 9;
+              content: url("../img/assets/title-path.svg");
+              transform: scale(.5);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
