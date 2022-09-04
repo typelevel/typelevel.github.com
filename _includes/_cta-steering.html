@@ -1,0 +1,15 @@
+<section id="section-blog" class="section-large">
+    <div class="container">
+        <div class="section-header">
+            <h2><span>{{site.data.cta.steeringTitle}}</span></h2>
+            <p>{{site.data.cta.steeringDescription}}</p>
+            {% for item in site.data.nav-scala %}
+            {% if item.title == "Steering Committee" %}
+            <p><br />
+            <a class="button button-primary" href="{{item.url | relative_url }}">About the Committee</a>
+            </p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
