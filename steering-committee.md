@@ -5,7 +5,7 @@ permalink: /steering-committee.html
 ---
 
 The Typelevel Steering Committee is a group of volunteers that
-governs Typelevel.  The membership is kept in [the Typelevel
+govern Typelevel.  The membership is kept in [the Typelevel
 Governance repository][steering-committee] and described in the
 [Typelevel Charter][charter].
 
