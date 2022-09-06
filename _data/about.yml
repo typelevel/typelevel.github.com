@@ -1,5 +1,5 @@
 - title: "Open source"
-  description: "Independent, free/libre and open-source software"
+  description: "Independent, free/libre, and open-source software"
   icon: /img/assets/icon-about-open-source.svg
 
 - title: "Functional"
@@ -15,7 +15,7 @@
   icon: /img/assets/icon-about-resources.svg
 
 - title: "Friendly"
-  description: "An inclusive, welcoming and safe environment"
+  description: "An inclusive, welcoming, and safe environment"
   icon: /img/assets/icon-about-friendly.svg
 
 - title: "Modular"
