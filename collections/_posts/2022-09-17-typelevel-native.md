@@ -8,22 +8,15 @@ meta:
   author: armanbilge
 ---
 
-We recently published 
+We recently published several major projects for the [Scala Native] platform, notably [Cats Effect], [FS2], and [http4s]. This blog post explores what this new platform means for the Typelevel ecosystem as well as how it works under-the-hood.
 
-* Cats Effect v3.3.14
-* FS2 v3.3.0
-* http4s v0.23.16
-* Rediculous v0.4.1
+### What is Scala Native?
 
+[Scala Native] is an optimizing ahead-of-time compiler for the Scala language. Put simply: it enables you to **compile Scala code directly to native executables**.
 
+It is an ambitious project following in the steps of [Scala.js]. Instead of targeting JavaScript, the Scala Native compiler targets the [LLVM] IR and uses its toolchain to generate native executables for a range of architectures, including x86, ARM, and in the near future web assembly.
 
-#### What is Scala Native?
-
-Scala Native is an optimizing ahead-of-time compiler for the Scala language. Put simply: it enables you to **compile Scala code directly to native executables**.
-
-It is an ambitious project following in the steps of Scala.js. Instead of targeting JavaScript, the Scala Native compiler targets the [LLVM] IR and uses its toolchain to generate native executables for a range of architectures, including x86, ARM/M1, and in the near future web assembly.
-
-#### Why is this exciting?
+### Why is this exciting?
 
 **For Scala in general**, funnily enough I think [GraalVM Native Image] does a great job summarizing the advantages of native executables, namely:
 * instant startup that immediately achieves peak performance, without requiring warmup or the heavy footprint of the JVM
@@ -35,17 +28,23 @@ Moreover, breaking free from the JVM is an opportunity to design a runtime speci
 
 **For Typelevel in particular**, Scala Native opens new doors for leveling up our ecosystem. Our flagship libraries are largely designed for deploying high performance I/O-bounded microservices and for the first time ever **we now have direct access to kernel I/O APIs**.
 
-I am also generally excited to use Cats Effect with (non-Scala) native libraries that expose a C API. [`Resource`] and more generally [`MonadCancel`] are powerful tools for safely navigating manual memory management with all the goodness of error-handling and cancelation.
+I am also enthusiastic to use Cats Effect with (non-Scala) native libraries that expose a C API. [`Resource`] and more generally [`MonadCancel`] are powerful tools for safely navigating manual memory management with all the goodness of error-handling and cancelation.
 
-#### How does it work?
+### How can I try it?
+
+Christopher Davenport has put up a [scala-native-ember-example](https://github.com/ChristopherDavenport/scala-native-ember-example) and reported some [benchmark results](#ember-native-benchmark)!
+
+### How does it work?
 
 The burden of cross-building the Typelevel ecosystem for Scala Native fell almost entirely to [Cats Effect] and [FS2].
 
-**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented as an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O.
+**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O.
 
-Unfortunately Scala Native . 
+Meanwhile, Scala Native core does not implement an event loop nor offer such APIs. There is the [scala-native-loop] project, which wraps the [libuv] event loop runtime, but we did not want to bake such an opinionated dependency into Cats Effect core.
 
-The [`PollingExecutorScheduler`] implements both [`ExecutionContext`] and [`Scheduler`] and thus maintains two queues:
+Fortunately Daniel Spiewak had the fantastic insight that the “dummy runtime” I initially used to cross-build Cats Effect for Native could be reformulated into a legitimate event loop implementation.
+
+The [`PollingExecutorScheduler`] implements both [`ExecutionContext`] and [`Scheduler`] and maintains two queues:
 - a queue of tasks (read: fibers) to execute 
 - a priority queue of timers (read: `IO.sleep(...)`), sorted by expiration
 
@@ -54,13 +53,13 @@ It also defines an abstract method:
 def poll(timeout: Duration): Boolean
 ```
 
-The idea of this method is very similar to `Thread.sleep()` except that while sleeping it also “polls” for I/O events. To demonstrate the API contract, consider invoking `poll(3.seconds)`:
+The idea of this method is very similar to `Thread.sleep()` except that besides sleeping it may also “poll” for I/O events. To demonstrate the API contract, consider invoking `poll(3.seconds)`:
 
-*I have nothing to do for the next 3 seconds. So wake me up then, or earlier if there is an incoming I/O event I should handle. But wake me up no later!*
+*I have nothing to do for the next 3 seconds. So wake me up then, or earlier if there is an incoming I/O event that I should handle. But wake me up no later!*
 
 *Oh, and don’t forget to tell me whether there are still outstanding I/O events (`true`) or not (`false`) so I know if I need to call you again. Thanks!*
 
-Thus, with tasks, timers, and the capability to poll for I/O, we can express the event-loop algorithm. A single iteration of the loop looks like this:
+Thus, with tasks, timers, and the capability to poll for I/O, we can express the event loop algorithm. A single iteration of the loop looks like this:
 
 1. Check the current time and execute any expired timers.
 
@@ -71,28 +70,28 @@ Thus, with tasks, timers, and the capability to poll for I/O, we can express the
   - **There is at least one outstanding timer**. Call `poll(durationToNextTimer)`, so it will sleep until the next I/O event arrives or the timeout expires, whichever comes first.
   - **There are no tasks to do and no outstanding timers.**  Call `poll(Duration.Infinite)`, so it will sleep until the next I/O event arrives.
 
-In fact, this is a very basic implementation of the [I/O Integrated Runtime Concept] proposed by Daniel Spiewak. The grander idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can implement an event loop exactly like the one described above.
+In fact, this is a very basic implementation of the [I/O Integrated Runtime Concept]. The grander idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can run an event loop exactly like the one described above, for exceptionally high-performance I/O.
 
-So: how do we implement `poll`? The bad news is that the answer is OS-specific, which is a large reason for why projects such as [libuv] exist.
+**So, how do we implement `poll`?** The bad news is that the answer is OS-specific, which is a large reason why projects such as libuv exist. Furthermore, the entire purpose of polling is to support non-blocking I/O, which falls outside of the scope of Cats Effect. This brings us to FS2, and specifically the [`fs2-io`] module.
 
-The final piece of the puzzle is TLS. [FS2] . This is effectively the only non-Scala dependency required to use
+**The final important piece of the cross-build puzzle was a [TLS] implementation** for `TLSSocket` and related APIs in FS2. Although this task was daunting, ultimately it was straightforward to directly integrate with [s2n-tls], which has a well-designed and well-documented API. This is effectively the only non-Scala dependency required to use the Typelevel stack on Native.
 
-From there, : any project
+And that is pretty much it. **From here, any library or application that is built using Cats Effect and FS2 cross-builds for Scala Native effectively for free.** Three spectacular examples of this are:
+* [http4s] Ember, a server+client duo with HTTP/2 support
+* [Skunk], a Postgres client
+* [rediculous], a Redis client
 
-#### How can I try it?
-
-Christopher Davenport has put up a [scala-native-ember-example](https://github.com/ChristopherDavenport/scala-native-ember-example) and reported some [benchmark results](#ember-native-benchmark)!
-
-#### What’s next and how can I get involved?
+### What’s next and how can I get involved?
 
 Please try the Typelevel Native stack! And even better deploy it, and do so loudly!
 
-Besides that, here is a brain-dump of project ideas or existing projects that would love contributors. I am happy to help folks get started!
+Besides that, here is a brain-dump of project ideas and existing projects that would love contributors. I am happy to help folks get started on any of these, or ideas of your own!
 
-* Cross-building existing libraries and developing new, Typelevel-native ones:
+* Cross-building existing libraries and developing new, Typelevel-stack ones:
   - Go [feral] and implement a pure Scala [custom AWS Lambda runtime] that cross-builds for Native.
   - A pure Scala [gRPC] implementation built on http4s would be fantastic, even for the JVM. Christopher Davenport has published a [proof-of-concept][grpc-playground].
   - [fs2-data] has pure Scala support for a plethora of data formats. The [http4s-fs2-data] integration needs your help to get off the ground!
+  - Lack of cross-platform cryptography is one of the remaining sore points in cross-building. I started the [bobcats] project to fill the gap but I am afraid it needs love from a more dedicated maintainer.
 
 * Integrations with native libraries:
   - I kick-started [http4s-curl] and would love to see someone take the reigns!
@@ -111,7 +110,7 @@ Besides that, here is a brain-dump of project ideas or existing projects that wo
 
 * Scala Native itself. Lots to do there!
 
-#### Ember native benchmark
+### Ember native benchmark
 
 ```
 $ hey -z 30s http://localhost:8080
@@ -160,6 +159,7 @@ Status code distribution:
   [200]    114525 responses
 ```
 
+[bobcats]: https://github.com/typelevel/bobcats
 [Cats Effect]: https://typelevel.org/cats-effect/
 [custom AWS Lambda runtime]: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html
 [davenverse/sqlite-sjs#1]: https://github.com/davenverse/sqlite-sjs/pull/1
@@ -169,6 +169,7 @@ Status code distribution:
 [feral]: https://github.com/typelevel/feral
 [FS2]: https://fs2.io/
 [fs2-data]: https://github.com/satabin/fs2-data/
+[`fs2-io`]: https://fs2.io/#/io
 [GraalVM Native Image]: https://www.graalvm.org/22.2/reference-manual/native-image/
 [gRPC]: https://grpc.io/
 [grpc-playground]: https://github.com/ChristopherDavenport/grpc-playground
@@ -182,13 +183,18 @@ Status code distribution:
 [NGINX Unit]: https://unit.nginx.org/
 [`PollingExecutorScheduler`]: https://github.com/typelevel/cats-effect/blob/7ca03db50342773a79a01ecf137d953408ac6b1d/core/native/src/main/scala/cats/effect/unsafe/PollingExecutorScheduler.scala
 [quiche]: https://github.com/cloudflare/quiche
+[rediculous]: https://github.com/davenverse/rediculous
 [sbt-vcpkg]: https://github.com/indoorvivants/sbt-vcpkg/
 [ScalablyTyped]: https://scalablytyped.org/
 [Scala Native]: https://scala-native.org/
+[Scala.js]: https://www.scala-js.org/
 [scala-native-loop]: https://github.com/scala-native/scala-native-loop/
 [`Scheduler`]: https://github.com/typelevel/cats-effect/blob/236a0db0e95be829de34d7a8e3c06914738b7b06/core/shared/src/main/scala/cats/effect/unsafe/Scheduler.scala
+[Skunk]: https://github.com/tpolecat/skunk
+[SQLite]: https://www.sqlite.org/index.html
 [snunit]: https://github.com/lolgab/snunit
 [sn-bindgen]: https://github.com/indoorvivants/sn-bindgen
-[SQLite]: https://www.sqlite.org/index.html
+[s2n-tls]: https://github.com/aws/s2n-tls
+[TLS]: https://en.wikipedia.org/wiki/Transport_Layer_Security
 [`MonadCancel`]: https://typelevel.org/cats-effect/docs/typeclasses/monadcancel
 [`Resource`]: https://typelevel.org/cats-effect/docs/std/resource
