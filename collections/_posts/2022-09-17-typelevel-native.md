@@ -38,6 +38,8 @@ Christopher Davenport has put up a [scala-native-ember-example](https://github.c
 
 The burden of cross-building the Typelevel ecosystem for Scala Native fell almost entirely to [Cats Effect] and [FS2].
 
+#### event loops
+
 **To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O.
 
 Meanwhile, Scala Native core does not implement an event loop nor offer such APIs. There is the [scala-native-loop] project, which wraps the [libuv] event loop runtime, but we did not want to bake such an opinionated dependency into Cats Effect core.
@@ -72,7 +74,11 @@ Thus, with tasks, timers, and the capability to poll for I/O, we can express the
 
 In fact, this is a very basic implementation of the [I/O Integrated Runtime Concept]. The grander idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can run an event loop exactly like the one described above, for exceptionally high-performance I/O.
 
+#### non-blocking I/O
+
 **So, how do we implement `poll`?** The bad news is that the answer is OS-specific, which is a large reason why projects such as libuv exist. Furthermore, the entire purpose of polling is to support non-blocking I/O, which falls outside of the scope of Cats Effect. This brings us to FS2, and specifically the [`fs2-io`] module.
+
+#### TLS
 
 **The final important piece of the cross-build puzzle was a [TLS] implementation** for `TLSSocket` and related APIs in FS2. Although this task was daunting, ultimately it was straightforward to directly integrate with [s2n-tls], which has a well-designed and well-documented API. This is effectively the only non-Scala dependency required to use the Typelevel stack on Native.
 
