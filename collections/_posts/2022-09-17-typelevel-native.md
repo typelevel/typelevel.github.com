@@ -8,7 +8,7 @@ meta:
   author: armanbilge
 ---
 
-We recently published several major projects for the [Scala Native] platform, notably [Cats Effect], [FS2], and [http4s]. This blog post explores what this new platform means for the Typelevel ecosystem as well as how it works under-the-hood.
+We recently published several major Typelevel projects for the [Scala Native] platform, most notably [Cats Effect], [FS2], and [http4s]. This blog post explores what this new platform means for the Typelevel ecosystem as well as how it works under-the-hood.
 
 ### What is Scala Native?
 
@@ -40,7 +40,7 @@ The burden of cross-building the Typelevel ecosystem for Scala Native fell almos
 
 #### event loop runtime
 
-**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O.
+**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O. An *event loop* is a type of runtime a that enables compute tasks, timers, and non-blocking I/O to be interleaved on a single thread.
 
 Meanwhile, Scala Native core does not implement an event loop nor offer such APIs. There is the [scala-native-loop] project, which wraps the [libuv] event loop runtime, but we did not want to bake such an opinionated dependency into Cats Effect core.
 
@@ -63,7 +63,7 @@ To demonstrate the API contract, consider invoking `poll(3.seconds)`:
 
 *Oh, and don’t forget to tell me whether there are still outstanding I/O events (`true`) or not (`false`) so I know if I need to call you again. Thanks!*
 
-Thus, with tasks, timers, and the capability to poll for I/O, we can express the event loop algorithm. A single iteration of the loop looks like this:
+With tasks, timers, and the capability to poll for I/O, we can express the event loop algorithm. A single iteration of the loop looks like this:
 
 1. Check the current time and execute any expired timers.
 
@@ -93,9 +93,9 @@ int epoll_wait(int epfd, struct epoll_event *events,
                       int maxevents, int timeout);
 ```
 
-After creating an epoll instance (identified by a file descriptor) we can register sockets (also identified by file descriptors) with `epoll_ctl`. Typically we will register to be notified of the “read-ready” (`EPOLLIN`) and “write-ready” (`EPOLLOUT`) events on that socket. Finally, the actual polling is implemented with `epoll_wait`, which sleeps until the next I/O event is ready or the `timeout` expires.
+After creating an epoll instance (identified by a file descriptor) we can register sockets (also identified by file descriptors) with `epoll_ctl`. Typically we will register to be notified of the “read-ready” (`EPOLLIN`) and “write-ready” (`EPOLLOUT`) events on that socket. Finally, the actual polling is implemented with `epoll_wait`, which sleeps until the next I/O event is ready or the `timeout` expires. Thus we can use it to implement a  `PollingExecutorScheduler`.
 
-As previously mentioned, these sorts of polling APIs are ubiquitous and not just for working directly with sockets. For example, [libcurl](https://curl.se/libcurl/) (the C library behind the well-known CLI) exposes a function for polling for I/O on all ongoing HTTP connections.
+As previously mentioned, these sorts of polling APIs are ubiquitous and not just for working directly with sockets. For example, [libcurl](https://curl.se/libcurl/) (the C library behind the well-known CLI) exposes a function for polling for I/O on all ongoing HTTP requests.
 
 ```c
 #include <curl/curl.h>
@@ -111,7 +111,7 @@ Indeed, this function underpins the `CurlExecutorScheduler` in [http4s-curl].
 
 On macOS and BSDs the [kqueue] API plays an analogous role to epoll. We will not talk about Windows today :)
 
-Long story short, I did not want the FS2 codebase to absorb all of this cross-OS complexity. So in collaboration with Lee Tibbert we repurposed my cheeky [epollcat] experiment into an actual library implementing JDK NIO APIs (specifically, [`AsynchronousSocketChannel`] and friends). Since these are the same APIs used by the JVM implementation of `fs2-io`, it actually enables this code to be completely shared.
+**Long story short, I did not want the FS2 codebase to absorb all of this cross-OS complexity.** So in collaboration with Lee Tibbert we repurposed my cheeky [epollcat] experiment into an actual library implementing JDK NIO APIs (specifically, [`AsynchronousSocketChannel`] and friends). Since these are the same APIs used by the JVM implementation of `fs2-io`, it actually enables the `Socket` code to be completely shared with Native.
 
 [epollcat] implements an `EpollExecutorScheduler` for Linux and a `KqueueExecutorScheduler` for macOS. They additionally provide an API for monitoring a socket file descriptor for read-ready and write-ready events.
 
@@ -127,7 +127,7 @@ trait EventNotificationCallback {
 
 These are then used to implement the callback-based `read` and `write` methods of the JDK `AsynchronousSocketChannel`.
 
-It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well.  The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an I/O integrated runtime where fibers, timers, and I/O are all managed on a single thread.
+It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well.  The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an I/O integrated runtime where fibers, timers, and I/O are all interleaved on a single thread.
 
 #### TLS
 
@@ -149,8 +149,8 @@ Please try the Typelevel Native stack! And even better deploy it, and do so loud
 
 Besides that, here is a brain-dump of project ideas and existing projects that would love contributors. I am happy to help folks get started on any of these, or ideas of your own!
 
-* Creating example applications, templates, and tutorials.
-  - If you are lacking inspiration, try cross-building existing examples such as [fs2-chat], [kitteh-redis], [Jobby].
+* Creating example applications, templates, and tutorials:
+  - If you are short on inspiration, try cross-building existing examples such as [fs2-chat], [kitteh-redis], [Jobby].
   - Spread the word: [you-forgot-a-percentage-sign-or-a-colon].
 
 * Cross-building existing libraries and developing new, Typelevel-stack ones:
