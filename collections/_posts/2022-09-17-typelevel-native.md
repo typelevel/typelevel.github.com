@@ -127,13 +127,13 @@ trait EventNotificationCallback {
 
 These are then used to implement the callback-based `read` and `write` methods of the JDK `AsynchronousSocketChannel`.
 
-It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well.  The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an I/O integrated runtime where fibers, timers, and I/O are all interleaved on a single thread.
+It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well. The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an I/O integrated runtime where fibers, timers, and I/O are all interleaved on a single thread.
 
 #### TLS
 
 **The last critical piece of the cross-build puzzle was a [TLS] implementation** for [`TLSSocket`] and related APIs in FS2. Although the prospect of this was daunting, in the end it was actually fairly straightforward to directly integrate with [s2n-tls], which exposes a well-designed and well-documented C API. This is effectively the only non-Scala dependency required to use the Typelevel stack on Native.
 
-Finally, special thanks to Ondra Pelech and Lorenzo Gabriele for cross-building [scala-java-time] and [scala-java-locales] for Native and David Strawn for developing [idna4s]. These projects fill important gaps in the Scala Native re-implementation of the JDK that were essential to seamless cross-building.
+Finally, special thanks to Ondra Pelech and Lorenzo Gabriele for cross-building [scala-java-time] and [scala-java-locales] for Native and David Strawn for developing [idna4s]. These projects fill important gaps in the Scala Native re-implementation of the JDK and were essential to seamless cross-building.
 
 And ... that is pretty much it. **From here, any library or application that is built using Cats Effect and FS2 cross-builds for Scala Native effectively for free.** Three spectacular examples of this are:
 
