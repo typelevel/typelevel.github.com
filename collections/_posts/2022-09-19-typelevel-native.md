@@ -40,7 +40,7 @@ The burden of cross-building the Typelevel ecosystem for Scala Native fell almos
 
 #### Event loop runtime
 
-**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O. An *event loop* is a type of runtime that enables compute tasks, timers, and non-blocking I/O to be interleaved on a single thread.
+**To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O. An *event loop* is a type of runtime that enables compute tasks, timers, and non-blocking I/O to be interleaved on a single thread (although not every event loop does all these things).
 
 Meanwhile, Scala Native core does not implement an event loop nor offer such APIs. There is the [scala-native-loop] project, which wraps the [libuv] event loop runtime, but we did not want to bake such an opinionated dependency into Cats Effect core.
 
