@@ -74,7 +74,7 @@ With tasks, timers, and the capability to poll for I/O, we can express the event
   - **There is at least one outstanding timer**. Call `poll(durationToNextTimer)`, so it will sleep until the next I/O event arrives or the timeout expires, whichever comes first.
   - **There are no tasks to do and no outstanding timers.**  Call `poll(Duration.Infinite)`, so it will sleep until the next I/O event arrives.
 
-This algorithm is not a Cats Effect original: the [libuv event loop] works in essentially the same way. It is however a first step towards to the much grander Cats Effect [I/O Integrated Runtime Concept]. The big idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can run an event loop exactly like the one described above, for exceptionally high-performance I/O.
+This algorithm is not a Cats Effect original: the [libuv event loop] works in essentially the same way. It is however a first step toward the much grander Cats Effect [I/O Integrated Runtime Concept]. The big idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can run an event loop exactly like the one described above, for exceptionally high-performance I/O.
 
 #### Non-blocking I/O
 
