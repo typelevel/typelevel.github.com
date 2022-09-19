@@ -14,7 +14,7 @@ We recently published several major Typelevel projects for the [Scala Native] pl
 
 [Scala Native] is an optimizing ahead-of-time compiler for the Scala language. Put simply: it enables you to **compile Scala code directly to native executables**.
 
-It is an ambitious project following in the steps of [Scala.js]. Instead of targeting JavaScript, the Scala Native compiler targets the [LLVM] IR and uses its toolchain to generate native executables for a range of architectures, including x86, ARM, and in the near future web assembly.
+It is an ambitious project following in the steps of [Scala.js]. Instead of targeting JavaScript, the Scala Native compiler targets the [LLVM] IR and uses its toolchain to generate native executables for a range of architectures, including x86, ARM, and in the near future [web assembly].
 
 ### Why is this exciting?
 
@@ -281,4 +281,5 @@ Status code distribution:
 [s2n-tls]: https://github.com/aws/s2n-tls
 [TLS]: https://en.wikipedia.org/wiki/Transport_Layer_Security\
 [`TLSSocket`]: https://www.javadoc.io/doc/co.fs2/fs2-docs_2.13/latest/fs2/io/net/tls/TLSSocket.html
+[web assembly]: https://twitter.com/ShadajL/status/1548020571597811719
 [you-forgot-a-percentage-sign-or-a-colon]: https://youforgotapercentagesignoracolon.com/
