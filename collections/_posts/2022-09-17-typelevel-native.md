@@ -38,7 +38,7 @@ Christopher Davenport has put up a [scala-native-ember-example](https://github.c
 
 The burden of cross-building the Typelevel ecosystem for Scala Native fell almost entirely to [Cats Effect] and [FS2].
 
-#### event loop runtime
+#### Event loop runtime
 
 **To cross-build Cats Effect for Native we had to get creative** because Scala Native currently does not support multithreading (although it will in the next major release). This is a similar situation to the JavaScript runtime, which is also fundamentally single-threaded. But an important difference is that JS runtimes are implemented with an [event loop] and offer callback-based APIs for scheduling timers and performing non-blocking I/O. An *event loop* is a type of runtime that enables compute tasks, timers, and non-blocking I/O to be interleaved on a single thread.
 
@@ -76,7 +76,7 @@ With tasks, timers, and the capability to poll for I/O, we can express the event
 
 This algorithm is not a Cats Effect original: the [libuv event loop] works in essentially the same way. It is however a first step towards to the much grander Cats Effect [I/O Integrated Runtime Concept]. The big idea is that every `WorkerThread` in the `WorkStealingThreadPool` that underpins the Cats Effect JVM runtime can run an event loop exactly like the one described above, for exceptionally high-performance I/O.
 
-#### non-blocking I/O
+#### Non-blocking I/O
 
 **So, how do we implement `poll`?** The bad news is that the answer is OS-specific, which is a large reason why projects such as libuv exist. Furthermore, the entire purpose of polling is to support non-blocking I/O, which falls outside of the scope of Cats Effect. This brings us to FS2, and specifically the [`fs2-io`] module where we want to implement non-blocking TCP [`Socket`]s.
 
