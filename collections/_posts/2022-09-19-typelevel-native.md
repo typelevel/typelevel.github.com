@@ -127,7 +127,7 @@ trait EventNotificationCallback {
 
 These are then used to implement the callback-based `read` and `write` methods of the JDK `AsynchronousSocketChannel`.
 
-It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well. The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an I/O integrated runtime where fibers, timers, and I/O are all interleaved on a single thread.
+It is worth pointing out that the JVM actually implements `AsynchronousSocketChannel` with an event loop as well. The difference is that on the JVM, this event loop is used only for I/O and runs on a separate thread from the compute pool used for fibers and the scheduler thread used for timers. Meanwhile, epollcat is an example of an [I/O integrated runtime][I/O Integrated Runtime Concept] where fibers, timers, and I/O are all interleaved on a single thread.
 
 #### TLS
 
