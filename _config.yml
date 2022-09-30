@@ -16,7 +16,7 @@ permalink: pretty
 
 # Serving, url
 # ---------------------------------------------------------------
-baseurl: "/typelevel.github.com"
+baseurl: "https://typelevel.org"
 url: ""
 
 # Conversion
