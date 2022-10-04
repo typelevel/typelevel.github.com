@@ -15,5 +15,17 @@
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
 
   <link rel="alternate" type="application/rss+xml" title="Blog articles" href="{% link blog/feed.rss %}" />
-  
+
+  {% if page.meta.mathjax %}
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  {% endif %}
 </head>
