@@ -23,6 +23,10 @@ navSocial:
     url: https://twitter.com/typelevel
     icon: "fab fa-twitter"
 
+  - title: Mastodon
+    url: https://fosstodon.org/@typelevel
+    icon: "fab fa-mastodon"
+
   - title: Discord
     url: https://discord.gg/XF3CXcMzqD
     icon: "fab fa-discord"

@@ -26,12 +26,11 @@
                 
                 {% for item in site.data.nav.navSocial %}
                 <li>
-                    <a href="{{ item.url | relative_url }}" target="_blank">
+                    <a rel="me" href="{{ item.url | relative_url }}" target="_blank">
                     <i class="{{ item.icon }}"></i>
                 </a>
                 </li>
                 {% endfor %}
-                <li><a rel="me" href="https://fosstodon.org/@typelevel" target="_blank"><i class="fab fa-mastodon"></i></a></li>
             </ul>
         </div>
     </div>
