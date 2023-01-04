@@ -1,0 +1,9 @@
+- title: All Projects
+  url: /projects/
+  category: allProjects
+- title: Member
+  url: /projects/member/
+  category: member
+- title: Affiliate
+  url: /projects/affiliate/
+  category: affiliate

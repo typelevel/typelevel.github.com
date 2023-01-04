@@ -1,7 +1,9 @@
 ---
 layout: page
 title: Projects
+permalink: /projects/affiliate/
 ---
+
 <div id="section-page">
   <div class="container">
     <div class="masthead-page">
@@ -9,8 +11,10 @@ title: Projects
       <p>{{site.data.description.projectsDescription}}</p>
       {% include _tab-projects.html %}
     </div>
+
     <div class="projects-list">
       {% for project in site.projects %}
+      {% if project.affiliate %}
       <a href="{{ project.github }}" class="project-item">
         <div class="project-item-content">
           <div>
@@ -32,6 +36,7 @@ title: Projects
           {% endif %}
         </div>
       </a>
+      {% endif %}
       {% endfor %}
     </div>
   </div>
