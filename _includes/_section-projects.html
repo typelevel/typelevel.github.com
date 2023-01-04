@@ -7,7 +7,7 @@
     <div class="projects-list">
       {% assign projects = site.projects | where:'core', true %}
       {% for project in projects limit:3 %}
-      <a href="{{ project.github }}" class="project-item" data-aos="fade-down">
+      <a href="{{ project.github }}" class="project-item">
         <div class="project-item-content">
           <div>
             <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
