@@ -72,15 +72,18 @@
   description: "A composable command-line parser for Scala."
   github: "https://github.com/bkirwi/decline"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "discipline"
   category: "Flexible law checking"
   description: "Originally intended for internal use in spire, this library helps libraries declaring type classes to precisely state the laws which instances need to satisfy, and takes care of not checking derived laws multiple times."
   github: "https://github.com/typelevel/discipline"
+  platforms: [js, jvm, native]
 - title: "doobie"
   category: "Principled database access"
   description: "A pure functional JDBC layer for Scala. It is not an ORM, nor is it a relational algebra; it just provides a principled way to construct programs (and higher-level libraries) that use JDBC."
   github: "https://github.com/tpolecat/doobie"
   affiliate: true
+  platforms: [jvm]
 - title: "eff"
   category: "effects"
   description: "Extensible effects are an alternative to monad transformers for computing with effects in a functional way. This library is based on the “free-er” monad and an “open union” of effects described by Oleg Kiselyov in “Freer monads, more extensible effects”"
@@ -88,53 +91,66 @@
   permalink: "http://atnos-org.github.io/eff"
   github: "https://github.com/atnos-org/eff"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Extruder"
   description: "Populate case classes from any configuration source"
   github: "https://github.com/janstenpickle/extruder"
   affiliate: true
+  platforms: [jvm]
 - title: "fabric"
   category: "JSON Library"
   description: "Object-Notation Abstraction for JSON, binary, HOCON, etc."
   github: "https://github.com/typelevel/fabric"
+  platforms: [js, jvm, native]
 - title: "Fetch"
   description: "Library built on top of Cats that provides efficient data access from heterogeneous dataurces"
   github: "https://github.com/47deg/fetch"
   affiliate: true
+  platforms: [js, jvm]
 - title: "Finch"
   description: "Purely functional basic blocks atop of Finagle for building composable HTTP APIs"
   github: "https://github.com/finagle/finch"
   affiliate: true
+  platforms: [jvm]
 - title: "Frameless"
   category: "Typeful Spark"
   description: "Frameless is a library for working with Spark using more expressive types."
   github: "https://github.com/typelevel/frameless"
+  platforms: [jvm]
 - title: "fs2-data"
   category: "Stream Processing"
   description: "Parse and transform data (CBOR, CSV, JSON, XML) in a streaming manner"
   github: "https://github.com/gnieh/fs2-data"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "fs2-grpc"
   description: "gRPC implementation for FS2/cats-effect"
   github: "https://github.com/typelevel/fs2-grpc"
+  platforms: [jvm]
 - title: "fs2"
   category: "Stream Processing"
   description: "FS2 is a library for purely functional, effectful, and polymorphic stream processing library in the Scala programming language. Its design goals are compositionality, expressiveness, resource safety, and speed. The name is a modified acronym for Functional Streams for Scala (FSS, or FS2)."
   github: "https://github.com/functional-streams-for-scala/fs2"
+  platforms: [js, jvm, native]
 - title: "Hammock"
   description: "Purely functional HTTP client"
   github: "https://github.com/pepegar/hammock"
   affiliate: true
+  platforms: [jvm]
 - title: "http4s"
   description: "A typeful, purely functional HTTP library for client and server applications"
   github: "https://github.com/http4s/http4s"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "imp"
   description: "Summoning implicit values"
   github: "https://github.com/non/imp"
   affiliate: true
+  platforms: [js, jvm]
 - title: "jawn-fs2"
   description: "Integration of jawn and fs2 for streaming, incremental JSON parsing"
   github: "https://github.com/typelevel/jawn-fs2"
+  platforms: [js, jvm, native]
 - title: "keypool"
   description: "A Keyed Pool Implementation for Scala"
   github: "https://github.com/typelevel/keypool"
