@@ -2,56 +2,71 @@
   description: "Automatic derivation for argonaut"
   github: "https://github.com/alexarchambault/argonaut-shapeless"
   affiliate: true
+  platforms: [jvm]
 - title: "banana-rdf"
   description: "RDF, SPARQL and Linked Data technologies"
   github: "https://github.com/banana-rdf/banana-rdf"
   affiliate: true
+  platforms: [js, jvm]
 - title: "case-insensitive"
   description: "A case-insensitive string for Scala"
   github: "https://github.com/typelevel/case-insensitive"
+  platforms: [js, jvm, native]
 - title: "catbird"
   description: "Cats instances for various Twitter Open Source Scala projects"
   github: "https://github.com/typelevel/catbird"
+  platforms: [jvm]
 - title: "Cats"
   category: "Functional Programming"
   description: "A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
   permalink: "https://typelevel.org/cats/"
   github: "https://github.com/typelevel/cats"
   core: true
+  platforms: [js, jvm, native]
 - title: "Cats Collections"
   description: "Data structures that facilitate pure functional programming with cats"
   github: "https://github.com/typelevel/cats-collections"
+  platforms: [js, jvm, native]
 - title: Cats-Effect
   description: "The IO Monad for Scala, plus type classes for general effect types."
   github: "https://github.com/typelevel/cats-effect/"
+  platforms: [js, jvm, native]
 - title: "Cats MTL"
   description: "Monad transformers made easy"
   github: "https://github.com/typelevel/cats-mtl/"
+  platforms: [js, jvm, native]
 - title: "cats-parse"
   description: "A parsing library for the cats ecosystem"
   github: "https://github.com/typelevel/cats-parse"
+  platforms: [js, jvm, native]
 - title: "cats-scalatest"
   description: "Scalatest bindings for Cats."
   github: "https://github.com/IronCoreLabs/cats-scalatest"
   affiliate: true
+  platforms: [js, jvm]
 - title: "Cats Tagless"
   description: "A library of utilities for tagless final algebras"
   github: "https://github.com/typelevel/cats-tagless/"
+  platforms: [js, jvm, native]
 - title: "Cats-Time"
   description: "Instances for Cats Typeclasses for Java 8 Time"
   github: "https://github.com/ChristopherDavenport/cats-time"
+  platforms: [js, jvm, native]
 - title: "Ciris"
   description: "Functional Configurations for Scala"
   github: "https://github.com/vlovgr/ciris"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "coulomb"
   description: "A statically typed unit analysis library for Scala"
   github: "https://github.com/erikerlandson/coulomb"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "cron4s"
   description: "Cross-platform CRON expression parsing for Scala"
   github: "https://github.com/alonsodomin/cron4s"
   affiliate: true
+  platforms: [js, jvm]
 - title: "decline"
   category: "Command-line parsing"
   description: "A composable command-line parser for Scala."
