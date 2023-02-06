@@ -1,0 +1,36 @@
+---
+layout: page
+title: Typelevel.js
+permalink: /platforms/js/
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>{{site.data.description.jsDescription}}</p>
+    </div>
+
+    <div class="projects-list">
+      {% for project in site.data.projects %}
+      {% if project.platforms contains "js" %}
+      <a href="{{ project.github }}" class="project-item">
+        <div class="project-item-content">
+          <div>
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+            <h3>{{ project.title }}</h3>
+          </div>
+          <p>{{ project.description }}</p>
+        </div>
+        {% if project.category %}
+        <div class="project-item-tag">
+          <p>{{ project.category }}</p>
+        </div>
+        {% endif %}
+        {% include _project_membership.html %}
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
