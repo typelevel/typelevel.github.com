@@ -39,7 +39,7 @@
   github: "https://github.com/typelevel/cats-tagless/"
 - title: "Cats-Time"
   description: "Instances for Cats Typeclasses for Java 8 Time"
-  github: "https://github.com/ChristopherDavenport/cats-time"
+  github: "https://github.com/typelevel/cats-time/"
 - title: "Ciris"
   description: "Functional Configurations for Scala"
   github: "https://github.com/vlovgr/ciris"
