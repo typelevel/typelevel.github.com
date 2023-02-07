@@ -1,0 +1,41 @@
+---
+layout: page
+title: Typelevel JVM
+permalink: /platforms/jvm/
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>
+        Run your Typelevel stack on the JVM.
+        Leverage <a href="https://github.com/typelevel/fs2">fs2</a> and <a href="https://github.com/typelevel/cats-effect">cats-effect</a> on the JVM for highly concurrent networked services.
+        Write functional JDBC programs with <a href="https://github.com/tpolecat/doobie">doobie</a>.
+      </p>
+
+    </div>
+
+    <div class="projects-list">
+      {% for project in site.data.projects %}
+      {% if project.platforms contains "jvm" %}
+      <a href="{{ project.github }}" class="project-item">
+        <div class="project-item-content">
+          <div>
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+            <h3>{{ project.title }}</h3>
+          </div>
+          <p>{{ project.description }}</p>
+        </div>
+        {% if project.category %}
+        <div class="project-item-tag">
+          <p>{{ project.category }}</p>
+        </div>
+        {% endif %}
+        {% include _project_membership.html %}
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
