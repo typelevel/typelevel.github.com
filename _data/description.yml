@@ -4,10 +4,6 @@ aboutDescription: Learn more about the organization, including our main goals, c
 projectsTitle: Projects
 projectsDescription: Our projects cover a wide range of domains, from general functional programming to tooling.
 
-platformsTitle: Platforms
-platformsDescription: Checkout the Typelevel ecosystem by platform.
-jsDescription: Checkout Typelevel on Scala.js!
-
 blogTitle: Latest blog posts
 blogDescription: In addition to org-level announcements, here we show you how to use our libraries in your code, provide examples, collect learning resources, and explore implementation details.
 
