@@ -50,7 +50,7 @@
   platforms: [js, jvm, native]
 - title: "Cats-Time"
   description: "Instances for Cats Typeclasses for Java 8 Time"
-  github: "https://github.com/ChristopherDavenport/cats-time"
+  github: "https://github.com/typelevel/cats-time/"
   platforms: [js, jvm, native]
 - title: "Ciris"
   description: "Functional Configurations for Scala"
@@ -130,7 +130,7 @@
 - title: "fs2"
   category: "Stream Processing"
   description: "FS2 is a library for purely functional, effectful, and polymorphic stream processing library in the Scala programming language. Its design goals are compositionality, expressiveness, resource safety, and speed. The name is a modified acronym for Functional Streams for Scala (FSS, or FS2)."
-  github: "https://github.com/functional-streams-for-scala/fs2"
+  github: "https://github.com/typelevel/fs2"
   platforms: [js, jvm, native]
 - title: "Hammock"
   description: "Purely functional HTTP client"
@@ -157,11 +157,11 @@
   platforms: [js, jvm, native]
 - title: "kind-projector"
   description: "Plugin for nicer type-lambda syntax"
-  github: "https://github.com/non/kind-projector"
+  github: "https://github.com/typelevel/kind-projector"
   platforms: [jvm]
 - title: "Kittens"
   description: "Automatic type class derivation"
-  github: "https://github.com/milessabin/kittens"
+  github: "https://github.com/typelevel/kittens"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "Libra"
@@ -182,8 +182,8 @@
   platforms: [js, jvm]
 - title: "Monocle"
   category: "Lenses for Scala"
-  description: "Strongly inspired by Haskell's lens library, Monocle is an Optics library where Optics gather the concepts of Lens, Traversal, Optional, Prism and Iso."
-  github: "https://github.com/julien-truffaut/Monocle"
+  description: "Optics library offering a simple yet powerful API to access and transform immutable data"
+  github: "https://github.com/optics-dev/Monocle"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "Mouse"
@@ -218,7 +218,7 @@
 - title: "ScalaCheck"
   category: "Property checking"
   description: "ScalaCheck is a library for automated property-based testing. It contains generators for randomized test data and combinators for properties."
-  github: "https://github.com/rickynils/scalacheck"
+  github: "https://github.com/typelevel/scalacheck"
   permalink: "http://scalacheck.org/"
   platforms: [js, jvm, native]
 - title: "scalacheck-shapeless"
@@ -256,7 +256,7 @@
   platforms: [js, jvm, native]
 - title: "simulacrum"
   description: "First-class syntax for type classes"
-  github: "https://github.com/mpilquist/simulacrum"
+  github: "https://github.com/typelevel/simulacrum"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "Simulacrum Scalafix"
@@ -283,13 +283,12 @@
 - title: "spire"
   category: "Numeric abstractions"
   description: "Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs."
-  github: "https://github.com/non/spire"
-  affiliate: true
+  github: "https://github.com/typelevel/spire"
   core: true
   platforms: [js, jvm, native]
 - title: "Squants"
   description: "The Scala API for Quantities, Units of Measure and Dimensional Analysis"
-  github: "https://github.com/garyKeorkunian/squants"
+  github: "https://github.com/typelevel/squants"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "TwoTails"
