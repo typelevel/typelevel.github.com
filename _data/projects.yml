@@ -154,131 +154,163 @@
 - title: "keypool"
   description: "A Keyed Pool Implementation for Scala"
   github: "https://github.com/typelevel/keypool"
+  platforms: [js, jvm, native]
 - title: "kind-projector"
   description: "Plugin for nicer type-lambda syntax"
   github: "https://github.com/non/kind-projector"
+  platforms: [jvm]
 - title: "Kittens"
   description: "Automatic type class derivation"
   github: "https://github.com/milessabin/kittens"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Libra"
   description: "Compile time dimensional analysis for any problem domain"
   github: "https://github.com/to-ithaca/libra"
   affiliate: true
+  platforms: [js, jvm]
 - title: "log4cats"
   description: "Logging Tools For Interaction with cats-effect"
   github: "https://github.com/typelevel/log4cats"
+  platforms: [js, jvm, native]
 - title: "Monix"
   category: "Asynchronous, Reactive Programming"
   description: "High-performance library for composing asynchronous, event-based programs, exposing a Reactive Streams implementation along with primitives for dealing with concurrency and side-effects."
   github: "https://github.com/monix/monix"
   permalink: "https://monix.io"
   affiliate: true
+  platforms: [js, jvm]
 - title: "Monocle"
   category: "Lenses for Scala"
   description: "Strongly inspired by Haskell's lens library, Monocle is an Optics library where Optics gather the concepts of Lens, Traversal, Optional, Prism and Iso."
   github: "https://github.com/julien-truffaut/Monocle"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Mouse"
   description: "Enrichments to standard library classes to ease functional programming"
   github: "https://github.com/typelevel/mouse/"
+  platforms: [js, jvm, native]
 - title: "otel4s"
   description: "An OpenTelemetry library based on cats-effect"
   github: "https://github.com/typelevel/otel4s"
+  platforms: [js, jvm, native]
 - title: "Outwatch"
   description: "The Functional and Reactive Web-Frontend Library for Scala.js"
   github: "https://github.com/outwatch/outwatch"
   affiliate: true
+  platforms: [js]
 - title: "parsley-cats"
   description: "The parsley-cats library exposes Cats instances for Parsley parsing library."
   github: "https://github.com/j-mie6/parsley-cats"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "PureConfig"
   description: "A boilerplate-free library for loading configuration files"
   github: "https://github.com/pureconfig/pureconfig"
   affiliate: true
+  platforms: [jvm]
 - title: "refined"
   category: "Constraints on types"
   description: "Tools for refining types with type-level predicates which constrain the set of values described by the refined type, for example restricting to positive or negative numbers."
   github: "https://github.com/fthomas/refined"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "ScalaCheck"
   category: "Property checking"
   description: "ScalaCheck is a library for automated property-based testing. It contains generators for randomized test data and combinators for properties."
   github: "https://github.com/rickynils/scalacheck"
   permalink: "http://scalacheck.org/"
+  platforms: [js, jvm, native]
 - title: "scalacheck-shapeless"
   description: "Automatic derivation for ScalaCheck"
   github: "https://github.com/alexarchambault/scalacheck-shapeless"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Scala Exercises"
   description: "Platform and framework for Scala devs to learn about Scala libraries"
   github: "https://github.com/scala-exercises/scala-exercises"
   affiliate: true
+  platforms: [js, jvm]
 - title: "scala-steward"
   description: "A robot that helps keeping Scala projects up-to-date"
   github: "https://github.com/fthomas/scala-steward"
   affiliate: true
+  platforms: [jvm]
 - title: "scodec"
   category: "Binary serialization"
   description: "scodec is a combinator library for working with binary data. It focuses on contract-first and pure functional encoding and decoding of binary data and provides integration with shapeless."
   github: "https://github.com/scodec/scodec"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Scoverage"
   description: "Code coverage tool for Scala"
   github: "https://github.com/scoverage/scalac-scoverage-plugin"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Shapeless"
   category: "Generic Programming"
   description: "Shapeless is a generic programming library. Starting with implementations of Scrap your boilerplate and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes."
   github: "https://github.com/milessabin/shapeless"
   affiliate: true
   core: true
+  platforms: [js, jvm, native]
 - title: "simulacrum"
   description: "First-class syntax for type classes"
   github: "https://github.com/mpilquist/simulacrum"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "Simulacrum Scalafix"
   description: "Simulacrum as Scalafix rules"
   github: "https://github.com/typelevel/simulacrum-scalafix"
+  platforms: [js, jvm]
 - title: "singleton-ops"
   description: "Operations for primitive and String singleton types"
   github: "https://github.com/fthomas/singleton-ops"
   affiliate: true
+  platforms: [js, jvm]
 - title: "sonic"
   description: "Property-based testing with integrated shrinking"
   github: "https://github.com/melrief/sonic"
   affiliate: true
+  platforms: [jvm]
 - title: "specs2"
   category: "Expressive specifications"
   description: "specs2 is a library for writing executable software specifications, aiming for conciseness, readability and extensibility."
   github: "https://github.com/etorreborre/specs2"
   permalink: "http://specs2.org/"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "spire"
   category: "Numeric abstractions"
   description: "Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs."
   github: "https://github.com/non/spire"
   affiliate: true
   core: true
+  platforms: [js, jvm, native]
 - title: "Squants"
   description: "The Scala API for Quantities, Units of Measure and Dimensional Analysis"
   github: "https://github.com/garyKeorkunian/squants"
   affiliate: true
+  platforms: [js, jvm, native]
 - title: "TwoTails"
   description: "A compiler plugin adding support for mutual tail recursion"
   github: "https://github.com/wheaties/TwoTails"
   affiliate: true
+  platforms: [jvm]
 - title: "typelevel.g8"
   description: "A Giter8 template for sbt-typelevel"
   github: "https://github.com/typelevel/typelevel.g8"
+  platforms: [js, jvm]
 - title: "typelevel-nix"
   description: "Development tools for Typelevel projects"
   github: "https://github.com/typelevel/typelevel-nix"
+  platforms: [js, jvm, native]
 - title: "uniform-scala"
   description: "Functional user journeys"
   github: "https://github.com/ltbs/uniform-scala"
   affiliate: true
+  platforms: [js, jvm]
 - title: "vault"
   description: "Type-safe, persistent storage for values of arbitrary types"
   github: "https://github.com/typelevel/vault"
+  platforms: [js, jvm, native]
