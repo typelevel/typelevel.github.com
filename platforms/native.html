@@ -1,0 +1,41 @@
+---
+layout: page
+title: Typelevel Native
+permalink: /platforms/native/
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>
+        Get closer to bare metal with the Typelevel stack on <a href="https://www.scala-native.org">Scala Native</a>.
+        Deploy web servers with <a href="https://github.com/http4s/http4s">http4s</a>, <a href="https://github.com/typelevel/fs2">fs2</a>, and <a href="https://github.com/typelevel/cats-effect">cats-effect</a>.
+        Learn more about Typelevel Native in the <a href="/blog/2022/09/19/typelevel-native.html">introductory blog post</a>.
+      </p>
+
+    </div>
+
+    <div class="projects-list">
+      {% for project in site.data.projects %}
+      {% if project.platforms contains "native" %}
+      <a href="{{ project.github }}" class="project-item">
+        <div class="project-item-content">
+          <div>
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+            <h3>{{ project.title }}</h3>
+          </div>
+          <p>{{ project.description }}</p>
+        </div>
+        {% if project.category %}
+        <div class="project-item-tag">
+          <p>{{ project.category }}</p>
+        </div>
+        {% endif %}
+        {% include _project_membership.html %}
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
