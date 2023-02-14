@@ -102,6 +102,10 @@
   description: "Parse and transform data (CBOR, CSV, JSON, XML) in a streaming manner"
   github: "https://github.com/gnieh/fs2-data"
   affiliate: true
+- title: "fs2-dom"
+  description: "Idiomatic Cats Effect + FS2 integrations for Web APIs"
+  github: "https://github.com/armanbilge/fs2-dom"
+  affiliate: true
 - title: "fs2-grpc"
   description: "gRPC implementation for FS2/cats-effect"
   github: "https://github.com/typelevel/fs2-grpc"
