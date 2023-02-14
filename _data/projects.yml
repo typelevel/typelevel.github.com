@@ -6,6 +6,10 @@
   description: "RDF, SPARQL and Linked Data technologies"
   github: "https://github.com/banana-rdf/banana-rdf"
   affiliate: true
+- title: "calico"
+  description: "Pure, reactive UI library for building web applications with Cats Effect + FS2"
+  github: "https://armanbilge.github.io/calico"
+  affiliate: true
 - title: "case-insensitive"
   description: "A case-insensitive string for Scala"
   github: "https://github.com/typelevel/case-insensitive"
