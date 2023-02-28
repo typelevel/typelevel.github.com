@@ -8,6 +8,11 @@
   github: "https://github.com/banana-rdf/banana-rdf"
   affiliate: true
   platforms: [js, jvm]
+- title: "calico"
+  description: "Pure, reactive UI library for building web applications with Cats Effect + FS2"
+  github: "https://armanbilge.github.io/calico"
+  affiliate: true
+  platforms: [js]
 - title: "case-insensitive"
   description: "A case-insensitive string for Scala"
   github: "https://github.com/typelevel/case-insensitive"
@@ -123,6 +128,11 @@
   github: "https://github.com/gnieh/fs2-data"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "fs2-dom"
+  description: "Idiomatic Cats Effect + FS2 integrations for Web APIs"
+  github: "https://github.com/armanbilge/fs2-dom"
+  affiliate: true
+  platforms: [js]
 - title: "fs2-grpc"
   description: "gRPC implementation for FS2/cats-effect"
   github: "https://github.com/typelevel/fs2-grpc"
