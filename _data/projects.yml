@@ -70,6 +70,12 @@
   description: "A pure functional JDBC layer for Scala. It is not an ORM, nor is it a relational algebra; it just provides a principled way to construct programs (and higher-level libraries) that use JDBC."
   github: "https://github.com/tpolecat/doobie"
   affiliate: true
+- title: "edomata"
+  category: "Event sourcing and CQRS"
+  description: "Event-driven automata for Scala, Scala.js and scala native. This library provides purely functional state machines that can be used to create event sourced and/or CQRS style applications. It also includes production ready backends."
+  github: "https://github.com/hnaderi/edomata"
+  permalink: "https://edomata.ir/"
+  affiliate: true
 - title: "eff"
   category: "effects"
   description: "Extensible effects are an alternative to monad transformers for computing with effects in a functional way. This library is based on the “free-er” monad and an “open union” of effects described by Oleg Kiselyov in “Freer monads, more extensible effects”"
