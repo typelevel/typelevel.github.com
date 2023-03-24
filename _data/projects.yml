@@ -137,6 +137,12 @@
 - title: "Kittens"
   description: "Automatic type class derivation"
   github: "https://github.com/typelevel/kittens"
+- title: "Lepus"
+  category: "Principled AMQP client"
+  description: "Purely functional, non-blocking RabbitMQ client for scala, scala js and scala native built on top of fs2."
+  github: "https://github.com/hnaderi/lepus"
+  permalink: "https://lepus.hnaderi.dev/"
+  affiliate: true
 - title: "Libra"
   description: "Compile time dimensional analysis for any problem domain"
   github: "https://github.com/to-ithaca/libra"
