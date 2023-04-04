@@ -80,7 +80,7 @@ For the full list of libraries included in Typelevel Toolkit, please see the ove
 Typelevel libraries are production-proven, well tested, build upon rock solid semantics, and almost all have Scala 3 support.
 However their entry-point is higher than your usual scripting language. Pure functional programming has a reputation of being hard to learn, and Typelevel Toolkit is a way to play in that world, without learning an entire ecosystem first.
 
-The toolkit includes, among others, a [HTTP client](https://http4s.org/), [CSV parsing library](https://fs2-data.gnieh.org/documentation/csv/) and functions for [handling files cross-platform](https://fs2.io/#/io), **with support for other runtimes besides the JVM**. This means that your scripts can run in a [JavaScript environment](https://scala-cli.virtuslab.org/docs/guides/scala-js), thanks to [scala-js]() or you can use [scala-native]() to get a [native binary](https://scala-cli.virtuslab.org/docs/guides/scala-native), just like Rust and Go.
+The toolkit includes, among others, a [HTTP client](https://http4s.org/), [CSV parsing library](https://fs2-data.gnieh.org/documentation/csv/) and functions for [handling files cross-platform](https://fs2.io/#/io), **with support for other runtimes besides the JVM**. This means that your scripts can run in a [JavaScript environment](https://scala-cli.virtuslab.org/docs/guides/scala-js), thanks to [scala-js](https://www.scala-js.org/). Or you can use [scala-native](https://github.com/scala-native/scala-native) to get a [native binary](https://scala-cli.virtuslab.org/docs/guides/scala-native), just like Rust and Go!
 
 `scala-cli` again, makes things easy for us by having simple commands to compile to a certain target:
 
