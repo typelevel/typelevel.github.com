@@ -45,9 +45,8 @@ This creates a very nice feedback loop!
 # Putting the fun in functional
 
 [Typelevel Toolkit](https://typelevel.org/toolkit/) uses `scala-cli` and Typelevel libraries to provide a runway for your next Scala script or command-line interface. You can use the toolkit with `scala-cli` with just a single line and you'll get [Cats Effect](https://typelevel.org/cats-effect/), [fs2](https://fs2.io) and a few other libraries to develop scripts quickly using pure functional programming. 
-<br />
+
 Typelevel Toolkit shines with `scala-cli`, but it can also be used by sbt or mill if that is preferred.
-<br /><br />
 More concretely this means your next ad-hoc script won't be Bash or Python spaghetti, but Scala code that can be a joy to hack on as time goes on, without the boilerplate.
 
 You can use the toolkit by using a
@@ -92,10 +91,10 @@ scala-cli Main.scala --js
 scala-cli Main.scala --native
 ```
 
-If you just want to explore Typelevel Toolkit, you can open up a REPL using a file that has the `using dep "org.typelevel::toolkit::0.0.4"` directive and you can use all the libraries in the REPL:
+If you just want to explore Typelevel Toolkit, you can quickly open a REPL using the following command:
 
 ```sh
-scala-cli repl Main.scala
+scala-cli repl --dep "org.typelevel::toolkit::0.0.4"
 ```
 
 With `scala-cli`, there a few other cool things you get here:
