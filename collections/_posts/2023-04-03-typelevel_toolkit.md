@@ -11,7 +11,7 @@ meta:
 
 Getting started in the wondrous world of functional programming using [Typelevel libraries](https://typelevel.org/projects) can be daunting. Before you can even write your first pure "Hello, World!" you'll need to install a Java runtime, editor tooling and build tools. Then you'll need to setup some project using [sbt]() or [mill](). As an added consequence, after all the setup, the idea of using these battle-tested libraries for small scripts will seem like a chore. This is where [Typelevel Toolkit](https://typelevel.org/toolkit/) comes in. It provides an easy start for beginning and experienced developers with Scala and functional programming.
 
-# `scala-cli` to the rescue
+# scala-cli to the rescue
 
 [scala-cli](https://scala-cli.virtuslab.org/) is a command-line interface to quickly develop and experiment with Scala, it's even on track to [becoming the new scala command](https://docs.scala-lang.org/sips/scala-cli.html). The interface has a lot of advantages, but one of the most important ones is that it makes learning, developing and building Scala scripts and small applications friction-less and easy to use.
 
@@ -44,7 +44,9 @@ This creates a very nice feedback loop!
 
 # Putting the fun in functional
 
-[Typelevel Toolkit](https://typelevel.org/toolkit/) uses `scala-cli` and Typelevel libraries to provide a runway for your next Scala script or command-line interface. You can use the toolkit with `scala-cli` with just a single line and you'll get [Cats Effect](https://typelevel.org/cats-effect/), [fs2](https://fs2.io) and a few other libraries to develop scripts quickly using pure functional programming. 
+[Typelevel Toolkit](https://typelevel.org/toolkit/) uses `scala-cli` and Typelevel libraries to provide a runway for your next Scala script or command-line interface. You can use the toolkit with `scala-cli` with just a single line and you'll get:
+- [Cats Effect](https://typelevel.org/cats-effect/) 
+- [fs2](https://fs2.io) 
 
 Typelevel Toolkit shines with `scala-cli`, but it can also be used by sbt or mill if that is preferred.
 More concretely this means your next ad-hoc script won't be Bash or Python spaghetti, but Scala code that can be a joy to hack on as time goes on, without the boilerplate.
