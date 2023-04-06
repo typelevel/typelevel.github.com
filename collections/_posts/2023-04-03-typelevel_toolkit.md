@@ -44,9 +44,14 @@ This creates a very nice feedback loop!
 
 # Putting the fun in functional
 
-[Typelevel Toolkit](https://typelevel.org/toolkit/) uses `scala-cli` and Typelevel libraries to provide a runway for your next Scala script or command-line interface. You can use the toolkit with `scala-cli` with just a single line and you'll get:
-- [Cats Effect](https://typelevel.org/cats-effect/) 
-- [fs2](https://fs2.io) 
+[Typelevel Toolkit](https://typelevel.org/toolkit/) uses `scala-cli` and Typelevel libraries to provide a runway for your next Scala script or command-line interface. With a single line, Typelevel Toolkit gives you:
+- [Cats Effect](https://typelevel.org/cats-effect/) a production proven pure asynchronous runtime.
+- [fs2](https://fs2.io) an amazing streaming I/O library.
+- [http4s-ember-client](https://http4s.org/v0.23/docs/client.html) for a full-fledged HTTP client.
+- [circe](https://circe.github.io/circe/) for dealing with JSON.
+- [MUnit](https://github.com/typelevel/munit-cats-effect) an unit testing library and an integration to easily unit test pure functional programs.
+- [fs2-data-csv](https://fs2-data.gnieh.org/documentation/csv/) for handling CSV files.
+- [decline](https://ben.kirw.in/decline/effect.html) a composable commandline parser and it's integration with Cats Effect.
 
 Typelevel Toolkit shines with `scala-cli`, but it can also be used by sbt or mill if that is preferred.
 More concretely this means your next ad-hoc script won't be Bash or Python spaghetti, but Scala code that can be a joy to hack on as time goes on, without the boilerplate.
@@ -81,7 +86,7 @@ For the full list of libraries included in Typelevel Toolkit, please see the ove
 Typelevel libraries are production-proven, well tested, build upon rock solid semantics, and almost all have Scala 3 support.
 However their entry-point is higher than your usual scripting language. Pure functional programming has a reputation of being hard to learn, and Typelevel Toolkit is a way to play in that world, without learning an entire ecosystem first.
 
-The toolkit includes, among others, a [HTTP client](https://http4s.org/), [CSV parsing library](https://fs2-data.gnieh.org/documentation/csv/) and functions for [handling files cross-platform](https://fs2.io/#/io), **with support for other runtimes besides the JVM**. This means that your scripts can run in a [JavaScript environment](https://scala-cli.virtuslab.org/docs/guides/scala-js), thanks to [scala-js](https://www.scala-js.org/). Or you can use [scala-native](https://github.com/scala-native/scala-native) to get a [native binary](https://scala-cli.virtuslab.org/docs/guides/scala-native), just like Rust and Go!
+The libraries in the toolkit compliment each other and target common usecases, thus providing a coherent mini-ecosystem, that scales extremely well, thanks to Cats Effect. **With support for other runtimes besides the JVM**. This means that your scripts can run in a [JavaScript environment](https://scala-cli.virtuslab.org/docs/guides/scala-js), thanks to [scala-js](https://www.scala-js.org/). Or you can use [scala-native](https://github.com/scala-native/scala-native) to get a [native binary](https://scala-cli.virtuslab.org/docs/guides/scala-native), just like Rust and Go!
 
 `scala-cli` again, makes things easy for us by having simple commands to compile to a certain target:
 
