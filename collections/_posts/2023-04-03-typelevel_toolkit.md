@@ -15,7 +15,7 @@ Getting started in the wondrous world of functional programming using [Typelevel
 
 [scala-cli](https://scala-cli.virtuslab.org/) is a command-line interface to quickly develop and experiment with Scala, it's even on track to [becoming the new scala command](https://docs.scala-lang.org/sips/scala-cli.html). The interface has a lot of advantages, but one of the most important ones is that it makes learning, developing and building Scala scripts and small applications friction-less and easy to use.
 
-You can get `scala-cli` by following the installation instructions described here: [https://scala-cli.virtuslab.org/docs/overview](https://scala-cli.virtuslab.org/docs/overview#installation)#installation. The great part here is that once you have `scala-cli` installed, it will take care of the rest: Java runtimes, editor tooling, compilation targets(including a native target!) and you can even use dependencies in your scripts!
+You can get `scala-cli` by following the installation instructions described here: [https://scala-cli.virtuslab.org/docs/overview#installation](https://scala-cli.virtuslab.org/docs/overview#installation). The great part here is that once you have `scala-cli` installed, it will take care of the rest: Java runtimes, editor tooling, compilation targets(including a native target!) and you can even use dependencies in your scripts!
 
 ## An example of setting up your script
 
