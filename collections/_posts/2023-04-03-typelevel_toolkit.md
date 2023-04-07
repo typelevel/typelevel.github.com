@@ -9,7 +9,7 @@ meta:
   pygments: true
 ---
 
-Getting started in the wondrous world of functional programming using [Typelevel libraries](https://typelevel.org/projects) can be daunting. Before you can even write your first pure "Hello, World!" you'll need to install a Java runtime, editor tooling and build tools. Then you'll need to setup some project using [sbt]() or [mill](). As an added consequence, after all the setup, the idea of using these battle-tested libraries for small scripts will seem like a chore. This is where [Typelevel Toolkit](https://typelevel.org/toolkit/) comes in. It provides an easy start for beginning and experienced developers with Scala and functional programming.
+Getting started in the wondrous world of functional programming using [Typelevel libraries](https://typelevel.org/projects) can be daunting. Before you can even write your first pure "Hello, World!" you'll need to install a Java runtime, editor tooling and build tools. Then you'll need to setup some project using [sbt](https://www.scala-sbt.org/) or [mill](https://github.com/com-lihaoyi/mill). As an added consequence, after all the setup, the idea of using these battle-tested libraries for small scripts will seem like a chore. This is where [Typelevel Toolkit](https://typelevel.org/toolkit/) comes in. It provides an easy start for beginning and experienced developers with Scala and functional programming.
 
 # scala-cli to the rescue
 
