@@ -86,6 +86,11 @@
   permalink: "http://atnos-org.github.io/eff"
   github: "https://github.com/atnos-org/eff"
   affiliate: true
+- title: "endless4s"
+  description: "Sharded and event-sourced entities using tagless-final algebras"
+  permalink: "https://endless4s.github.io/"
+  github: "https://github.com/endless4s/endless"
+  affiliate: true  
 - title: "Extruder"
   description: "Populate case classes from any configuration source"
   github: "https://github.com/janstenpickle/extruder"
