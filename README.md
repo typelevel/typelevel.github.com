@@ -135,9 +135,9 @@ To add an organization project, insert a new entry, alphabetically, in the `_dat
 
 Right now nothing more than the correct front matter is required.
 
-To add an:
-- **affiliate** project, add `affiliate: true` to the project entry
-- **core** project, add `core: true` to the project entry
+To add
+- an **affiliate** project, add `affiliate: true` to the project entry
+- a **core** project, add `core: true` to the project entry
 
 ### Adding a page
 
