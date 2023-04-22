@@ -17,6 +17,10 @@
   description: "A case-insensitive string for Scala"
   github: "https://github.com/typelevel/case-insensitive"
   platforms: [js, jvm, native]
+- title: "catapult"
+  description: "A thin wrapper for the Launch Darkly Java server SDK using cats-effect and fs2"
+  github: "https://github.com/typelevel/catapult"
+  platforms: [jvm]
 - title: "catbird"
   description: "Cats instances for various Twitter Open Source Scala projects"
   github: "https://github.com/typelevel/catbird"
@@ -89,6 +93,13 @@
   github: "https://github.com/tpolecat/doobie"
   affiliate: true
   platforms: [jvm]
+- title: "edomata"
+  category: "Event sourcing and CQRS"
+  description: "Event-driven automata for Scala, Scala.js and scala native. This library provides purely functional state machines that can be used to create event sourced and/or CQRS style applications. It also includes production ready backends."
+  github: "https://github.com/hnaderi/edomata"
+  permalink: "https://edomata.ir/"
+  affiliate: true
+  platforms: [js, jvm, native]
 - title: "eff"
   category: "effects"
   description: "Extensible effects are an alternative to monad transformers for computing with effects in a functional way. This library is based on the “free-er” monad and an “open union” of effects described by Oleg Kiselyov in “Freer monads, more extensible effects”"
@@ -97,6 +108,12 @@
   github: "https://github.com/atnos-org/eff"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "endless4s"
+  description: "Sharded and event-sourced entities using tagless-final algebras"
+  permalink: "https://endless4s.github.io/"
+  github: "https://github.com/endless4s/endless"
+  affiliate: true  
+  platforms: [jvm]
 - title: "Extruder"
   description: "Populate case classes from any configuration source"
   github: "https://github.com/janstenpickle/extruder"
@@ -121,6 +138,12 @@
   category: "Typeful Spark"
   description: "Frameless is a library for working with Spark using more expressive types."
   github: "https://github.com/typelevel/frameless"
+  platforms: [jvm]
+- title: "fs2-compress"
+  category: "Stream Processing"
+  description: "Compression Algorithms for Fs2 "
+  github: "https://github.com/lhns/fs2-compress"
+  affiliate: true
   platforms: [jvm]
 - title: "fs2-data"
   category: "Stream Processing"
@@ -174,6 +197,13 @@
   github: "https://github.com/typelevel/kittens"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "Lepus"
+  category: "Principled AMQP client"
+  description: "Purely functional, non-blocking RabbitMQ client for scala, scala js and scala native built on top of fs2."
+  github: "https://github.com/hnaderi/lepus"
+  permalink: "https://lepus.hnaderi.dev/"
+  affiliate: true
+  platforms: [js, jvm, native]
 - title: "Libra"
   description: "Compile time dimensional analysis for any problem domain"
   github: "https://github.com/to-ithaca/libra"
@@ -199,6 +229,10 @@
 - title: "Mouse"
   description: "Enrichments to standard library classes to ease functional programming"
   github: "https://github.com/typelevel/mouse/"
+  platforms: [js, jvm, native]
+- title: "Natchez"
+  description: "functional tracing for cats "
+  github: "https://github.com/typelevel/natchez"
   platforms: [js, jvm, native]
 - title: "otel4s"
   description: "An OpenTelemetry library based on cats-effect"
@@ -278,6 +312,10 @@
   github: "https://github.com/fthomas/singleton-ops"
   affiliate: true
   platforms: [js, jvm]
+- title: "Skunk"
+  description: "A data access library for Scala + Postgres"
+  github: "https://github.com/typelevel/skunk"
+  platforms: [js, jvm, native]
 - title: "sonic"
   description: "Property-based testing with integrated shrinking"
   github: "https://github.com/melrief/sonic"
