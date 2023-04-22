@@ -243,6 +243,9 @@
   description: "Operations for primitive and String singleton types"
   github: "https://github.com/fthomas/singleton-ops"
   affiliate: true
+- title: "Skunk"
+  description: "A data access library for Scala + Postgres"
+  github: "https://github.com/typelevel/skunk"
 - title: "sonic"
   description: "Property-based testing with integrated shrinking"
   github: "https://github.com/melrief/sonic"
