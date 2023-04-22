@@ -23,11 +23,7 @@ permalink: /projects/affiliate/
           </div>
           <p>{{ project.description }}</p>
         </div>
-        {% if project.category %}
-        <div class="project-item-tag">
-          <p>{{ project.category }}</p>
-        </div>
-        {% endif %}
+        {% include _project_platforms_tag.html %}
         {% include _project_membership.html %}
       </a>
       {% endif %}
