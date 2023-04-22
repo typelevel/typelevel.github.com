@@ -26,7 +26,6 @@
   github: "https://github.com/typelevel/catbird"
   platforms: [jvm]
 - title: "Cats"
-  category: "Functional Programming"
   description: "A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
   permalink: "https://typelevel.org/cats/"
   github: "https://github.com/typelevel/cats"
@@ -77,31 +76,26 @@
   affiliate: true
   platforms: [js, jvm]
 - title: "decline"
-  category: "Command-line parsing"
   description: "A composable command-line parser for Scala."
   github: "https://github.com/bkirwi/decline"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "discipline"
-  category: "Flexible law checking"
   description: "Originally intended for internal use in spire, this library helps libraries declaring type classes to precisely state the laws which instances need to satisfy, and takes care of not checking derived laws multiple times."
   github: "https://github.com/typelevel/discipline"
   platforms: [js, jvm, native]
 - title: "doobie"
-  category: "Principled database access"
   description: "A pure functional JDBC layer for Scala. It is not an ORM, nor is it a relational algebra; it just provides a principled way to construct programs (and higher-level libraries) that use JDBC."
   github: "https://github.com/tpolecat/doobie"
   affiliate: true
   platforms: [jvm]
 - title: "edomata"
-  category: "Event sourcing and CQRS"
   description: "Event-driven automata for Scala, Scala.js and scala native. This library provides purely functional state machines that can be used to create event sourced and/or CQRS style applications. It also includes production ready backends."
   github: "https://github.com/hnaderi/edomata"
   permalink: "https://edomata.ir/"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "eff"
-  category: "effects"
   description: "Extensible effects are an alternative to monad transformers for computing with effects in a functional way. This library is based on the “free-er” monad and an “open union” of effects described by Oleg Kiselyov in “Freer monads, more extensible effects”"
   
   permalink: "http://atnos-org.github.io/eff"
@@ -120,7 +114,6 @@
   affiliate: true
   platforms: [jvm]
 - title: "fabric"
-  category: "JSON Library"
   description: "Object-Notation Abstraction for JSON, binary, HOCON, etc."
   github: "https://github.com/typelevel/fabric"
   platforms: [js, jvm, native]
@@ -135,18 +128,15 @@
   affiliate: true
   platforms: [jvm]
 - title: "Frameless"
-  category: "Typeful Spark"
   description: "Frameless is a library for working with Spark using more expressive types."
   github: "https://github.com/typelevel/frameless"
   platforms: [jvm]
 - title: "fs2-compress"
-  category: "Stream Processing"
   description: "Compression Algorithms for Fs2 "
   github: "https://github.com/lhns/fs2-compress"
   affiliate: true
   platforms: [jvm]
 - title: "fs2-data"
-  category: "Stream Processing"
   description: "Parse and transform data (CBOR, CSV, JSON, XML) in a streaming manner"
   github: "https://github.com/gnieh/fs2-data"
   affiliate: true
@@ -161,7 +151,6 @@
   github: "https://github.com/typelevel/fs2-grpc"
   platforms: [jvm]
 - title: "fs2"
-  category: "Stream Processing"
   description: "FS2 is a library for purely functional, effectful, and polymorphic stream processing library in the Scala programming language. Its design goals are compositionality, expressiveness, resource safety, and speed. The name is a modified acronym for Functional Streams for Scala (FSS, or FS2)."
   github: "https://github.com/typelevel/fs2"
   platforms: [js, jvm, native]
@@ -198,7 +187,6 @@
   affiliate: true
   platforms: [js, jvm, native]
 - title: "Lepus"
-  category: "Principled AMQP client"
   description: "Purely functional, non-blocking RabbitMQ client for scala, scala js and scala native built on top of fs2."
   github: "https://github.com/hnaderi/lepus"
   permalink: "https://lepus.hnaderi.dev/"
@@ -214,14 +202,12 @@
   github: "https://github.com/typelevel/log4cats"
   platforms: [js, jvm, native]
 - title: "Monix"
-  category: "Asynchronous, Reactive Programming"
   description: "High-performance library for composing asynchronous, event-based programs, exposing a Reactive Streams implementation along with primitives for dealing with concurrency and side-effects."
   github: "https://github.com/monix/monix"
   permalink: "https://monix.io"
   affiliate: true
   platforms: [js, jvm]
 - title: "Monocle"
-  category: "Lenses for Scala"
   description: "Optics library offering a simple yet powerful API to access and transform immutable data"
   github: "https://github.com/optics-dev/Monocle"
   affiliate: true
@@ -254,13 +240,11 @@
   affiliate: true
   platforms: [jvm]
 - title: "refined"
-  category: "Constraints on types"
   description: "Tools for refining types with type-level predicates which constrain the set of values described by the refined type, for example restricting to positive or negative numbers."
   github: "https://github.com/fthomas/refined"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "ScalaCheck"
-  category: "Property checking"
   description: "ScalaCheck is a library for automated property-based testing. It contains generators for randomized test data and combinators for properties."
   github: "https://github.com/typelevel/scalacheck"
   permalink: "http://scalacheck.org/"
@@ -281,7 +265,6 @@
   affiliate: true
   platforms: [jvm]
 - title: "scodec"
-  category: "Binary serialization"
   description: "scodec is a combinator library for working with binary data. It focuses on contract-first and pure functional encoding and decoding of binary data and provides integration with shapeless."
   github: "https://github.com/scodec/scodec"
   affiliate: true
@@ -292,7 +275,6 @@
   affiliate: true
   platforms: [js, jvm, native]
 - title: "Shapeless"
-  category: "Generic Programming"
   description: "Shapeless is a generic programming library. Starting with implementations of Scrap your boilerplate and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes."
   github: "https://github.com/milessabin/shapeless"
   affiliate: true
@@ -322,14 +304,12 @@
   affiliate: true
   platforms: [jvm]
 - title: "specs2"
-  category: "Expressive specifications"
   description: "specs2 is a library for writing executable software specifications, aiming for conciseness, readability and extensibility."
   github: "https://github.com/etorreborre/specs2"
   permalink: "http://specs2.org/"
   affiliate: true
   platforms: [js, jvm, native]
 - title: "spire"
-  category: "Numeric abstractions"
   description: "Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs."
   github: "https://github.com/typelevel/spire"
   core: true
