@@ -22,8 +22,6 @@ If you haven't written a post before, please add yourself to `_data/authors.yml`
 
 That's it, we'll take care of the rest. If you wish, you can also submit just a plain Markdown file and we'll be happy to integrate it.
 
-You can also use `tut` in posts. See `posts/2016-09-30-subtype-typeclasses.md` for an example.
-
 ### Previewing your changes
 
 #### Bundler
@@ -97,18 +95,16 @@ Unless otherwise noted, all website content is licensed under a [Creative Common
 
 ### CSS
 
-The stylesheets are written in SASS, and can be found in the `css` and `_scss` directories.
+The stylesheets are written in SASS, and can be found in the `css` and `_sass` directories.
 It is being processed/compiled into regular CSS by Jekyll.
 
 ```
 ├── css/
 │   ├── main.scss # Custom CSS, brings all stylesheets together
-├── _scss/
-│   ├── _fonts.scss # @font-face embedding.
-│   ├── _mixins.scss # SASS mixins
-│   ├── _reset.scss # Normalize stylesheet
-│   ├── _syntax.scss # Syntax highlighting by Pygments
-│   ├── _variables.scss # SASS variables (colors, fonts, etc.)
+├── _sass/
+│   ├── base/
+│   ├── components/
+│   ├── utils/
 ```
 
 ### Javascript
@@ -125,41 +121,27 @@ Images for styling purposes are located inside `img/`, photos inside `img/media/
 
 ### Adding a project
 
-There are four types of projects: core/featured projects, regular projects, incubator projects, and macros.
+There are three types of projects: organization projects, affiliate projects, and core/featured projects.
 
-To add a regular project, create a new markdown file in the `_projects` folder with the following front matter:
+To add an organization project, insert a new entry, alphabetically, in the `_data/projects.yml` file with the following keys:
 
 ```yml
-layout: post
-title: "Cats"
-description: "An experimental library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
-permalink: "https://non.github.io/cats/"
-github: "https://github.com/non/cats"
+- title: "Cats"
+  description: "An experimental library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
+  github: "https://github.com/non/cats"
+  platforms: [js, jvm, native]
+  permalink: "https://non.github.io/cats" # optional
 ```
 
 Right now nothing more than the correct front matter is required.
 
-Do the same for a **core/featured** project, but also add `core: true`.
-To add companions or extensions to these projects, use the front matter, too:
-
-```yml
-extensions:
-  - title: "Alleycats"
-    description: "Lawless classes & illegal instances"
-    github: "https://github.com/non/alleycats"
-```
-
-Incubator projects and macros are created a little differently. They are located in `_data/incubator.yml` and `_data/macros.yml` respectively, and look like this:
-
-```yml
-- title: "imp"
-  description: "Summoning implicit values"
-  github: "https://github.com/non/imp"
-```
+To add an:
+- **affiliate** project, add `affiliate: true` to the project entry
+- **core** project, add `core: true` to the project entry
 
 ### Adding a page
 
-To add a page, create a HTML or Markdown file in the root of the project. The site navigation is not fully dynamic for simplification purposes. It can be changed in the default layout (`_layouts/default.html`).
+To add a page, create a directory in the root of the project, with at least an `index.html` file in that directory. The site navigation is not fully dynamic for simplification purposes. The new page can be added to the nav by updating `_data/nav.yml`.
 
 Sample front matter for a page:
 
