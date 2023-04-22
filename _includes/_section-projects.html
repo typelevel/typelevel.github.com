@@ -5,7 +5,7 @@
       <p>{{site.data.description.projectsDescription}}</p>
     </div>
     <div class="projects-list">
-      {% assign projects = site.projects | where:'core', true %}
+      {% assign projects = site.data.projects | where:'core', true %}
       {% for project in projects limit:3 %}
       <a href="{{ project.github }}" class="project-item">
         <div class="project-item-content">
