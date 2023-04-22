@@ -141,7 +141,9 @@ To add
 
 ### Adding a page
 
-To add a page, create a directory in the root of the project, with at least an `index.html` file in that directory. The site navigation is not fully dynamic for simplification purposes. The new page can be added to the nav by updating `_data/nav.yml`.
+To add a page, 
+
+1. Create a directory in the root of the project, with at least an `index.html` file in that directory. 2. Update  `_data/nav.yml` to add it to the navigation. (The site navigation is not fully dynamic for simplification.)
 
 Sample front matter for a page:
 
