@@ -111,6 +111,11 @@
   category: "Typeful Spark"
   description: "Frameless is a library for working with Spark using more expressive types."
   github: "https://github.com/typelevel/frameless"
+- title: "fs2-compress"
+  category: "Stream Processing"
+  description: "Compression Algorithms for Fs2 "
+  github: "https://github.com/lhns/fs2-compress"
+  affiliate: true
 - title: "fs2-data"
   category: "Stream Processing"
   description: "Parse and transform data (CBOR, CSV, JSON, XML) in a streaming manner"
