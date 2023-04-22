@@ -127,10 +127,10 @@ To add an organization project, insert a new entry, alphabetically, in the `_dat
 
 ```yml
 - title: "Cats"
-  description: "An experimental library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
-  github: "https://github.com/non/cats"
+  description: "A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
+  github: "https://github.com/typelevel/cats"
   platforms: [js, jvm, native]
-  permalink: "https://non.github.io/cats" # optional
+  permalink: "https://typelevel.org/cats/" # optional
 ```
 
 Right now nothing more than the correct front matter is required.
