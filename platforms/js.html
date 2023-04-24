@@ -1,20 +1,25 @@
 ---
 layout: page
-title: Projects
-permalink: /projects/organization/
+title: Typelevel.js
+permalink: /platforms/js/
 ---
 
 <div id="section-page">
   <div class="container">
     <div class="masthead-page">
       <h1><span>{{ page.title }}</span></h1>
-      <p>{{site.data.description.projectsDescription}}</p>
-      {% include _tab-projects.html %}
+      <p>
+        Much of the Typelevel ecosystem cross compiles to JavaScript via <a href="https://www.scala-js.org/">Scala.js</a>.
+        Deploy web servers on NodeJS with <a href="https://github.com/http4s/http4s">http4s</a>, <a href="https://github.com/typelevel/fs2">fs2</a>, and <a href="https://github.com/typelevel/cats-effect">cats-effect</a>.
+        Build reactive frontends with <a href="https://github.com/outwatch/outwatch">outwatch</a>, <a href="https://github.com/armanbilge/calico">calico</a>, and <a href="https://github.com/armanbilge/fs2-dom">fs2-dom</a>.
+      </p>
+
+      {% include _tab-platforms.html %}
     </div>
 
     <div class="projects-list">
       {% for project in site.data.projects %}
-      {% if project.affiliate != true %}
+      {% if project.platforms contains "js" %}
       <a href="{{ project.github }}" class="project-item">
         <div class="project-item-content">
           <div>
@@ -31,4 +36,3 @@ permalink: /projects/organization/
     </div>
   </div>
 </div>
-{% include _cta-projects.html %}

@@ -5,6 +5,9 @@ navMain:
   - title: Projects
     url: /projects/
 
+  - title: Platforms
+    url: /platforms/
+
   - title: Blog
     url: /blog/
 
