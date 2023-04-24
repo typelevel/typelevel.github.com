@@ -1,3 +1,6 @@
+- title: All
+  url: /platforms/
+  category: all
 - title: JS
   url: /platforms/js/
   category: js
