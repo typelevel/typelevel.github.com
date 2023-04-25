@@ -1,0 +1,19 @@
+<a href="{{ project.github }}" class="project-item">
+  <div class="project-item-content">
+    <div>
+      <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+      <h3>{{ project.title }}</h3>
+    </div>
+    <p>{{ project.description }}</p>
+  </div>
+  <div class="project-item-tag">
+    <p>{{ project.platforms | join: " / "}}</p>
+  </div>
+  <div class="project-membership">
+    {% if project.affiliate %}
+    <img src="https://img.shields.io/badge/typelevel-affiliate%20project-FFB4B5.svg" alt="Typelevel Affiliate Project" />
+    {% else %}
+    <img src="https://img.shields.io/badge/typelevel-organization%20project-FF6169.svg" alt="Typelevel Organization Project" />
+    {% endif %}
+  </div>
+</a>

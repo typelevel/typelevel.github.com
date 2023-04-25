@@ -19,19 +19,9 @@ permalink: /platforms/jvm/
 
     <div class="projects-list">
       {% for project in site.data.projects %}
-      {% if project.platforms contains "jvm" %}
-      <a href="{{ project.github }}" class="project-item">
-        <div class="project-item-content">
-          <div>
-            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
-            <h3>{{ project.title }}</h3>
-          </div>
-          <p>{{ project.description }}</p>
-        </div>
-        {% include _project_platforms_tag.html %}
-        {% include _project_membership.html %}
-      </a>
-      {% endif %}
+        {% if project.platforms contains "jvm" %}
+          {% include _project_card.html %}
+        {% endif %}
       {% endfor %}
     </div>
   </div>
