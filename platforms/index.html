@@ -7,7 +7,27 @@ title: Platforms
     <div class="masthead-page">
       <h1><span>{{ page.title }}</span></h1>
       <p>Check out the Typelevel ecosystem by platform</p>
+      <p>Below are projects supporting all platforms: JS, JVM, and Native</p>
       {% include _tab-platforms.html %}
+    </div>
+
+    {% assign allPlatforms = "js, jvm, native" | split: ", " %}
+    <div class="projects-list">
+      {% for project in site.data.projects %}
+      {% if project.platforms == allPlatforms %}
+      <a href="{{ project.github }}" class="project-item">
+        <div class="project-item-content">
+          <div>
+            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+            <h3>{{ project.title }}</h3>
+          </div>
+          <p>{{ project.description }}</p>
+        </div>
+        {% include _project_platforms_tag.html %}
+        {% include _project_membership.html %}
+      </a>
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
 </div>
