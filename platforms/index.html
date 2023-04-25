@@ -15,7 +15,7 @@ title: Platforms
     <div class="projects-list">
       {% for project in site.data.projects %}
         {% if project.platforms == allPlatforms %}
-          {% include _project_card %}
+          {% include _project_card.html %}
         {% endif %}
       {% endfor %}
     </div>

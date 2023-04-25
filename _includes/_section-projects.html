@@ -7,7 +7,7 @@
     <div class="projects-list">
       {% assign projects = site.data.projects | where:'core', true %}
       {% for project in projects limit:3 %}
-        {% include _project_card %}
+        {% include _project_card.html %}
       {% endfor %}
     </div>
     <div class="section-cta">

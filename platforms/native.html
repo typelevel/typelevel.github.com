@@ -20,7 +20,7 @@ permalink: /platforms/native/
     <div class="projects-list">
       {% for project in site.data.projects %}
         {% if project.platforms contains "native" %}
-          {% include _project_card %}
+          {% include _project_card.html %}
         {% endif %}
       {% endfor %}
     </div>
