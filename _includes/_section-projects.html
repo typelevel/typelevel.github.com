@@ -7,17 +7,7 @@
     <div class="projects-list">
       {% assign projects = site.data.projects | where:'core', true %}
       {% for project in projects limit:3 %}
-      <a href="{{ project.github }}" class="project-item">
-        <div class="project-item-content">
-          <div>
-            <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
-            <h3>{{ project.title }}</h3>
-          </div>
-          <p>{{ project.description }}</p>
-        </div>
-        {% include _project_platforms_tag.html %}
-        {% include _project_membership.html %}
-      </a>
+        {% include _project_card %}
       {% endfor %}
     </div>
     <div class="section-cta">
