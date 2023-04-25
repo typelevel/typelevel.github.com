@@ -1,0 +1,11 @@
+<a href="{{ project.github }}" class="project-item">
+  <div class="project-item-content">
+    <div>
+      <img src="{{ site.baseurl }}/img/assets/icon-project.svg" alt="">
+      <h3>{{ project.title }}</h3>
+    </div>
+    <p>{{ project.description }}</p>
+  </div>
+  {% include _project_platforms_tag.html %}
+  {% include _project_membership.html %}
+</a>
