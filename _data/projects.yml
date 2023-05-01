@@ -117,6 +117,15 @@
   description: "Object-Notation Abstraction for JSON, binary, HOCON, etc."
   github: "https://github.com/typelevel/fabric"
   platforms: [js, jvm, native]
+- title: "Feral"
+  description: "Feral cats are homeless, feral functions are serverless"
+  github: "https://github.com/typelevel/feral"
+  platforms: [js, jvm]
+- title: "ff4s"
+  description: "A purely functional web frontend framework for Scala.js."
+  github: "https://github.com/buntec/ff4s"
+  affiliate: true
+  platforms: [js]
 - title: "Fetch"
   description: "Library built on top of Cats that provides efficient data access from heterogeneous dataurces"
   github: "https://github.com/47deg/fetch"
