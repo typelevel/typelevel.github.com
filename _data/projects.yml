@@ -195,6 +195,10 @@
   github: "https://github.com/typelevel/kittens"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "Laika"
+  description: "Site and e-book generator and customizable text markup transformer for sbt, Scala and Scala.js"
+  github: "https://github.com/typelevel/Laika"
+  platforms: [js, jvm]
 - title: "Lepus"
   description: "Purely functional, non-blocking RabbitMQ client for scala, scala js and scala native built on top of fs2."
   github: "https://github.com/hnaderi/lepus"
