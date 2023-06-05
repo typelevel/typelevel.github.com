@@ -140,6 +140,11 @@
   description: "Frameless is a library for working with Spark using more expressive types."
   github: "https://github.com/typelevel/frameless"
   platforms: [jvm]
+- title: "fs2-aes"
+  description: "Micro library providing AES encryption/decryption of fs2.Stream[F, Byte]."
+  github: "https://github.com/jwojnowski/fs2-aes"
+  affiliate: true
+  platforms: [jvm]
 - title: "fs2-compress"
   description: "Compression Algorithms for Fs2 "
   github: "https://github.com/lhns/fs2-compress"
