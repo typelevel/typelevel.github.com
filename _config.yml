@@ -14,6 +14,8 @@ sass:
 
 permalink: pretty
 
+highlighter: none
+
 # Serving, url
 # ---------------------------------------------------------------
 baseurl: "/typelevel.github.com"
