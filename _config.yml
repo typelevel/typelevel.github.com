@@ -25,6 +25,10 @@ url: ""
 # ---------------------------------------------------------------
 markdown: kramdown
 
+kramdown:
+  syntax_highlighter_opts:
+    disable: true
+
 # Handling Reading
 # ---------------------------------------------------------------
 exclude:
