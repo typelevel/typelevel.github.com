@@ -10,7 +10,8 @@
   platforms: [js, jvm]
 - title: "calico"
   description: "Pure, reactive UI library for building web applications with Cats Effect + FS2"
-  github: "https://armanbilge.github.io/calico"
+  github: "https://github.com/armanbilge/calico"
+  permalink: "https://armanbilge.github.io/calico"
   affiliate: true
   platforms: [js]
 - title: "case-insensitive"
