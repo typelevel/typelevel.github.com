@@ -15,7 +15,7 @@ jobs:
           - macos-latest
           - ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
 
       - name: "Install Nix️"
         uses: cachix/install-nix-action@v23
