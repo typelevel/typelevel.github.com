@@ -10,6 +10,7 @@ description: "One day of talks and one day of unconference, co-located with NE S
 poster_hero: "/img/media/nescala-hero.jpg"
 poster_thumb: "/img/media/nescala-hero-thumb.jpg"
 
+sponsors_section: false
 ---
 
 ## About the Summit
