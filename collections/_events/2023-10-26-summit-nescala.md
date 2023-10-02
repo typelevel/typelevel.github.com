@@ -5,7 +5,7 @@ title: "Typelevel Summit NEScala"
 short_title: "Typelevel Summit"
 date_string: "October 26, 2023"
 location: "Online"
-description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
+description: "One day of talks and one day of unconference, co-located with NE Scala."
 
 ---
 
