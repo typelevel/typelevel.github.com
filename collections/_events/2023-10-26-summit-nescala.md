@@ -16,7 +16,7 @@ The tenth Typelevel Summit will once again be co-hosted with the [Northeast Scal
 The schedule for this year is as follows:
 
 * October 26 (Thursday): Typelevel Summit
-* October 27 (Friday): NE Scala 2020
+* October 27 (Friday): NE Scala 2023
 * October 28 (Saturday): Unconference
 
 The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
