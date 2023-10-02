@@ -15,7 +15,7 @@ sponsors_section: false
 
 ## About the Summit
 
-The tenth Typelevel Summit will once again be co-hosted with the [Northeast Scala Symposium](http://www.nescala.org/) virtually, with one of day of talks and one day of unconference, accompanied by discussion and socializing online throughout.
+The tenth Typelevel Summit will once again be co-hosted with the [Northeast Scala Symposium](https://nescalas.github.io/) virtually, with one of day of talks and one day of unconference, accompanied by discussion and socializing online throughout.
 
 The schedule for this year is as follows:
 
