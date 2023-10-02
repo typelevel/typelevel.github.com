@@ -7,6 +7,9 @@ date_string: "October 26, 2023"
 location: "Online"
 description: "One day of talks and one day of unconference, co-located with NE Scala."
 
+poster_hero: "/img/media/nescala-hero.jpg"
+poster_thumb: "/img/media/nescala-hero-thumb.jpg"
+
 ---
 
 ## About the Summit
