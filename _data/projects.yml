@@ -169,6 +169,10 @@
   description: "FS2 is a library for purely functional, effectful, and polymorphic stream processing library in the Scala programming language. Its design goals are compositionality, expressiveness, resource safety, and speed. The name is a modified acronym for Functional Streams for Scala (FSS, or FS2)."
   github: "https://github.com/typelevel/fs2"
   platforms: [js, jvm, native]
+- title: "Grackle"
+  description: "Functional GraphQL server for the Typelevel stack"
+  github: "https://github.com/typelevel/grackle"
+  platforms: [js, jvm, native]
 - title: "Hammock"
   description: "Purely functional HTTP client"
   github: "https://github.com/pepegar/hammock"
