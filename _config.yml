@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------
 name: Typelevel
 title: Typelevel
-description: Let the Scala compiler work for you. We provide type classes, instances, conversions, testing, supplements to the standard library, and much more.
+description: Typelevel is an association of projects and individuals united to foster an inclusive, welcoming, and safe environment around functional programming in Scala.
 author: Israel Pérez
 keywords: theme, jekyll, unstyle
 
