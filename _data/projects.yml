@@ -53,6 +53,11 @@
   github: "https://github.com/IronCoreLabs/cats-scalatest"
   affiliate: true
   platforms: [js, jvm]
+- title: "cats-stm"
+  description: "A STM implementation for Cats Effect"
+  github: "https://github.com/TimWSpence/cats-stm"
+  affiliate: true
+  platforms: [js, jvm, native]
 - title: "Cats Tagless"
   description: "A library of utilities for tagless final algebras"
   github: "https://github.com/typelevel/cats-tagless/"
