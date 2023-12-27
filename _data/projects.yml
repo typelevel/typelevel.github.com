@@ -315,7 +315,6 @@
 - title: "simulacrum"
   description: "First-class syntax for type classes"
   github: "https://github.com/typelevel/simulacrum"
-  affiliate: true
   platforms: [js, jvm, native]
 - title: "Simulacrum Scalafix"
   description: "Simulacrum as Scalafix rules"
