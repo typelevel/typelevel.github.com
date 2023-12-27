@@ -217,6 +217,7 @@
 - title: "LDBC"
   description: "Pure functional JDBC layer with Cats Effect 3 and Scala 3"
   github: "https://github.com/takapi327/ldbc"
+  affiliate: true
   platforms: [jvm]
 - title: "Lepus"
   description: "Purely functional, non-blocking RabbitMQ client for scala, scala js and scala native built on top of fs2."
