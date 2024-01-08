@@ -352,6 +352,10 @@
   github: "https://github.com/typelevel/squants"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "Twiddles"
+  description: "Micro-library for building effectful protocols"
+  github: "https://github.com/typelevel/twiddles"
+  platforms: [js, jvm, native]
 - title: "TwoTails"
   description: "A compiler plugin adding support for mutual tail recursion"
   github: "https://github.com/wheaties/TwoTails"
