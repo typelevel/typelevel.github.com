@@ -374,6 +374,11 @@
   github: "https://github.com/ltbs/uniform-scala"
   affiliate: true
   platforms: [js, jvm]
+- title: "upperbound"
+  description: "A purely functional, interval based rate limiter"
+  github: "https://github.com/SystemFw/upperbound"
+  affiliate: true
+  platforms: [js, jvm, native]
 - title: "vault"
   description: "Type-safe, persistent storage for values of arbitrary types"
   github: "https://github.com/typelevel/vault"
