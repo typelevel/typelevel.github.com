@@ -31,6 +31,9 @@ kramdown:
 
 # Handling Reading
 # ---------------------------------------------------------------
+include:
+  - .well-known
+
 exclude:
   [
     "config.ru",
