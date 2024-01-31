@@ -20,7 +20,7 @@ that has not expanded in a few years.  Retirements and additions alike
 are healthy, balancing institutional memory with fresh energy.  It is
 again a time for renewal.
 
-Historically, leadership has invited prominent techical contributors
+Historically, leadership has invited prominent technical contributors
 to join them.  This results in homogenous talent, experience, and
 identity.  Our hope is that this open call for leaders will be heard
 by a more well-rounded and diverse set of candidates to realize
