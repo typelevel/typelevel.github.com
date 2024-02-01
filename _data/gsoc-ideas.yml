@@ -1,0 +1,12 @@
+- title: "shapeless idea"
+  description: "something fun and shapeless"
+  categories: [web]
+- title: "idea 2"
+  description: "a second idea"
+  categories: [libraries]
+- title: "idea three"
+  description: "wow, a third idea!"
+  categories: [testing tools]
+- title: "case-insensitive idea"
+  description: "A case-insensitive idea"
+  categories: [ai, data]

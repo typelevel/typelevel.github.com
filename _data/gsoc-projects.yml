@@ -1,0 +1,9 @@
+- title: "io_uring"
+  description: "Use the linux kernel more!"
+  categories: [operating systems]
+- title: "web sockets"
+  description: "sockets for the web?"
+  categories: [web]
+- title: "tracing"
+  description: "otel4s tracing"
+  categories: [tracing]
