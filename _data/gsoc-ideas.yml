@@ -1,12 +1,6 @@
-- title: "shapeless idea"
-  description: "something fun and shapeless"
-  categories: [web]
-- title: "idea 2"
-  description: "a second idea"
+- title: "Scaladoc Search in Protosearch"
+  description: "Protosearch offers an in-browser search experience for documentation. This project aims to add support for Scaladoc, the documentation system for Scala code. As a result of this work, searching for `flatMap` on the cats-effect documentation, for example, would return hits from the tutorial and the relevant method in the Scaladoc."
+  categories: [data, web]
+- title: "Fluent library for files and processes"
+  description: "The `fs2.io.file` package is powerful, but using it in small scripts can involve boilerplate. This project aims to create a fluent library for working with files and processes in Scala. A particular focus will be easy integration with the Typelevel Toolkit"
   categories: [libraries]
-- title: "idea three"
-  description: "wow, a third idea!"
-  categories: [testing tools]
-- title: "case-insensitive idea"
-  description: "A case-insensitive idea"
-  categories: [ai, data]
