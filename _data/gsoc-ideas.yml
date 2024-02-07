@@ -1,25 +1,59 @@
 # title
-# description: what is project about, what is final goal
+# description: What is it about? What need does it address? What is its final goal?
 # prereqs: necessary prior knowledge (typically knowing Scala, and maybe other things)
-# difficulty: easy / medium / hard. what will the tricky parts be?
+# difficulty: Easy / Medium / Hard. what will the tricky parts be?
 # length: short / medium / long (90 / 175 / 350 hours)
 # mentors: github handles
-# categories: AI / data / dev tools / apps / cloud / media / systems / programming languages / science / security / social / web
+# categories: AI / data / dev tools / apps / cloud / media / operating systems / programming languages / science / security / social / web
+
+- title: ML model scoring runtime for Cats Effect
+  description:
+    
+  prereqs: Scala
+  difficulty: Hard. Very doable, but will draw on knowledge of machine learning and compilers.
+  length: long
+  mentors: [armanbilge, djspiewak, ekrich, valencik]
+  categories: [AI, web]
 
 - title: Scaladoc Search in Protosearch
   description:
     Protosearch offers an in-browser search experience for documentation. This project aims to add support for Scaladoc, the documentation system for Scala code. As a result of this work, searching for `flatMap` on the cats-effect documentation, for example, would return hits from the tutorial and the relevant method in the Scaladoc.
   prereqs: Scala
-  difficulty: medium
+  difficulty: Medium.
   length: long
-  mentors: [valencik, samspills]
+  mentors: [valencik]
   categories: [data, web]
 
 - title: Fluent library for files and processes
   description:
-    The `fs2.io.file` package is powerful, but using it in small scripts can involve boilerplate. This project aims to create a fluent library for working with files and processes in Scala. A particular focus will be easy integration with the [Typelevel Toolkit](https://typelevel.org/toolkit).
+    FS2 has powerful APIs for streaming I/O but using it in small scripts can involve boilerplate. This project aims to create a fluent library for working with files and processes in Scala. A particular focus will be easy integration with the [Typelevel Toolkit](https://typelevel.org/toolkit).
   prereqs: Scala, interest in Functional Programming
   difficulty: medium
   length: medium
   mentors: [toniogela, zetashift]
   categories: [programming languages]
+
+- title: Feral
+  description: 
+  prereqs: Scala
+  difficulty: Medium
+  length: medium
+  mentors: [armanbilge]
+  categories: [cloud, programming languages]
+
+- title: Native I/O backend for FS2 JVM
+  description:
+    FS2 currently uses JDK NIO APIs
+  prereqs: Scala, ability to read C
+  difficulty: Medium. 
+  length: long
+  mentors: [antoniojimeneznieto, djspiewak, armanbilge]
+  categories: [operating systems, programming languages]
+
+- title: io_uring 
+  description: 
+  prereqs: Java or Scala
+  difficulty: Medium
+  length: long
+  mentors: [antoniojimeneznieto, djspiewak, armanbilge]
+  categories: [operating systems, programming languages]
