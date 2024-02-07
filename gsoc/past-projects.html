@@ -1,0 +1,21 @@
+---
+layout: page
+title: "GSoC: Past Projects"
+permalink: /gsoc/projects/
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>Checkout some of our projects from past GSoC years!</p>
+      {% include _tab-gsoc.html %}
+    </div>
+
+    <div class="gsoc-list">
+      {% for project in site.data.gsoc-projects %}
+        {% include _gsoc_project_card.html %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

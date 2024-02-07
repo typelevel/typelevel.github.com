@@ -1,0 +1,22 @@
+---
+layout: page
+title: "GSoC: Ideas"
+permalink: /gsoc/ideas/
+---
+
+<div id="section-page">
+  <div class="container">
+    <div class="masthead-page">
+      <h1><span>{{ page.title }}</span></h1>
+      <p>Join in on the excitement for this years GSoC ideas!</p>
+      {% include _tab-gsoc.html %}
+    </div>
+
+    <div class="gsoc-list">
+      {% for project in site.data.gsoc-ideas %}
+        {% include _gsoc_idea_card.html %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% include _cta-gsoc.html %}
