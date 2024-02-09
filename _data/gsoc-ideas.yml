@@ -6,14 +6,22 @@
 # mentors: github handles
 # categories: AI / data / dev tools / apps / cloud / media / operating systems / programming languages / science / security / social / web
 
-- title: ML model scoring runtime for Cats Effect
+- title: Machine learning inference in Cats Effect
   description:
-    Pre-trained machine learning. This will make it possible to deploy a machine learning model as part of a web service without compromising the latency of other on-going requests.
+    We want to make it possible to deploy machine learning inference as part of a larger web service without compromising the latency of other on-going requests. The goal of this project is to create a compiler to transform a pre-trained ML model into a sequence of Cats Effect `IO` steps that perform inference on some input.
   prereqs: Scala, ideally some experience with ML
   difficulty: Hard but doable. Will draw on knowledge of ML and compilers.
   length: long
   mentors: [armanbilge, djspiewak, ekrich, valencik]
-  categories: [AI, web]
+  categories: [AI, web, programming languages]
+
+- title: "Streaming msgpack implementation"
+  description: "The [msgpack](https://msgpack.org/) data format allows for efficient binary serialization of data. It would be great to have the ability to parse, transform, and emit data in a streaming fashion using FS2 in the [fs2-data](https://fs2-data.gnieh.org) library."
+  prereqs: Scala, ideally some experience with FS2 and parsing
+  difficulty: Medium. 
+  length: medium
+  mentors: [satabin, ybasket]
+  categories: [streaming, programming languages]
 
 - title: Scaladoc Search in Protosearch
   description:
@@ -46,7 +54,7 @@
   description:
     FS2 on the JVM currently implements its networking API using JDK NIO. Unfortunately this indirection incurs a non-trivial performance penalty. We want to replace the use of JDK NIO with direct calls to system I/O APIs such as `epoll` and `kqueue`.
   prereqs: Scala, ability to read C
-  difficulty: Medium. 
+  difficulty: Medium.
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
   categories: [operating systems, programming languages]
@@ -59,18 +67,10 @@
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
   categories: [operating systems, programming languages]
 
-- title: "Streaming msgpack implementation"
-  description: "The [msgpack](https://msgpack.org/) data format allows for efficient binary serialization of data. It would be great to have the ability to parse, transform, and emit data in a streaming fashion using FS2 in the [fs2-data](https://fs2-data.gnieh.org) library."
-  prereqs: Scala, ideally some experience with FS2 and parsing
-  difficulty: Medium. 
-  length: medium
-  mentors: [satabin, ybasket]
-  categories: [data, streaming]
-
 - title: "Streaming implementation of an XQuery subset"
   description: "XQuery allows for transforming XML data in a declarative way. Based on the generic streaming query engine added into the [fs2-data](https://fs2-data.gnieh.org) library, write a frontend to implement a streamable subset of XQuery."
   prereqs: Scala, ideally some experience with XQuery
   difficulty: Hard. 
   length: long
   mentors: [satabin]
-  categories: [data, streaming]
+  categories: [data, streaming, programming languages]
