@@ -8,9 +8,9 @@
 
 - title: ML model scoring runtime for Cats Effect
   description:
-    
-  prereqs: Scala
-  difficulty: Hard. Very doable, but will draw on knowledge of machine learning and compilers.
+    Pre-trained machine learning. This will make it possible to deploy a machine learning model as part of a web service without compromising the latency of other on-going requests.
+  prereqs: Scala, ideally some experience with ML
+  difficulty: Hard but doable. Will draw on knowledge of ML and compilers.
   length: long
   mentors: [armanbilge, djspiewak, ekrich, valencik]
   categories: [AI, web]
@@ -33,26 +33,27 @@
   mentors: [toniogela, zetashift]
   categories: [programming languages]
 
-- title: Feral
-  description: 
-  prereqs: Scala
-  difficulty: Medium
+- title: Serverless integrations for Feral
+  description:
+    Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda. We want to support other cloud providers, such as Google, Cloudflare, and Vercel.
+  prereqs: Scala, interest in Functional Programming, ideally experience with serverless
+  difficulty: Medium.
   length: medium
   mentors: [armanbilge]
   categories: [cloud, programming languages]
 
 - title: Native I/O backend for FS2 JVM
   description:
-    FS2 currently uses JDK NIO APIs
+    FS2 on the JVM currently implements its networking API using JDK NIO. Unfortunately this indirection incurs a non-trivial performance penalty. We want to replace the use of JDK NIO with direct calls to system I/O APIs such as `epoll` and `kqueue`.
   prereqs: Scala, ability to read C
   difficulty: Medium. 
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
   categories: [operating systems, programming languages]
 
-- title: io_uring 
-  description: 
-  prereqs: Java or Scala
+- title: Production-ready io_uring interop layer
+  description: A GSoC 2023 project prototyped a new networking I/O layer for FS2 based on the Linux io_uring syscall interface that improved the performance of HTTP servers by more than 3x. Now we need help to make this production-ready by writing code to interoperate with io_uring from the JVM.
+  prereqs: Java or Scala, ideally some experience with C and JNI
   difficulty: Medium
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
