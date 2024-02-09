@@ -36,7 +36,7 @@
   description:
     FS2 has powerful APIs for streaming I/O but using it in small scripts can involve boilerplate. This project aims to create a fluent library for working with files and processes in Scala. A particular focus will be easy integration with the [Typelevel Toolkit](https://typelevel.org/toolkit).
   prereqs: Scala, interest in Functional Programming
-  difficulty: medium
+  difficulty: Medium.
   length: medium
   mentors: [toniogela, zetashift]
   categories: [programming languages]
@@ -62,7 +62,7 @@
 - title: Production-ready io_uring interop layer
   description: A GSoC 2023 project prototyped a new networking I/O layer for FS2 based on the Linux io_uring syscall interface that improved the performance of HTTP servers by more than 3x. Now we need help to make this production-ready by writing code to interoperate with io_uring from the JVM.
   prereqs: Java or Scala, ideally some experience with C and JNI
-  difficulty: Medium
+  difficulty: Medium.
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
   categories: [operating systems, programming languages]
