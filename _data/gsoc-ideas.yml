@@ -58,3 +58,10 @@
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
   categories: [operating systems, programming languages]
+- title: "Streaming msgpack implementation"
+  description: "The [msgpack](https://msgpack.org/) data format allows for efficient binary serialization of data. It would be great to have the ability to parse, transform, and emit data in a streaming fashion using FS2 in the [fs2-data](https://fs2-data.gnieh.org) library."
+  prereqs: Scala, ideally some experience FS2 and parsing
+  difficulty: Medium. 
+  length: medium
+  mentors: [satabin, ybasket]
+  categories: [data, streaming]
