@@ -60,8 +60,15 @@
   categories: [operating systems, programming languages]
 - title: "Streaming msgpack implementation"
   description: "The [msgpack](https://msgpack.org/) data format allows for efficient binary serialization of data. It would be great to have the ability to parse, transform, and emit data in a streaming fashion using FS2 in the [fs2-data](https://fs2-data.gnieh.org) library."
-  prereqs: Scala, ideally some experience FS2 and parsing
+  prereqs: Scala, ideally some experience with FS2 and parsing
   difficulty: Medium. 
   length: medium
   mentors: [satabin, ybasket]
+  categories: [data, streaming]
+- title: "Streaming implementation of an XQuery subset"
+  description: "XQuery allows for transforming XML data in a declarative way. Based on the generic streaming query engine added into the [fs2-data](https://fs2-data.gnieh.org) library, write a frontend to implement a streamable subset of XQuery."
+  prereqs: Scala, ideally some experience with XQuery
+  difficulty: Hard. 
+  length: long
+  mentors: [satabin]
   categories: [data, streaming]
