@@ -23,6 +23,5 @@ The Typelevel Steering Committee:
 * Lars Hupel
 * Luka Jacobowitz
 * Michael Pilquist
-* Miles Sabin
 * Rob Norris
 * Ross A. Baker
