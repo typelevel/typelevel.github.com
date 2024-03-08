@@ -230,6 +230,10 @@
   github: "https://github.com/to-ithaca/libra"
   affiliate: true
   platforms: [js, jvm]
+- title: "literally"
+  description: "Compile time validation of literal values built from strings"
+  github: "https://github.com/typelevel/literally"
+  platforms: [js, jvm, native]
 - title: "log4cats"
   description: "Logging Tools For Interaction with cats-effect"
   github: "https://github.com/typelevel/log4cats"
