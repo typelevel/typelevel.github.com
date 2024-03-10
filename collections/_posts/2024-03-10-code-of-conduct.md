@@ -8,7 +8,7 @@ meta:
   author: typelevel
 ---
 
-We have [recently adopted a new Code of Conduct and Enforcement Policy](https://github.com/typelevel/governance/pull/129). This change was voted in by the Steering committee after an approximately 2.5 week long discussion period. Thank you to everyone who engaged! 
+We have [recently adopted a new Code of Conduct and Enforcement Policy](https://github.com/typelevel/governance/pull/129). This change was approved by the Steering committee after a 1 month discussion and voting period. Thank you to everyone who engaged! 
 
 The scope of the Typelevel Code of Conduct and Enforcement Policy encompasses both organization **and** affiliate projects (as described in the [Typelevel Charter](https://github.com/typelevel/governance/blob/main/CHARTER.md)).
 While the Typelevel Charter has always specified that affiliate projects must adhere to the Typelevel organization policies, including the Code of Conduct, this has not been enforced in practice.
