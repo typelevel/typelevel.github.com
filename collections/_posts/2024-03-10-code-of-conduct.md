@@ -8,7 +8,7 @@ meta:
   author: typelevel
 ---
 
-We have [recently adopted a new Code of Conduct and Enforcement Policy](https://github.com/typelevel/governance/pull/129).
+We have [recently adopted a new Code of Conduct and Enforcement Policy](https://github.com/typelevel/governance/pull/129). This change was voted in by the Steering committee after an approximately 2.5 week long discussion period. Thank you to everyone who engaged! 
 
 The scope of the Typelevel Code of Conduct and Enforcement Policy encompasses both organization **and** affiliate projects (as described in the [Typelevel Charter](https://github.com/typelevel/governance/blob/main/CHARTER.md)).
 While the Typelevel Charter has always specified that affiliate projects must adhere to the Typelevel organization policies, including the Code of Conduct, this has not been enforced in practice.
@@ -26,7 +26,8 @@ Now that the Code of Conduct and Enforcement Policy have been voted in by the Ty
 ### As an affiliate project maintainer, what should I expect?
 All affiliate projects are expected to adopt the Typelevel Code of Conduct.
 We will open pull requests to update each affiliate project's `CODE_OF_CONDUCT` file.
-If a project chooses not to adopt the Typelevel Code of Conduct, they can close the PR, and we'll handle removing the project from the affiliate project list.
+If there are any concerns, we are available for discussion and we encourage affiliate maintainers to please reach out.
+Ultimately, if a project chooses not to adopt the Typelevel Code of Conduct, maintainers can close the PR, and we'll handle removing the project from the affiliate project list.
 This is totally fine and we support your choices!
 We believe open source developers are free to choose the projects they contribute to and the communities they support ♥
 
