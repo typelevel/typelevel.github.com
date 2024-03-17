@@ -38,7 +38,7 @@
   prereqs: Scala, interest in Functional Programming
   difficulty: Medium.
   length: medium
-  mentors: [toniogela, zetashift]
+  mentors: [toniogela, zetashift, lenguyenthanh]
   categories: [programming languages]
 
 - title: Serverless integrations for Feral
@@ -47,7 +47,7 @@
   prereqs: Scala, interest in Functional Programming, ideally experience with serverless
   difficulty: Medium.
   length: medium
-  mentors: [armanbilge]
+  mentors: [armanbilge, toniogela]
   categories: [cloud, programming languages]
 
 - title: Native I/O backend for FS2 JVM
