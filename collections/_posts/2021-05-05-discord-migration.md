@@ -31,4 +31,4 @@ and we also hope that other tools like Github Discussions and FAQ's/project docs
 
 We encourage Typelevel projects to create channels there and to give it a try for a few months and see how it goes.
 
-### [We hope you'll join us over on the new Discord - https://discord.gg/XF3CXcMzqD](https://discord.gg/XF3CXcMzqD)
+### [We hope you'll join us over on the new Discord - https://discord.gg/dXWPjcKv2A](https://discord.gg/dXWPjcKv2A)
