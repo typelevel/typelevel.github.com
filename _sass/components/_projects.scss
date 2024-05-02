@@ -3,6 +3,9 @@
 // =====================================================================
 
 #section-projects {}
+#homeProjects {
+  @include col-2;
+}
 .projects-list {
   @include grid;
   @include col-3;
