@@ -4,9 +4,10 @@
       <h2><span>{{site.data.description.projectsTitle}}</span></h2>
       <p>{{site.data.description.projectsDescription}}</p>
     </div>
-    <div class="projects-list">
-      {% assign projects = site.data.projects | where:'core', true %}
-      {% for project in projects limit:3 %}
+    <div id="homeProjects" class="projects-list">
+      {% assign names = "Cats|Cats-Effect|fs2|http4s" | split: "|" %}
+      {% assign projects = site.data.projects | where_exp: "project", "names contains project.title" %}
+      {% for project in projects %}
         {% include _project_card.html %}
       {% endfor %}
     </div>
