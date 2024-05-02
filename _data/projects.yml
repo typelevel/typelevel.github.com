@@ -30,7 +30,6 @@
   description: "A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
   permalink: "https://typelevel.org/cats/"
   github: "https://github.com/typelevel/cats"
-  core: true
   platforms: [js, jvm, native]
 - title: "Cats Collections"
   description: "Data structures that facilitate pure functional programming with cats"
@@ -314,7 +313,6 @@
   description: "Shapeless is a generic programming library. Starting with implementations of Scrap your boilerplate and higher rank polymorphism in Scala, it quickly grew to provide advanced abstract tools like heterogenous lists and automatic instance derivation for type classes."
   github: "https://github.com/milessabin/shapeless"
   affiliate: true
-  core: true
   platforms: [js, jvm, native]
 - title: "simulacrum"
   description: "First-class syntax for type classes"
@@ -347,7 +345,6 @@
 - title: "spire"
   description: "Spire is a numeric library for Scala which is intended to be generic, fast, and precise. Using features such as specialization, macros, type classes, and implicits, Spire works hard to defy conventional wisdom around performance and precision trade-offs."
   github: "https://github.com/typelevel/spire"
-  core: true
   platforms: [js, jvm, native]
 - title: "Squants"
   description: "The Scala API for Quantities, Units of Measure and Dimensional Analysis"
