@@ -269,6 +269,11 @@
   github: "https://github.com/j-mie6/parsley-cats"
   affiliate: true
   platforms: [js, jvm, native]
+- title: "Peloton"
+  description: "An actor library for Cats Effect"
+  github: "https://github.com/killaitis/peloton"
+  affiliate: true
+  platforms: [jvm]
 - title: "PureConfig"
   description: "A boilerplate-free library for loading configuration files"
   github: "https://github.com/pureconfig/pureconfig"
