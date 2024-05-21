@@ -274,6 +274,11 @@
   github: "https://github.com/killaitis/peloton"
   affiliate: true
   platforms: [jvm]
+- title: "perspective"
+  description: "Provides tools for generic programming, and typeclasses for monad transformers and higher kinded data."
+  github: "https://github.com/Katrix/perspective"
+  affiliate: true
+  platforms: [js, jvm]
 - title: "PureConfig"
   description: "A boilerplate-free library for loading configuration files"
   github: "https://github.com/pureconfig/pureconfig"
