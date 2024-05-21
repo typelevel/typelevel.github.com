@@ -242,14 +242,15 @@
     version = "0.10.1";
   };
   rexml = {
+    dependencies = ["strscan"];
     groups = ["default" "jekyll_plugins"];
     platforms = [];
     source = {
-      remotes = ["http://rubygems.org"];
-      sha256 = "08ximcyfjy94pm1rhcx04ny1vx2sk0x4y185gzn86yfsbzwkng53";
+      remotes = ["https://rubygems.org"];
+      sha256 = "0d8ivcirrrxpkpjc1c835wknc9s2fl54xpw08s177yfrh5ish209";
       type = "gem";
     };
-    version = "3.2.5";
+    version = "3.2.8";
   };
   rouge = {
     groups = ["default" "jekyll_plugins"];
@@ -281,6 +282,16 @@
       type = "gem";
     };
     version = "2.4.0";
+  };
+  strscan = {
+    groups = ["default" "jekyll_plugins"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0mamrl7pxacbc79ny5hzmakc9grbjysm3yy6119ppgsg44fsif01";
+      type = "gem";
+    };
+    version = "3.1.0";
   };
   terminal-table = {
     dependencies = ["unicode-display_width"];
