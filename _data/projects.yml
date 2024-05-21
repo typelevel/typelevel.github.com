@@ -275,7 +275,7 @@
   affiliate: true
   platforms: [jvm]
 - title: "perspective"
-  description: "Generic programming using higher kinded data and typeclasses. perspective provides tools for generic programming, and typeclasses for monad transformers and higher kinded data."
+  description: "Provides tools for generic programming, and typeclasses for monad transformers and higher kinded data."
   github: "https://github.com/Katrix/perspective"
   affiliate: true
   platforms: [js, jvm]
