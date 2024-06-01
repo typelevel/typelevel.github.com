@@ -65,6 +65,11 @@
   description: "Instances for Cats Typeclasses for Java 8 Time"
   github: "https://github.com/typelevel/cats-time/"
   platforms: [js, jvm, native]
+- title: "Circe"
+  description: "Yet another JSON library for Scala"
+  github: "https://github.com/circe/circe"
+  affiliate: true
+  platforms: [js, jvm, native]
 - title: "Ciris"
   description: "Functional Configurations for Scala"
   github: "https://github.com/vlovgr/ciris"
