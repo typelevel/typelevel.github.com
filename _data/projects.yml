@@ -17,6 +17,7 @@
 - title: "cats-actors"
   description: "An Actor Model implementation built on top of Cats-Effect, providing a higher-level abstraction for managing concurrency."
   github: "https://github.com/suprnation/cats-actors"
+  affiliate: true
   platforms: [jvm]
 - title: "case-insensitive"
   description: "A case-insensitive string for Scala"
