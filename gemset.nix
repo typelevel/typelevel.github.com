@@ -247,10 +247,10 @@
     platforms = [];
     source = {
       remotes = ["https://rubygems.org"];
-      sha256 = "0d8ivcirrrxpkpjc1c835wknc9s2fl54xpw08s177yfrh5ish209";
+      sha256 = "0580cvf3fcdh44bmjiv0wjz47848c90rnv041crddn4w46ccvh28";
       type = "gem";
     };
-    version = "3.2.8";
+    version = "3.3.3";
   };
   rouge = {
     groups = ["default" "jekyll_plugins"];
