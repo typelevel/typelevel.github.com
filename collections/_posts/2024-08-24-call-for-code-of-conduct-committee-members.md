@@ -34,7 +34,7 @@ The email is visible only to [Typelevel Steering Committee membership][steering-
 We will thoughtfully consider all serious applications and be discreet in our deliberation.
 Accepted candidacies will be public, but we will not disclose the identity of anyone else that applies.
 
-The call will be open for three weeks.
+The call will be open for three weeks, closing on September 14th 2024.
 
 [new-coc]: https://typelevel.org/blog/2024/03/11/code-of-conduct.html
 [enforcement-policy]: https://github.com/typelevel/governance/blob/main/ENFORCEMENT-POLICY.md
