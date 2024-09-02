@@ -101,8 +101,7 @@
   platforms: [js, jvm, native]
 - title: "doobie"
   description: "A pure functional JDBC layer for Scala. It is not an ORM, nor is it a relational algebra; it just provides a principled way to construct programs (and higher-level libraries) that use JDBC."
-  github: "https://github.com/tpolecat/doobie"
-  affiliate: true
+  github: "https://github.com/typelevel/doobie"
   platforms: [jvm]
 - title: "edomata"
   description: "Event-driven automata for Scala, Scala.js and scala native. This library provides purely functional state machines that can be used to create event sourced and/or CQRS style applications. It also includes production ready backends."
