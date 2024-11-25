@@ -30,7 +30,7 @@ Here are some brief introductions to our current committee members.
 
 #### Sam Pillsworth (she/her)
 
-> Hi, I'm Sam! I'm part of the Typelevel steering committee and now also the code of conduct committee! I care deeply about the Typelevel community and creating a welcoming and supportive environment for everyone. I live in Canada, and when I'm not doing computer related activities I like to read books and play with my dog.
+> Hi, I'm Sam! I'm part of the Typelevel Steering Committee and now also the code of conduct committee! I care deeply about the Typelevel community and creating a welcoming and supportive environment for everyone. I live in Canada, and when I'm not doing computer related activities I like to read books and play with my dog.
 
 #### Andrew Valencik (he/him)
 
