@@ -28,7 +28,7 @@ Here are some brief introductions to our current committee members.
 
 > I'm Arman, based in Seattle, and I have been involved with Typelevel for almost four years now. I was first drawn to contribute by the welcoming and friendly people in our Discord! This community is near and dear to me and I am committed to fostering a safe and inclusive environment where we can work, learn and play together :)
 
-#### Sam Pilsworth (she/her)
+#### Sam Pillsworth (she/her)
 
 > Hi, I'm Sam! I'm part of the Typelevel steering committee and now also the code of conduct committee! I care deeply about the Typelevel community and creating a welcoming and supportive environment for everyone. I live in Canada, and when I'm not doing computer related activities I like to read books and play with my dog.
 
