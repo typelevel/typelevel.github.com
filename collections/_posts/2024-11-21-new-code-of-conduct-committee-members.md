@@ -37,6 +37,7 @@ Here are some brief introductions to our current committee members.
 > Hi, I'm Andrew, I live in Ottawa, Canada. I hang out around Typelevel because the people are kind and welcoming. I want to help keep our community a safe and fun space. I think the libraries are pretty cool too and enjoy contributing to open source when I can. When I'm not thinking about computers I'm probably thinking about food or my two cats.
 
 #### What does this mean for our community?
-Code of Conduct members will work in accordance with the new [Code of Conduct](https://github.com/typelevel/governance/blob/main/CODE-OF-CONDUCT.md) and [Enforcement Policy](https://github.com/typelevel/governance/blob/main/ENFORCEMENT-POLICY.md). 
+
+Code of Conduct members will work in accordance with the [Code of Conduct](https://github.com/typelevel/governance/blob/main/CODE-OF-CONDUCT.md) and [Enforcement Policy](https://github.com/typelevel/governance/blob/main/ENFORCEMENT-POLICY.md). 
 The team is expected to evaluate reported incidents about Code of Conduct violations and propose behavior adjustments or consequences for the reported behavior which will be done with the help of community moderators. 
 This ensures Code of Conduct violations are dealt with promptly and all community members feel welcome and safe as part of the Typelevel community.
