@@ -74,3 +74,11 @@
   length: long
   mentors: [satabin]
   categories: [data, streaming, programming languages]
+
+- title: "Enhancements for the cross-platform otel4s tracing module"
+  description: "A GSoC 2023 project prototyped a cross-platform implementation of the Open Telemetry tracing specification. We are exploring options to further enhance and address missing features in this implementation."
+  prereqs: Scala, interest in Functional Programming
+  difficulty: Medium. 
+  length: medium
+  mentors: [irevive, armanbilge]
+  categories: [programming languages]
