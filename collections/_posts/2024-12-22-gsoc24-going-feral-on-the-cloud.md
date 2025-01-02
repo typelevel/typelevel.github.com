@@ -8,7 +8,6 @@ meta:
   author: chingles
 ---
 
-# Going Feral on The Cloud
 This project was proposed by the Typelevel community in collaboration with the Scala Center, and carried out under Google Summer of Code (GSoC) 2024. Feral is a library in the Typelevel ecosystem that provides a framework for Scala developers to write and deploy serverless functions. As Feral was only supporting AWS Lambda, the goal of the project was to extend Feral to support other serverless providers, specifically Vercel and Google Cloud.
 
 The vision for Feral is to enable Scala developers to easily switch between one cloud provider to another that better suits their needs, without the need for major refactoring of their codebases. Such convenience would give developers greater freedom as they do not need to be tied down to one platform. Furthermore, as Feral is part of the Typelevel ecosystem, developers who are currently using the Http4s Typelevel library for non-serverless web services may also effortlessly make the switch to serverless.
@@ -16,6 +15,7 @@ The vision for Feral is to enable Scala developers to easily switch between one 
 With these goals in mind, it is imperative to provide robust support for the common serverless providers, which is what the project aimed to work towards.
 
 ## What I Did
+
 | Pull Request (PR) | Status | Comments |
 | --- | --- | --- |
 | [Add `ApiGatewayV2WebSocketEvent`](https://github.com/typelevel/feral/pull/476) | Merged | The addition of this AWS Lambda event provided an introduction to serverless functions for me, while enhancing the support that Feral has for AWS Lambda. |
