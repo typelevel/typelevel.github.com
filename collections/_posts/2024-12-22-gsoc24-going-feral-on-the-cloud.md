@@ -16,11 +16,12 @@ The vision for Feral is to enable Scala developers to easily switch between one 
 With these goals in mind, it is imperative to provide robust support for the common serverless providers, which is what the project aimed to work towards.
 
 ## What I Did
-| Pull Request (PR) | Status | Comments |
-| --- | --- | --- |
-| [Add `ApiGatewayV2WebSocketEvent`](https://github.com/typelevel/feral/pull/476) | Merged | The addition of this AWS Lambda event provided an introduction to serverless functions for me, while enhancing the support that Feral has for AWS Lambda. |
-| [Created support for Vercel using Node.js runtime](https://github.com/typelevel/feral/pull/492) | Not Merged | Vercel's implementation of routes conflicts with the way Http4s handles routes. Due to this incompatibility between Feral and Vercel, this PR was not merged. Through working on this, there is a better understanding of how Vercel and Http4s work, which could pave the way for future work. |
-| [Created support for Google Cloud HTTP functions](https://github.com/typelevel/feral/pull/498) | Merged | This PR enabled support for both JVM and Node.js runtimes. There is a minor error logged in the JVM runtime implementation that we minimized to a bug unrelated to Feral or any of the Typelevel libraries. The error does not seem to impact the functionality of the resulting web application, but it would be good to further investigate the cause of it. |
+1. [Add `ApiGatewayV2WebSocketEvent`](https://github.com/typelevel/feral/pull/476) (Merged)
+    The addition of this AWS Lambda event provided an introduction to serverless functions for me, while enhancing the support that Feral has for AWS Lambda.
+2. [Created support for Vercel using Node.js runtime](https://github.com/typelevel/feral/pull/492) (Not Merged)
+    Vercel's implementation of routes conflicts with the way Http4s handles routes. Due to this incompatibility between Feral and Vercel, this PR was not merged. Through working on this, there is a better understanding of how Vercel and Http4s work, which could pave the way for future work.
+3. [Created support for Google Cloud HTTP functions](https://github.com/typelevel/feral/pull/498) (Merged)
+    This PR enabled support for both JVM and Node.js runtimes. There is a minor error logged in the JVM runtime implementation that we minimized to a bug unrelated to Feral or any of the Typelevel libraries. The error does not seem to impact the functionality of the resulting web application, but it would be good to further investigate the cause of it.
 
 ## Challenges and Lessons Learnt
 It was challenging to support various serverless platforms, particularly Vercel and Google Cloud, which I created the initial implementation for. While I learnt along the way that the general procedure for supporting each platform was generally the same, where one would have to do things such as converting between types and using a dispatcher, there were still differences in certain details. For example, while referencing the pre-existing Feral implementation to support AWS Lambda event functions in order to support Google Cloud HTTP functions for the JVM runtime, I learnt that HTTP functions are a subset of AWS Lambda event functions, while they were separate in Google Cloud. 
