@@ -4,6 +4,7 @@
   <title>{{ site.name }} | {% if page.path contains '_event' %}{{ page.short_title }}{% else %}{{ page.title }}{% endif %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{ site.description }}">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' cdnjs.cloudflare.com 'unsafe-inline'; font-src fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' img.shields.io; frame-src www.google.com; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
 
   <link rel="mask-icon" href="/img/favicon-safari.svg" color="#F51C2B">
