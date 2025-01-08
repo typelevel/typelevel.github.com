@@ -62,6 +62,8 @@ GEM
     webrick (1.8.2)
 
 PLATFORMS
+  arm64-darwin-21
+  arm64-darwin-24
   x86_64-darwin-17
   x86_64-darwin-18
   x86_64-darwin-21
@@ -74,4 +76,4 @@ DEPENDENCIES
   webrick (~> 1.8)
 
 BUNDLED WITH
-   2.3.9
+   2.5.22
