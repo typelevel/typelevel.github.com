@@ -1,12 +1,24 @@
-- title: "UringSystem using io_uring"
-  description: "Integrated Cats Effect and FS2 with Linux kernel APIs and made Ember 3x faster!"
+- title: "I/O polling with io_uring"
+  description: "Integrated Cats Effect and FS2 with Linux kernel APIs, making http4s Ember benchmark 3x faster!"
   permalink: "https://github.com/armanbilge/fs2-io_uring/pull/78"
   categories: [operating systems]
 - title: "Ember Web Sockets"
-  description: "Implemented network protocols and enabled more projects to cross-compile and run on 100% Typelevel stack"
+  description: "Implemented the Websocket network protocol in http4s Ember, unblocking JS/Native support for a Kubernetes client."
   permalink: "https://github.com/http4s/http4s/pull/7261"
   categories: [web]
 - title: "Pure Scala Open Telemetry APIs"
-  description: "Designed Scala APIs for Open Telemetry Specifications and opened the door to a pure Scala SDK"
+  description: "Designed Scala APIs for Open Telemetry Specifications and opened the door to a pure Scala SDK."
   permalink: "https://github.com/typelevel/otel4s/pull/236"
   categories: [tracing]
+- title: "Going Feral on the Cloud"
+  description: "Introduced a Google Cloud Run Functions integration for Feral to deploy http4s apps in Google's serverless platform."
+  permalink: "/blog/2024/12/22/gsoc24-going-feral-on-the-cloud.html"
+  categories: [cloud, programming languages]
+- title: "Catscript"
+  description: "Designed a new library for easy scripting with files and processes, for inclusion in the Typelevel Toolkit."
+  permalink: "https://github.com/typelevel/governance/issues/149"
+  categories: [programming languages]
+- title: "Scaladoc search in Protosearch"
+  description: "Integrated Prosoearchwith Scaladocs, enabling a unified search experience across a project's written and API docs."
+  permalink: "https://github.com/cozydev-pink/protosearch/pull/241"
+  categories: [data, web]
