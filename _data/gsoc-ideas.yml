@@ -15,53 +15,19 @@
   mentors: [armanbilge, djspiewak, ekrich, valencik]
   categories: [AI, web, programming languages]
 
-- title: "Streaming msgpack implementation"
-  description: "The [msgpack](https://msgpack.org/) data format allows for efficient binary serialization of data. It would be great to have the ability to parse, transform, and emit data in a streaming fashion using FS2 in the [fs2-data](https://fs2-data.gnieh.org) library."
-  prereqs: Scala, ideally some experience with FS2 and parsing
-  difficulty: Medium. 
-  length: medium
-  mentors: [satabin, ybasket]
-  categories: [streaming, programming languages]
-
-- title: Scaladoc Search in Protosearch
-  description:
-    Protosearch offers an in-browser search experience for documentation. This project aims to add support for Scaladoc, the documentation system for Scala code. As a result of this work, searching for `flatMap` on the cats-effect documentation, for example, would return hits from the tutorial and the relevant method in the Scaladoc.
-  prereqs: Scala
-  difficulty: Medium.
-  length: long
-  mentors: [valencik]
-  categories: [data, web]
-
-- title: Fluent library for files and processes
-  description:
-    FS2 has powerful APIs for streaming I/O but using it in small scripts can involve boilerplate. This project aims to create a fluent library for working with files and processes in Scala. A particular focus will be easy integration with the [Typelevel Toolkit](https://typelevel.org/toolkit).
-  prereqs: Scala, interest in Functional Programming
-  difficulty: Medium.
-  length: medium
-  mentors: [toniogela, zetashift, lenguyenthanh]
-  categories: [programming languages]
-
 - title: Serverless integrations for Feral
   description:
-    Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda. We want to support other cloud providers, such as Google, Cloudflare, and Vercel.
+    Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda and Google Cloud Run Functions. We want to support more cloud providers, such as Cloudflare Workers.
   prereqs: Scala, interest in Functional Programming, ideally experience with serverless
   difficulty: Medium.
   length: medium
-  mentors: [armanbilge, toniogela]
+  mentors: [armanbilge]
   categories: [cloud, programming languages]
 
 - title: Native I/O backend for FS2 JVM
   description:
     FS2 on the JVM currently implements its networking API using JDK NIO. Unfortunately this indirection incurs a non-trivial performance penalty. We want to replace the use of JDK NIO with direct calls to system I/O APIs such as `epoll` and `kqueue`.
   prereqs: Scala, ability to read C
-  difficulty: Medium.
-  length: long
-  mentors: [antoniojimeneznieto, djspiewak, armanbilge]
-  categories: [operating systems, programming languages]
-
-- title: Production-ready io_uring interop layer
-  description: A GSoC 2023 project prototyped a new networking I/O layer for FS2 based on the Linux io_uring syscall interface that improved the performance of HTTP servers by more than 3x. Now we need help to make this production-ready by writing code to interoperate with io_uring from the JVM.
-  prereqs: Java or Scala, ideally some experience with C and JNI
   difficulty: Medium.
   length: long
   mentors: [antoniojimeneznieto, djspiewak, armanbilge]
