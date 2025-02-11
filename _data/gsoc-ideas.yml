@@ -17,11 +17,11 @@
 
 - title: Serverless integrations for Feral
   description:
-    Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda and Google Cloud Run Functions. We want to support more cloud providers, such as Cloudflare Workers.
-  prereqs: Scala, interest in Functional Programming, ideally experience with serverless
+    Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda and Google Cloud Run Functions. We want to add support for more types of serverless events and more cloud providers.
+  prereqs: Scala, ideally experience with serverless
   difficulty: Medium.
   length: medium
-  mentors: [armanbilge]
+  mentors: [armanbilge, bpholt]
   categories: [cloud, programming languages]
 
 - title: Native I/O backend for FS2 JVM
@@ -30,13 +30,77 @@
   prereqs: Scala, ability to read C
   difficulty: Medium.
   length: long
-  mentors: [antoniojimeneznieto, djspiewak, armanbilge]
+  mentors: [antoniojimeneznieto, djspiewak, mpilquist, armanbilge]
   categories: [operating systems, programming languages]
 
-- title: "Streaming implementation of an XQuery subset"
-  description: "XQuery allows for transforming XML data in a declarative way. Based on the generic streaming query engine added into the [fs2-data](https://fs2-data.gnieh.org) library, write a frontend to implement a streamable subset of XQuery."
-  prereqs: Scala, ideally some experience with XQuery
-  difficulty: Hard. 
+- title: Polling-based I/O in FS2
+  description:
+    Cats Effect v3.6.0 introduced the ability to poll for I/O readiness. We want to use polling to reimplement several I/O APIs in FS2, including datagrams, unix sockets, and processes, on the JVM and Native platforms.
+  prereqs: Scala, ability to read C
+  difficulty: Medium.
   length: long
-  mentors: [satabin]
-  categories: [data, streaming, programming languages]
+  mentors: [armanbilge, mpilquist, antoniojimeneznieto]
+  categories: [operating systems, programming languages]
+
+- title: FS2 Connection API
+  description:
+    TCP-based protocols are common (e.g. HTTP, Postgres, Redis) and are implemented by clients to interface with these services (e.g. Ember, Skunk, Rediculous). The goal of this project is to create a "connection" API that supports pooling, error conditions, and metrics and can be shared by all of our client libraries.
+  prereqs: Scala, ideally some knowledge of networking
+  difficulty: Hard.
+  length: long
+  mentors: [mpilquist, armanbilge]
+  categories: [operating systems, programming languages]
+
+- title: Web Components for Calico
+  description:
+    Calico is a reactive UI library built with Cats Effect and FS2. Web Components are a standard for creating framework-agnostic, reusable UI elements. The goal of this project is to enable Calico users to access the vast array of web components available by improving its DSL and code-generation.
+  prereqs: Scala, ideally experience with Web APIs
+  difficulty: Medium.
+  length: long
+  mentors: [armanbilge]
+  categories: [web, programming languages]
+
+- title: Upgrade sbt-typelevel to sbt 2
+  description:
+    sbt-typelevel is a plugin for sbt, the Scala build tool, used by hundreds of open source and enterprise projects. sbt 2 is in the final stages of development. We want to upgrade sbt-typelevel to sbt 2 and adopt its new features, such as "project matrix" for cross-building.
+  prereqs: Scala
+  difficulty: Medium.
+  length: long
+  mentors: [mzuehlke, armanbilge]
+  categories: [development tools]
+
+- title: Refresh Davenverse projects
+  description:
+    The Davenverse is a collection of several popular Typelevel libraries, including Mules and cats-scalacheck. Unfortunately, we have fallen behind on their maintenance. We want to move these libraries under the Typelevel org, refresh their build tooling, and bring them up-to-date to ensure their longevity.
+  prereqs: Scala
+  difficulty: Medium.
+  length: medium
+  mentors: [samspills, valencik]
+  categories: [development tools, programming languages]
+
+- title: Cats Effect & FS2 on WASM/WASI
+  description:
+    Web Assembly and its System Interface are emerging technologies for deploying secure, modular applications. The goal of this project is to prototype porting the Cats Effect runtime and FS2 streaming I/O to the Wasm/WASI platform, also possibly generating feedback for the Scala WASM and WASI teams.
+  prereqs: Scala, ideally some experience with Wasm/WASI
+  difficulty: Hard. Wasm/WASI support in Scala is experimental.
+  length: long
+  mentors: [armanbilge, tanishiking, valencik]
+  categories: [web, cloud, operating systems, programming languages]
+
+- title: Extensible log4cats interface
+  description:
+    log4cats is the de facto logging library for the Typelevel stack. Recently, a new API was proposed that overcomes current limitations of log4cats. The goal of this project is to adopt the new API in log4cats, migrate existing integrations to the new API, and create a compatibility layer with the old API.
+  prereqs: Scala
+  difficulty: Medium.
+  length: long
+  mentors: [morgen-peschke, kubukoz, irevive]
+  categories: [cloud, programming languages]
+
+- title: http4s-fs2-data
+  description:
+    fs2-data is a streaming data library that supports a plethora of formats. http4s is a library for creating and consuming web services. http4s-fs2-data is a project to integrate the two libraries. We want to integrate more fs2-data modules as well as enhance the existing integrations.
+  prereqs: Scala
+  difficulty: Medium.
+  length: medium
+  mentors: [satabin, ybasket]
+  categories: [cloud, web, programming languages]
