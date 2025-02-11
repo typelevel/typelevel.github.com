@@ -71,7 +71,7 @@
 
 - title: Refresh Davenverse projects
   description:
-    The Davenverse is a collection of several popular Typelevel libraries, including Mules and Rediculous. Unfortunately, we have fallen behind on their maintenance. We want to move these libraries under the Typelevel org, refresh their build tooling, and bring them up-to-date to ensure their longevity.
+    The Davenverse is a collection of several popular Typelevel libraries, including Mules and cats-scalacheck. Unfortunately, we have fallen behind on their maintenance. We want to move these libraries under the Typelevel org, refresh their build tooling, and bring them up-to-date to ensure their longevity.
   prereqs: Scala
   difficulty: Medium.
   length: medium
