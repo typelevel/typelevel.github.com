@@ -104,3 +104,13 @@
   length: medium
   mentors: [satabin, ybasket]
   categories: [cloud, web, programming languages]
+
+- title: Convert Doobie test suite to use munit-cats-effect
+  description:
+    Doobie is a purely functional library for database access. Our test suites are written before there is good integration between MUnit (the test framework) and Cats-Effect (the effect system we depend on).
+    We want to convert to use munit-cats-effect to make them less verbose and error prone.
+  prereqs: Scala
+  difficulty: Easy.
+  length: medium
+  mentors: [jatcwang]
+  categories: [cloud, programming languages]
