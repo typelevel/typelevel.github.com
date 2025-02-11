@@ -91,7 +91,7 @@
   description:
     log4cats is the de facto logging library for the Typelevel stack. Recently, a new API was proposed that overcomes current limitations of log4cats. The goal of this project is to adopt the new API in log4cats, migrate existing integrations to the new API, and create a compatibility layer with the old API.
   prereqs: Scala
-  difficulty: Medium
+  difficulty: Medium.
   length: long
   mentors: [morgen-peschke, kubukoz, irevive]
   categories: [cloud, programming languages]
@@ -100,7 +100,7 @@
   description:
     fs2-data is a streaming data library that supports a plethora of formats. http4s is a library for creating and consuming web services. http4s-fs2-data is a project to integrate the two libraries. We want to integrate more fs2-data modules as well as enhance the existing integrations.
   prereqs: Scala
-  difficulty: Medium
+  difficulty: Medium.
   length: medium
   mentors: [satabin, ybasket]
   categories: [cloud, web, programming languages]
