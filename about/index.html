@@ -8,7 +8,6 @@ title: About
   <div class="container">
     <div class="masthead-page">
       <h1><span>{{ page.title }}</span></h1>
-      <p>{{site.data.description.aboutDescription}}</p>
       <ul class="masthead-social">
 
         {% for item in site.data.nav-social %}
@@ -19,6 +18,15 @@ title: About
         </li>
         {% endfor %}
       </ul>
+    </div>
+    <div class="masthead-blog-detal">
+      <p>
+        Typelevel is a community working together since 2013 to foster an inclusive, welcoming, and safe environment around functional programming in Scala.
+        Our ecosystem of libraries is mature and widely adopted.
+      </p>
+      </br>
+      <p>{{site.data.description.aboutDescription}}</p>
+      {% include _tab-about.html %}
     </div>
 
     <div class="about-list">
