@@ -101,7 +101,7 @@
     fs2-data is a streaming data library that supports a plethora of formats. http4s is a library for creating and consuming web services. http4s-fs2-data is a project to integrate the two libraries. We want to integrate more fs2-data modules as well as enhance the existing integrations.
   prereqs: Scala
   difficulty: Medium.
-  length: medium
+  length: short
   mentors: [satabin, ybasket]
   categories: [cloud, web, programming languages]
 
