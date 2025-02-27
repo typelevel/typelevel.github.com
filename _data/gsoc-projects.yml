@@ -19,6 +19,6 @@
   permalink: "https://github.com/typelevel/governance/issues/149"
   categories: [programming languages]
 - title: "Scaladoc search in Protosearch"
-  description: "Integrated Prosoearchwith Scaladocs, enabling a unified search experience across a project's written and API docs."
+  description: "Integrated Protosearch with Scaladocs, enabling a unified search experience across a project's written and API docs."
   permalink: "https://github.com/cozydev-pink/protosearch/pull/241"
   categories: [data, web]
