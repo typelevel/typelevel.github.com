@@ -112,6 +112,10 @@
   mentors: [armanbilge, tanishiking, valencik]
   categories: [web, cloud, operating systems, programming languages]
   repolinks:
+    - name: cats-effect
+      url: https://github.com/typelevel/cats-effect
+    - name: fs2
+      url: https://github.com/typelevel/fs2
 
 - title: Extensible log4cats interface
   description:
@@ -133,9 +137,11 @@
   length: short
   mentors: [satabin, ybasket]
   categories: [cloud, web, programming languages]
-  repolinks:
-    - name: fs2
-      url: https://github.com/typelevel/fs2
+  repolinks:  
+    - name: http4s-fs2-data  
+      url: https://github.com/http4s/http4s-fs2-data  
+    - name: fs2-data  
+      url: https://github.com/gnieh/fs2-data
     - name: http4s
       url: https://github.com/http4s/http4s
 
@@ -149,3 +155,7 @@
   mentors: [jatcwang]
   categories: [cloud, programming languages]
   repolinks:
+    - name: doobie
+      url: https://github.com/typelevel/doobie
+    - name: munit-cats-effect
+      url: https://github.com/typelevel/munit-cats-effect

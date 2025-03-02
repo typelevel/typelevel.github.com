@@ -30,10 +30,10 @@
       {% endfor %}
     </p>
 
-    <h5>References</h5>
+    <h5>Related Repos</h5>
     <p>
       {% for repolink in project.repolinks %}
-        <a href="{{ repolink.url }}">@{{ repolink.name }}</a>
+        <a href="{{ repolink.url }}">{{ repolink.name }}</a>
       {% endfor %}
     </p>
   </div>
