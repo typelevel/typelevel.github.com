@@ -29,6 +29,13 @@
         <a href="https://github.com/{{ mentor }}">@{{ mentor }}</a>
       {% endfor %}
     </p>
+
+    <h5>Related Repos</h5>
+    <p>
+      {% for repolink in project.repolinks %}
+        <a href="{{ repolink.url }}">{{ repolink.name }}</a>
+      {% endfor %}
+    </p>
   </div>
   <div class="project-item-tag">
     {% for category in project.categories %}

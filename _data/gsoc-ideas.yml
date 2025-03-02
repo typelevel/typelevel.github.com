@@ -5,6 +5,7 @@
 # length: short / medium / long (90 / 175 / 350 hours)
 # mentors: github handles
 # categories: AI / data / dev tools / apps / cloud / media / operating systems / programming languages / science / security / social / web
+# repolinks: reference links to respective github repos
 
 - title: Machine learning inference in Cats Effect
   description:
@@ -14,6 +15,9 @@
   length: long
   mentors: [armanbilge, djspiewak, ekrich, valencik]
   categories: [AI, web, programming languages]
+  repolinks: 
+    - name: cats-effect
+      url: https://github.com/typelevel/cats-effect
 
 - title: Serverless integrations for Feral
   description:
@@ -23,6 +27,9 @@
   length: medium
   mentors: [armanbilge, bpholt]
   categories: [cloud, programming languages]
+  repolinks:
+    - name: feral
+      url: https://github.com/typelevel/feral
 
 - title: Native I/O backend for FS2 JVM
   description:
@@ -32,6 +39,9 @@
   length: long
   mentors: [antoniojimeneznieto, djspiewak, mpilquist, armanbilge]
   categories: [operating systems, programming languages]
+  repolinks:
+    - name: fs2
+      url: https://github.com/typelevel/fs2
 
 - title: Polling-based I/O in FS2
   description:
@@ -41,6 +51,9 @@
   length: long
   mentors: [armanbilge, mpilquist, antoniojimeneznieto]
   categories: [operating systems, programming languages]
+  repolinks:
+    - name: fs2
+      url: https://github.com/typelevel/fs2
 
 - title: FS2 Connection API
   description:
@@ -50,6 +63,9 @@
   length: long
   mentors: [mpilquist, armanbilge]
   categories: [operating systems, programming languages]
+  repolinks:
+    - name: fs2
+      url: https://github.com/typelevel/fs2
 
 - title: Web Components for Calico
   description:
@@ -59,6 +75,9 @@
   length: long
   mentors: [armanbilge]
   categories: [web, programming languages]
+  repolinks:
+    - name: calico
+      url: https://github.com/armanbilge/calico
 
 - title: Upgrade sbt-typelevel to sbt 2
   description:
@@ -68,6 +87,9 @@
   length: long
   mentors: [mzuehlke, armanbilge]
   categories: [development tools]
+  repolinks:
+    - name: sbt-typelevel
+      url: https://github.com/typelevel/sbt-typelevel
 
 - title: Refresh Davenverse projects
   description:
@@ -77,6 +99,9 @@
   length: medium
   mentors: [samspills, valencik]
   categories: [development tools, programming languages]
+  repolinks:
+    - name: davenverse
+      url: https://github.com/davenverse
 
 - title: Cats Effect & FS2 on WASM/WASI
   description:
@@ -86,6 +111,11 @@
   length: long
   mentors: [armanbilge, tanishiking, valencik]
   categories: [web, cloud, operating systems, programming languages]
+  repolinks:
+    - name: cats-effect
+      url: https://github.com/typelevel/cats-effect
+    - name: fs2
+      url: https://github.com/typelevel/fs2
 
 - title: Extensible log4cats interface
   description:
@@ -95,6 +125,9 @@
   length: long
   mentors: [morgen-peschke, kubukoz, irevive]
   categories: [cloud, programming languages]
+  repolinks:
+    - name: log4cats
+      url: https://github.com/typelevel/log4cats
 
 - title: http4s-fs2-data
   description:
@@ -104,6 +137,13 @@
   length: short
   mentors: [satabin, ybasket]
   categories: [cloud, web, programming languages]
+  repolinks:  
+    - name: http4s-fs2-data  
+      url: https://github.com/http4s/http4s-fs2-data  
+    - name: fs2-data  
+      url: https://github.com/gnieh/fs2-data
+    - name: http4s
+      url: https://github.com/http4s/http4s
 
 - title: Convert Doobie test suite to use munit-cats-effect
   description:
@@ -114,3 +154,8 @@
   length: medium
   mentors: [jatcwang]
   categories: [cloud, programming languages]
+  repolinks:
+    - name: doobie
+      url: https://github.com/typelevel/doobie
+    - name: munit-cats-effect
+      url: https://github.com/typelevel/munit-cats-effect
