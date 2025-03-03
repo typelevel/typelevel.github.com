@@ -144,18 +144,3 @@
       url: https://github.com/gnieh/fs2-data
     - name: http4s
       url: https://github.com/http4s/http4s
-
-- title: Convert Doobie test suite to use munit-cats-effect
-  description:
-    Doobie is a purely functional library for database access. Our test suites are written before there is good integration between MUnit (the test framework) and Cats-Effect (the effect system we depend on).
-    We want to convert to use munit-cats-effect to make them less verbose and error prone.
-  prereqs: Scala
-  difficulty: Easy.
-  length: medium
-  mentors: [jatcwang]
-  categories: [cloud, programming languages]
-  repolinks:
-    - name: doobie
-      url: https://github.com/typelevel/doobie
-    - name: munit-cats-effect
-      url: https://github.com/typelevel/munit-cats-effect
