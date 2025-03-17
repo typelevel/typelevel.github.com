@@ -17,7 +17,7 @@ jobs:
         uses: cachix/install-nix-action@v30
 
       - name: "Install Cachix️"
-        uses: cachix/cachix-action@v15
+        uses: cachix/cachix-action@v16
         with:
           name: typelevel
 
