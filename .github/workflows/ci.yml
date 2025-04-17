@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4.2.2
 
       - name: "Install Nix️"
-        uses: cachix/install-nix-action@v30
+        uses: samueldr/lix-gha-installer-action@v1
 
       - name: "Install Cachix️"
         uses: cachix/cachix-action@v15
