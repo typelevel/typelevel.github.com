@@ -16,10 +16,5 @@ jobs:
       - name: "Install Nix️"
         uses: samueldr/lix-gha-installer-action@v1
 
-      - name: "Install Cachix️"
-        uses: cachix/cachix-action@v15
-        with:
-          name: typelevel
-
       - name: "Nix Flake Check"
         run: nix -L flake check
