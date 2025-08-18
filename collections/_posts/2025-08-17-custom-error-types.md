@@ -26,7 +26,7 @@ And then of course, everything you do with that result must be explicitly `flatM
 
 ## Capabilities
 
-The good news is that we now have a better answer here, and one which composes perfectly with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.
+The good news is that we now have a better answer here, and one which composes perfectly with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type-infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.
 
 The name "Cats MTL" comes from Haskell's MTL package, which in turn was pretty aptly named: "Monad Transformer Library". Haskell's MTL is entirely oriented around making it easier and more ergonomic to manipulate monad transformer *stacks*, which is to say, multiple layers of datatypes like `EitherT`, `Kleisli`, and so on. Monad transformer stacks are extremely difficult to work with, both in Scala and in Haskell, and so over time people progressively evolved techniques involving typeclasses in Haskell and implicits in Scala to more ergonomically manipulate composable effect types. Cats MTL was rooted in an adaptation of some of these ideas.
 
