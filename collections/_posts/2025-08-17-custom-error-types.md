@@ -52,23 +52,23 @@ enum ParseError:
 def parse[F[_]](input: String)(using Raise[F, ParseError], Monad[F]): F[Result] =
   // do some hardcore parsing
   if missingBracket then
-    UnclosedBracket.raise[F]
+    UnclosedBracket.raise[F, Result]
   else if missingSemicolon then
-    MissingSemicolon.raise[F]
+    MissingSemicolon.raise // we can rely on type inference and omit extra typings
   else
     result.pure[F]
 
 // use allow/rescue like try/catch to create scoped error handling
-val program: IO[Result] = Handle.allow[ParseError]:
+val program: IO[Unit] = Handle.allow[ParseError]:
   for
-    x <- parse(inputX)
+    x <- parse[IO](inputX)
     y <- parse(inputY)
     _ <- IO.println(s"successfully parsed $x and $y")
   yield ()
 .rescue:
   case ParseError.UnclosedBracket => IO.println("you didn't close your brackets")
   case ParseError.MissingSemicolon => IO.println("you missed your semicolons very much")
-  case Other(msg) => IO.println(s"error: $msg")
+  case ParseError.Other(msg) => IO.println(s"error: $msg")
 ```
 
 There's a lot to unpack here! At the very beginning we define a custom error type, `ParseError`. This is just a domain error like any other, and you'll note that it *doesn't* extend `Exception` or `Throwable` or similar. Without Cats MTL, we would generally have to wrap this error up in `Either` in all our function's result types, if we wanted to use it (similar to what Circe does). In this case though, instead of adding the error to the result type, we added a `using` parameter to our `parse` function!
@@ -95,8 +95,8 @@ import cats.mtl.{Handle, Raise}
 sealed trait ParseError extends Product with Serializable
 
 object ParseError {
-  case class UnclosedBracket extends ParseError
-  case class MissingSemicolon extends ParseError
+  case object UnclosedBracket extends ParseError
+  case object MissingSemicolon extends ParseError
   case class Other(msg: String) extends ParseError
 }
 
@@ -112,7 +112,7 @@ def parse[F[_]](input: String)(implicit r: Raise[F, ParseError], m: Monad[F]): F
 }
 
 // use allow/rescue like try/catch to create scoped error handling
-val program: IO[Result] = Handle.allowF[IO, ParseError] { implicit h =>
+val program: IO[Unit] = Handle.allowF[IO, ParseError] { implicit h =>
   for {
     x <- parse[IO](inputX)
     y <- parse[IO](inputY)
@@ -121,7 +121,7 @@ val program: IO[Result] = Handle.allowF[IO, ParseError] { implicit h =>
 } rescue {
   case ParseError.UnclosedBracket => IO.println("you didn't close your brackets")
   case ParseError.MissingSemicolon => IO.println("you missed your semicolons very much")
-  case Other(msg) => IO.println(s"error: $msg")
+  case ParseError.Other(msg) => IO.println(s"error: $msg")
 }
 ```
 
