@@ -13,7 +13,7 @@ property (the Organization Libraries) and raised funds. In 2022, we adopted a Ch
 However, we have not had a well-defined legal status.
 
 We have decided it is time to become a legally-recognized organization. To that end, we are forming the Typelevel
-Foundation, a nonprofit organization incorporated in the state of California. Additionally, we are applying for
+Foundation, a nonprofit organization incorporated in the United States, in the state of California. Additionally, we are applying for
 501(c)(3) tax-exempt status from the IRS, but this process will take several months.
 
 The initial Board of Directors for the Foundation will be:
