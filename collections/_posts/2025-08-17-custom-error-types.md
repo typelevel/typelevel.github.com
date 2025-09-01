@@ -24,11 +24,11 @@ A standard solution to this problem, if you *don't* want to extend `Exception` w
 def parse(input: String): IO[Either[Failure, Result]] = ???
 ```
 
-And then of course, everything you do with that result must be explicitly `flatMap`ped into the `Either`, and higher-order control flow libraries like Fs2 will often need some extra coaxing in order to make everything work the way you want it to. This gets old in a hurry, which often results in reaching for alternatives like `EitherT`. That way lies madness.
+And then of course, everything you do with that result must be explicitly `flatMap`ped into the `Either`, and higher-order control flow libraries like Fs2 will often need some extra coaxing in order to make everything work the way you want it to. This gets old in a hurry, which often results in reaching for alternatives like `EitherT`. That way lies frustration and woe.
 
 ## Capabilities
 
-The good news is that we now have a better answer here, and one which composes perfectly with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type-infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.
+The good news is that we now have a better answer here, and one which composes very nicely with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type-infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.
 
 The name "Cats MTL" comes from Haskell's MTL package, which in turn was pretty aptly named: "Monad Transformer Library". Haskell's MTL is entirely oriented around making it easier and more ergonomic to manipulate monad transformer *stacks*, which is to say, multiple layers of datatypes like `EitherT`, `Kleisli`, and so on. Monad transformer stacks are extremely difficult to work with, both in Scala and in Haskell, and so over time people progressively evolved techniques involving typeclasses in Haskell and implicits in Scala to more ergonomically manipulate composable effect types. Cats MTL was rooted in an adaptation of some of these ideas.
 
@@ -68,9 +68,12 @@ val program: IO[Unit] = Handle.allow[ParseError]:
     _ <- IO.println(s"successfully parsed $x and $y")
   yield ()
 .rescue:
-  case ParseError.UnclosedBracket => IO.println("you didn't close your brackets")
-  case ParseError.MissingSemicolon => IO.println("you missed your semicolons very much")
-  case ParseError.Other(msg) => IO.println(s"error: $msg")
+  case ParseError.UnclosedBracket =>
+    IO.println("you didn't close your brackets")
+  case ParseError.MissingSemicolon =>
+    IO.println("you missed your semicolons very much")
+  case ParseError.Other(msg) =>
+    IO.println(s"error: $msg")
 ```
 
 There's a lot to unpack here! At the very beginning we define a custom error type, `ParseError`. This is just a domain error like any other, and you'll note that it *doesn't* extend `Exception` or `Throwable` or similar. Without Cats MTL, we would generally have to wrap this error up in `Either` in all our function's result types, if we wanted to use it (similar to what Circe does). In this case though, instead of adding the error to the result type, we added a `using` parameter to our `parse` function!
@@ -121,9 +124,12 @@ val program: IO[Unit] = Handle.allowF[IO, ParseError] { implicit h =>
     _ <- IO.println(s"successfully parsed $x and $y")
   } yield ()
 } rescue {
-  case ParseError.UnclosedBracket => IO.println("you didn't close your brackets")
-  case ParseError.MissingSemicolon => IO.println("you missed your semicolons very much")
-  case ParseError.Other(msg) => IO.println(s"error: $msg")
+  case ParseError.UnclosedBracket =>
+    IO.println("you didn't close your brackets")
+  case ParseError.MissingSemicolon =>
+    IO.println("you missed your semicolons very much")
+  case ParseError.Other(msg) =>
+    IO.println(s"error: $msg")
 }
 ```
 
