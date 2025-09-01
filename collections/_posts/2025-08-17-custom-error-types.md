@@ -8,7 +8,9 @@ meta:
   author: djspiewak
 ---
 
-One of the most famous and longstanding limitations of the Cats Effect `IO` type (and the Cats generic typeclasses) is the fact that the only available error channel is `Throwable`. This stands in contrast to bifunctor or polyfunctor techniques, which add a typed error channel within the monad itself. You can see this easily in type signatures: `IO[String]` indicates an `IO` which returns a `String` or may produce a `Throwable` error. Something like `BIO[ParseError, String]` would represent a `BIO` that produces a `String` *or* raises a `ParseError`. The latter type signature is more general than `Throwable`, since it allows for user-specified error types, and it's somewhat more explicit about where errors can and cannot occur.
+**tl;dr** Cats MTL 1.6.0 introduces a brand new lightweight syntax for managing user-defined error types in the Cats ecosystem without requiring complex monad transformers.
+
+One of the most famous and longstanding limitations of the Cats Effect `IO` type (and the Cats generic typeclasses) is the fact that the only available error channel is `Throwable`. This stands in contrast to bifunctor or polyfunctor techniques, which add a typed error channel within the monad itself. You can see this easily in type signatures: `IO[String]` indicates an `IO` which returns a `String` or may produce a `Throwable` error (`Future[String]` is directly analogous). Something like `BIO[ParseError, String]` would represent a `BIO` that produces a `String` *or* raises a `ParseError`. The latter type signature is more general than `Throwable`, since it allows for user-specified error types, and it's somewhat more explicit about where errors can and cannot occur.
 
 In a meaningful sense, this type of bifunctor error encoding is analogous to *checked* exceptions in Java, whereas monofunctor error encoding (like Cats Effect's `IO`) is analogous to *unchecked* exceptions. Both are valid design decisions for an effect type, but they come with different benefits and tradeoffs.
 
@@ -129,7 +131,7 @@ We need to do a lot more hand-holding for the compiler by using the `allowF` fun
 
 ## Under the Hood
 
-Behind the scenes, this functionality is doing two very creative things. First, as the Scala 2 snippet hints, we're introducing a new implicit within the local scope of the function passed to `allow`/`allowF`. This is one of Scala's more unique features and we're leveraging it quite heavily. In Scala 3, we're able to hide this syntax *entirely* by using context functions (the `A ?=> B` syntax), but in Scala 2 we need to use the `implicit x =>` lambda syntax in order to make this work. (as an aside, note that this syntax does not parse if you attempt to explicitly specify the type of `x`, but that's okay because you don't ever need to do that anyway)
+Behind the scenes, this functionality is doing two very creative things. First, as the Scala 2 snippet hints, we're introducing a new implicit within the local scope of the function passed to `allow`/`allowF`. This is one of Scala's more unique features and we're leveraging it quite heavily. In Scala 3, we're able to hide this syntax *entirely* by using context functions (the `A ?=> B` syntax), but in Scala 2 we need to use the `implicit x =>` lambda syntax in order to make this work.
 
 That implicit is introduced targeting the effect type we passed to `allowF`, or in Scala 3's case, the type which was inferred from the return. In this case, that type is `IO`! In other words, you don't need to be using parametric effects (`F[_]`) in order to make all this work! `Raise[IO, ParseError]` is a totally valid `Raise` instance, and it's exactly what we have in scope here. Or rather, we actually have `Handle[IO, ParseError]` (which extends `Raise`), which gives us the ability to both raise *and* handle errors.
 
@@ -143,7 +145,7 @@ Rather than trying to impose a particular multi-channel composition semantic on 
 
 ## Conclusion
 
-Hopefully you find this technique helpful! This has been in the works for a *surprisingly* long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le ([@lenguyenthanh](https://github.com/lenguyenthanh)) who ultimately pushed it over the line. Huge shoutout!
+Hopefully you find this technique helpful! This has been in the works for a *surprisingly* long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le ([@lenguyenthanh](https://github.com/lenguyenthanh)) who ultimately pushed it over the line. Huge shoutout! He has already begun leveraging this functionality in Lichess, one of the larger production Scala projections: [lichess-org/lila#17944](https://github.com/lichess-org/lila/pull/17944)
 
 Even more excitingly, this is a bit of a taste of the next phase of the effect type ecosystem. Scala is continuing to move heavily in the direction of implicit capabilities for these types of behaviors, and while efforts such as Caprese are still a long way from bearing real-world fruit, much of the work that is being done in that direction also creates the primitives needed to encode a compositional capabilities ecosystem for our existing production effect types, such as Cats Effect `IO`!
 
