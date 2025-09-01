@@ -145,7 +145,7 @@ Rather than trying to impose a particular multi-channel composition semantic on 
 
 ## Conclusion
 
-Hopefully you find this technique helpful! This has been in the works for a *surprisingly* long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le ([@lenguyenthanh](https://github.com/lenguyenthanh)) who ultimately pushed it over the line. Huge shoutout! He has already begun leveraging this functionality in Lichess, one of the larger production Scala projections: [lichess-org/lila#17944](https://github.com/lichess-org/lila/pull/17944)
+Hopefully you find this technique helpful! This has been in the works for a *surprisingly* long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le ([@lenguyenthanh](https://github.com/lenguyenthanh)) who ultimately pushed it over the line. Huge shoutout! He has already begun leveraging this functionality in Lichess, one of the larger production Scala projects: [lichess-org/lila#17944](https://github.com/lichess-org/lila/pull/17944)
 
 Even more excitingly, this is a bit of a taste of the next phase of the effect type ecosystem. Scala is continuing to move heavily in the direction of implicit capabilities for these types of behaviors, and while efforts such as Caprese are still a long way from bearing real-world fruit, much of the work that is being done in that direction also creates the primitives needed to encode a compositional capabilities ecosystem for our existing production effect types, such as Cats Effect `IO`!
 
