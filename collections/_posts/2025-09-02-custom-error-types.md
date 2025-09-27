@@ -41,8 +41,11 @@ However, the basic idea of MTL itself, divorced from the *datatypes* (like `Eith
 The problem has been to find a way to blend all of these constructs together in a way that practically *works* with the ecosystem, is syntactically lightweight, has pleasant type inference and errors, and doesn't confuse the heck out of anyone who touches it. That is a problem we feel we have now solved, at least with errors.
 
 ```scala
+import cats.Monad
 import cats.effect.IO
+import cats.mtl.syntax.raise.given
 import cats.mtl.{Handle, Raise}
+import cats.syntax.applicative.given
 
 // define a domain error type
 enum ParseError:
@@ -93,8 +96,11 @@ At the end of the `allow` scope, we call `.rescue`, and this requires us to pass
 Oh, and just in case you were wondering, this syntax *does* work on Scala 2 as well, it's just a bit less fancy! Here's the same snippet from above, but with 100% more braces and a lot more explicit types:
 
 ```scala
+import cats.Monad
 import cats.effect.IO
+import cats.mtl.syntax.raise._
 import cats.mtl.{Handle, Raise}
+import cats.syntax.applicative._
 
 // define a domain error type
 sealed trait ParseError extends Product with Serializable
