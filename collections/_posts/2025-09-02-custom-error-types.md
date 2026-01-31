@@ -43,9 +43,9 @@ The problem has been to find a way to blend all of these constructs together in 
 ```scala
 import cats.Monad
 import cats.effect.IO
-import cats.mtl.syntax.raise.given
+import cats.mtl.syntax.all.*
 import cats.mtl.{Handle, Raise}
-import cats.syntax.applicative.given
+import cats.syntax.all.*
 
 // define a domain error type
 enum ParseError:
@@ -98,9 +98,9 @@ Oh, and just in case you were wondering, this syntax *does* work on Scala 2 as w
 ```scala
 import cats.Monad
 import cats.effect.IO
-import cats.mtl.syntax.raise._
+import cats.mtl.syntax.all._
 import cats.mtl.{Handle, Raise}
-import cats.syntax.applicative._
+import cats.syntax.all._
 
 // define a domain error type
 sealed trait ParseError extends Product with Serializable
