@@ -392,7 +392,7 @@ because
    names with variable type patterns.
 1. You can’t use variable type patterns with the structural
    “ADT-style” patterns; you must instead use inelegant and
-   inconvenient [non-variable] type patterns. (This may be
+   inconvenient (non-variable) type patterns. (This may be
    [improved in Typelevel Scala 4](https://github.com/typelevel/scala/blob/typelevel-readme/notes/typelevel-4.md#type-arguments-on-patterns-pull5774-paulp).)
 
 Yet this remains entirely up to shortcomings in the current pattern

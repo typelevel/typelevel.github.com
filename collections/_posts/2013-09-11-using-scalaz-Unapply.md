@@ -212,7 +212,7 @@ types are equal, and is much more powerful than scala-library's own
 `=:=`.  We're using the core Leibniz operator, `subst`, directly to
 prove that, *as a consequence of that type equality*, `List[FA] ===
 List[U.M[U.A]]` is *also* a type equality, and that therefore this
-[constant-time] coercion is valid.  This lifting is applicable in all
+(constant-time) coercion is valid.  This lifting is applicable in all
 contexts, not just covariant ones like `List`'s.  Take a look at
 [the full API](https://github.com/scalaz/scalaz/blob/v7.0.3/core/src/main/scala/scalaz/Leibniz.scala)
 for more, though you'll typically just need to come up with the right

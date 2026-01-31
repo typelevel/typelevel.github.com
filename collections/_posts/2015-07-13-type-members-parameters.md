@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Type members are [almost] type parameters
+title: Type members are almost type parameters
 category: technical
 
 meta:
