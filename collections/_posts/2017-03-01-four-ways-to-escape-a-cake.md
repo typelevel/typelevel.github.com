@@ -214,7 +214,7 @@ There’s a hint in that we had to write `val u`, not `u`, nor `private
 val u`, in order for the `implicit class` itself to compile. This
 signature tells us that there’s an *argument* of type
 `LittleUniverse`, and a *member* `u: LittleUniverse`. However, whereas
-with the function examples above, we [and the compiler] could trust
+with the function examples above, we (and the compiler) could trust
 that they’re one and the same, we have no such guarantee here. So we
 don’t know that an `lu.Needle` is a `u.Needle`. We didn’t get far
 enough, but we don’t know that a `u.Needle` is an `lu.Needle`, either.
@@ -420,7 +420,7 @@ Let’s walk through it one more time.
 1. `n: U#Needle`.
 2. `h.iter` expects a `u.type#Needle` for all `val u: U`.
 3. **Suppose that we constrain `U` to be a singleton type**:
-    1. [The existential] `u.type = U`, by singleton equivalence.
+    1. (The existential) `u.type = U`, by singleton equivalence.
     2. By `#` left side equivalence, `h.iter` expects a `U#Needle`.
 
 The existential variable complicates things, but the rule is sound.
@@ -540,7 +540,7 @@ First, covariant:
 Secondly, contravariant. We’re going to have to make a best guess
 here, because it’s not entirely clear to me what’s going on.
 
-1. Since [existential] path `u` has a singleton type `U` (if we define
+1. Since (existential) path `u` has a singleton type `U` (if we define
    “has a singleton type” as “having a type *X* such that
    *X*` <: Singleton`”), so `u.type = U` by the singleton equivalence.
 2. Since equivalence implies conformance, according to the first

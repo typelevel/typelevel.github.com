@@ -12,13 +12,13 @@ meta:
 As its opening sentence reminds the reader—a point often missed by
 many reviewers—the book
 [*Functional Programming in Scala*](https://www.manning.com/books/functional-programming-in-scala)
-is not a book about Scala. This [wise] choice occasionally manifests
+is not a book about Scala. This (wise) choice occasionally manifests
 in peculiar ways.
 
 For example, you can go quite far into the book implementing its
 exercises in languages with simpler type systems. Chapters 1–8 and 10
 port quite readily to
-[Java [8]](https://github.com/sbordet/fpinscala-jdk8) and C#. So
+[Java 8](https://github.com/sbordet/fpinscala-jdk8) and C#. So
 *Functional Programming in Scala* can be a very fine resource for
 learning some typed functional programming, even if such languages are
 all you have to work with. Within these chapters, you can remain

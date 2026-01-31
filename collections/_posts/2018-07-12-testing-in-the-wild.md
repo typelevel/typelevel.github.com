@@ -216,6 +216,7 @@ I needed to change the expected values? To this end I added a "line number" colu
 
  Actually I even enhanced the display of actual/expected values by coloring them in green or red in the console, using one of specs2 helper
  classes `org.specs2.text.AnsiColors`:
+
 ```scala
 import org.specs2.text.AnsiColors
 

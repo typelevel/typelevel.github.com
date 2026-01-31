@@ -352,16 +352,16 @@ trait Fractional[A] extends Integral[A] with Field[A] with NRoot[A]
 
 Spire also adds many new useful number types. Here's an incomplete list:
 
-- **spire.math.Rational** is a fast, exact number type for working with
+- `spire.math.Rational` is a fast, exact number type for working with
   rational numbers,
-- **spire.math.Complex[A]** is a parametric number type for complex numbers,
-- **spire.math.Number** is a boxed number type that strives for flexibility
+- `spire.math.Complex[A]` is a parametric number type for complex numbers,
+- `spire.math.Number` is a boxed number type that strives for flexibility
   of use,
-- **spire.math.Interval** is a number type for interval arithmetic,
-- **spire.math.Real** is a number type for exact geometric computation that
+- `spire.math.Interval` is a number type for interval arithmetic,
+- `spire.math.Real` is a number type for exact geometric computation that
   provides exact n-roots, as well as exact division,
-- **spire.math.{UByte,UShort,UInt,ULong}** unsigned integer types, and
-- **spire.math.Natural** an arbitrary precision unsigned integer type.
+- `spire.math.{UByte,UShort,UInt,ULong}` unsigned integer types, and
+- `spire.math.Natural` an arbitrary precision unsigned integer type.
 
 ### Better Readability
 

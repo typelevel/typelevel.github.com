@@ -151,7 +151,7 @@ even Java manages the task.  But it just seems *odder* that merely
 calling a method can create a whole refinement `{...}` raincloud, from
 scratch, filling in the blanks with sensible types along the way.
 
-It’s completely sound, though.  An `StSource` [that exists as a value]
+It’s completely sound, though.  An `StSource` (that exists as a value)
 *must* have an `S`, even if we existentialized it away.  So, as with
 `_`s, let’s just give it a name to pass as the inferred type
 parameter.  It makes a whole lot more sense than supposing

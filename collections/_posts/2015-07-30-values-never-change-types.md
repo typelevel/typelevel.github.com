@@ -122,7 +122,7 @@ didn’t work, but if we took that `xs` and passed it to a
 type-parameterized version, everything worked fine.  Why is that?
 
 If you have a *mutable* variable of an existential type, the
-existentialized part of the type may have different [type] values at
+existentialized part of the type may have different (type) values at
 different parts of the program.  Let’s use
 [the `StSource` from the projection post]({% post_url 2015-07-23-type-projection %}#a-good-reason-to-use-type-members).
 Note that the `S` member is existential, because we did not bind it.

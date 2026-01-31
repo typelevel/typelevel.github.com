@@ -22,7 +22,7 @@ Introduction
 
 > Is it correct, that this stuff is completely obsolete now due to
 > value classes or are there still some use cases? An example of using
-> value class for zero-cost implicit enrichment: [...]
+> value class for zero-cost implicit enrichment: (...)
 
 The short answer is that value classes existed before the Machinist macros were implemented, and they do not solve the same problem Machinist solves.
 
