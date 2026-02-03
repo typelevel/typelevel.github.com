@@ -7,18 +7,6 @@
 # categories: AI / data / dev tools / apps / cloud / media / operating systems / programming languages / science / security / social / web
 # repolinks: reference links to respective github repos
 
-- title: Machine learning inference in Cats Effect
-  description:
-    We want to make it possible to deploy machine learning inference as part of a larger web service without compromising the latency of other on-going requests. The goal of this project is to create a compiler to transform a pre-trained ML model into a sequence of Cats Effect `IO` steps that perform inference on some input.
-  prereqs: Scala, ideally some experience with ML
-  difficulty: Hard but doable. Will draw on knowledge of ML and compilers.
-  length: long
-  mentors: [armanbilge, djspiewak, ekrich, valencik]
-  categories: [AI, web, programming languages]
-  repolinks: 
-    - name: cats-effect
-      url: https://github.com/typelevel/cats-effect
-
 - title: Serverless integrations for Feral
   description:
     Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda and Google Cloud Run Functions. We want to add support for more types of serverless events and more cloud providers.
@@ -38,18 +26,6 @@
   difficulty: Medium.
   length: long
   mentors: [antoniojimeneznieto, djspiewak, mpilquist, armanbilge]
-  categories: [operating systems, programming languages]
-  repolinks:
-    - name: fs2
-      url: https://github.com/typelevel/fs2
-
-- title: Polling-based I/O in FS2
-  description:
-    Cats Effect v3.6.0 introduced the ability to poll for I/O readiness. We want to use polling to reimplement several I/O APIs in FS2, including datagrams, unix sockets, and processes, on the JVM and Native platforms.
-  prereqs: Scala, ability to read C
-  difficulty: Medium.
-  length: long
-  mentors: [armanbilge, mpilquist, antoniojimeneznieto]
   categories: [operating systems, programming languages]
   repolinks:
     - name: fs2
@@ -97,13 +73,13 @@
   prereqs: Scala
   difficulty: Medium.
   length: medium
-  mentors: [samspills, valencik]
+  mentors: [armanbilge, valencik]
   categories: [development tools, programming languages]
   repolinks:
     - name: davenverse
       url: https://github.com/davenverse
 
-- title: Cats Effect & FS2 on WASM/WASI
+- title: Cats Effect & FS2 on Wasm/WASI
   description:
     Web Assembly and its System Interface are emerging technologies for deploying secure, modular applications. The goal of this project is to prototype porting the Cats Effect runtime and FS2 streaming I/O to the Wasm/WASI platform, also possibly generating feedback for the Scala WASM and WASI teams.
   prereqs: Scala, ideally some experience with Wasm/WASI
@@ -117,45 +93,28 @@
     - name: fs2
       url: https://github.com/typelevel/fs2
 
-- title: Extensible log4cats interface
+- title: Laika enhancements for typelevel.org
   description:
-    log4cats is the de facto logging library for the Typelevel stack. Recently, a new API was proposed that overcomes current limitations of log4cats. The goal of this project is to adopt the new API in log4cats, migrate existing integrations to the new API, and create a compatibility layer with the old API.
+    Laika is a purely functional site and e-book generator and customizable text markup transformer. We recently migrated the Typelevel website from Jekyll to Laika. The goal of this project is improve and streamline Laika's support for generating non-documentation websites, such as blogs.
   prereqs: Scala
   difficulty: Medium.
-  length: long
-  mentors: [morgen-peschke, kubukoz, irevive]
-  categories: [cloud, programming languages]
-  repolinks:
-    - name: log4cats
-      url: https://github.com/typelevel/log4cats
-
-- title: http4s-fs2-data
-  description:
-    fs2-data is a streaming data library that supports a plethora of formats. http4s is a library for creating and consuming web services. http4s-fs2-data is a project to integrate the two libraries. We want to integrate more fs2-data modules as well as enhance the existing integrations.
-  prereqs: Scala
-  difficulty: Medium.
-  length: short
-  mentors: [satabin, ybasket]
-  categories: [cloud, web, programming languages]
-  repolinks:  
-    - name: http4s-fs2-data  
-      url: https://github.com/http4s/http4s-fs2-data  
-    - name: fs2-data  
-      url: https://github.com/gnieh/fs2-data
-    - name: http4s
-      url: https://github.com/http4s/http4s
-
-- title: Convert Doobie test suite to use munit-cats-effect
-  description:
-    Doobie is a purely functional library for database access. Our test suites are written before there is good integration between MUnit (the test framework) and Cats-Effect (the effect system we depend on).
-    We want to convert to use munit-cats-effect to make them less verbose and error prone.
-  prereqs: Scala
-  difficulty: Easy.
   length: medium
-  mentors: [jatcwang]
-  categories: [cloud, programming languages]
+  mentors: [armanbilge, valencik]
+  categories: [web, programming languages]
   repolinks:
-    - name: doobie
-      url: https://github.com/typelevel/doobie
-    - name: munit-cats-effect
-      url: https://github.com/typelevel/munit-cats-effect
+    - name: Laika
+      url: https://github.com/typelevel/Laika
+    - name: typelevel.org
+      url: https://github.com/typelevel/typelevel.github.com
+
+- title: A faster immutable list datatype
+  description:
+    Immutable linked lists are a core datatype in functional programming languages. The goal of this project is to explore implementing a list-like datatype with enhanced performance. Along the way, you will learn about immutable datatypes, Cats typeclasses, and mechanical sympathy.
+  prereqs: Interest in functional programming
+  difficulty: Medium. This is a good project for beginners!
+  length: long
+  mentors: [armanbilge, johnynek]
+  categories: [web, programming languages]
+  repolinks:
+    - name: Cats Collections
+      url: https://github.com/typelevel/cats-collections

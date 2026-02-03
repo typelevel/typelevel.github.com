@@ -22,3 +22,11 @@
   description: "Integrated Protosearch with Scaladocs, enabling a unified search experience across a project's written and API docs."
   permalink: "https://github.com/cozydev-pink/protosearch/pull/241"
   categories: [data, web]
+- title: "Efficient Machine Learning Inference in Cats Effect via Scala Native and mlpack"
+  description: "Created an ONNX to IO compiler for running machine learning inference within a web service."
+  permalink: https://github.com/armanbilge/vilcacora
+  categories: [AI, web, programming languages]
+- title: Polling-based I/O in FS2
+  description: "Implemented network socket and datagram APIs in FS2 using Cats Effect I/O polling on the JVM and Native platforms."
+  permalink: https://github.com/typelevel/fs2
+  categories: [operating systems, programming languages]
