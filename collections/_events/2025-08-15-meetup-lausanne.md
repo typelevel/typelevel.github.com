@@ -29,7 +29,7 @@ More details and registration are available on the [event page][luma]. All parti
 [Arman Bilge]: https://github.com/armanbilge
 [Antonio Jimenez]: https://github.com/antoniojimeneznieto
 [Typelevel Code of Conduct]: /code-of-conduct.html
-[Cats Effect]: /cats-effect
+[Cats Effect]: https://typelevel.org/cats-effect
 [FS2]: https://fs2.io/
 [Calico]: https://armanbilge.github.io/calico
 [luma]: https://lu.ma/g7qow6h3
