@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <clipPath id="clip-0">
+      <polygon id="path-2" points="-278.57 2160.65 -1929 1196.44 -1929 -688.27 -278.57 -1652.4 1371.76 -688.27 1371.76 1196.44" fill-rule="nonzero" stroke-width="1" style="stroke-width: 31.975; fill: rgba(254, 69, 89, 0.318);" stroke="none"/>
+    </clipPath>
+  </defs>
+  <g style="" transform="matrix(0.123586, 0, 0, 0.123586, 197.105103, 84.387138)">
+    <g transform="matrix(1.053752, 0, 0, 1.053752, 693.925537, 1073.241333)" style="">
+      <g style="clip-path: url(&quot;#clip-0&quot;);">
+        <path fill="#750787" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 2160.36 L -2721 2160.36 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path fill="#004dff" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 1525.37 L -2721 1525.37 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path fill="#008026" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 890.365 L -2721 890.365 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path fill="#ffed00" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 255.365 L -2721 255.365 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path fill="#ff8c00" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 -379.63 L -2721 -379.63 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path fill="#e40303" d="M -2721 -1649.6 L 3278.97 -1649.6 L 3278.97 -1014.6 L -2721 -1014.6 L -2721 -1649.6 Z" style="stroke-width: 1;"/>
+        <path d="M -2721 -2610.1 L 142.97 255.365 L -2721 3120.86 L -2721 -2610.1 Z" style="stroke-width: 1;"/>
+        <path fill="#613915" d="M -2721 -2129.6 L -337.03 255.365 L -2721 2640.36 L -2721 -2129.6 Z" style="stroke-width: 1;"/>
+        <path fill="#74d7ee" d="M -2721 2160.36 L -2721 -1649.6 L -809.03 255.365 L -2721 2160.36 Z" style="stroke-width: 1;"/>
+        <path fill="#ffafc8" d="M -2721 1680.37 L -2721 -1169.6 L -1301 255.365 L -2721 1680.37 Z" style="stroke-width: 1;"/>
+        <path fill="#fff" d="M -2721 -689.63 L -1770 255.365 L -2721 1200.37 L -2721 -689.63 Z" style="stroke-width: 1;"/>
+      </g>
+      <g style="" transform="matrix(2.484423, 0, 0, 2.484423, -13441.847656, 1962.367065)">
+        <polygon id="path-2" fill="#FF6169" points="5069.57 -511.17 5069.57 -334.75 5483.08 -577.32 5483.08 -753.74" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+        <polygon id="path-2" fill="#FF6169" points="5223.53 -599.37 5069.57 -687.58 5483.08 -930.15 5637.05 -841.94" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+        <polygon id="path-2" fill="#FF6169" points="5069.57 -863.99 4915.6 -952.2 5329.11 -1194.8 5483.08 -1106.6" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+        <polygon id="path-2" fill="#FFB4B5" points="5223.53 -599.37 5223.53 -422.96 5637.05 -665.53 5637.05 -841.94" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+        <polygon id="path-2" fill="#FFB4B5" points="5069.57 -863.99 5069.57 -687.58 5483.08 -930.15 5483.08 -1106.6" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+        <polygon id="path-2" fill="#FFFFFF" points="4915.6 -422.96 5069.57 -334.75 5069.57 -511.17 5223.53 -422.96 5223.53 -599.37 5069.57 -687.58 5069.57 -863.99 4915.6 -952.2" fill-rule="nonzero" stroke="none" stroke-width="1" style="stroke-width: 31.975;"/>
+      </g>
+    </g>
+  </g>
+  <title>navbar-brand</title>
+</svg>
