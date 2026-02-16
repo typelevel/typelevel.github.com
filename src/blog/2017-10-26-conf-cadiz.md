@@ -22,10 +22,13 @@ We’ll have a Typelevel Unconference during the morning and introductory worksh
 
 This event will take place at the Palacio de Congresos de Cádiz.
 
-{% include venue_map.html %}
+
 
 ## Sponsors
 
 We'd like to thank all our sponsors who are helping to make the conference happen:
 
-{% include sponsors.html %}
+### Platinum
+@:style(bulma-grid bulma-is-col-min-12)
+@:style(bulma-cell bulma-has-text-centered)[@:image(/img/media/sponsors/47_degrees.png) { alt: 47 Degrees, title: 47 Degrees, style: legacy-event-sponsor }](http://www.47deg.com/)@:@
+@:@

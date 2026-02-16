@@ -67,4 +67,4 @@ users of the Sublime Text editor and encourage you all to hack on Ensime later.
 
 This event took place at the Rheged Centre, situated near Penrith in the Lake District National Park, UK.
 
-{% include venue_map.html %}
+

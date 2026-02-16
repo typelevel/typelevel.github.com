@@ -20,10 +20,24 @@ On Friday, September 30th, [Lambda World](http://www.lambda.world) hosted a Type
 
 This event took place at the Palacio de Congresos de Cádiz.
 
-{% include venue_map.html %}
+
 
 ## Sponsors
 
 We'd like to thank all our sponsors who helped to make the conference happen:
 
-{% include sponsors.html %}
+### Platinum
+@:style(bulma-grid bulma-is-col-min-12)
+@:style(bulma-cell bulma-has-text-centered)[@:image(/img/media/sponsors/47_degrees.png) { alt: 47 Degrees, title: 47 Degrees, style: legacy-event-sponsor }](http://www.47deg.com/)@:@
+@:@
+
+### Gold
+@:style(bulma-grid bulma-is-col-min-12)
+@:style(bulma-cell bulma-has-text-centered)[@:image(http://www.lambda.world/img/partners/logo-TheWorkshop.png) { alt: The Workshop, title: The Workshop, style: legacy-event-sponsor }](http://www.theworkshop.com/)@:@
+@:@
+
+### Silver
+@:style(bulma-grid bulma-is-col-min-12)
+@:style(bulma-cell bulma-has-text-centered)[@:image(http://www.lambda.world/img/partners/logo-Ciklum.png) { alt: Ciklum, title: Ciklum, style: legacy-event-sponsor }](https://www.ciklum.com/)@:@
+@:style(bulma-cell bulma-has-text-centered)[@:image(http://www.lambda.world/img/partners/logo-workday.svg) { alt: Workday, title: Workday, style: legacy-event-sponsor }](https://www.workday.com/)@:@
+@:@
