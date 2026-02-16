@@ -55,9 +55,15 @@ case class NewAuthor(
 }
 
 object MigrateAuthors extends IOApp.Simple {
-  val authorsYamlPath = Path("../typelevel.github.com/_data/authors.yml")
+  val authorsYamlPath = Path("_data/authors.yml")
   val directoryConfPath = Path("src/blog/directory.conf")
-  val alreadyMigrated = Set("typelevel", "foundation", "djspiewak")
+  val alreadyMigrated = Set(
+    "armanbilge", "djspiewak", "jducoeur",
+    "valencik", "samspills", "lukajcb",
+    "mpilquist", "satabin", "hkateu",
+    "bpholt", "rossabaker",
+    "typelevel", "foundation"
+  )
 
   def readAuthorsYaml: IO[String] = Files[IO]
     .readAll(authorsYamlPath)
