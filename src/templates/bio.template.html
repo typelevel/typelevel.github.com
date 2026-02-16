@@ -1,0 +1,62 @@
+<article class="bulma-media">
+  @:for(_.avatar)
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="${_.avatar}" />
+    </p>
+  </figure>
+  @:@
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>${_.name}</strong> @:for(_.pronouns) <small>${_.pronouns}</small> @:@
+        @:if(_.render-bio)
+        @:for(_.bio)
+        <br />
+        ${_.bio}
+        @:@
+        @:@
+        @:if(_.render-title)
+        @:for(_.title)
+        <br />
+        ${_.title}
+        @:@
+        @:@
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        @:for(_.email)
+        <a class="bulma-level-item" href="mailto:${_.email}">
+          <span class="bulma-icon bulma-is-small"><i class="fas fa-envelope"></i></span>
+        </a>
+        @:@
+        @:for(_.url)
+        <a class="bulma-level-item" href="${_.url}">
+          <span class="bulma-icon bulma-is-small"><i class="fas fa-globe"></i></span>
+        </a>
+        @:@
+        @:for(_.github)
+        <a class="bulma-level-item" href="http://github.com/${_.github}">
+          <span class="bulma-icon bulma-is-small"><i class="fab fa-github"></i></span>
+        </a>
+        @:@
+        @:for(_.bluesky)
+        <a class="bulma-level-item" href="http://bsky.app/profile/${_.bluesky}">
+          <span class="bulma-icon bulma-is-small"><i class="fab fa-bluesky"></i></span>
+        </a>
+        @:@
+        @:for(_.mastodon)
+        <a class="bulma-level-item" href="${_.mastodon}">
+          <span class="bulma-icon bulma-is-small"><i class="fab fa-mastodon"></i></span>
+        </a>
+        @:@
+        @:for(_.linkedin)
+        <a class="bulma-level-item" href="${_.linkedin}">
+          <span class="bulma-icon bulma-is-small"><i class="fab fa-linkedin"></i></span>
+        </a>
+        @:@
+      </div>
+    </nav>
+  </div>
+</article>

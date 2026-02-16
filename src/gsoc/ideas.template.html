@@ -1,0 +1,39 @@
+@:embed(/templates/main.template.html)
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  @:include(gsoc.template.html)
+  <div class="bulma-content">
+    ${cursor.currentDocument.content}
+  </div>
+
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(ideas)
+    <div class="bulma-cell">
+      <div class="bulma-card">
+        <div class="bulma-card-content">
+          <div class="bulma-content">
+            <p class="bulma-title bulma-is-5">${_.title}</p>
+            <p>${_.description}</p>
+            <p class="bulma-mb-0"><strong>Prerequisites</strong><br />${_.prereqs}</p>
+            <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />${_.difficulty}</p>
+            <p class="bulma-mb-0"><strong>Expected Length</strong><br />${_.length}</p>
+            <p class="bulma-mb-0"><strong>Mentors</strong><br />@:for(_.mentors) <a
+                href="https://github.com/${_}">@${_}</a>@:@</p>
+            <p><strong>Related Repositories</strong><br />@:for(_.repolinks) <a href="${_.url}">${_.name}</a>@:@</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    @:@
+  </div>
+</div>
+
+<section class="bulma-hero bulma-is-primary">
+  <div class="bulma-hero-body bulma-has-text-light bulma-has-text-centered">
+    <div class="bulma-mb-3">
+      ${cursor.currentDocument.fragments.hero}
+    </div>
+    <a class="bulma-button" href="mailto:gsoc@typelevel.org">Submit Proposal</a>
+  </div>
+</section>
+
+@:@
