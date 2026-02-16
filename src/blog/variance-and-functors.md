@@ -8,6 +8,7 @@ meta:
   author: adelbertc
   pygments: true
 ---
+
 Scala's type system allows us to annotate type parameters with their variance: covariant, contravariant, invariant.
 Variance allows us to define the subtyping relationships between type constructors – that is, under which
 conditions `F[A]` is a subtype of `F[B]`.

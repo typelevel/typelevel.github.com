@@ -15,9 +15,6 @@ tut:
     - org.typelevel::cats-core:1.2.0
 ---
 
-
-
-
 I was recently cleaning up some Scala code I'd written a few months
 ago when I realized I had been structuring code in a very confusing
 way for a very long time. At work, we've been trying to untangle the

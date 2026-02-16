@@ -10,7 +10,7 @@ meta:
 
 ---
 
- Writing tests seems like a wonderful idea in theory but real systems can be a real pain to test. Today I want to show a few tips on how to
+Writing tests seems like a wonderful idea in theory but real systems can be a real pain to test. Today I want to show a few tips on how to
  use [specs2](http://specs2.org) + [ScalaCheck](http://www.scalacheck.org) to make some real-world testing somewhat bearable.
 
  I am currently refactoring a big piece of code. Such refactoring is more like a small rewrite and some of our previous tests also have to be

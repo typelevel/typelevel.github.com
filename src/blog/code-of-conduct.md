@@ -34,4 +34,3 @@ We believe open source developers are free to choose the projects they contribut
 ### Can an affiliate project maintainer participate in Code of Conduct enforcement?
 Affiliate project's can list additional moderators in their `CODE_OF_CONDUCT` file, that the Typelevel Code of Conduct Committee will work with as described in the Enforcement Policy "Affiliate project processes" section.
 Additionally, if this work interests you, keep an eye out for future calls for Typelevel Code of Conduct Committee members!
-

@@ -25,5 +25,4 @@ We will also consider using organization and package name for *MAJOR* versioning
 
 ## Community
 Cats is built for the FP Scala community by the FP Scala community. We can't thank enough to our [190 (and growing) contributors](https://github.com/typelevel/cats/graphs/contributors) and our users who provided feedbacks and suggestions.  
-Congratulations to all of us. Let's celebrate this exciting milestone together. 
-  
+Congratulations to all of us. Let's celebrate this exciting milestone together.

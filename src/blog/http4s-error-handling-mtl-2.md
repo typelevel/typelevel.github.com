@@ -453,4 +453,3 @@ The last approach is probably too much but we have demonstrated that it's possib
 Personally, I settle for the previous approach where the error type of the algebra matches the error type of the `HttpErrorHandler` even if it requires a bit more of discipline. The choice is yours! Just make sure you understand the trade-offs of every mechanism.
 
 I hope you have enjoyed this post and please do let me know if you have other ideas to keep broadening my understanding!
-

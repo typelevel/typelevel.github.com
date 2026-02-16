@@ -22,8 +22,6 @@ tut:
     - org.scalamacros:paradise_2.12.7:2.1.0
 ---
 
-
-
 *Ever wondered why sum types are called sum types?
 Or maybe you've always wondered why the `<*>` operator uses exactly these symbols?
 And what do these things have to do with Semirings?

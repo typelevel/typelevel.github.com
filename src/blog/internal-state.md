@@ -363,4 +363,3 @@ class VectorCBF[A](bulkOptimized: Boolean)
       new VectorBuilderList
 }
 ```
-

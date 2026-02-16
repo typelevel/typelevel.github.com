@@ -10,7 +10,6 @@ meta:
 
 ---
 
-
 The Tagless Final encoding has gained some steam recently, with some people hailing 2017 as the year of Tagless Final.
 Being conceptually similar to the Free Monad, different comparisons have been brought up and the one trade-off that always comes up is the lack or the difficulty of inspection of tagless final programs and in fact, I couldn't find a single example on the web.
 This seems to make sense, as programs in the tagless final encoding aren't values, like programs expressed in terms of free structures. 

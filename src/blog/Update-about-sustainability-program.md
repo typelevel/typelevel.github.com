@@ -19,4 +19,4 @@ We believe that this new plan will support the long-term sustainability of our p
 
 From now on, please donate through the [Typelevel sustainability program's opencollective page](https://opencollective.com/typelevel). The old donorbox portal will be shut down. If you haven't, please consider talking to your employer about supporting the OSS libraries they are using. Our sponsor levels remain unchanged: annual donation from $2,000 to $5,000 for silver, from $5,000 to $10,000 for gold, and from $10,000 to $50,000 for platinum. Individual donations are much much appreciated too. The more budget we have, the more supported office hours the maintainers can have.
 
-Thanks again for your support! We look forward to continuing building a strong and active community for Functional programming in Scala. 
+Thanks again for your support! We look forward to continuing building a strong and active community for Functional programming in Scala.

@@ -597,5 +597,4 @@ These are the key takeaways:
 - [Testing in the world of Functional Programming](https://www.youtube.com/watch?v=cW5RY_x0Pbs) by Luka Jacobowitz
 - [Sample code on GitHub](https://github.com/battermann/mcs)
 
-*Thanks to [Jarrod Urban](https://twitter.com/DgtlNmd) who did a very thorough review of this post.* 
-
+*Thanks to [Jarrod Urban](https://twitter.com/DgtlNmd) who did a very thorough review of this post.*

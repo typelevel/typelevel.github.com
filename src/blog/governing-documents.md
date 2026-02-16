@@ -25,7 +25,3 @@ First, the Governing Documents provide high-level structure, but do not specify 
 Second, the [Typelevel website](https://typelevel.org) does not yet reflect the Governing Documents or membership policy changes. The current website will be updated minimally, until the redesigned website (in progress) becomes available sometime in the next few months.
 
 Finally, we recognize that the Steering Committee does not currently represent the diversity of the Typelevel community. We expect to appoint many new faces and see the retirement of many longstanding members over the next year.
-
-
-
-

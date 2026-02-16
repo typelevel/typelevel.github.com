@@ -194,4 +194,3 @@ Further Reading
 - [Monad Transformers in the Wild](http://www.slideshare.net/StackMob/monad-transformers-in-the-wild)
 
 [README]: https://github.com/lancewalton/treelog/blob/main/README.md
-

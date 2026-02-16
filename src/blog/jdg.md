@@ -8,7 +8,6 @@ meta:
   author: typelevel
 ---
 
-
 Effective today, John De Goes has been indefinitely barred from participation in Typelevel projects. This most directly impacts Cats Effect, but applies to our other repositories as well. The cause is John's combative style of interaction in Typelevel channels. His interactions when in agreement are always cordial, but when he disagrees with something or someone, the results are inevitably drawn out, intensely aggressive, and stressful. We have tried for the past three years, via one-on-one discussions and multiple warnings, to arrive at a style of respectful collaboration that we can all live with. These attempts have consistently failed, despite considerable time-consuming effort.
 
 Our overriding goal is the well-being of our contributors. Too much of their energy and enthusiasm is being drained away by these conflicts, and we're concerned about the potential chilling effect on new contributors as well. While we appreciate John's technical insight and expertise and the time he devotes to sharing those things, neither outweigh the well-being of our contributors and community.

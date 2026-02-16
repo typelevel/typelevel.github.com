@@ -184,5 +184,4 @@ These concerns will be taken into consideration when we, if we decide to, design
 * *Thanks for providing amazing libraries that are not only very solid but also a joy to use!*
 
 <br /><br /><br /><br />
-Overall we are encouraged by the survey responses from the community, in the meantime, they also showed us many areas to improve. Our 2019 planning will be based on these remarkably valuable feedbacks. We hope to present it to the community soon. 
-
+Overall we are encouraged by the survey responses from the community, in the meantime, they also showed us many areas to improve. Our 2019 planning will be based on these remarkably valuable feedbacks. We hope to present it to the community soon.

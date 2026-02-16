@@ -15,7 +15,6 @@ tut:
     - org.typelevel::cats-effect:0.1-0848c9b
 ---
 
-
 Haskell is a pure language.  Every Haskell expression is *referentially transparent*, meaning that you can substitute that expression with its evaluated result without changing the program.  Or, put into code:
 
 ```haskell
