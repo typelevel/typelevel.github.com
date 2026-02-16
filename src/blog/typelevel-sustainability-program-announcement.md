@@ -10,7 +10,7 @@ We are excited to announce the Typelevel sustainability program.
 The ultimate goal for this program is to provide ways for the user community to ensure the long-term sustainability of the development and maintenance of some Typelevel libraries.
 Currently, these libraries are maintained in their contributors' spare time. This arrangement has worked so far but we want to firmly secure their long term sustainability with an institution dedicated to supporting the maintenance of these mission critical libraries.
 
-Based on our [Cats ecosystem community survey](https://typelevel.org/blog/2019/01/30/cats-ecosystem-community-survey-results.html), roughly 70% of the users will gain more confidence
+Based on our [Cats ecosystem community survey](cats-ecosystem-community-survey-results.md), roughly 70% of the users will gain more confidence
 in the future of the ecosystem if there are compensated maintainers. We believe that our pure FP
 Scala ecosystem should have an institution supporting it, somewhat like the Scala Center
 supporting the language, and Lightbend supporting language as well as ecosystem libs. 

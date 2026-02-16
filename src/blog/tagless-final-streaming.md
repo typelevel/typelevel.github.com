@@ -6,7 +6,7 @@
 
 # Tagless Final Algebras and Streaming
 
-There have been a couple of really [nice blog posts](https://typelevel.org/blog/2017/12/27/optimizing-final-tagless.html) about `Tagless Final` and some related topics. However, I have faced some design problems when writing some algebras and haven't seen anybody talking about. So please let me introduce this problem to you.
+There have been a couple of really [nice blog posts](optimizing-final-tagless.md) about `Tagless Final` and some related topics. However, I have faced some design problems when writing some algebras and haven't seen anybody talking about. So please let me introduce this problem to you.
 
 ### Algebra definition
 

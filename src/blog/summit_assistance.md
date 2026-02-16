@@ -40,7 +40,7 @@ We will assign a mentor to each participating speaker. Your mentor will be avail
 
 If you are planning on attending or speaking in Philadelphia or Oslo, and you would like to apply for any of the services above, please please fill out the application form linked at the top of the page.
 
-[code-of-conduct]: /conduct.html
-[summits]: /blog/2015/12/11/announcement_summit.html
+[code-of-conduct]: /code-of-conduct/README.md
+[summits]: announcement_summit.md
 [philadelphia]: /event/2016-03-summit-philadelphia/
 [oslo]: /event/2016-05-summit-oslo/

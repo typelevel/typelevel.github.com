@@ -61,6 +61,6 @@ welcome two to six new members this cycle, and consider more as
 ambitions and capacity warrant.
 
 [committee]: https://github.com/typelevel/governance/blob/main/STEERING-COMMITTEE.md
-[governing documents]: https://typelevel.org/blog/2022/01/19/governing-documents.html
+[governing documents]: governing-documents.md
 [governance discussions]: https://github.com/typelevel/governance/issues
 [volunteeer@typelevel.org]: mailto:volunteer@typelevel.org

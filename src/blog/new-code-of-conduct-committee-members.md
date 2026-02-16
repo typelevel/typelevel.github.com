@@ -6,7 +6,7 @@
 
 # Code of Conduct Committee
 
-A few months back the Typelevel Steering Committee put out [a call for new members](https://typelevel.org/blog/2024/08/24/call-for-code-of-conduct-committee-members.html) to join the Typelevel Code of Conduct Committee. Thank you very much to all who applied, it's lovely to see folks interested in keeping our community safe.
+A few months back the Typelevel Steering Committee put out [a call for new members](call-for-code-of-conduct-committee-members.md) to join the Typelevel Code of Conduct Committee. Thank you very much to all who applied, it's lovely to see folks interested in keeping our community safe.
 
 Since that time, the Typelevel Steering Committee voted in three new members to the Code of Conduct Committee! The committee now has five members total.
 

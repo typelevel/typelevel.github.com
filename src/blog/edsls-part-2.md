@@ -112,7 +112,7 @@ import cats.Monad
 import cats.implicits._
 
 trait SetLang[F[_]] {
-  // See: https://typelevel.org/blog/2016/09/30/subtype-typeclasses.html
+  // See: subtype-typeclasses.md
   // for why the `Monad` instance is defined as a member as opposed to inherited
   def monad: Monad[F]
 

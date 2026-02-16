@@ -6,7 +6,7 @@
 
 # Optimizing Tagless Final – Part 2 – Monadic programs
 
-In our previous post on optimizing tagless final programs we learned how we could use the [sphynx library](https://github.com/LukaJCB/sphynx) to derive some optimization schemes for your tagless final code. In case you missed it and want to read up on it, you can find it [right here](https://typelevel.org/blog/2017/12/27/optimizing-final-tagless.html) or you can watch my presentation on the topic [here](https://www.youtube.com/watch?v=E9iRYNuTIYA), but you should be able to follow this blog post without going through it all in detail.
+In our previous post on optimizing tagless final programs we learned how we could use the [sphynx library](https://github.com/LukaJCB/sphynx) to derive some optimization schemes for your tagless final code. In case you missed it and want to read up on it, you can find it [right here](optimizing-final-tagless.md) or you can watch my presentation on the topic [here](https://www.youtube.com/watch?v=E9iRYNuTIYA), but you should be able to follow this blog post without going through it all in detail.
 
 ## Optimizing monadic programs
 

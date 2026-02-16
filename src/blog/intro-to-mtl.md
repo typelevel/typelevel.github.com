@@ -192,7 +192,7 @@ Exactly like `ReaderT`, it also includes another type parameter `E`, that repres
 
 If you're wondering why `ApplicativeAsk` has an `Applicative` field instead of just extending from `Applicative`, that is to avoid implicit ambiguities that arise from having multiple subclasses of a given type (here `Applicative`) in scope implicitly.
 So in this case we favor composition over inheritance as otherwise, we could not e.g. use `Monad` together with `ApplicativeAsk`.
-You can read more about this issue in this excellent [blog post by Adelbert Chang](https://typelevel.org/blog/2016/09/30/subtype-typeclasses.html).
+You can read more about this issue in this excellent [blog post by Adelbert Chang](subtype-typeclasses.md).
 
 ### Effect type classes
 

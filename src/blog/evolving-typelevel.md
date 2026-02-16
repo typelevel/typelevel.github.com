@@ -7,7 +7,7 @@
 # Evolving Typelevel
 
 In recent years, Typelevel has existed in a somewhat grey area legally. We have long managed a good deal of intellectual
-property (the Organization Libraries) and raised funds. In 2022, [we adopted a Charter](/blog/2022/01/19/governing-documents.html) establishing our governance.
+property (the Organization Libraries) and raised funds. In 2022, [we adopted a Charter](governing-documents.md) establishing our governance.
 However, we have not had a well-defined legal status.
 
 We have decided it is time to become a legally-recognized organization. To that end, we have formed the Typelevel

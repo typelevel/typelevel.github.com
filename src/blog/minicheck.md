@@ -7,7 +7,7 @@
 # Let's build ourselves a small ScalaCheck
 
 _[ScalaCheck](http://scalacheck.org/) is a well-known property-based testing library, based on ideas from Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck).
-It is also a [Typelevel project](/projects).
+It is also a [Typelevel project](/projects/README.md).
 In this post, I'd like to show some of the underlying mechanisms, stripped down to the bare minimum._
 
 Testing with properties is well-understood in academia and widely used in parts of the industry – namely the parts which embrace functional programming.

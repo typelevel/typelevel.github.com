@@ -34,7 +34,7 @@ Accepted candidacies will be public, but we will not disclose the identity of an
 
 The call will be open for three weeks, closing on September 14th 2024.
 
-[new-coc]: https://typelevel.org/blog/2024/03/11/code-of-conduct.html
+[new-coc]: code-of-conduct.md
 [enforcement-policy]: https://github.com/typelevel/governance/blob/main/ENFORCEMENT-POLICY.md
 [otter-tech-training]: https://otter.technology/code-of-conduct-training/
 [steering-committee]: https://github.com/typelevel/governance/blob/main/STEERING-COMMITTEE.md

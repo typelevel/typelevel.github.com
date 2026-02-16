@@ -53,7 +53,7 @@ These new members are excited to continue Typelevel's efforts to foster an inclu
 [jasna]: https://github.com/JasnaMRB
 [jetbrains]: https://jetbrains.co
 [justin]: https://github.com/jducoeur
-[last-post]: https://typelevel.org/blog/2022/04/01/call-for-steering-committee-members.html
+[last-post]: call-for-steering-committee-members.md
 [querki]: https://querki.net/
 [sam]: https://github.com/samspills
 [shopify]: https://www.shopify.com

@@ -6,7 +6,7 @@
 
 # Error handling in Http4s with classy optics – Part 2
 
-This is a continuation of my [previous blog post](https://typelevel.org/blog/2018/08/25/http4s-error-handling-mtl.html). Make sure you have read that one before continuing here.
+This is a continuation of my [previous blog post](http4s-error-handling-mtl.md). Make sure you have read that one before continuing here.
 
 I recently gave a 20 minutes talk on `classy optics` at the unconference of [Scale by the Bay](http://scale.bythebay.io/) where I also talked about this error handling technique and on my way back home I was still thinking of different ways of doing this. So, after some exploratory work, I came up with a few different alternatives.
 

@@ -12,7 +12,7 @@ We stand with those who feel excluded by the notion of politics being somehow op
 
 The Scala Center, which has a long and celebrated history of success in education and technical improvement to the tooling we use daily, has repeatedly been expected to take on a community management role beyond its chartered goals, for which it is ill-equipped and underfunded. We acknowledge the challenges they face and we support the Scala Community Management and Governance strategy under consideration as a promising way forward.
 
-Typelevel has functioned with a not-very-formal governance structure of volunteers for some time. This group is known as the [Typelevel Steering Committee](/steering.html). In the coming weeks we will formalize how leadership is selected and what the roles and responsibilities are.
+Typelevel has functioned with a not-very-formal governance structure of volunteers for some time. This group is known as the [Typelevel Steering Committee](/steering.md). In the coming weeks we will formalize how leadership is selected and what the roles and responsibilities are.
 
 The Typelevel Steering Committee:
 * Ross A. Baker

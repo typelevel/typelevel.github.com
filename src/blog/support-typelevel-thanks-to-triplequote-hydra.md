@@ -8,7 +8,7 @@
 
 Hello Community!
 
-As you all know, back in April we announced the [Typelevel Sustainability Program](https://typelevel.org/blog/2019/04/24/typelevel-sustainability-program-announcement.html) and we have been delighted by the overwhelming support we received both from companies and individuals: thank you all!
+As you all know, back in April we announced the [Typelevel Sustainability Program](typelevel-sustainability-program-announcement.md) and we have been delighted by the overwhelming support we received both from companies and individuals: thank you all!
 
 In just a little bit more than one month we reached 10% of the fundraising goal we set to $150,000. While this is an excellent start, to successfully support the long term sustainability of our ecosystem, we need you to keep advocating for us.
 
