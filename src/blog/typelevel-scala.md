@@ -10,10 +10,8 @@
 
 Last week I tweeted the following question:
 
-<div>
-  <blockquote><p>How much interest would there be in a community sponsored fork of the <a href="https://twitter.com/hashtag/Scala?src=hash">#Scala</a> toolchain? RTs and fav's please.</p>&mdash; Miles Sabin (@milessabin) <a href="https://twitter.com/milessabin/status/503929023635161088">August 25, 2014</a></blockquote>
-</div>
-
+> How much interest would there be in a community sponsored fork of the [#Scala](https://twitter.com/hashtag/Scala?src=hash) toolchain? RTs and fav's please.
+> @:style(nowrap) — Miles Sabin (@milessabin) [August 25, 2014](https://twitter.com/milessabin/status/503929023635161088)@:@
 
 It generated a lively response, both on Twitter and privately. The responses were sometimes perplexed, but typically excited and invariably positive. What I want to do here is provide some background to the question and sketch out the directions that positive answers lead.
 
@@ -41,32 +39,32 @@ With this in mind, we intend to create a new Scala distribution, as a conservati
 
 Of course the devil is in the details. Forking a compiler is only a small part of the story – in many ways more important is the surrounding ecosystem of libraries. As part of this initiative we intend to publish compatible builds of at least the Typelevel libraries – taking our lead from the Typesafe community build (which attempts to track ecosystem coherence over time by building a selection of community libraries against the development Scala compiler as it evolves) and Scala.js (which has ported a selection of important community libraries to its compiler).
 
-We welcome the participation of all other parties, individuals or organizations, who share our general goals – both those who want to contribute to the development of the compiler and those who would like their libraries and frameworks to be part of a Typelevel community build. It's early days, but we hope that with enough enthusiastic participation we will be able to produce useful binaries well before the end of the year. 
+We welcome the participation of all other parties, individuals or organizations, who share our general goals – both those who want to contribute to the development of the compiler and those who would like their libraries and frameworks to be part of a Typelevel community build. It's early days, but we hope that with enough enthusiastic participation we will be able to produce useful binaries well before the end of the year.
 
 We anticipate a number of objections to this initiative,
 
 * That it will split the community and fragment the language.
- 
+
      As I observed earlier, there are already several variants of the language in existence and it has been clear for a long time that different sections of the community have different interests. We shouldn't be afraid of acknowledging this fact – attempting to ignore it will be (arguably is already) counterproductive. Instead we should embrace diversity as a sign of a healthy and vigorous platform and community.
-     
+
 * That we don't have the resources or the expertise to pull this off.
- 
-    We disagree – the community around the Typelevel projects contains many of the most able Scala programmers on the planet. Between us we have a deep understanding of Scala's type system and other semantics (both as specified and as implemented), of compiler construction in general and of Typesafe Scala compiler internals in particular. We are intimately familiar with the Scala toolchain, which many of us have been using at scale for years in our day jobs. We are also intimately familiar with the issues that we seek to address – they are ones we face daily. 
-    
+
+    We disagree – the community around the Typelevel projects contains many of the most able Scala programmers on the planet. Between us we have a deep understanding of Scala's type system and other semantics (both as specified and as implemented), of compiler construction in general and of Typesafe Scala compiler internals in particular. We are intimately familiar with the Scala toolchain, which many of us have been using at scale for years in our day jobs. We are also intimately familiar with the issues that we seek to address – they are ones we face daily.
+
     We also have the existence proof of the other Scala compiler variants. The number of full-time-equivalent people working on these projects is really very small – we believe that in practice this can be matched or exceeded by an open, inclusive and enthusiastic open source project.
- 
+
 * That we underestimate the difficulty of maintaining binary and/or merge compatibility.
 
     No, we really don't. We fully expect this to be the most challenging part of the whole exercise. That said, we have the benefit of years of experience of Scala binary compatibility issues, and we know now that a combination of a community-build style model along with effective use of the Migration Manager (already a component of the Typelevel SBT plugin) is enormously helpful in keeping on top of the issue.
 
     There is a real risk here, and care will be needed. One thing is for sure though – if we don't try, we'll never know if it's possible.
-  
+
 * That the fork is too conservative.
- 
+
      It's certainly true that restricting ourselves to only changes which are merge compatible with the Typesafe Scala compiler puts fairly strict limits on what we can do. Many highly desirable changes fall well beyond, and some people want to explore those possibilities.
 
     We think that this is completely reasonable, and we don't think the two are mutually exclusive – a merge compatible Typelevel compiler meets many of our immediate needs, but we want to enable people to push further just as is being done by Scala.Meta, Scala Virtualized and Dotty.
 
     We believe that the same infrastructure (community builds, MiMa) that will help the merge-compatible Typelevel compiler stay close to the Typesafe compiler will also be of great assistance to people who want to experiment with more radical changes. At a minimum, community build infrastructure will enable people to work with not just a bare compiler with but a core set of compatible libraries as well. We believe that such infrastructure would also benefit Scala Virtualized, Scala.Meta and Dotty.
- 
+
 This brings me to the final part of this message. It has become clear to us that there are many distinct stakeholders in the Scala ecosystem with a mixture of shared and divergent interests. This is a good thing and is something we should jointly strive to support. To that end, we believe that it is time for the formation of an independent, non-profit, open source foundation to safeguard the interests of the entire Scala community – we call on all organizations and individuals who want to see a flourishing Scala ecosystem to join with us in that project.

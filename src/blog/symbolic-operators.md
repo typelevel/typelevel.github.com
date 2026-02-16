@@ -13,11 +13,11 @@ One of the simplest and most recognizable type classes is the semigroup.
 This type class abstracts over the ability to combine values of a certain
 type in an associative manner.
 
-<div class="side-note">
-  What does <em>associativity</em> mean?
-  We call an operation $\oplus$ associative, if for all $a$, $b$ and $c$, $a \oplus (b \oplus c) = (a \oplus b) \oplus c$ holds.
-  Read more about this in the <a href="https://github.com/non/algebra#algebraic-properties-and-terminology">README of the algebra repository</a>.
-</div>
+@:style(bulma-notification)
+  What does *associativity* mean?
+  We call an operation @:math \oplus @:@ associative, if for all @:math a @:@, @:math b @:@ and @:math c @:@, @:math a \oplus (b \oplus c) = (a \oplus b) \oplus c @:@ holds.
+  Read more about this in the [README of the algebra repository](https://github.com/non/algebra#algebraic-properties-and-terminology).
+@:@
 
 Cats provides `cats.Semigroup[A]` to model semigroups.
 The `combine` method takes two values of the type `A` and returns an `A` value.

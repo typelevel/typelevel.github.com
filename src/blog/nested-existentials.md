@@ -36,7 +36,7 @@ Lists hold values of the same type, and as you might expect, you can
 put these three lists in another list:
 
 ```scala
-val elists: PList[MList] = 
+val elists: PList[MList] =
   PCons(estrs, PCons(eints, PCons(ebools, PNil())))
 ```
 
@@ -151,27 +151,27 @@ each sublist in the argument has the same element type, which is not a
 condition satisfied by either `PList[PList[_]]` or its equivalent
 `PList[MList]`.
 
-<div class="side-note">
-  <p>The reason you can’t invoke <code>plenLength</code> from
-  <code>plenLengthTP</code> is complicated, even for this article.  In
-  short, <code>plenLength</code> demands evidence that,
-  <em>supposing</em> <code>PList</code> had a method taking an
+@:style(bulma-notification)
+  The reason you can’t invoke `plenLength` from
+  `plenLengthTP` is complicated, even for this article.  In
+  short, `plenLength` demands evidence that,
+  *supposing* `PList` had a method taking an
   argument of the element type,
-  e.g. <code>def lookAt(x: T): Unit</code>, it could do things like
-  <code>xss.lookAt(PList("hi", PNil()))</code>.  In
-  <code>plenLengthTP</code>, this hypothetical method could only be
+  e.g. `def lookAt(x: T): Unit`, it could do things like
+  `xss.lookAt(PList("hi", PNil()))`.  In
+  `plenLengthTP`, this hypothetical method could only be
   invoked with empty lists, or lists gotten by inspecting
-  <code>xss</code> itself.</p>
+  `xss` itself.
 
-  <p>That no such method exists is irrelevant for the purposes of this
-  reasoning; we have written the definition of <code>PList</code> in a
+  That no such method exists is irrelevant for the purposes of this
+  reasoning; we have written the definition of `PList` in a
   way that scalac assumes that such a method may exist.  You can
   determine the consequences yourself by adding the
-  <code>lookAt</code> method to <code>PList</code>, repeating the
-  above substitution for <code>PList</code>, and thinking about the
-  meaning of the resulting <code>def lookAt(x:
-  PList[E] forSome {type E}): Unit</code>.</p>
-</div>
+  `lookAt</code> method to <code>PList`, repeating the
+  above substitution for `PList`, and thinking about the
+  meaning of the resulting `def lookAt(x:
+  PList[E] forSome {type E}): Unit`.
+@:@
 
 Let’s examine the meaning of the type
 `PList[PList[E]] forSome {type E}`.  It requires a little bit more
@@ -332,7 +332,7 @@ mlenLengthTP(elists)
              ^
 ```
 
-So we have `mlenLengthE` $\equiv\_m$ `mlenLengthTP`.  `mlenLength`,
+So we have `mlenLengthE` @:math \equiv\_m @:@ `mlenLengthTP`.  `mlenLength`,
 however, is incompatible with both; neither is more general than the
 other!  What we really want is a function that is more general than
 all three, and subsumes all their definitions.  Here it is, in two
@@ -355,18 +355,18 @@ def mlenLengthE2(xss: PList[_ <: MList]): Int =
 We’ve woven a tangled web, so here are, restated, the full
 relationships for the `MList`-in-`PList` functions above.
 
-1. `mlenLengthTP2` $\equiv\_m$ `mlenLengthE2`
-2. `mlenLengthTP` $\equiv\_m$ `mlenLengthE`
-3. $\neg($`mlenLength` $<:\_m$ `mlenLengthE`$)$
-4. $\neg($`mlenLengthE` $<:\_m$ `mlenLength`$)$
-5. $\neg($`mlenLength` $<:\_m$ `mlenLengthTP`$)$
-6. $\neg($`mlenLengthTP` $<:\_m$ `mlenLength`$)$
-7. `mlenLengthTP2` $<\_m$ `mlenLengthTP`
-8. `mlenLengthTP2` $<\_m$ `mlenLength`
-9. `mlenLengthTP2` $<\_m$ `mlenLengthE`
-10. `mlenLengthE2` $<\_m$ `mlenLengthTP`
-11. `mlenLengthE2` $<\_m$ `mlenLength`
-12. `mlenLengthE2` $<\_m$ `mlenLengthE`
+1. `mlenLengthTP2` @:math \equiv_m @:@ `mlenLengthE2`
+2. `mlenLengthTP` @:math \equiv_m @:@ `mlenLengthE`
+3. @:math \neg( @:@`mlenLength` @:math <:_m @:@ `mlenLengthE`@:math ) @:@
+4. @:math \neg( @:@`mlenLengthE` @:math <:_m @:@ `mlenLength`@:math ) @:@
+5. @:math \neg( @:@`mlenLength` @:math <:_m @:@ `mlenLengthTP`@:math ) @:@
+6. @:math \neg( @:@`mlenLengthTP` @:math <:_m @:@ `mlenLength`@:math ) @:@
+7. `mlenLengthTP2` @:math <_m @:@ `mlenLengthTP`
+8. `mlenLengthTP2` @:math <_m @:@ `mlenLength`
+9. `mlenLengthTP2` @:math <_m @:@ `mlenLengthE`
+10. `mlenLengthE2` @:math <_m @:@ `mlenLengthTP`
+11. `mlenLengthE2` @:math <_m @:@ `mlenLength`
+12. `mlenLengthE2` @:math <_m @:@ `mlenLengthE`
 
 Moreover, the full existential in `mlenLengthE2` is shorthand for:
 
@@ -393,3 +393,5 @@ full of compiler errors, especially when allowing for mutation and
 impure functions.
 
 *This article was tested with Scala 2.11.7 and Java 1.8.0_45.*
+
+[e]: /todo/README.md

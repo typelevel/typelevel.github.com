@@ -10,7 +10,7 @@ In this post we are going to explore the concept of *algebraic API design* which
 
 An API in this context describes the types and operations that a module exposes to the user.
 
-SameGame is a deterministic single player game with perfect information. It has a game-tree complexity of $10^{82}$. In other words it is extremely hard to solve. Exhaustive search strategies and traditional path finding algorithms do not perform well. Monte Carlo tree search which is based on random sampling on the other hand is a promising approach. We will go into more details on these concepts below.
+SameGame is a deterministic single player game with perfect information. It has a game-tree complexity of @:math 10^{82} @:@. In other words it is extremely hard to solve. Exhaustive search strategies and traditional path finding algorithms do not perform well. Monte Carlo tree search which is based on random sampling on the other hand is a promising approach. We will go into more details on these concepts below.
 
 But how can we implement this with functional programming? How can we express algorithms that are based on randomness, mutable state, and side effects in a purely functional way?
 
@@ -21,21 +21,21 @@ Let's have a quick recap on the definition of algebraic structures and how they 
 ## Algebraic Structures
 
 An algebraic structure consists of:
- 
+
 * One or more *sets*
 * A set of *operators*
 * A collection of *axioms* (which the operators are required to satisfy)
 
-A prototypical example of an algebraic structure from mathematics is a group. A concrete example of a group is the set $\mathbb{Z}$ of integers together with the addition operator denoted as $(\mathbb{Z}, +)$ that satisfy the group axioms.
+A prototypical example of an algebraic structure from mathematics is a group. A concrete example of a group is the set @:math \mathbb{Z} @:@ of integers together with the addition operator denoted as @:math() (\mathbb{Z}, +) @:@ that satisfy the group axioms.
 
 A group can be defined in an abstract way like this:
 
-- *Set* and *operator*: $(G, \circ)$
+- *Set* and *operator*: @:math() (G, \circ) @:@
 - *Axioms*:
-  - Closure: $\forall a, b \in G:a \circ b \in G$
-  - Associativity: $\forall a, b, c \in G: a \circ (b \circ c) = (a \circ b) \circ c$
-  - Identity: $\exists e \in G: \forall a \in G:e \circ a = a = a \circ e$
-  - Inverse: $\forall a \in G: \exists b \in G:a \circ b = e = b \circ a$
+    - Closure: @:math \forall a, b \in G:a \circ b \in G @:@
+    - Associativity: @:math \forall a, b, c \in G: a \circ (b \circ c) = (a \circ b) \circ c @:@
+    - Identity: @:math \exists e \in G: \forall a \in G:e \circ a = a = a \circ e @:@
+    - Inverse: @:math \forall a \in G: \exists b \in G:a \circ b = e = b \circ a @:@
 
 ## Programming
 
@@ -64,7 +64,7 @@ def semigroupAssociative(x: A, y: A, z: A): IsEq[A] =
   S.combine(S.combine(x, y), z) <-> S.combine(x, S.combine(y, z))
 ```
 
-We can create a concrete instance of `Group[A]`, e.g. according to $(\mathbb{Z}, +)$:
+We can create a concrete instance of `Group[A]`, e.g. according to @:math() (\mathbb{Z}, +) @:@:
 
 ```scala
 import cats.Group
@@ -104,7 +104,7 @@ Once we've defined the algebras that model the API of our domain, we can describ
 
 Programs are therefore flexible and constrained at the same time. Flexible in the sense that they can be used with any lawful implementation of the given algebra. And constrained because they can only use the operators provided by the algebra to manipulate values of the types that the algebra is expressed with.
 
-To give a crude, concrete example, a program $p$ is expressed in terms of the algebra of `Group[A]`. $p$ can only produce a result by using the operators `combine` and `inverse` on given input parameters of type `A`. Those parameters cannot be manipulated in any other way. Which leaves less room for mistakes and leads to correct programs. The caller of $p$ decides which concrete implementation of `Group[A]` they want to provide. Which makes $p$ reusable in multiple different contexts.
+To give a crude, concrete example, a program @:math p @:@ is expressed in terms of the algebra of `Group[A]`. @:math p @:@ can only produce a result by using the operators `combine` and `inverse` on given input parameters of type `A`. Those parameters cannot be manipulated in any other way. Which leaves less room for mistakes and leads to correct programs. The caller of @:math p @:@ decides which concrete implementation of `Group[A]` they want to provide. Which makes @:math p @:@ reusable in multiple different contexts.
 
 We could define a program as follows:
 
@@ -120,11 +120,11 @@ Let's look at a concrete and self-contained example.
 
 ## Solving single player games
 
-<img src="/img/media/samegame.png" alt="SameGame" style="float: right;width: 40%;min-width: 200px;">
+@:style(bulma-columns bulma-is-centered) @:image(/img/media/samegame.png) { style: bulma-column bulma-is-half } @:@
 
 We will write a program that finds solutions for deterministic single player games with a high game-tree complexity like SameGame.
 
-SameGame is played on a $15 \times 15$ board initially filled with blocks of 5 colors. The goal of the game is to remove as many blocks from the board as possible while maximising the score. See [https://en.wikipedia.org/wiki/SameGame](https://en.wikipedia.org/wiki/SameGame) for detailed rules. You can play the game at [js-games.de](http://www.js-games.de/eng/games/samegame/lx/play) or [https://samegame.surge.sh](https://samegame.surge.sh).
+SameGame is played on a @:math 15 \times 15 @:@ board initially filled with blocks of 5 colors. The goal of the game is to remove as many blocks from the board as possible while maximising the score. See [https://en.wikipedia.org/wiki/SameGame](https://en.wikipedia.org/wiki/SameGame) for detailed rules. You can play the game at [js-games.de](http://www.js-games.de/eng/games/samegame/lx/play) or [https://samegame.surge.sh](https://samegame.surge.sh).
 
 SameGame is a game with perfect information that is very difficult to solve. Given an initial starting position, we can construct a complete game-tree for SameGame as follows:
 
@@ -134,7 +134,7 @@ SameGame is a game with perfect information that is very difficult to solve. Giv
 - The root node represents the starting position
 - The leafs are terminal game states
 
-The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about $10^5$. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately $10^{82}$. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a *combinatorial explosion*. The time required to find the best solution increases so rapidly that we hit a solvability limit.
+The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about @:math 10^5 @:@. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately @:math 10^{82} @:@. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a *combinatorial explosion*. The time required to find the best solution increases so rapidly that we hit a solvability limit.
 
 ## Monte Carlo tree search
 
@@ -144,12 +144,12 @@ A stochastic optimization algorithm that has successfully been employed to game 
 
 Here is a very simple version of a Monte Carlo tree search:
 
-1. Choose the root node as the current node $n$ of the game-tree
-2. For the current node $n$, determine all legal moves $ms$
+1. Choose the root node as the current node @:math n @:@ of the game-tree
+2. For the current node @:math n @:@, determine all legal moves @:math ms @:@
   - If no legal moves exist, the algorithm terminates
-3. Determine all child nodes $cs$ of $n$ by applying each of the moves $ms$ to the current state $n$
-4. Perform a random simulation for each of the child nodes $cs$
-5. From the child nodes $cs$ choose the node with the best simulation result, and continue with step 2.
+3. Determine all child nodes @:math cs @:@ of @:math n @:@ by applying each of the moves @:math ms @:@ to the current state @:math n @:@
+4. Perform a random simulation for each of the child nodes @:math cs @:@
+5. From the child nodes @:math cs @:@ choose the node with the best simulation result, and continue with step 2.
 
 A way to improve on this basic algorithm is to add a nested (lower level) search at step 4. such that a random simulation is performed if the current level equals 1, otherwise a `level - 1` search is performed.
 
@@ -364,7 +364,7 @@ implicit val showCell: Show[CellState] = Show.show {
 }
 
 implicit val showMove: Show[Position] =
-  Show.show(p => show"(${p.col}, ${p.row})")
+  Show.show(p => show"(${p.col},  ${p.row})")
 
 implicit val showList: Show[List[Position]] =
   Show.show(_.map(_.show).mkString("[", ", ", "]"))
@@ -378,8 +378,8 @@ implicit val showBoard: Show[Board] =
       .mkString("\n"))
 
 implicit val showGame: Show[SameGameState] = Show.show {
-  case InProgress(board, score) => show"$board\n\nScore: $score (game in progress)"
-  case Finished(board, score)   => show"$board\n\nScore: $score (game finished)"
+  case InProgress(board, score) => show"$board\n\nScore:  $score (game in progress)"
+  case Finished(board, score)   => show"$board\n\nScore:  $score (game finished)"
 }
 
 implicit val showGameState: Show[GameState[Position, SameGameState, Int]] =
@@ -468,7 +468,7 @@ Of course, there are additional test strategies that can be employed. In particu
 
 ## Application
 
-With `cats.effect.IOApp` we describe a purely functional program that performs a Monte Carlo tree search for a given initial board position. For demonstration purposes we use a smaller board of size $6 \times 6$ to shorten the search time.
+With `cats.effect.IOApp` we describe a purely functional program that performs a Monte Carlo tree search for a given initial board position. For demonstration purposes we use a smaller board of size @:math 6 \times 6 @:@ to shorten the search time.
 
 ```scala
 import cats.effect._
@@ -550,7 +550,7 @@ Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), 
 
 ## Improving on the results
 
-<img src="/img/media/highscore.png" alt="SameGame Highscores" style="float: right;width: 40%;min-width: 200px;">
+@:style(bulma-columns bulma-is-centered) @:image(/img/media/highscore.png) { style: bulma-column bulma-is-half } @:@
 
 The Monte Carlo tree search algorithm presented in this post has been intentionally kept simple. There are numerous different strategies of how to guide the tree search based on heuristics to influence the choice of moves which require multiple parameters that have to be fine tuned to maximize the outcomes.
 

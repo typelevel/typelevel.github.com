@@ -135,12 +135,12 @@ representing this
 in the type system.  By initializing in a different way, we can
 recover type safety.
 
-<div class="side-note">
+@:style(bulma-notification)
   The implications of refinement, linked above, are much less severe
   than those of unrestricted type-changing of a variable.  So Flow did
   not solve, nor did it aim to solve, those difficulties by
   introducing the refinement feature.
-</div>
+@:@
 
 The four types of `Document`
 ----------------------------
@@ -374,13 +374,13 @@ With the increase in the number of explicit concepts in the code comes
 a greater need for an automatic method of keeping track of all these
 connections.  The type system is ideally suited to this role.
 
-<div class="side-note">
-  We induced more <em>explicit</em> data representation, not more
-  representations overall.  The imperative <code>Document</code> has
+@:style(bulma-notification)
+  We induced more *explicit* data representation, not more
+  representations overall.  The imperative `Document` has
   four stages of initialization, at each of which it exhibits
   different behavior.  All we have done is expose this fact to the
   type system level, at which our usage can be checked.
-</div>
+@:@
 
 Don’t miss one!
 ---------------

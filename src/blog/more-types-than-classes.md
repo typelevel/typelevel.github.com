@@ -216,7 +216,7 @@ if you find information-hiding a useful tool for implementing correct
 programs, you will find the same of the fresh, unique, and mysterious
 types induced by each introduction of a type parameter.
 
-<div class="side-note">
+@:style(bulma-notification)
   Each operation a language permits by default, not via an argument,
   on values of a type parameter is a leak in this abstraction. This
   includes testing the value’s class, converting to string, and
@@ -224,12 +224,12 @@ types induced by each introduction of a type parameter.
   equality. The ability to create a “default” value is also a leak. A
   function is always permitted to ask only that of these that it needs
   from the caller; make them default, and this design choice is taken
-  away. That is why <code>Object#equals</code> is little better for
+  away. That is why `Object#equals` is little better for
   type-safety than reflection-based calls, and why total type erasure
   is a desirable feature rather than a design flaw—plugging these
   leaks gives the programmer as much freedom to abstract by
   information-hiding as she wishes.
-</div>
+@:@
 
 ### How many calls are there?
 
@@ -406,12 +406,12 @@ working with two incompatible `I` types.
 Since the number of references to a variable in a program is also
 unbounded...you get the picture.
 
-<div class="side-note">
+@:style(bulma-notification)
   This also occurs with existential type parameters, which are equally
-  expressive to type members. Accordingly, Java <em>also</em>
+  expressive to type members. Accordingly, Java *also*
   generates new types from occurrences of expressions of existential
   type.
-</div>
+@:@
 
 ## How do we tell the two apart?
 

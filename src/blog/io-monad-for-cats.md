@@ -389,10 +389,6 @@ trait Effect[F[_]] extends Sync[F] with Async[F] with LiftIO[F] {
 }
 ```
 
-<!--    please don't remove; my editor is glitchy :-(
-```
--->
-
 What this is saying is that any `Effect` must define the ability to evaluate as a side-effect, but of course, we don't want to have side-effects in our pure and reasonable code.  So how are side-effects *purely* represented?  With `IO`!
 
 From a parametric reasoning standpoint, `IO` means "here be effects", and so any type signature which involves `IO` thus also involves side-effects (well, *effects* anyway), and any type signature which requires side-effects must also involve `IO`.  This bit of trickery allows us to reason about `Effect` in a way that would have been much harder if we had defined `unsafeRunAsync` as a member, and it ensures that downstream projects which write code abstracting over `Effect` types can do so without using any `unsafe` functions if they so choose (especially when taken together with the `liftIO` function).

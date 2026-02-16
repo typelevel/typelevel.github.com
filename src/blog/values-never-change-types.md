@@ -273,7 +273,7 @@ copyToZeroNT(time)  // not ok
 In effect, `=>` is like a type constructor; we can think of these
 arguments as `byname[PList[_]]` and `byname[PList[T]]`.  So we have
 exactly the same problem as we had with
-[`plenLength` and `plenLengthTP`](nested-existentials.md#method-equivalence-%E2%80%A6-broken).
+[`plenLength` and `plenLengthTP`](/todo/README.md).
 
 Unfortunately,
 [Scala currently accepts this, where it shouldn’t](https://issues.scala-lang.org/browse/SI-9419).

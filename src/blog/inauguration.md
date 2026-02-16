@@ -8,11 +8,17 @@
 
 This Twitter conversation happened today:
 
-<div>
-  <blockquote><p>@<a href="https://twitter.com/d6">d6</a> do you have a blog on numerics, marcos, and performance?</p>&mdash; eugene yokota (@eed3si9n) <a href="https://twitter.com/eed3si9n/status/319711014620897280">April 4, 2013</a></blockquote>
-  <blockquote><p>@<a href="https://twitter.com/eed3si9n">eed3si9n</a> Not currently. Maybe I should start one?</p>&mdash; Eiríkr Åsheim (@d6) <a href="https://twitter.com/d6/status/319804225607585794">April 4, 2013</a></blockquote>
-  <blockquote><p>@<a href="https://twitter.com/d6">d6</a> @<a href="https://twitter.com/eed3si9n">eed3si9n</a> *cough* <a href="http://t.co/07ye9z78Qc" title="http://typelevel.org/blog/">typelevel.org/blog/</a> *cough*</p>&mdash; Tom Switzer (@tixxit) <a href="https://twitter.com/tixxit/status/319805809586495489">April 4, 2013</a></blockquote>
-</div>
+> [@d6] do you have a blog on numerics, marcos, and performance?
+> @:style(nowrap)— eugene yokota (@eed3si9n) [April 4, 2013](https://twitter.com/eed3si9n/status/319711014620897280)@:@
+
+> [@eed3si9n] Not currently. Maybe I should start one?
+> @:style(nowrap)— Eiríkr Åsheim (@d6) [April 4, 2013](https://twitter.com/d6/status/319804225607585794)@:@
+
+> [@d6] [@eed3si9n] \*cough\* [typelevel.org/blog/](/blog/README.md) \*cough\*
+> @:style(nowrap)— Tom Switzer (@tixxit) [April 4, 2013](https://web.archive.org/web/20131123034904/https://twitter.com/tixxit/status/319805809586495489)@:@
+
+[@d6]: https://twitter.com/d6
+[@eed3si9n]: https://twitter.com/eed3si9n
 
 So, here it is, the typelevel.scala blog!
 
@@ -27,10 +33,10 @@ Who writes here?
 
 Everyone who would like to! Contributions are welcome.
 If you want to share something about Scalaz, Shapeless, Spire, or Scala topics in general (e.g. type classes), case studies, examples, or other related content, please do not hesitate to contact us.
-This blog (and in fact, the whole web site) is built using Jekyll on GitHub pages, so you can just fork the <a href="https://github.com/typelevel/typelevel.github.com">repository</a>, add a post, and create a pull request.
+This blog (and in fact, the whole web site) is built using Jekyll on GitHub pages, so you can just fork the [repository](https://github.com/typelevel/typelevel.github.com), add a post, and create a pull request.
 
 Stay tuned!
 -----------
 
 We hope that this blog will be filled with content soon.
-To make sure that you don't miss anything, follow <a href="https://twitter.com/typelevel">@typelevel</a> on Twitter or subscribe to the <a href="/blog/feed.rss">RSS feed</a>.
+To make sure that you don't miss anything, follow [@typelevel](https://twitter.com/typelevel) on Twitter or subscribe to the [RSS feed](/blog/feed.rss).

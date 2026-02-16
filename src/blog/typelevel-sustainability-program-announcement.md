@@ -13,9 +13,9 @@ Currently, these libraries are maintained in their contributors' spare time. Thi
 Based on our [Cats ecosystem community survey](cats-ecosystem-community-survey-results.md), roughly 70% of the users will gain more confidence
 in the future of the ecosystem if there are compensated maintainers. We believe that our pure FP
 Scala ecosystem should have an institution supporting it, somewhat like the Scala Center
-supporting the language, and Lightbend supporting language as well as ecosystem libs. 
+supporting the language, and Lightbend supporting language as well as ecosystem libs.
 
-There are also some concerns, 3% of users suggested paid maintainers will reduce their confidence, the remainder are not sure one way or another. Given these numbers, we believe that the gain of confidence will outweigh the concerns especially if we design our paid maintainership program with deliberations to address them. The worries we received fall into four categories: 
+There are also some concerns, 3% of users suggested paid maintainers will reduce their confidence, the remainder are not sure one way or another. Given these numbers, we believe that the gain of confidence will outweigh the concerns especially if we design our paid maintainership program with deliberations to address them. The worries we received fall into four categories:
 
 * Vendor favoritism and influence
 * Conflicts of interest
@@ -24,29 +24,30 @@ There are also some concerns, 3% of users suggested paid maintainers will reduce
 
 ### We believe we can mitigate these concerns by adopting the following principles:
 
-* Paid maintainers focus on supporting the community contributors. In another sentence, 
-paid maintainers’ first task is to maintain the community-driven development. 
+* Paid maintainers focus on supporting the community contributors. In another sentence,
+paid maintainers’ first task is to maintain the community-driven development.
 More specific responsibilities are listed [here](https://github.com/typelevel/general/blob/master/sustainability_program.md#responsibilities-for-paid-maintainers).
-* Main obligations to sponsors (individual or corporate) are limited to  
-  - The existing license remains unchanged. 
-  - Timely security patches and mission critical bug fixes. 
+* Main obligations to sponsors (individual or corporate) are limited to
+  - The existing license remains unchanged.
+  - Timely security patches and mission critical bug fixes.
   - Monetary contributions will NOT grant contributors extra influence over the development.
-  - Monetary contributors can influence how their contribution is distributed among projects. 
+  - Monetary contributors can influence how their contribution is distributed among projects.
 * The program is governed by an independent committee.
-* As part of our community, sponsors hold values compatible with the [Scala Code of Conduct](https://www.scala-lang.org/conduct/). 
+* As part of our community, sponsors hold values compatible with the [Scala Code of Conduct](https://www.scala-lang.org/conduct/).
 
 For more details, including goals and responsibilities for maintainers, funding sources, please go to the [program's main document](https://github.com/typelevel/general/blob/master/sustainability_program.md).
 
-Today we are launching the program with the help of several founding sponsors. 
+Today we are launching the program with the help of several founding sponsors.
 
-<a href="http://47deg.com"><img src="/img/media/sponsors/47_degrees.png" width="80px" height="80px"/></a>
-<a href="https://commercetools.com/"><img src="/img/media/sponsors/commercetools_2.png" width="150px" style="margin-top:5px; margin-left: 10px; margin-right: 10px" /></a>
-<a href="https://www.inner-product.com/"><img src="/img/media/sponsors/inner-product.png" width="170px" style="margin-bottom:15px; margin-right: 10px"/></a>
-<a href="https://triplequote.com/"><img src="/img/media/sponsors/triplequote.png" width="170px" style="margin-bottom:21px; margin-right: 10px" /></a>
-<a href="http://underscore.io"><img src="/img/media/sponsors/underscore_2.png" width="150px" style="margin-bottom:8px;"/></a>
+@:style(bulma-columns bulma-is-col-min-1 bulma-is-vcentered)
+@:style(bulma-column bulma-has-text-centered)[@:image(/img/media/sponsors/47_degrees.png)](http://47deg.com)@:@
+@:style(bulma-column bulma-has-text-centered)[@:image(/img/media/sponsors/commercetools_2.png)](https://commercetools.com/)@:@
+@:style(bulma-column bulma-has-text-centered)[@:image(/img/media/sponsors/inner-product.png)](https://www.inner-product.com/)@:@
+@:style(bulma-column bulma-has-text-centered)[@:image(/img/media/sponsors/triplequote.png)](https://triplequote.com/)@:@
+@:style(bulma-column bulma-has-text-centered)[@:image(/img/media/sponsors/underscore_2.png)](http://underscore.io)@:@
+@:@
 
-
-Thanks to their generosity we are on an excellent start for the sustainability program. However, to successfully support the long term sustainability for our ecosystem, we need every bit of help we can get. For 2019, we have the following initiatives that require a significant investment of maintainer time. 
+Thanks to their generosity we are on an excellent start for the sustainability program. However, to successfully support the long term sustainability for our ecosystem, we need every bit of help we can get. For 2019, we have the following initiatives that require a significant investment of maintainer time.
 
 * Refactor build configuration
 * Continue support Scala 2.11 through backporting
@@ -59,7 +60,7 @@ Thanks to their generosity we are on an excellent start for the sustainability p
 * Merge in typelevel/algebra
 * A community build for the ecosystem
 
-Our initial fundraising goal is $150,000. Among other things, achieving this goal will allow us to have a dedicated half-time (20 hr/week) maintainer for at least 2019. Why half time? We want to start with a committed maintainer to bring some certainties for our projects, and yet we are not sure how much support we will be getting from the community. Hence a half-time maintainer for the year is a minimum viable solution for the program. 
+Our initial fundraising goal is $150,000. Among other things, achieving this goal will allow us to have a dedicated half-time (20 hr/week) maintainer for at least 2019. Why half time? We want to start with a committed maintainer to bring some certainties for our projects, and yet we are not sure how much support we will be getting from the community. Hence a half-time maintainer for the year is a minimum viable solution for the program.
 
 Please consider talking to your employer about supporting the OSS libraries they are using. Any amount, either $5 per month from a one-person start-up or $5000 per month from a billion dollar corporation, will bring us closer to our goal.
 
@@ -67,10 +68,10 @@ Aside from monetary assistance, your company can also support us by:
 
 * Providing computing resources/tools such as CI systems, communication platforms, development tools, etc.
 * Paid employees' time for code contributions
-* Sponsoring events such as free training, conferences, by providing the venue, food, etc. 
+* Sponsoring events such as free training, conferences, by providing the venue, food, etc.
 * Donations of training/support services or coupons that we can then exchange for monetary contributions.
 
-For individual developers, another way to support us monetarily is to help our fundraising effort by: 
+For individual developers, another way to support us monetarily is to help our fundraising effort by:
 
 * spreading the news about our fundraising campaign
 * mentioning and linking to our donation page when you write a blog post or give a talk about one of these libraries
@@ -79,4 +80,4 @@ For individual developers, another way to support us monetarily is to help our f
 Please don't hesitate to reach out with questions. Our contact address is sponsor-contact@typelevel.org.
 Thank you for reading this and considering supporting us.
 
-<a href="https://opencollective.com/typelevel">Donate at OpenCollective</a>
+[Donate at OpenCollective](https://opencollective.com/typelevel)

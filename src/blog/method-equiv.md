@@ -21,20 +21,20 @@ existential—but there are other pairs of method types I want to
 explore that are the same, or very close.  So let’s talk about how we
 determine this equivalence.
 
-A method *R* is more general than or as general as *Q* if *Q* may be
-implemented by only making a call to *R*, passing along the arguments.
+A method *R* is more general than or as general as *Q* if *Q* may be
+implemented by only making a call to *R*, passing along the arguments.
 By more general, we mean *R* can be invoked in all the situations that
 *Q* can be invoked in, and more besides.  Let us call the result of
-this test $R <:\_m Q$ (where $<:\_m$ is pronounced “party duck”); if
-the test of *Q* making a call to *R* fails, then $\neg(R <:\_m Q)$.
+this test @:math R <:_m Q @:@ (where @:math <:_m @:@ is pronounced “party duck”); if
+the test of *Q* making a call to *R* fails, then @:math \neg(R <:_m Q) @:@.
 
-If $Q <:\_m R$ and $R <:\_m Q$, then the two method types are
+If @:math Q <:_m R @:@ and @:math R <:_m Q @:@, then the two method types are
 *equivalent*; that is, neither has more expressive power than the
 other, since each can be implemented merely by invoking the other and
-doing nothing else.  We write this as $Q \equiv\_m R$.  Likewise, if
-$R <:\_m Q$ and $\neg(Q <:\_m R)$, that is, *Q* can be written by
+doing nothing else.  We write this as @:math Q \equiv_m R @:@.  Likewise, if
+@:math R <:_m Q @:@ and @:math \neg(Q <:_m R) @:@, that is, *Q* can be written by
 calling *R*, but not vice versa, then *R* is *strictly more general*
-than *Q*, or $R <\_m Q$.
+than *Q*, or @:math R <_m Q @:@.
 
 What the concrete method—the one actually doing stuff, not invoking
 the other one—does is irrelevant, for the purposes of this test,
@@ -100,7 +100,7 @@ void copyToZeroE(final List<?> xs) {
 
 The last gives a hint as to what’s going on, both here and in the
 compiler errors above: in `copyToZeroP`’s body, the list element type
-has a name, `T`; we can use the name to create variables, and the
+has a name, `T`; we can use the name to create variables, and the
 compiler can rely on the name as well.  The compiler, ideally,
 shouldn’t care about whether the name can be written, but that one of
 the above compiles and the other doesn’t is telling.
@@ -189,7 +189,7 @@ def pdropFirst[T](xs: PList[T]): PList[T] =
   }
 ```
 
-According to the `PList` ⇔ `MList` conversion rules given
+According to the `PList` ⇔ `MList` conversion rules given
 [in the previous article](type-members-parameters.md#when-is-existential-ok),
 section “Why all the `{type T = ...}`?”, the equivalent for `MList`
 should be
@@ -215,11 +215,11 @@ def mdropFirstE(xs: MList): MList =
 
 It certainly looks nicer.  However, while `mdropFirstE` can be
 implemented by calling `mdropFirstT`, passing the type parameter
-`xs.T`, the opposite is not true; `mdropFirstT` $<\_m$ `mdropFirstE`,
+`xs.T`, the opposite is not true; `mdropFirstT` @:math <_m @:@ `mdropFirstE`,
 or, `mdropFirstT` is *strictly more general*.
 
 In this case, the reason is that `mdropFirstE` fails to relate the
-argument’s `T` to the result’s `T`; you could implement `mdropFirstE`
+argument’s `T` to the result’s `T`; you could implement `mdropFirstE`
 as follows:
 
 ```scala
@@ -234,7 +234,7 @@ out with these tools?  You don’t have to; the beauty of the
 equivalence test is that you can apply it mechanically.  **Knowing
 nothing about the mechanics of the parameterization and existentialism
 of the types involved, you can work out with the equivalence test**
-that `mdropFirstT` $<\_m$ `mdropFirstE`, and therefore, that you can’t
+that `mdropFirstT` @:math <_m @:@ `mdropFirstE`, and therefore, that you can’t
 get away with simply dropping the refinements.
 
 Method likeness and subtyping, all alike
@@ -249,19 +249,19 @@ familiar.”
 Indeed, the thing we’re talking about is very much like subtyping and
 type equality!  In fact, every type-equal pair of methods *M*₁ and
 *M*₂ also pass our method equivalence test, and every pair of methods
-*M*₃ and *M*₄ where $M\_3 <: M\_4$ passes our *M*₄-calls-*M*₃ test.
-So $M\_1 \equiv M\_2$ implies $M\_1 \equiv\_m M\_2$, and
-$M\_3 <: M\_4$ implies $M\_3 <:\_m M\_4$.
+*M*₃ and *M*₄ where @:math M_3 <: M_4 @:@ passes our *M*₄-calls-*M*₃ test.
+So @:math M_1 \equiv M_2 @:@ implies @:math M_1 \equiv_m M_2 @:@, and
+@:math M_3 <: M_4 @:@ implies @:math M_3 <:_m M_4 @:@.
 
 We even follow many of the same rules as the type relations.  We have
 transitivity: if *M*₁ can call *M*₂ to implement itself, and *M*₂ can
 call *M*₃ to implement itself, obviously we can snap the pointer and
 have *M*₁ call *M*₃ directly.  Likewise, every method type is
-equivalent to itself: reflexivity.  Likewise, if a method *M*₁ is
+equivalent to itself: reflexivity.  Likewise, if a method *M*₁ is
 strictly more general than *M*₂, obviously *M*₂ cannot be strictly
 more general than *M*₁: antisymmetricity.  And we even copy the
-relationship between ≡ and <: themselves: just as $T\_1 \equiv T\_2$
-implies $T\_1 <: T\_2$, so $R \equiv\_m Q$ implies $R <:\_m Q$.
+relationship between ≡ and <: themselves: just as @:math T_1 \equiv T_2 @:@
+implies @:math T_1 <: T_2 @:@, so @:math R \equiv_m Q @:@ implies @:math R <:_m Q @:@.
 
 Scala doesn’t understand the notion of method equivalence we’ve
 defined above, though.  So you can’t, say, implement an abstract
@@ -271,7 +271,7 @@ alternative form yourself, if that’s what you want.
 
 I do confess to one oddity in my terminology: **the method that has
 more specific type is *the more general method*.** I hope the example
-of `mdropFirstT` $<:\_m$ `mdropFirstE` justifies my choice.
+of `mdropFirstT` @:math <:_m @:@ `mdropFirstE` justifies my choice.
 `mdropFirstT` has more specific type, and rejects more
 implementations, such as the one that returns a list with `42` in it
 above.  Thus, it has fewer implementations, in the same way that more
@@ -322,7 +322,7 @@ the type says we can’t return `null`!
 
 The problem is that Java adds an implicit upper bound, because it
 assumes generic type parameters can only have class types chosen for
-them; in Scala terms, `[T <: AnyRef]`.  If we encode this constraint
+them; in Scala terms, `[T <: AnyRef]`.  If we encode this constraint
 in Scala, Scala gives us the correct error.
 
 ```scala
@@ -337,7 +337,7 @@ TmTp2.scala:38: inferred type arguments [T] do not conform
 ```
 
 This is forgivable on Scala’s part, because it’d be annoying to add
-`<: AnyRef` to your generic methods just because you called some Java
+`<: AnyRef` to your generic methods just because you called some Java
 code and it’s probably going to work out fine.  I blame `null`, and
 while I’m at it, I blame `Object` having any methods at all, too.
 We’d be better off without these bad features.

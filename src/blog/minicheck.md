@@ -145,7 +145,7 @@ for {
 // res2: Random[(Int, Int)] = <random>
 ```
 
-The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
+The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, …
 In the pure case, there are also multiple other possible encodings, including free monads.
 Luckily, this blog covers that topic in another [post](edsls-part-1.md).
 
@@ -239,7 +239,7 @@ def zip[T, U](genT: Gen[T], genU: Gen[U]): Gen[(T, U)] = new Gen[(T, U)] {
 
 But we still have a problem:
 There is currently no way to talk about the _size_ of the generated inputs.
-Let's say we want to check an expensive algorithm over lists, for example with a complexity of $\mathcal O(n^3)$ over lists.
+Let's say we want to check an expensive algorithm over lists, for example with a complexity of @:math \mathcal O(n^3) @:@ over lists.
 A naive implemenation of a list generator would take a a random size, and then give you some generator for lists.
 The problem arises at the use site: Whenver you want to change the size of the generated inputs, you need to change the expression constructing the generator.
 
@@ -330,7 +330,7 @@ For example, in `Gen.list`, we're just passing the size through to the child gen
 
 SmallCheck does that differently: The “size” is defined to be the total number of constructors in the generated value.
 For integer numbers, the “number of constructors” is basically the number itself.
-For example, the value `List(1, 2)` has size $2$ in our framework (length of the list), but size $1 + 2 + 2 = 5$ in SmallCheck (roughly: size of all elements plus length of list).
+For example, the value `List(1, 2)` has size @:math 2 @:@ in our framework (length of the list), but size @:math 1 + 2 + 2 = 5 @:@ in SmallCheck (roughly: size of all elements plus length of list).
 
 Of course, our design decision might mean that stuff grows too fast.
 The explicit size parameter can be used to alleviate that, especially for writing recursive generators:

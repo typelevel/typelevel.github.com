@@ -55,10 +55,10 @@ But first, let us introduce all the related concepts properly.
 
 ## Abstracting all the things
 
-<div class="side-note">
+@:style(bulma-notification)
   If you are already familiar with type classes in general and algebraic structures in particular, you can safely skip this and the next section.
-  Keep in mind though that we are dealing with classes for types of kind $*$ only. Type classes for $* \rightarrow *$ are different and not supported.
-</div>
+  Keep in mind though that we are dealing with classes for types of kind @:math * @:@ only. Type classes for @:math * \rightarrow * @:@ are different and not supported.
+@:@
 
 Type classes are an incredibly useful abstraction mechanism, originally introduced in Haskell.
 If you have been using some of the typelevel.scala libraries already, you probably know how type classes and their instances are represented in Scala: as traits and implicits.
@@ -67,20 +67,20 @@ In the following section, we will get started with an example type class from ab
 ## Group theory
 
 Group theory is a very important field of research in mathematics and has a very broad range of applications, especially in computer science.
-One of the most fundamental structures is a *semigroup*, which consists of a set of elements equipped with one operation (often called *append*, *mplus*, or similarly; in textbooks you will often find $\circ$ or $\oplus$).
-Additionally, the operation has to obey the *law of associativity*, meaning that for any three values $s\_1, s\_2,$ and $s\_3$, it does not matter if you append $s\_1$ and $s\_2$ first and then append $s\_3$, or append $s\_2$ and $s\_3$ first and then append $s\_1$ and the result of that.
+One of the most fundamental structures is a *semigroup*, which consists of a set of elements equipped with one operation (often called *append*, *mplus*, or similarly; in textbooks you will often find @:math \circ @:@ or @:math \oplus @:@).
+Additionally, the operation has to obey the *law of associativity*, meaning that for any three values @:math s_1, s_2, @:@ and @:math s_3 @:@, it does not matter if you append @:math s_1 @:@ and @:math s_2 @:@ first and then append @:math s_3 @:@, or append @:math s_2 @:@ and @:math s_3 @:@ first and then append @:math s_1 @:@ and the result of that.
 In other words, the precise order in which the steps of a larger operation are executed does not matter.
 A good analogy here is when flattening a list:
 On the surface, you just do not care if it proceeds by splitting the list recursively or if the concatenation is done sequentially by folding.
 
-<div class="side-note">
-  In fact, some list operations actually require associativity. From the Scaladoc of the <code>fold</code> method on <code>Seq</code>:
-  <blockquote>
-    Folds the elements of this collection or iterator using the specified associative binary operator.
-    The order in which operations are performed on elements is unspecified and may be nondeterministic. 
-  </blockquote>
+@:style(bulma-notification)
+  In fact, some list operations actually require associativity. From the Scaladoc of the `fold` method on `Seq`:
+
+  > Folds the elements of this collection or iterator using the specified associative binary operator.
+  > The order in which operations are performed on elements is unspecified and may be nondeterministic.
+
   This allows a particular collection implementation to use whichever order is most efficient.
-</div>
+@:@
 
 Lists are already a good example for a semigroup: Any `List[T]` is a semigroup, with the semigroup operation being list concatenation!
 A `Map[K, V]` is a semigroup too, given that `V` is a semigroup.
@@ -104,7 +104,9 @@ implicit val intInstance = new Semigroup[Int] {
 
 In other words, we just use the built-in addition function.
 
-<div class="side-note">If you want to know more about applications of abstract algebra in programming, especially in <em>spire</em>, head over to YouTube and watch <a href="http://www.youtube.com/watch?v=xO9AoZNSOH4">an introduction by Tom Switzer</a>.</div>
+@:style(bulma-notification)
+If you want to know more about applications of abstract algebra in programming, especially in *spire*, head over to YouTube and watch [an introduction by Tom Switzer](http://www.youtube.com/watch?v=xO9AoZNSOH4).
+@:@
 
 ## Composing instances
 
@@ -151,11 +153,11 @@ However, there are still two problems here:
 
 Let us address these problems now. The following sections assume familiarity with `HList`s, as implemented in *shapeless*.
 
-<div class="side-note">
-  If you are not familiar with <code>HList</code>s yet,
-  watch Miles Sabin's <a href="http://www.youtube.com/watch?v=GDbNxL8bqkY">talk about <em>shapeless</em></a> at the Northeast Scala Symposium 2012.
-  There's also a <a href="http://apocalisp.wordpress.com/2010/06/08/type-level-programming-in-scala/">blog series</a> exploring type-level programming in general by Mark Harrah.
-</div>
+@:style(bulma-notification)
+  If you are not familiar with `HList`s yet,
+  watch Miles Sabin's [talk about *shapeless*](http://www.youtube.com/watch?v=GDbNxL8bqkY) at the Northeast Scala Symposium 2012.
+  There's also a [blog series](http://apocalisp.wordpress.com/2010/06/08/type-level-programming-in-scala/) exploring type-level programming in general by Mark Harrah.
+@:@
 
 Now, we want to generate an instance for `Vector3D` and countless other data types.
 That means that we cannot just special-case for every possible data type, but we have to abstract over them.
@@ -281,7 +283,7 @@ The work can be roughly divided between three roles:
 
    These are usually contained in the libraries you use, but the last part will additionally require a bridge library.
    But fear not, those bridge libraries already exist, at least for the typelevel.scala libraries, and can be readily added as dependency for your build.
-   Head over to the <a href="https://github.com/typelevel/shapeless-contrib#readme">GitHub project</a>, we will keep you posted for when a new version comes out.
+   Head over to the [GitHub project](https://github.com/typelevel/shapeless-contrib#readme), we will keep you posted for when a new version comes out.
    We also plan to put a compatibility chart on this site.
 3. The library user, who defines data types and wants to get instances without all the boilerplate.
 

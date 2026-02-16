@@ -202,12 +202,11 @@ instance where the `zero` is the tuple `(A.zero, B.zero, C.zero)` and the `plus`
 appending corresponding pairs between the two tuples. Look for instances that may already
 be defined before defining your own on existing types.
 
-<div class="side-note">
+@:style(bulma-notification)
   If you are interested in learning more about numeric programming, check out
-  the <a href="https://github.com/non/spire">spire</a> library, as well as the
-  accompanying post about <a href="generic-numeric-programming.md">
-  generic numeric programming</a>.
-</div>
+  the [spire](https://github.com/non/spire) library, as well as the
+  accompanying post about [generic numeric programming](generic-numeric-programming.md).
+@:@
 
 
 ### Law-Abiding Citizen
@@ -216,30 +215,30 @@ should not be done without some thought. It is not enough that you simply have a
 a binary operation – to truly have a `Monoid` or `Semigroup` certain laws must be obeyed.
 These laws are as follows:
 
-Call the `plus` operation $+$ and the `zero` value $0$. Arbitrary values of type `A` will be
-referred to as $a$, $b$, etc.
+Call the `plus` operation @:math + @:@ and the `zero` value @:math 0 @:@. Arbitrary values of type `A` will be
+referred to as @:math a @:@, @:math b @:@, etc.
 
-The `Semigroup` law requires $+$ to be associative. That is:
+The `Semigroup` law requires @:math + @:@ to be associative. That is:
 
-<div style="text-align:center;">
-	$(a + b) + c = a + (b + c)$
-</div>
+@:math
+ (a + b) + c = a + (b + c)
+@:@
 
 In addition to the `Semigroup` law for the binary operation, the `Monoid` law relates
-$+$ and $0$:
+@:math + @:@ and @:math 0 @:@:
 
-<div style="text-align:center;">
-  $(a + 0) = (0 + a) = a$
-</div>
+@:math
+  (a + 0) = (0 + a) = a
+@:@
 
 To check these laws, Scalaz provides [ScalaCheck](https://github.com/scalaz/scalaz/tree/v7.0.4/scalacheck-binding)
 bindings to help you, but that is a topic for another day.
 
 Note that a particular type can have several `Semigroup` or `Monoid`s that make sense.
-For instance, `Int` has a `Monoid` on $(+, 0)$ as well as on $(*, 1)$. Convince yourself
+For instance, `Int` has a `Monoid` on @:math() (+, 0) @:@ as well as on @:math() (*, 1) @:@. Convince yourself
 (using the above laws) that this makes sense.
 
-This raises the question of how we get both $+$ and $*$ `Monoid`s for `Int` without
+This raises the question of how we get both @:math + @:@ and @:math * @:@ `Monoid`s for `Int` without
 making `scalac` freak out about ambiguous implicit values. The answer is "tagged types",
 again a topic for another day.
 
