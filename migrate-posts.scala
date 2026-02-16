@@ -1,3 +1,4 @@
+//> using scala 3.6.3
 //> using dep org.virtuslab::scala-yaml::0.3.1
 //> using dep co.fs2::fs2-io::3.12.2
 
@@ -106,7 +107,7 @@ object PostParser {
 }
 
 object MigratePosts extends IOApp {
-  val oldPostsDir = Path("../typelevel.github.com/collections/_posts")
+  val oldPostsDir = Path("collections/_posts")
   val newBlogDir = Path("src/blog")
 
   // Manual renaming map for files that would collide after date stripping
