@@ -240,7 +240,7 @@ object EventParser {
 }
 
 object MigrateEvents extends IOApp {
-  val oldEventsDir = Path("collections/_events")
+  val oldEventsDir = Path("../typelevel.github.com/collections/_events")
   val newBlogDir = Path("src/blog")
 
   def getDateAndName(path: Path): Either[Throwable, (String, String)] = {

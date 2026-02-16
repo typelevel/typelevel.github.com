@@ -107,7 +107,7 @@ object PostParser {
 }
 
 object MigratePosts extends IOApp {
-  val oldPostsDir = Path("collections/_posts")
+  val oldPostsDir = Path("../typelevel.github.com/collections/_posts")
   val newBlogDir = Path("src/blog")
 
   // Manual renaming map for files that would collide after date stripping
