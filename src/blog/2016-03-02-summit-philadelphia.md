@@ -12,7 +12,7 @@
 
 ## About the Summit
 
-The first Typelevel Summit was co-located with the <a href="http://www.nescala.org/">Northeast Scala Symposium</a> in Philadelphia, with one day of recorded talks and one day of unconference.
+The first Typelevel Summit was co-located with the [Northeast Scala Symposium](http://www.nescala.org/) in Philadelphia, with one day of recorded talks and one day of unconference.
 
 You can find photos from the summit [here](https://goo.gl/photos/P7DDsz68koHCXrAo8). Thanks to Brian Clapper and
 Alexy Khrabrov who [also](https://drive.google.com/folderview?id=0B5w3iJKynGZJaWFUbWJOZzNETU0) [documented](http://meetup.bythebay.photo/Conferences/Typelevel/Typelevel-2016-Philadelphia/) the event.
@@ -20,7 +20,7 @@ Alexy Khrabrov who [also](https://drive.google.com/folderview?id=0B5w3iJKynGZJaW
 The Summits are open to all, not just current contributors to and users of the Typelevel projects, and we are especially keen to encourage participation from people who are new to them.
 Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a lot more approachable than many people think, and a major part of Typelevel's mission is to make the ideas they embody much more widely accessible.
 If you're interested in types and pure functional programming we'd love to see you here!
-Check our <a href="/">front page</a> for upcoming events.
+Check our [front page](/README.md) for upcoming events.
 
 ## Speakers and Schedule
 
@@ -42,7 +42,7 @@ Check our <a href="/">front page</a> for upcoming events.
  15:40 | @:style(schedule-title)Easy, intuitive, direct-style syntax for Monad-comprehensions!@:@ @:style(schedule-byline)Chris Vogt, Chris Hodapp@:@ Easy, intuitive, direct-style syntax for monad comprehensions! Like Scala async or SBT .value, but generalized to any monad. Implemented, ready to be used and requiring only vanilla Scala 2.10/2.11 and blackbox macros. Future extensions could include automatic use of Applicative where possible, support for more embedded control-flow operations, comprehensions over multiple compatible monads at once for user-defined notions of compatible and compiler tweaks for syntactic improvements. |
  16:00 | @:style(schedule-title)Scala Exercises@:@ @:style(schedule-byline)Raúl Raja Martínez@:@ Scala Exercises is a web based community tool open sourced by 47 Degrees. It contains multiple koan and free form style exercises maintained by library authors and maintainers to help you master some of the most important tools in the Scala Ecosystem. Version 2 comes with a brand new backend and exercise tracking where you can login simply using your Github account and track your progress throughout exercises and libraries. Version 2 will launch with exercises for the stdlib, Cats, Shapeless and other well known libraries and frameworks part of the Scala ecosystem. |
  16:15 | Break |
- 16:30 | @:style(schedule-title)From Simulacrum to Typeclassic@:@ @:style(schedule-byline)mpilquist@:@ Simulacrum simplifies development of type class libraries. It is used in a number of open source libraries, including Cats. In this talk, we’ll tour the features of Simulacrum, and look at the forthcoming Typeclassic project, which merges Simulacrum with complementary projects like machinist and export-hook. |
+ 16:30 | @:style(schedule-title)From Simulacrum to Typeclassic@:@ @:style(schedule-byline)Michael Pilquist@:@ Simulacrum simplifies development of type class libraries. It is used in a number of open source libraries, including Cats. In this talk, we’ll tour the features of Simulacrum, and look at the forthcoming Typeclassic project, which merges Simulacrum with complementary projects like machinist and export-hook. |
 
 ## Sponsors
 

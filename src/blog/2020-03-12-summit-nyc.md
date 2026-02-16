@@ -12,7 +12,7 @@
 
 ## About the Summit
 
-The ninth Typelevel Summit will once again be co-located with the <a href="https://twitter.com/nescalas/status/1201601425211609088">Northeast Scala Symposium</a> in New York City, with one day of recorded talks and one day of unconference.
+The ninth Typelevel Summit will once again be co-located with the [Northeast Scala Symposium](https://twitter.com/nescalas/status/1201601425211609088) in New York City, with one day of recorded talks and one day of unconference.
 The schedule for this year is as follows:
 
 * March 12 (Thursday): Typelevel Summit

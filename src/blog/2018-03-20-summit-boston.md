@@ -28,35 +28,9 @@ This is a community conference and we strive to make it an inclusive and fulfill
 |------|------|
 | 8:15 | Registration & Breakfast by Clover Food Labs |
  9:00 | Opening Remarks |
- 9:05 | @:style(schedule-title)http4s: pure, typeful, functional HTTP in Scala@:@ @:style(schedule-byline)rossabaker@:@ <p>http4s embraces cats.data.Kleisli for service definitions and fs2.Stream for payload processing. With its foundation on these simple types, we’ll take a whirlwind tour of how http4s can:</p>
-
-<ul>
-  <li>plug into your functional business logic</li>
-  <li>snap together with other functional libraries</li>
-  <li>relate servers to clients</li>
-  <li>test with a simple function call</li>
-  <li>run on multiple backends</li>
-  <li>support multiple higher level DSLs</li>
-</ul>
-
-<p>This talk will not make you an expert in http4s, but show that it’s a relatively short path to become one.</p>
-
+ 9:05 | @:style(schedule-title)http4s: pure, typeful, functional HTTP in Scala@:@ @:style(schedule-byline)Ross Baker@:@ http4s embraces cats.data.Kleisli for service definitions and fs2.Stream for payload processing. With its foundation on these simple types, we’ll take a whirlwind tour of how http4s can: plug into your functional business logic; snap together with other functional libraries; relate servers to clients; test with a simple function call; run on multiple backends; and support multiple higher level DSLs. This talk will not make you an expert in http4s, but show that it’s a relatively short path to become one.
  9:40 | Break |
- 9:55 | @:style(schedule-title)Opaque types: understanding SIP-35@:@ @:style(schedule-byline)Erik Osheim@:@ <p>Proposed in SIP-35, opaque types introduce a way to define types which only exist at compile-time. Despite some superficial similarities to value classes, opaque types are significantly more flexible and introduce a number of exciting new possibilities in the Scala design space.</p>
-
-<p>Opaque types are motivated by a number of different concerns:</p>
-
-<ul>
-  <li>desire for a non-class type that exists only at compile-time</li>
-  <li>efficiency concerns with value classes</li>
-  <li>limitations of existing type aliases</li>
-  <li>need to better support phantom types, type tags, etc.</li>
-</ul>
-
-<p>This talk will introduce opaque types, compare them to type aliases and value classes (their two nearest cousins) and then walk through some examples of using opaque types. The focus will be on advantages of using opaque types versus other encodings, including looking at how various types are represented by the JVM at runtime. The talk does not assume in-depth knowledge of the Scala compiler and will motivate the code using plausible real world examples.</p>
-
-<p>Attendees will come away from this talk with a better understanding of what SIP-35 means, why it was proposed, and how it could change how we write Scala code for the better.</p>
-
+ 9:55 | @:style(schedule-title)Opaque types: understanding SIP-35@:@ @:style(schedule-byline)Erik Osheim@:@ Proposed in SIP-35, opaque types introduce a way to define types which only exist at compile-time. Despite some superficial similarities to value classes, opaque types are significantly more flexible and introduce a number of exciting new possibilities in the Scala design space. Opaque types are motivated by a number of different concerns: desire for a non-class type that exists only at compile-time; efficiency concerns with value classes; limitations of existing type aliases; and need to better support phantom types, type tags, etc. This talk will introduce opaque types, compare them to type aliases and value classes (their two nearest cousins) and then walk through some examples of using opaque types. The focus will be on advantages of using opaque types versus other encodings, including looking at how various types are represented by the JVM at runtime. The talk does not assume in-depth knowledge of the Scala compiler and will motivate the code using plausible real world examples. Attendees will come away from this talk with a better understanding of what SIP-35 means, why it was proposed, and how it could change how we write Scala code for the better.
  10:30 | @:style(schedule-title)Big Data at the Intersection of Typed FP and Category Theory@:@ @:style(schedule-byline)Long Cao@:@ Big data, functional programming, and category theory aren’t just three trendy topics smashed into a talk title as bait! Foundational ideas from typed functional programming and category theory have real and practical applications for working with big data and can also be utilized to write more principled pipelines at scale. Whether it’s aggregating with monoids or writing more typesafe Spark jobs, we’ll try and bridge these topics together in a way that can be immediately useful. Some knowledge of Scala and a big data framework like Apache Hadoop, Spark, or Beam is suggested but not necessary. |
  11:05 | Break |
  11:20 | @:style(schedule-title)Tracking with Writer Monad@:@ @:style(schedule-byline)Eugene Platonov@:@ This talk will tell the story of one team at eBay which used to do data tracking in a healthy side-effecting manner. Until the team realized that it’s not that healthy. The solution was found in a Writer Monad (residing in the cats library) as well as in the fact that the writer monad can stay in shades. Some people, especially when they are new to typed FP, don’t like/feel comfortable to see words like Semigroup, Traversable, Writer and such in their domain code. The talk will show how those “scary” parts can be “hidden” by domain specific extension methods. |

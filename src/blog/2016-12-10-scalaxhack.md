@@ -36,7 +36,9 @@ the Typelevel family.
 ScalaxHack is a free event.
 Lunch will be sponsored by [Underscore][underscore].
 
-<a class="btn large" href="https://skillsmatter.com/conferences/7975-scalaxhack">Register</a>
+@:style(bulma-has-text-centered)
+@:style(bulma-button bulma-is-large bulma-is-link)[Register](https://skillsmatter.com/conferences/7975-scalaxhack)@:@
+@:@
 
 [skillsmatter]: http://skillsmatter.com
 [lsug]: http://meetup.com/london-scala
