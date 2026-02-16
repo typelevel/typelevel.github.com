@@ -1,18 +1,10 @@
----
-layout: post
-title: Compile time dimensional analysis with Libra
-category: technical
+{%
+  author: ${zainabali}
+  date: "2017-06-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: zainabali
-tut:
-  scala: 2.12.1
-  binaryScala: "2.12"
-  dependencies:
-    - com.chuusai::shapeless:2.3.2
-    - eu.timepit::singleton-ops:0.0.4
----
+# Compile time dimensional analysis with Libra
 
 ## Dimensional analysis
 

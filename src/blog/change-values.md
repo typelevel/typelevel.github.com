@@ -1,13 +1,10 @@
----
-layout: post
-title: To change types, change values
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-09-21"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# To change types, change values
 
 *This is the seventh of a series of articles on “Type Parameters and
 Type Members”.  You may wish to

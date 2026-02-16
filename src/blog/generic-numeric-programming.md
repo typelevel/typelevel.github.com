@@ -1,13 +1,10 @@
----
-layout: post
-title: An Intro to Generic Numeric Programming with Spire
-category: technical
+{%
+  author: ${tixxit}
+  date: "2013-07-07"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: tixxit
-  pygments: true
----
+# An Intro to Generic Numeric Programming with Spire
 
 In this post I'd like to introduce you to what I have been calling *generic
 numeric programming*.

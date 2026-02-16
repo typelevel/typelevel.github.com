@@ -1,21 +1,10 @@
----
-layout: post
-title: Equivalence versus Equality
-category: technical
+{%
+  author: ${TomasMikula}
+  date: "2017-04-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: TomasMikula
-  pygments: true
-  mathjax: true
-
-tut:
-  scala: 2.12.1
-  binaryScala: "2.12"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.1
-    - com.github.tomasmikula::hasheq:0.3
----
+# Equivalence versus Equality
 
 _This is a guest post by Tomas Mikula. It was initially published as a [document](https://github.com/TomasMikula/hasheq/blob/017f289caac398723501b194cd2b36c4584df638/Equivalence-Equality.md) in the [hasheq](https://github.com/TomasMikula/hasheq). It has been slightly edited and is being republished here with the permission of the original author._
 

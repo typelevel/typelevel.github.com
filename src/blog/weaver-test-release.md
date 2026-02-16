@@ -1,12 +1,10 @@
----
-layout: post
-title: Typelevel Weaver released
-category: technical
+{%
+  author: ${zainabali}
+  date: "2025-06-10"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: zainabali
----
+# Typelevel Weaver released
 
 We are delighted to announce the release of [weaver-test](https://typelevel.org/weaver-test/) under Typelevel.
 

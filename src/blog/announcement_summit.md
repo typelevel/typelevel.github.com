@@ -1,12 +1,10 @@
----
-layout: post
-title: "Announcement: Typelevel Summits coming up in 2016"
-category: summits
+{%
+  author: ${larsrh}
+  date: "2015-12-11"
+  tags: [summits]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
----
+# Announcement: Typelevel Summits coming up in 2016
 
 We have a big announcement to make. In 2016, there will be not just one, but
 two Typelevel Summits. Also, we’ve updated our website to include an up-to-date

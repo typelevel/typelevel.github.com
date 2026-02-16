@@ -1,12 +1,10 @@
----
-layout: post
-title: New Typelevel Tuple Team
-category: governance
+{%
+  author: ${typelevel}
+  date: "2022-09-12"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# New Typelevel Tuple Team
 
 We are pleased to announce that we have set up a Typelevel team for [Tuple][tuple], a remote pair-programming application.
 Tuple provides screen-sharing, audio and video calls (video is optional), as well as a very helpful screen drawing feature for whiteboarding.

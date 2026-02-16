@@ -1,19 +1,10 @@
----
-layout: post
-title: Rethinking MonadError
-category: technical
+{%
+  author: ${lukajcb}
+  date: "2018-04-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: lukajcb
-  pygments: true
-
-tut:
-  scala: 2.12.4
-  binaryScala: "2.12"
-  dependencies:
-    - org.typelevel::cats-core:1.1.0
----
+# Rethinking MonadError
 
 `MonadError` is a very old type class, hackage shows me it was originally added in 2001, long before I had ever begun doing functional programming, just check the [hackage page](https://hackage.haskell.org/package/mtl-2.2.2/docs/Control-Monad-Error-Class.html).
 In this blog post I'd like to rethink the way we use `MonadError` today.

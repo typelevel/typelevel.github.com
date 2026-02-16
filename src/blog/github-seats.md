@@ -1,12 +1,10 @@
----
-layout: post
-title: GitHub Seats
-category: technical
+{%
+  author: ${valencik}
+  date: "2024-03-10"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: valencik
----
+# GitHub Seats
 
 As we continue to grow our community on GitHub, we've encountered a challenge with our seat limit for maintainers.
 It's important to note that each maintainer seat incurs a fee.

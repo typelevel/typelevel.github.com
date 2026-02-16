@@ -1,19 +1,10 @@
----
-layout: post
-title: Subtype type classes don't work
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2016-09-30"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
-
-tut:
-  scala: 2.11.8
-  binaryScala: "2.11"
-  dependencies:
-    - org.typelevel::cats-core:0.7.2
----
+# Subtype type classes don't work
 
 _Update: A comprehensive version of this blog post was published at the
 [2017 Scala Symposium][scalaSite] and is available [for free][scalaProc]

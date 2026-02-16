@@ -1,25 +1,10 @@
----
-layout: post
-title: Algebraic API Design - Types, Functions, Properties
-category: technical
+{%
+  author: ${battermann}
+  date: "2019-02-06"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: battermann
-  pygments: true
-  mathjax: true
-
-tut:
-  scala: 2.12.7
-  binaryScala: "2.12"
-  scalacOptions:
-    - -Ypartial-unification
-    - -language:higherKinds
-  dependencies:
-    - org.scalatest::scalatest:3.0.5
-    - org.scalacheck::scalacheck:1.14.0
-    - org.typelevel::cats-effect:1.1.0
----
+# Algebraic API Design - Types, Functions, Properties
 
 In this post we are going to explore the concept of *algebraic API design* which is based on types, pure functions, and the relationships between them known as domain rules or properties. We will do this based on a complete, self-contained example using Cats and Cats Effect and walk through the process of designing and implementing the domain of solving complex, deterministic single player games.
 

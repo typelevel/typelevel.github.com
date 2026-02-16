@@ -1,34 +1,10 @@
----
-layout: post
-title: Error handling in Http4s with classy optics – Part 2
-category: technical
+{%
+  author: ${gvolpe}
+  date: "2018-11-28"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: gvolpe
-  pygments: true
-
-tut:
-  scala: 2.12.7
-  binaryScala: "2.12"
-  scalacOptions:
-    - -Ypartial-unification
-  plugins:
-    - org.spire-math::kind-projector:0.9.9
-  dependencies:
-    - org.scala-lang:scala-library:2.12.7
-    - org.typelevel::cats-core:1.4.0
-    - org.typelevel::cats-effect:1.1.0-M1
-    - org.http4s::http4s-blaze-server:0.20.0-M3
-    - org.http4s::http4s-circe:0.20.0-M3
-    - org.http4s::http4s-dsl:0.20.0-M3
-    - io.circe::circe-core:0.10.0
-    - io.circe::circe-generic:0.10.0
-    - co.fs2::fs2-core:1.0.0
-    - com.olegpy::meow-mtl:0.2.0
-    - com.chuusai::shapeless:2.3.3
-
----
+# Error handling in Http4s with classy optics – Part 2
 
 This is a continuation of my [previous blog post](https://typelevel.org/blog/2018/08/25/http4s-error-handling-mtl.html). Make sure you have read that one before continuing here.
 

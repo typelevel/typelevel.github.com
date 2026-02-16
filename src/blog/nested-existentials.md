@@ -1,14 +1,10 @@
----
-layout: post
-title: Nested existentials
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-07-27"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
-  mathjax: true
----
+# Nested existentials
 
 *This is the fifth of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should

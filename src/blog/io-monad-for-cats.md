@@ -1,19 +1,10 @@
----
-layout: post
-title: An IO monad for cats
-category: technical
+{%
+  author: ${djspiewak}
+  date: "2017-05-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: djspiewak
-  pygments: true
-
-tut:
-  scala: 2.12.1
-  binaryScala: "2.12"
-  dependencies:
-    - org.typelevel::cats-effect:0.1-0848c9b
----
+# An IO monad for cats
 
 Haskell is a pure language.  Every Haskell expression is *referentially transparent*, meaning that you can substitute that expression with its evaluated result without changing the program.  Or, put into code:
 

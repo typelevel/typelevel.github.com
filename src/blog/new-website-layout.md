@@ -1,12 +1,10 @@
----
-layout: post
-title: New Website Layout Launched
-category: governance
+{%
+  author: ${typelevel}
+  date: "2022-09-06"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# New Website Layout Launched
 
 In August, you may have noticed that Typelevel.org has a new layout! We are grateful to our old friends at [47 Degrees][47-deg] for their generously donated time and effort in planning, designing, and implementing this long-needed revamp. Our deepest thanks to the following individuals from 47 Degrees for working with our [Steering Committee][steering] on a proposal: [Israel "Isra" Pérez][47-isra], [Jetro Cabau Quirós][47-jetro], [Maureen Elsberry][47-maureen], [Benjy Montoya][47-benjy], and [Raúl Raja Martínez][47-raul]. 
 

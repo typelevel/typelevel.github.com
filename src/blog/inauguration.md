@@ -1,12 +1,10 @@
----
-layout: post
-title: Inaugurating the typelevel.scala blog
-category: governance
+{%
+  author: ${larsrh}
+  date: "2013-04-04"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
----
+# Inaugurating the typelevel.scala blog
 
 This Twitter conversation happened today:
 

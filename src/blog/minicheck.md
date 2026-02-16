@@ -1,18 +1,10 @@
----
-layout: post
-title: Let's build ourselves a small ScalaCheck
-category: technical
+{%
+  author: ${larsrh}
+  date: "2016-10-17"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
-  pygments: true
-  mathjax: true
-
-tut:
-  scala: 2.11.8
-  binaryScala: "2.11"
----
+# Let's build ourselves a small ScalaCheck
 
 _[ScalaCheck](http://scalacheck.org/) is a well-known property-based testing library, based on ideas from Haskell's [QuickCheck](https://hackage.haskell.org/package/QuickCheck).
 It is also a [Typelevel project](/projects).

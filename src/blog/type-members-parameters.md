@@ -1,13 +1,10 @@
----
-layout: post
-title: Type members are almost type parameters
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-07-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Type members are almost type parameters
 
 *This is the first of a series of articles on “Type Parameters and Type
 Members”.*

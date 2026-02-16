@@ -1,12 +1,10 @@
----
-layout: post
-title: How do I error handle thee?
-category: technical
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+{%
+  author: ${adelbertc}
+  date: "2014-02-21"
+  tags: [technical]
+%}
+
+# How do I error handle thee?
 
 Scala has several ways to deal with error handling, and often times people
 get confused as to when to use what. This post hopes to address that.

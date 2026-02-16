@@ -1,13 +1,10 @@
----
-layout: post
-title: Choosing variance for a phantom type
-category: technical
+{%
+  author: ${S11001001}
+  date: "2016-09-19"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Choosing variance for a phantom type
 
 When you use a type parameter to abstract over actual data in your
 ADT, there is typically only one

@@ -1,12 +1,10 @@
----
-layout: post
-title: "Assistance and Bursaries for the Typelevel Summits"
-category: summits
+{%
+  author: ${davegurnell}
+  date: "2016-01-14"
+  tags: [summits]
+%}
 
-meta:
-  nav: blog
-  author: davegurnell
----
+# Assistance and Bursaries for the Typelevel Summits
 
 _Update: The summits are over, which means applying for assistance is not possible any longer._
 

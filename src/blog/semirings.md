@@ -1,26 +1,10 @@
----
-layout: post
-title: A tale on Semirings
-category: technical
+{%
+  author: ${lukajcb}
+  date: "2018-11-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: lukajcb
-  pygments: true
-
-tut:
-  scala: 2.12.7
-  binaryScala: "2.12"
-  scalacOptions:
-    - "-Ypartial-unification"
-    - "-language:higherKinds"
-    - "-language:implicitConversions"
-    - "-language:experimental.macros"
-  dependencies:
-    - com.github.mpilquist::simulacrum:0.14.0
-  plugins:
-    - org.scalamacros:paradise_2.12.7:2.1.0
----
+# A tale on Semirings
 
 *Ever wondered why sum types are called sum types?
 Or maybe you've always wondered why the `<*>` operator uses exactly these symbols?

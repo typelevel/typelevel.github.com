@@ -1,13 +1,10 @@
----
-layout: post
-title: Making internal state functional
-category: technical
+{%
+  author: ${S11001001}
+  date: "2016-05-10"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Making internal state functional
 
 *This is the ninth of a series of articles on “Type Parameters and
 Type Members”.*

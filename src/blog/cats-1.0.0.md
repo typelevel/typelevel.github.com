@@ -1,12 +1,10 @@
----
-layout: post
-title: "Announcement: cats 1.0.0"
-category: technical
+{%
+  author: ${kailuowang}
+  date: "2017-12-25"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: kailuowang
----
+# Announcement: cats 1.0.0
 
 The [cats](https://github.com/typelevel/cats) maintainer team is proud to announce the **cats 1.0.0** release.
 Cats has been striving to provide functional programming abstractions that are core, modular, approachable and efficient. 

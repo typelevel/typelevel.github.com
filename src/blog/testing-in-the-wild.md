@@ -1,14 +1,10 @@
----
-layout: post
-title: Testing in the wild
-category: technical
+{%
+  author: ${etorreborre}
+  date: "2018-07-12"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: etorreborre
-  pygments: true
-
----
+# Testing in the wild
 
 Writing tests seems like a wonderful idea in theory but real systems can be a real pain to test. Today I want to show a few tips on how to
  use [specs2](http://specs2.org) + [ScalaCheck](http://www.scalacheck.org) to make some real-world testing somewhat bearable.

@@ -1,20 +1,10 @@
----
-layout: post
-title: Concurrency in Cats Effect 3
-category: technical
+{%
+  author: ${rahsan}
+  date: "2020-10-30"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: rahsan
-
-tut:
-  scala: 2.12.11
-  binaryScala: "2.12"
-  scalacOptions:
-    - -language:higherKinds
-  dependencies:
-    - org.typelevel::cats-effect:3.0.0-M2
----
+# Concurrency in Cats Effect 3
 
 Cats Effect 3 is just around the corner! The library has seen several major 
 changes between 2.0 and 3.0, so in an effort to highlight those changes, we

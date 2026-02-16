@@ -1,13 +1,10 @@
----
-layout: post
-title: Who implements the typeclass instance?
-category: technical
+{%
+  author: ${S11001001}
+  date: "2017-12-20"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Who implements the typeclass instance?
 
 The typeclass pattern in Scala invites you to place
 implementation-specific knowledge directly in the typeclass instances,

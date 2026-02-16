@@ -1,13 +1,10 @@
----
-layout: post
-title: EDSLs as functions
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2016-10-26"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+# EDSLs as functions
 
 *This is the second of a series of articles on "Monadic EDSLs in Scala."*
 

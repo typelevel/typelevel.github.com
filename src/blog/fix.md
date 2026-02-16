@@ -1,13 +1,10 @@
----
-layout: post
-title: Primitive recursion with fix and Mu
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-04-14"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Primitive recursion with fix and Mu
 
 Consider the simple cons-list datatype.
 

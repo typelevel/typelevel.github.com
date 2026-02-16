@@ -1,14 +1,10 @@
----
-layout: post
-title: Chain – Replacing the List Monoid
-category: technical
+{%
+  author: ${lukajcb}
+  date: "2018-09-04"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: lukajcb
-  pygments: true
-
----
+# Chain – Replacing the List Monoid
 
 `List` is a great data type, it is very simple and easy to understand.
 It has very low overhead for the most important functions such as `fold` and `map` and also supports prepending a single element in constant time.

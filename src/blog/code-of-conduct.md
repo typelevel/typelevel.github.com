@@ -1,12 +1,10 @@
----
-layout: post
-title: New Code of Conduct
-category: governance
+{%
+  author: ${typelevel}
+  date: "2024-03-11"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# New Code of Conduct
 
 We have [recently adopted a new Code of Conduct and Enforcement Policy](https://github.com/typelevel/governance/pull/129). This change was approved by the Steering committee after a 1 month discussion and voting period. Thank you to everyone who engaged! 
 

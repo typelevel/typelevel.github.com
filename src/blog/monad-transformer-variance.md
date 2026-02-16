@@ -1,24 +1,10 @@
----
-layout: post
-title: Variance of Monad Transformers
-category: technical
+{%
+  author: ${ceedubs}
+  date: "2018-09-29"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: ceedubs
-  pygments: true
-
-tut:
-  scala: 2.12.7
-  binaryScala: "2.12"
-  scalacOptions:
-    - "-Ypartial-unification"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.7
-    - org.typelevel::cats-core:1.4.0
-    - io.circe::circe-core:0.9.3
-
----
+# Variance of Monad Transformers
 
 A question that [repeatedly](https://github.com/typelevel/cats/issues/556) [pops](https://github.com/typelevel/cats/issues/2310) [up](https://github.com/typelevel/cats/issues/2538) about [Cats](https://typelevel.org/cats/) is why monad transformer types like `OptionT` and `EitherT` aren't covariant like their `Option` and `Either` counterparts. This blog post aims to answer that question.
 

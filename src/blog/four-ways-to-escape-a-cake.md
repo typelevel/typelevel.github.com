@@ -1,19 +1,10 @@
----
-layout: post
-title: Four ways to escape a cake
-category: technical
+{%
+  author: ${S11001001}
+  date: "2017-03-01"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
-
-tut:
-  scala: 2.12.1
-  binaryScala: "2.12"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.1
----
+# Four ways to escape a cake
 
 The mixin style of importing in which classes and traits are defined
 within traits, as seen in `scala.reflect.Universe`, ScalaTest, and

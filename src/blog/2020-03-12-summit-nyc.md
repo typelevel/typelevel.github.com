@@ -1,17 +1,14 @@
----
-layout: event
+{%
+  laika.html.template: event.template.html
+  date: "2020-03-12"
+  event-date: "March 12, 2020"
+  event-location: "Online"
+  tags: [summits, events]
+%}
 
-title: "Typelevel Summit New York City"
-short_title: "NYC Summit"
-date_string: "March 12, 2020"
-location: "Online"
-description: "One day of recorded talks and one day of unconference, co-located with NE Scala."
+# Typelevel Summit New York City
 
-poster_hero: "/img/media/nyc.jpg"
-poster_thumb: "/img/media/nyc-thumb.jpg"
-
-sponsors_section: false
----
+![Typelevel Summit New York City](/img/media/nyc.jpg)
 
 ## About the Summit
 

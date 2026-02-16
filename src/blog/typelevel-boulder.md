@@ -1,12 +1,10 @@
----
-layout: post
-title: "The Typelevel Summit in Boulder is Cancelled"
-category: summits
+{%
+  author: ${typelevel}
+  date: "2016-03-24"
+  tags: [summits]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# The Typelevel Summit in Boulder is Cancelled
 
 As a result of
 [LambdaConf's decision](http://degoes.net/articles/lambdaconf-inclusion)

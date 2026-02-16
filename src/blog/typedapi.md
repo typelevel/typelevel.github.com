@@ -1,13 +1,10 @@
----
-layout: post
-title: Typedapi or how to derive your clients and servers from types
-category: technical
+{%
+  author: ${pheymann}
+  date: "2018-06-15"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: pheymann
-  pygments: true
----
+# Typedapi or how to derive your clients and servers from types
 
 In this blog post, I will show you how to leverage Scala's type system to derive an HTTP client function from a single type. This will also be the story of how I started to work on [Typedapi](https://github.com/pheymann/typedapi) which is basically the attempt to bring Haskell's [Servant](https://github.com/haskell-servant/servant) to Scala.
 

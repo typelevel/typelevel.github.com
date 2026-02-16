@@ -1,19 +1,10 @@
----
-layout: post
-title: Refactoring with Monads
-category: technical
+{%
+  author: ${mtomko}
+  date: "2018-08-07"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: mtomko
-  pygments: true
-
-tut:
-  scala: 2.12.6
-  binaryScala: "2.12"
-  dependencies:
-    - org.typelevel::cats-core:1.2.0
----
+# Refactoring with Monads
 
 I was recently cleaning up some Scala code I'd written a few months
 ago when I realized I had been structuring code in a very confusing

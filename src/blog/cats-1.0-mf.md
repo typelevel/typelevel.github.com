@@ -1,12 +1,10 @@
----
-layout: post
-title: "Announcement: cats 1.0.0-MF"
-category: technical
+{%
+  author: ${kailuowang}
+  date: "2017-08-04"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: kailuowang
----
+# Announcement: cats 1.0.0-MF
 
 The [cats](https://github.com/typelevel/cats) maintainer team is proud to announce the **cats 1.0.0-MF** release.
 

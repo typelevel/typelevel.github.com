@@ -1,12 +1,10 @@
----
-layout: post
-title: Spotify FOSS Fund 2024
-category: governance
+{%
+  author: ${valencik}
+  date: "2025-02-21"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: valencik
----
+# Spotify FOSS Fund 2024
 
 We're excited to announce that Typelevel has been chosen as a recipient of the 2024 Spotify FOSS Fund!
 As a result, Spotify has donated €20,000 to [Typelevel's OpenCollective.][opencollective]

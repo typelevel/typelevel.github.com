@@ -1,13 +1,10 @@
----
-layout: post
-title: Treelog
-category: technical
+{%
+  author: ${channingwalton}
+  date: "2013-10-18"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: channingwalton
-  pygments: true
----
+# Treelog
 
 [Lance Walton's](https://twitter.com/lancewalton) [Treelog](https://github.com/lancewalton/treelog) is the result of a real problem that arose in a trading system that we were working on: 
 > How can everything that happens to a trade be audited?

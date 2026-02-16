@@ -1,13 +1,10 @@
----
-layout: post
-title: How to use Spire's Ops macros in your own project
-category: technical
+{%
+  author: ${non}
+  date: "2013-10-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: non
-  pygments: true
----
+# How to use Spire's Ops macros in your own project
 
 ## What are Spire's Ops macros?
 

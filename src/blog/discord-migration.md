@@ -1,13 +1,10 @@
----
-layout: post
-title: Discord Migration
-category: social
+{%
+  author: ${typelevel}
+  date: "2021-05-05"
+  tags: [social]
+%}
 
-
-meta:
-  nav: blog
-  author: typelevel
----
+# Discord Migration
 
 Hello Community!
 

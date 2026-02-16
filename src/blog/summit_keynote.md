@@ -1,12 +1,10 @@
----
-layout: post
-title: "Keynote at the Philadelphia Summit"
-category: summits
+{%
+  author: ${larsrh}
+  date: "2016-01-20"
+  tags: [summits]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
----
+# Keynote at the Philadelphia Summit
 
 While the CfP for the [Philadelphia Summit][philadelphia] is still open ([have you submitted a proposal yet?][cfp]), we can already announce our keynote speaker:
 

@@ -1,12 +1,10 @@
----
-layout: post
-title: On Recent Events
-category: governance
+{%
+  author: ${typelevel}
+  date: "2021-11-15"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# On Recent Events
 
 Open source developers are free to choose the projects they contribute to and the communities they support. Martin Odersky’s recent objection to an exercise of this freedom threw the community into turmoil. We believe that those who questioned his intervention and spoke out were justified in doing so. Regardless, we encourage everyone to consider the tone and weight of their words before hitting “send”.
 

@@ -1,14 +1,10 @@
----
-layout: post
-title: Optimizing Tagless Final – Saying farewell to Free
-category: technical
+{%
+  author: ${lukajcb}
+  date: "2017-12-27"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: lukajcb
-  pygments: true
-
----
+# Optimizing Tagless Final – Saying farewell to Free
 
 The Tagless Final encoding has gained some steam recently, with some people hailing 2017 as the year of Tagless Final.
 Being conceptually similar to the Free Monad, different comparisons have been brought up and the one trade-off that always comes up is the lack or the difficulty of inspection of tagless final programs and in fact, I couldn't find a single example on the web.

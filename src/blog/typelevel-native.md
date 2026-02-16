@@ -1,12 +1,10 @@
----
-layout: post
-title: Typelevel Native
-category: technical
+{%
+  author: ${armanbilge}
+  date: "2022-09-19"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: armanbilge
----
+# Typelevel Native
 
 We recently published several major Typelevel projects for the [Scala Native] platform, most notably [Cats Effect], [FS2], and [http4s]. This blog post explores what this new platform means for the Typelevel ecosystem as well as how it works under-the-hood.
 

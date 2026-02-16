@@ -1,13 +1,10 @@
----
-layout: post
-title: It’s existential on the inside
-category: technical
+{%
+  author: ${S11001001}
+  date: "2016-01-28"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# It’s existential on the inside
 
 *This is the eighth of a series of articles on “Type Parameters and
 Type Members”.  You may wish to

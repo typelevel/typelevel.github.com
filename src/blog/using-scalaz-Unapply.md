@@ -1,13 +1,10 @@
----
-layout: post
-title: Using scalaz.Unapply
-category: technical
+{%
+  author: ${S11001001}
+  date: "2013-09-11"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Using scalaz.Unapply
 
 Once you've started really taking advantage of Scalaz's typeclasses
 for generic programming, you might have noticed a need to write

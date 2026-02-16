@@ -1,14 +1,10 @@
----
-layout: post
-title: Cats Ecosystem Community Survey 2018 Results
-category: technical
+{%
+  author: ${kailuowang}
+  date: "2019-01-30"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: kailuowang
-  pygments: true
-
----
+# Cats Ecosystem Community Survey 2018 Results
 
 Overall we received 588 responses over the course of 30 days. This feedback is essential for us to make informed decisions on our 2019 plan. Thank you, everyone, who participated. 
 

@@ -1,12 +1,10 @@
----
-layout: post
-title: Typelevel Switches to the Scala Code of Conduct
-category: governance
+{%
+  author: ${typelevel}
+  date: "2019-05-01"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Typelevel Switches to the Scala Code of Conduct
 
 Typelevel is pleased to announce that we are retiring the Typelevel Code of
 Conduct in favour of the [Scala Code of Conduct][scoc]. Many of the major projects

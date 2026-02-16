@@ -1,13 +1,10 @@
----
-layout: post
-title: Higher Leibniz
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-09-20"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Higher Leibniz
 
 We’ve previously seen
 [the basic implementation and motivation for `scalaz.Leibniz`]({% post_url 2014-07-02-type_equality_to_leibniz %}).

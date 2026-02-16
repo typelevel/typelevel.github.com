@@ -1,12 +1,10 @@
----
-layout: post
-title: Evolving Typelevel
-category: governance
+{%
+  author: ${typelevel}
+  date: "2025-08-19"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Evolving Typelevel
 
 In recent years, Typelevel has existed in a somewhat grey area legally. We have long managed a good deal of intellectual
 property (the Organization Libraries) and raised funds. In 2022, [we adopted a Charter](/blog/2022/01/19/governing-documents.html) establishing our governance.

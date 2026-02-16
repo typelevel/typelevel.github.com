@@ -1,13 +1,10 @@
----
-layout: post
-title: The singleton instance trick is unsafe
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-07-06"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# The singleton instance trick is unsafe
 
 *Also, the “fake covariance” trick.*
 

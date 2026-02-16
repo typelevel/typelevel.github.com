@@ -1,13 +1,10 @@
----
-layout: post
-title: When can Liskov be lifted?
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-03-09"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# When can Liskov be lifted?
 
 Scalaz avoids
 [variance in the sense of the Scala type parameter annotation](http://docs.scala-lang.org/tutorials/tour/variances.html),

@@ -1,13 +1,10 @@
----
-layout: post
-title: Law Enforcement using Discipline
-category: technical
+{%
+  author: ${larsrh}
+  date: "2013-11-17"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
-  pygments: true
----
+# Law Enforcement using Discipline
 
 Some nine or ten months ago, [Spire](http://github.com/non/spire)'s project structure underwent a major reorganization.
 Simultaneously, the [Scalacheck](http://www.scalacheck.org/) bindings were refactored, completely overhauling the law-checking infrastructure.

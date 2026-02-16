@@ -1,12 +1,10 @@
----
-layout: post
-title: Support Typelevel thanks to Triplequote Hydra and compile Scala faster!
-category: governance
+{%
+  author: ${typelevel}
+  date: "2019-05-29"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Support Typelevel thanks to Triplequote Hydra and compile Scala faster!
 
 Hello Community!
 

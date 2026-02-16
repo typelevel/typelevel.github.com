@@ -1,12 +1,10 @@
----
-layout: post
-title: "Community Safety"
-category: social
+{%
+  author: ${typelevel}
+  date: "2021-04-27"
+  tags: [social]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Community Safety
 
 Effective today, Jon Pretty is barred from participating in Typelevel projects and events.
 We make this decision based on well-substantiated reports of predatory behavior at Scala conferences, including conferences at which Typelevel Summits were co-located.

@@ -1,13 +1,10 @@
----
-layout: post
-title: Typelevel Scala and the future of the Scala ecosystem
-category: technical
+{%
+  author: ${milessabin}
+  date: "2014-09-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: milessabin
-  pygments: true
----
+# Typelevel Scala and the future of the Scala ecosystem
 
 **tl;dr** Typelevel is forking Scala; we call on all stakeholders in the Scala ecosystem to collaborate on the creation of an independent, non-profit, open source foundation to safeguard the interests of the entire Scala community.
 

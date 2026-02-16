@@ -1,12 +1,10 @@
----
-layout: post
-title: Welcoming New Steering Committee Members
-category: governance
+{%
+  author: ${typelevel}
+  date: "2022-07-25"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Welcoming New Steering Committee Members
 
 Since our [last post][last-post], the [Typelevel Steering Committee][committee] has happily welcomed six new members to our group: Zach McCoy, Sam Pillsworth, Jasna Rodulfa-Blemberg, Andrew Valencik, Vasil Vasilev, and Mark Waks (aka Justin du Coeur). In their own words:
 

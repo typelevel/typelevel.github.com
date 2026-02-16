@@ -1,17 +1,10 @@
----
-layout: post
-title: Product with Serializable
-category: technical
+{%
+  author: ${ceedubs}
+  date: "2018-05-09"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: ceedubs
-  pygments: true
-
-tut:
-  scala: 2.12.4
-  binaryScala: "2.12"
----
+# Product with Serializable
 
 A somewhat common Scala idiom is to make an `abstract` type extend `Product with Serializable`. There isn't an obvious reason to do this, and people have asked me a number of times why I've done this. While I don't think that `Product` or `Serializable` are particularly good abstractions, there's a reason that I extend them.
 

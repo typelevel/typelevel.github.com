@@ -1,13 +1,10 @@
----
-layout: post
-title: Existential types are not raw types
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-02-26"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Existential types are not raw types
 
 *While this blog is typically strictly for Scala developers interested
 in strongly-typed programming, this particular article is of interest

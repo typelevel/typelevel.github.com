@@ -1,17 +1,10 @@
----
-layout: post
-title: API Design for Heaps (aka Priority Queues)
-category: technical
+{%
+  author: ${chrisokasaki}
+  date: "2016-11-17"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: chrisokasaki
-  pygments: true
-
-tut:
-  scala: 2.11.8
-  binaryScala: "2.11"
----
+# API Design for Heaps (aka Priority Queues)
 
 _This is a guest post by Chris Okasaki. It was initially published as the [design document](https://github.com/chrisokasaki/scads/blob/e78233ac6a787b7c66b44cd6139392418b214eb9/design/heaps.md) behind [scads](https://github.com/chrisokasaki/scads). It is being republished here with the permission of the original author._
 

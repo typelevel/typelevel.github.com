@@ -1,17 +1,10 @@
----
-layout: post
-title: There are more types than classes
-category: technical
+{%
+  author: ${S11001001}
+  date: "2017-02-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
-
-tut:
-  scala: 2.12.1
-  binaryScala: "2.12"
----
+# There are more types than classes
 
 As programmers, we are very incautious with our use of the word
 “type”. The concept of “type” is sufficiently abstract and specific

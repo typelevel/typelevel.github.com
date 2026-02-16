@@ -1,13 +1,10 @@
----
-layout: post
-title: Values never change types
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-07-30"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Values never change types
 
 *This is the sixth of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should

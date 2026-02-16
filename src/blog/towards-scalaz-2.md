@@ -1,13 +1,10 @@
----
-layout: post
-title: Towards Scalaz (Part 2)
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2013-12-15"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+# Towards Scalaz (Part 2)
 
 A lot of people see Scalaz as a hard fringe, ivory tower,
 not suited for real-world applications library, which is

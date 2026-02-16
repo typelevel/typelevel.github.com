@@ -1,12 +1,10 @@
----
-layout: post
-title: Call For Code of Conduct Committee Members
-category: governance
+{%
+  author: ${typelevel}
+  date: "2024-08-24"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Call For Code of Conduct Committee Members
 
 Are you passionate about fostering a positive and inclusive community?
 Do you want to help shape how Typelevel works with the community to build a respectful environment for all?

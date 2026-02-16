@@ -1,12 +1,10 @@
----
-layout: post
-title: Typelevel Sustainability Program Announcement
-category: governance
+{%
+  author: ${typelevel}
+  date: "2019-04-24"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Typelevel Sustainability Program Announcement
 
 We are excited to announce the Typelevel sustainability program.
 The ultimate goal for this program is to provide ways for the user community to ensure the long-term sustainability of the development and maintenance of some Typelevel libraries.

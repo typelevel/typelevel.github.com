@@ -1,12 +1,10 @@
----
-layout: post
-title: "Endorsing the new Scala Code of Conduct"
-category: governance
+{%
+  author: ${typelevel}
+  date: "2016-12-17"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Endorsing the new Scala Code of Conduct
 
 A couple of days ago, the new [Scala Code of Conduct](https://contributors.scala-lang.org/t/please-read-scala-code-of-conduct/28) was published.
 It applies to all official Scala channels, including mailing lists, Gitter channels and GitHub repositories.

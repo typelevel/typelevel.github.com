@@ -1,14 +1,10 @@
----
-layout: post
-title: Deriving Type Class Instances
-category: technical
+{%
+  author: ${larsrh}
+  date: "2013-06-24"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
-  pygments: true
-  mathjax: true
----
+# Deriving Type Class Instances
 
 ## Motivating example
 

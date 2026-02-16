@@ -1,12 +1,10 @@
----
-layout: post
-title: Google Summer of Code 2024 - Going Feral on The Cloud
-category: technical
+{%
+  author: ${chingles}
+  date: "2024-12-22"
+  tags: [technical]
+%}
 
-meta: 
-  nav: blog
-  author: chingles
----
+# Google Summer of Code 2024 - Going Feral on The Cloud
 
 This project was proposed by the Typelevel community in collaboration with the Scala Center, and carried out under Google Summer of Code (GSoC) 2024. Feral is a library in the Typelevel ecosystem that provides a framework for Scala developers to write and deploy serverless functions. As Feral was only supporting AWS Lambda, the goal of the project was to extend Feral to support other serverless providers, specifically Vercel and Google Cloud.
 

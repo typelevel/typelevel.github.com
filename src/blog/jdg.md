@@ -1,12 +1,10 @@
----
-layout: post
-title: "Contributors and Community"
-category: governance
+{%
+  author: ${typelevel}
+  date: "2019-09-05"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Contributors and Community
 
 Effective today, John De Goes has been indefinitely barred from participation in Typelevel projects. This most directly impacts Cats Effect, but applies to our other repositories as well. The cause is John's combative style of interaction in Typelevel channels. His interactions when in agreement are always cordial, but when he disagrees with something or someone, the results are inevitably drawn out, intensely aggressive, and stressful. We have tried for the past three years, via one-on-one discussions and multiple warnings, to arrive at a style of respectful collaboration that we can all live with. These attempts have consistently failed, despite considerable time-consuming effort.
 

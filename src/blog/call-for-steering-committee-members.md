@@ -1,13 +1,10 @@
----
-layout: post
-title: Call for Steering Committee Members
-category: governance
+{%
+  author: ${typelevel}
+  date: "2022-04-01"
+  tags: [governance]
+%}
 
-
-meta:
-  nav: blog
-  author: typelevel
----
+# Call for Steering Committee Members
 
 The [Typelevel Steering Committee][committee] is opening a call for
 new members as we continue to build a [more transparent and

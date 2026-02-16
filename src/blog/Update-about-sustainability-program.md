@@ -1,12 +1,10 @@
----
-layout: post
-title: "Update About Sustainability Program"
-category: governance
+{%
+  author: ${typelevel}
+  date: "2019-11-13"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Update About Sustainability Program
 
 Six months ago, we launched the [Typelevel sustainability program](https://github.com/typelevel/general/blob/master/sustainability_program.md) to provide more ways for our community to help support Typelevel projects. Since then, we received numerous donations from individuals as well as corporations, now bringing our estimated annual budget to over $18,000. We are incredibly grateful for the generosity of our community. From the bottom of our hearts, thank you!
 

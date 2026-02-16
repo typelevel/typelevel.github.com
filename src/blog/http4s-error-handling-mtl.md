@@ -1,33 +1,10 @@
----
-layout: post
-title: Error handling in Http4s with classy optics
-category: technical
+{%
+  author: ${gvolpe}
+  date: "2018-08-25"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: gvolpe
-  pygments: true
-
-tut:
-  scala: 2.12.6
-  binaryScala: "2.12"
-  scalacOptions:
-    - -Ypartial-unification
-  plugins:
-    - org.spire-math::kind-projector:0.9.8
-  dependencies:
-    - org.scala-lang:scala-library:2.12.6
-    - org.typelevel::cats-core:1.1.0
-    - org.typelevel::cats-effect:1.0.0-RC2
-    - org.http4s::http4s-blaze-server:0.19.0-M1
-    - org.http4s::http4s-circe:0.19.0-M1
-    - org.http4s::http4s-dsl:0.19.0-M1
-    - io.circe::circe-core:0.10.0-M1
-    - io.circe::circe-generic:0.10.0-M1
-    - co.fs2::fs2-core:1.0.0-M1
-    - com.olegpy::meow-mtl:0.1.1
-
----
+# Error handling in Http4s with classy optics
 
 As a longtime `http4s` user I keep on learning new things and I'm always trying to come up with the best practices for writing http applications. This time I want to talk about my latest achievements in error handling within the context of an http application where it basically means mapping each business error to the appropiate [http response](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes).
 

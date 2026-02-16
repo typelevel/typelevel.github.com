@@ -1,13 +1,10 @@
----
-layout: post
-title: What happens when I forget a refinement?
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-07-19"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# What happens when I forget a refinement?
 
 *This is the third of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should

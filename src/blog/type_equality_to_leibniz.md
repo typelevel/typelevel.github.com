@@ -1,13 +1,10 @@
----
-layout: post
-title: A function from type equality to Leibniz
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-07-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# A function from type equality to Leibniz
 
 The Scala standard library provides evidence of two types being equal
 at the data level: a value of type

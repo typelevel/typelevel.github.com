@@ -1,25 +1,10 @@
----
-layout: post
-title: A comprehensive introduction to Cats-mtl
-category: technical
+{%
+  author: ${lukajcb}
+  date: "2018-10-06"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: lukajcb
-  pygments: true
-
-tut:
-  scala: 2.12.7
-  binaryScala: "2.12"
-  scalacOptions:
-    - "-Ypartial-unification"
-    - "-language:higherKinds"
-  dependencies:
-    - org.typelevel::cats-mtl-core:0.4.0
-    - org.typelevel::cats-effect:1.0.0
-  plugins:
-    - org.spire-math::kind-projector:0.9.8
----
+# A comprehensive introduction to Cats-mtl
 
 MTL is a library for composing monad transformers and making it easier to work with nested monad transformer stacks.
 It originates from the land of Haskell, but has made it into Scala a long time ago.

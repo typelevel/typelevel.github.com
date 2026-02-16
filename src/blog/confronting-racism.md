@@ -1,13 +1,10 @@
----
-layout: post
-title: Confronting Racism
-category: social
+{%
+  author: ${mtomko}
+  date: "2020-06-17"
+  tags: [social]
+%}
 
-meta:
-  nav: blog
-  author: mtomko
-
----
+# Confronting Racism
 
 In the wake of unrest in the United States and elsewhere following the
 deaths of George Floyd, Ahmaud Arbery, Breonna Taylor, and countless

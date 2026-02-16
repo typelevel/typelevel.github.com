@@ -1,13 +1,10 @@
----
-layout: post
-title: There are at least three types of strings
-category: technical
+{%
+  author: ${S11001001}
+  date: "2017-09-05"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# There are at least three types of strings
 
 [Newtype mechanisms](https://contributors.scala-lang.org/t/pre-sip-unboxed-wrapper-types/987)
 are a great way to introduce wrapper-free, global distinctions of

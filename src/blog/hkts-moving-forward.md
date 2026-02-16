@@ -1,13 +1,10 @@
----
-layout: post
-title: "Higher-kinded types: the difference between giving up, and moving forward"
-category: technical
+{%
+  author: ${S11001001}
+  date: "2016-08-21"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# Higher-kinded types: the difference between giving up, and moving forward
 
 As its opening sentence reminds the reader—a point often missed by
 many reviewers—the book

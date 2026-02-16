@@ -1,13 +1,10 @@
----
-layout: post
-title: When implicitly isn't specific enough
-category: technical
+{%
+  author: ${S11001001}
+  date: "2014-01-18"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
----
+# When implicitly isn't specific enough
 
 When working with implicit-encoded dependent function types, such as
 `scalaz.Unapply` and numerous Shapeless operations, you'd frequently

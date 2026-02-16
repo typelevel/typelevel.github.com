@@ -1,13 +1,10 @@
----
-layout: post
-title: Information hiding, enforced
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2016-03-13"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+# Information hiding, enforced
 
 Code should be reusable. An expression traversing a data structure
 shouldn't be written multiple times, it should be pulled out into a

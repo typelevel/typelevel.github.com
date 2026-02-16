@@ -1,12 +1,10 @@
----
-layout: post
-title: "First batch of talks at the Philadelphia Summit"
-category: summits
+{%
+  author: ${larsrh}
+  date: "2016-01-28"
+  tags: [summits]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
----
+# First batch of talks at the Philadelphia Summit
 
 The work on the programme for the [Philadelphia Summit][philadelphia] is in full swing!
 As announced earlier, we're happy to share with you the first batch of accepted talks.

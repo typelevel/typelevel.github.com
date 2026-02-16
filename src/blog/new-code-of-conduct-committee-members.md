@@ -1,12 +1,10 @@
----
-layout: post
-title: Code of Conduct Committee
-category: governance
+{%
+  author: ${typelevel}
+  date: "2024-11-21"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: typelevel
----
+# Code of Conduct Committee
 
 A few months back the Typelevel Steering Committee put out [a call for new members](https://typelevel.org/blog/2024/08/24/call-for-code-of-conduct-committee-members.html) to join the Typelevel Code of Conduct Committee. Thank you very much to all who applied, it's lovely to see folks interested in keeping our community safe.
 

@@ -1,12 +1,10 @@
----
-layout: post
-title: Typelevel Summer of Code 2024
-category: technical
+{%
+  author: ${armanbilge}
+  date: "2024-03-02"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: armanbilge
----
+# Typelevel Summer of Code 2024
 
 We are excited to share that Typelevel will be participating in [Google Summer of Code 2024][GSoC], thanks to the gracious support of the [Scala Center]! If you are a student, this is a wonderful opportunity to spend your summer working on Scala open source projects with mentorship from Typelevel maintainers, while earning a stipend.
 

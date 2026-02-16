@@ -1,24 +1,10 @@
----
-layout: post
-title: Validated Configurations with Ciris
-category: technical
+{%
+  author: ${vlovgr}
+  date: "2017-06-21"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: vlovgr
-
-tut:
-  scala: 2.12.2
-  binaryScala: "2.12"
-  dependencies:
-    - com.github.pureconfig::pureconfig:0.7.2
-    - com.lihaoyi::pprint:0.5.2
-    - eu.timepit::refined-pureconfig:0.8.2
-    - eu.timepit::refined:0.8.2
-    - is.cir::ciris-core:0.4.0
-    - is.cir::ciris-enumeratum:0.4.0
-    - is.cir::ciris-refined:0.4.0
----
+# Validated Configurations with Ciris
 
 The need for configuration arises in almost every application, as we want to be able to run in different environments -- for example, local, testing, and production environments. Configurations are also used as a way to keep secrets, like passwords and keys, out of source code and version control. By having configurations as untyped structured data in files, we can change and override settings without having to recompile our software.
 

@@ -1,13 +1,10 @@
----
-layout: post
-title: It's programs all the way down
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2016-09-21"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+# It's programs all the way down
 
 *This is the first of a series of articles on "Monadic EDSLs in Scala."*
 

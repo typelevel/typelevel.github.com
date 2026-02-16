@@ -1,14 +1,10 @@
----
-layout: post
-title: When are two methods alike?
-category: technical
+{%
+  author: ${S11001001}
+  date: "2015-07-16"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: S11001001
-  pygments: true
-  mathjax: true
----
+# When are two methods alike?
 
 *This is the second of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should

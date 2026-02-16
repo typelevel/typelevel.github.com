@@ -1,12 +1,10 @@
----
-layout: post
-title: "Fabric: A New JSON Library"
-category: governance
+{%
+  author: ${matthicks}
+  date: "2022-11-10"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: matthicks
----
+# Fabric: A New JSON Library
 
 I know what you're thinking! "A new JSON library? Why? Don't we have plenty of those?" Well, the short answer is a
 resounding yes, but the idea of this library is simplicity and convenience. This library benefited a great deal from the things I liked

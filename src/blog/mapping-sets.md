@@ -1,13 +1,10 @@
----
-layout: post
-title: How can we map a Set?
-category: technical
+{%
+  author: ${puffnfresh}
+  date: "2014-06-22"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: puffnfresh
-  pygments: true
----
+# How can we map a Set?
 
 Scalaz used to have a `scalaz.Functor` for `scala.collection.Set` but
 it was [eventually removed](https://github.com/scalaz/scalaz/pull/276)

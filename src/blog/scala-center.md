@@ -1,13 +1,10 @@
----
-layout: post
-title: Typelevel representative at the Scala Center Advisory Board
-category: governance
+{%
+  author: ${larsrh}
+  date: "2016-10-18"
+  tags: [governance]
+%}
 
-meta:
-  nav: blog
-  author: larsrh
-  pygments: false
----
+# Typelevel representative at the Scala Center Advisory Board
 
 It is our pleasure to announce that the Scala Center Advisory Board has invited us to nominate a member of the Typelevel community to serve as a community representative, alongside Bill Venners.
 To figure out whether or not we should accept this offer and who we pick we have held [an open discussion on GitHub](https://github.com/typelevel/general/issues/42), resulting in my nomination, which I happily accept.

@@ -1,13 +1,10 @@
----
-layout: post
-title: Of variance and functors
-category: technical
+{%
+  author: ${adelbertc}
+  date: "2016-02-04"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: adelbertc
-  pygments: true
----
+# Of variance and functors
 
 Scala's type system allows us to annotate type parameters with their variance: covariant, contravariant, invariant.
 Variance allows us to define the subtyping relationships between type constructors – that is, under which

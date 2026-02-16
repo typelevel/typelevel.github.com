@@ -1,22 +1,10 @@
----
-layout: post
-title: Shared State in Functional Programming
-category: technical
+{%
+  author: ${gvolpe}
+  date: "2018-06-07"
+  tags: [technical]
+%}
 
-meta:
-  nav: blog
-  author: gvolpe
-  pygments: true
-
-tut:
-  scala: 2.12.6
-  binaryScala: "2.12"
-  dependencies:
-    - org.scala-lang:scala-library:2.12.6
-    - org.typelevel::cats-core:1.1.0
-    - org.typelevel::cats-effect:1.0.0-RC2
-
----
+# Shared State in Functional Programming
 
 Newcomers to functional programming (FP) are often very confused about the proper way to share state without breaking purity and end up having a mix of pure and impure code that [defeats the purpose](https://queue.acm.org/detail.cfm?id=2611829) of having pure FP code in the first place.
 
