@@ -248,9 +248,9 @@ def eval2[T](ex: Expr2[T]): T =
 
 Using the `Leibniz` proof is, unfortunately, more involved than
 producing it in the fold implementations.  See my previous posts,
-[“A function from type equality to Leibniz”]({% post_url 2014-07-02-type_equality_to_leibniz %})
+[“A function from type equality to Leibniz”](type_equality_to_leibniz.md)
 and
-[“Higher Leibniz”]({% post_url 2014-09-20-higher_leibniz %}),
+[“Higher Leibniz”](higher_leibniz.md),
 for many
 details on applying `Leibniz` proof to make type transformations.
 

@@ -310,11 +310,11 @@ to the extent that a language's type system is expressive that
 *This blog post was tested with Scala 2.11.7 using [tut][tut].*
 
 [abstractExistential]: http://dl.acm.org/citation.cfm?id=45065 "Abstract types have existential type"
-[existentialInside]: {% post_url 2016-01-28-existential-inside %} "It’s existential on the inside"
+[existentialInside]: existential-inside.md "It’s existential on the inside"
 [ocamlModules]: https://realworldocaml.org/v1/en/html/files-modules-and-programs.html "Real World OCaml: Files, Modules, and Programs"
 [propositionsAsTypes]: http://homepages.inf.ed.ac.uk/wadler/topics/history.html#propositions-as-types "Propositions as Types - Philip Wadler"
 [tapl]: https://www.cis.upenn.edu/~bcpierce/tapl/ "Types and Programming Languages - Benjamin C. Pierce"
 [theoremsForFree]: http://dl.acm.org/citation.cfm?id=99404 "Theorems for free!"
-[typeParamsMembers]: {% post_url 2015-07-13-type-members-parameters %} "Type members are [almost] type parameters"
+[typeParamsMembers]: type-members-parameters.md "Type members are [almost] type parameters"
 [tut]: https://github.com/tpolecat/tut "tut: doc/tutorial generator for scala"
 [understandingTypes]: http://dl.acm.org/citation.cfm?id=6042 "On understanding types, data abstraction, and polymorphism - Luca Cardelli, Peter Wegner"

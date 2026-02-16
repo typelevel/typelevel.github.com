@@ -8,7 +8,7 @@
 
 *This is the eighth of a series of articles on “Type Parameters and
 Type Members”.  You may wish to
-[check out the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[check out the beginning](type-members-parameters.md),
 which introduces the `PList` type we refer to throughout this article
 without further ado.*
 
@@ -80,7 +80,7 @@ existential in argument position. So, as with all type-parameterized
 cases, `duzzle` among them, this is one where the caller determines
 the type.
 
-We’ve [discussed]({% post_url 2015-07-16-method-equiv %}) how you can
+We’ve [discussed](method-equiv.md) how you can
 prove that `duzzle` ≡*<sub><small>m</small></sub>* `duzzle2`, in a
 previous post. Now, it’s time to see why.
 
@@ -107,7 +107,7 @@ Int => ([A], PList[A])
 ```
 
 This corresponds exactly to the `forSome` scope
-[we have explored previously]({% post_url 2015-07-27-nested-existentials %}).
+[we have explored previously](nested-existentials.md).
 So we can interpret `PList[PList[_]]` as follows.
 
 ```scala
@@ -156,6 +156,6 @@ It is also the root of my frustration that Scala doesn’t support a
 all, you can’t work with one without the other.
 
 Now we have enough groundwork for
-[“Making internal state functional”]({% post_url 2016-05-10-internal-state %}),
+[“Making internal state functional”](internal-state.md),
 the next part of this series. I suspect it will be a little prosaic at
 this point, though.

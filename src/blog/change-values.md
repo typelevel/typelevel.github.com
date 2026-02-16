@@ -8,9 +8,9 @@
 
 *This is the seventh of a series of articles on “Type Parameters and
 Type Members”.  You may wish to
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %});
+[start at the beginning](type-members-parameters.md);
 more specifically, this post is meant as a followup to
-[the previous entry]({% post_url 2015-07-30-values-never-change-types %}).
+[the previous entry](values-never-change-types.md).
 However, in a first for this series, it stands on its own, as
 introductory matter.*
 
@@ -28,7 +28,7 @@ program’s state has changed types, from `String` to `MyAST`.
 
 But, as we have just seen, due to decisions we have made to simplify
 our lives,
-[values cannot change types]({% post_url 2015-07-30-values-never-change-types %}),
+[values cannot change types](values-never-change-types.md),
 no matter how important it is to the sanity of our code.  At the same
 time, we don’t want to give up the richness of using more than one
 type to describe our data.
@@ -582,6 +582,6 @@ us by type parameters; there are many more interesting conclusions,
 like the ones described above.
 
 Next, in
-[“It’s existential on the inside”]({% post_url 2016-01-28-existential-inside %}),
+[“It’s existential on the inside”](existential-inside.md),
 we will see how deeply intertwined universal and existential types
 really are.

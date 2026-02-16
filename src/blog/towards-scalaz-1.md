@@ -205,7 +205,7 @@ be defined before defining your own on existing types.
 <div class="side-note">
   If you are interested in learning more about numeric programming, check out
   the <a href="https://github.com/non/spire">spire</a> library, as well as the
-  accompanying post about <a href="{% post_url 2013-07-07-generic-numeric-programming %}">
+  accompanying post about <a href="generic-numeric-programming.md">
   generic numeric programming</a>.
 </div>
 

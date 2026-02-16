@@ -180,7 +180,7 @@ can rewrite in an existential manner.
 
 we should always, ideally, be able to write the function in an
 existential manner.  (We will discuss why it’s only “ideally” in
-[the next article]({% post_url 2015-07-16-method-equiv %}).)
+[the next article](method-equiv.md).)
 
 You can demonstrate this to yourself by having the parameterized
 variant (e.g. `plengthT`) call the existential variant
@@ -190,7 +190,7 @@ This hints at what is usually, though not always, **an advantage for
 type parameters: you have to ask for an existential, rather than
 silently getting one just because you forgot a refinement**.  We will
 discuss
-[what happens when you forget one in a later post]({% post_url 2015-07-19-forget-refinement-aux %}).
+[what happens when you forget one in a later post](forget-refinement-aux.md).
 
 Equivalence as a learning tool
 ------------------------------
@@ -225,6 +225,6 @@ methods that *cannot* be written in the existential style, at least
 under Scala’s restrictions.
 
 That all happens in
-[the next part, “When are two methods alike?”]({% post_url 2015-07-16-method-equiv %}).
+[the next part, “When are two methods alike?”](method-equiv.md).
 
 *This article was tested with Scala 2.11.7.*

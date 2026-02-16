@@ -8,7 +8,7 @@
 
 *This is the fifth of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[start at the beginning](type-members-parameters.md),
 which introduces code we refer to throughout this article without
 further ado.*
 
@@ -23,7 +23,7 @@ val ebools: MList = MCons(true, MCons(false, MNil())): MList.Aux[Boolean]
 ```
 
 Recall
-[from the first part]({% post_url 2015-07-13-type-members-parameters %}#why-all-the-type-t)
+[from the first part](type-members-parameters.md#why-all-the-type-t)
 that the equivalent type in `PList` style is `PList[_]`.  Now, these
 variables all have the “same” type, by virtue of forgetting what their
 specific element type is, though you know that every value of, for
@@ -80,7 +80,7 @@ argument expression's type is not compatible with formal parameter type;
 
 According to our equivalence test, neither of these methods works to
 implement the other!  This despite
-[the “simple rule” we have already discussed]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok).
+[the “simple rule” we have already discussed](type-members-parameters.md#when-is-existential-ok).
 Here’s the error the other way.
 
 ```scala
@@ -131,7 +131,7 @@ This discovery, which I made for myself
 [in the depths of the Ermine Java code](https://bitbucket.org/ermine-language/ermine-writers/src/c63d4060a74f1c8520ea1c8c3ba51ebd5d269780/writers/javafx/src/main/java/com/clarifi/reporting/writers/jfx/table/JFXTables.java?at=default#JFXTables.java-163)
 (though it was certainly already well-known to others), was my first
 clue, personally, that the term
-[“wildcard” was a lie, as discussed in a previous part]({% post_url 2015-07-16-method-equiv %}#why-are-existentials-harder-to-think-about).
+[“wildcard” was a lie, as discussed in a previous part](method-equiv.md#why-are-existentials-harder-to-think-about).
 
 Scoping existential quantifiers
 -------------------------------
@@ -296,7 +296,7 @@ res0: =:=[tmtp.MList,tmtp.MList{type T = E} forSome { type E }] = <function1>
 
 That’s why we could use `runStSource` to infer a type parameter for
 the existential `S` in
-[the last post]({% post_url 2015-07-23-type-projection %}#type-parameters-see-existentially):
+[the last post](type-projection.md#type-parameters-see-existentially):
 the scope is on the outside, so there’s exactly one type parameter to
 infer.  So the scoping problem now looks very similar to the
 `PList`-in-`PList` problem, and we can write:
@@ -387,7 +387,7 @@ type members instead of parameters and leaving off the refinements
 that make them concrete.
 
 In
-[the next part, “Values never change types”]({% post_url 2015-07-30-values-never-change-types %}),
+[the next part, “Values never change types”](values-never-change-types.md),
 we’ll get some idea of why working with existential types can be so
 full of compiler errors, especially when allowing for mutation and
 impure functions.

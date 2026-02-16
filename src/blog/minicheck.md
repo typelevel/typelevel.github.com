@@ -147,7 +147,7 @@ for {
 
 The tradeoffs here are the usual when we're talking about functional programming in Scala: Reasoning ability, convenience, performance, … 
 In the pure case, there are also multiple other possible encodings, including free monads.
-Luckily, this blog covers that topic in another [post]({% post_url 2016-09-21-edsls-part-1 %}).
+Luckily, this blog covers that topic in another [post](edsls-part-1.md).
 
 How do other libraries fare here?
 

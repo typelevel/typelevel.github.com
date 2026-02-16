@@ -8,12 +8,12 @@
 
 *This is the third of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[start at the beginning](type-members-parameters.md),
 which introduces code we refer to throughout this article without
 further ado.*
 
 As I mentioned
-[in the previous article]({% post_url 2015-07-16-method-equiv %}#when-are-two-methods-less-alike),
+[in the previous article](method-equiv.md#when-are-two-methods-less-alike),
 the error of the `mdropFirstE` signature, taking `MList` and returning
 merely `MList`, was to fail to relate the input element type to the
 output element type.  This mistake is an easy one to make when failure
@@ -114,7 +114,7 @@ This is a scoping problem; the refinement type makes the member `T`
 shadow our method type parameter `T`.  We dealt with the problem in
 `MList#uncons` and `MCons#tail` as well, way back in section “Two
 lists, all alike” of
-[the first part]({% post_url 2015-07-13-type-members-parameters %}#two-lists-all-alike),
+[the first part](type-members-parameters.md#two-lists-all-alike),
 in those cases by outer-scoping the `T` as
 `self.T` instead.
 
@@ -150,7 +150,7 @@ argument is caught by the compiler, and misspelling the parameter name
 is impossible.
 
 In
-[the next part, “Type projection isn’t that specific”]({% post_url 2015-07-23-type-projection %}),
+[the next part, “Type projection isn’t that specific”](type-projection.md),
 we’ll see why something that, at first glance, seems
 like a workable alternative to either refinement or the `Aux` trick,
 doesn’t work out as well as people wish it would.

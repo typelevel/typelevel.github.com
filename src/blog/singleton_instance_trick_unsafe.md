@@ -11,7 +11,7 @@
 Sometimes, Scala programmers notice a nice optimization they can use
 in the case of a class that has an invariant type parameter, but in
 which that type parameter
-[appears in variant or phantom position in the actual data involved]({% post_url 2014-03-09-liskov_lifting %}).
+[appears in variant or phantom position in the actual data involved](liskov_lifting.md).
 [`=:=`](http://www.scala-lang.org/api/2.11.1/scala/Predef$$$eq$colon$eq.html)
 is an
 [example of the phantom case](https://github.com/scala/scala/blob/v2.11.1/src/library/scala/Predef.scala#L398).
@@ -24,7 +24,7 @@ sealed abstract class =:=[From, To] extends (From => To) with Serializable
 is an example of the covariant case.
 
 Here is the optimization, which is very similar to
-[the `Liskov`-lifting previously discussed]({% post_url 2014-03-09-liskov_lifting %}):
+[the `Liskov`-lifting previously discussed](liskov_lifting.md):
 a “safe” cast of the invariant type
 parameter can be made, because all operations on the casted result
 remain sound.
@@ -289,7 +289,7 @@ Nothing ~ A
 Scalaz
 [uses the optimization under consideration in `scalaz.IList`](https://github.com/scalaz/scalaz/blob/v7.0.6/core/src/main/scala/scalaz/IList.scala#L436-L437).
 So would generalized `Functor`-based `Liskov`-lifting, as discussed at
-the end of [“When can Liskov be lifted?”]({% post_url 2014-03-09-liskov_lifting %}),
+the end of [“When can Liskov be lifted?”](liskov_lifting.md),
 were it to be implemented.  However, these cases do not fit the bill
 for exploitation from Scalazzi-safe code.
 

@@ -25,7 +25,7 @@ For a tutorial/review on (higher) kinds, I recommend the following resources:
 
 ## Part 2: Summations of a Higher Kind
 
-[Last time]({% post_url 2013-10-13-towards-scalaz-1 %}) we left off after
+[Last time](towards-scalaz-1.md) we left off after
 writing our own generic `sum` function:
 
 ```scala

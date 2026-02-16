@@ -8,11 +8,11 @@
 
 *This is the second of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[start at the beginning](type-members-parameters.md),
 which introduces code we refer to throughout this article without
 further ado.*
 
-[In the last part]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok),
+[In the last part](type-members-parameters.md#when-is-existential-ok),
 we just saw two method types that, though different, are effectively
 the same: those of `plengthT` and `plengthE`.  We have rules for
 deciding when an existential parameter can be lifted into a method
@@ -159,7 +159,7 @@ trip and fall off a cliff.  They are only *superficially* “wildcards”.
 The effect of this sorry attempt at avoiding new terminology is
 chiefly to cheat Java programmers out of learning what’s really going
 on.  (We will explore some of this more exotic behavior
-[in a later post]({% post_url 2015-07-27-nested-existentials %}).)
+[in a later post](nested-existentials.md).)
 
 Two: by
 [encouraging use of existential signatures](https://docs.oracle.com/javase/tutorial/extra/generics/methods.html)
@@ -190,7 +190,7 @@ def pdropFirst[T](xs: PList[T]): PList[T] =
 ```
 
 According to the `PList` ⇔ `MList` conversion rules given
-[in the previous article]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok),
+[in the previous article](type-members-parameters.md#when-is-existential-ok),
 section “Why all the `{type T = ...}`?”, the equivalent for `MList`
 should be
 
@@ -343,7 +343,7 @@ while I’m at it, I blame `Object` having any methods at all, too.
 We’d be better off without these bad features.
 
 In
-[the next part, “What happens when I forget a refinement?”]({% post_url 2015-07-19-forget-refinement-aux %}),
+[the next part, “What happens when I forget a refinement?”](forget-refinement-aux.md),
 we’ll talk about what happens when you forget refinements for things
 like `MList`, and how you can avoid that while simplifying your
 type-member-binding code.

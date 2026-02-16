@@ -8,10 +8,10 @@
 
 When you use a type parameter to abstract over actual data in your
 ADT, there is typically only one
-[variance]({% post_url 2016-02-04-variance-and-functors %}) that makes
+[variance](variance-and-functors.md) that makes
 sense, if you choose to incorporate subtyping into your designs at
 all. This is
-[the natural, “parametrically sound” variance]({% post_url 2014-03-09-liskov_lifting %}#parametrically-sound-covariance).
+[the natural, “parametrically sound” variance](liskov_lifting.md#parametrically-sound-covariance).
 
 ```scala
 sealed abstract class MyModel[P, I, -T, +V]
@@ -37,7 +37,7 @@ illustrated above.
 
 The fourth case is interesting to me, firstly, because the design of
 variance in Scala has not accounted for it; it is “phantom”,
-[the missing fourth variance]({% post_url 2016-02-04-variance-and-functors %}#one-more-thing).
+[the missing fourth variance](variance-and-functors.md#one-more-thing).
 I like to write it as I did in
 [“The missing diamond of Scala variance”](https://failex.blogspot.com/2016/09/the-missing-diamond-of-scala-variance.html):
 

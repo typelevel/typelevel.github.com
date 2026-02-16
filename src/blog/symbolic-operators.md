@@ -7,7 +7,7 @@
 # Symbolic operators and type classes for Cats
 
 This post is an introduction into how operators are implemented in Cats and has been originally published in [August 2015](https://gist.github.com/non/3abdb35a72c39276d3d9).
-Some more details can be found in the [previous post]({% post_url 2015-08-06-machinist %}).
+Some more details can be found in the [previous post](machinist.md).
 
 One of the simplest and most recognizable type classes is the semigroup.
 This type class abstracts over the ability to combine values of a certain

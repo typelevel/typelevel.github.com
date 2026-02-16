@@ -278,7 +278,7 @@ It’s *existential* because we don’t know what it is, only that it is
 *some type* and we don’t get to pick here what that is. In this way,
 it is no different from a type parameter’s treatment by the
 implementation, which is
-[existential on the inside]({% post_url 2016-01-28-existential-inside %}).
+[existential on the inside](existential-inside.md).
 
 It’s a *GADT skolem* because it was bound by the pattern matching
 mechanism to a “fresh” type, unequal to any other. Recall the way
@@ -291,7 +291,7 @@ AddVects[E] extends ISAdder[Vector[E]]
 Matching `ISAdder` with `AddVects` doesn’t tell us anything about
 bounds on the type passed to `AddVects` at construction time. This
 isn’t true of all
-[GADT skolems]({% post_url 2016-09-19-variance-phantom %}#a-gadt-skolem),
+[GADT skolems](variance-phantom.md#a-gadt-skolem),
 but is only natural for this one.
 
 `scalac` will create this GADT skolem *regardless of whether we give
@@ -550,7 +550,7 @@ typeclasses in that regard. Consider a version of `backwards` for
 ## Whoever you like
 
 With type parameters vs. members, you can get pretty far with
-[the “rule of thumb”]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok).
+[the “rule of thumb”](type-members-parameters.md#when-is-existential-ok).
 Beyond that, even bugs in `scalac` typechecking can guide you to the
 “right” choice.
 

@@ -250,7 +250,7 @@ Remember that existential types are pairs.
 
 Having collapsed callee-of-callee back to caller perspective, let’s
 apply the rule of thumb from
-[the first post in this series]({% post_url 2015-07-13-type-members-parameters %}).
+[the first post in this series](type-members-parameters.md).
 
 > A type parameter is usually more convenient and harder to screw up, but if you intend to use it existentially in most cases, changing it to a member is probably better.
 
@@ -291,7 +291,7 @@ res0: Vector[Int] = Vector(2, 2, 3)
 ```
 
 As in
-[“Values never change types”]({% post_url 2015-07-30-values-never-change-types %}#naming-the-existential),
+[“Values never change types”](values-never-change-types.md#naming-the-existential),
 `vb.S` is abstract, existential, irreducible.
 
 ## Last minute adjustments

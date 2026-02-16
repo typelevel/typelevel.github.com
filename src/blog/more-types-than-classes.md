@@ -134,7 +134,7 @@ res9: String = hi there!
 It seems like `G` must be `String`, because the argument passed to
 `pickGreeting` is a string, and in that case so must its return value
 be, according to the implementation. And from the perspective of this
-call, [outside]({% post_url 2016-01-28-existential-inside %})
+call, [outside](existential-inside.md)
 `pickGreeting`’s implementation, it is `String` indeed.
 
 But that implementation’s perspective matters, too; it is also part of
@@ -211,7 +211,7 @@ the caller, the “outside”, has told it about `G`—arguments whose
 types contain `G`, like `List[G]`, `(G, G) => G`, or `G` itself, like
 the argument to `pickGreeting`. This
 is
-[information-hiding at the type level]({% post_url 2016-03-13-information-hiding %});
+[information-hiding at the type level](information-hiding.md);
 if you find information-hiding a useful tool for implementing correct
 programs, you will find the same of the fresh, unique, and mysterious
 types induced by each introduction of a type parameter.
@@ -557,7 +557,7 @@ def pickGreeting3[G](grt: G, rand: Int): G =
 
 I’ve touched upon this
 mistake
-[in previous articles]({% post_url 2014-07-06-singleton_instance_trick_unsafe %}#types-are-erased),
+[in previous articles](singleton_instance_trick_unsafe.md#types-are-erased),
 but it’s worth taking at least one more look. Let’s examine how
 tempting this mistake is.
 

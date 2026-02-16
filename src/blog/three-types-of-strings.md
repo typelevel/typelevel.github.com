@@ -33,7 +33,7 @@ proper type arguments will be inferred.
 Yet, assuming you don’t wish `mungeIDs` to be oracular (i.e. a source
 of UIDs, GIDs, and OIDs), the second signature is probably much more
 reliable, because type parameters are quite as
-[mysterious]({% post_url 2017-02-13-more-types-than-classes %}#it-must-not-necessarily-be-anything)
+[mysterious](more-types-than-classes.md#it-must-not-necessarily-be-anything)
 as the opaque abstract type members of the newtype mechanism.
 
 1. `mungeIDsSafely` can’t invent new IDs, not even with `null`.
@@ -52,7 +52,7 @@ as the opaque abstract type members of the newtype mechanism.
 
 It is entirely irrelevant that you cannot subclass `String` in Scala,
 Java, or whatever.
-[There are more types than classes]({% post_url 2017-02-13-more-types-than-classes %}).
+[There are more types than classes](more-types-than-classes.md).
 
 Given the advantages, it’s very unfortunate that the signature of
 `mungeIDsSafely` is so much noisier than that of `mungeIDs`.  At least

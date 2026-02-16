@@ -8,7 +8,7 @@
 
 *This is the sixth of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[start at the beginning](type-members-parameters.md),
 which introduces code we refer to throughout this article without
 further ado.*
 
@@ -113,7 +113,7 @@ which make no secret of favoring functional programming.
 Assignment rewrites existentials
 --------------------------------
 
-[We saw earlier]({% post_url 2015-07-16-method-equiv %}) that a simple get from a
+[We saw earlier](method-equiv.md) that a simple get from a
 `List<?>`, followed by adding that value right back to the same list,
 didn’t work, but if we took that `xs` and passed it to a
 type-parameterized version, everything worked fine.  Why is that?
@@ -121,7 +121,7 @@ type-parameterized version, everything worked fine.  Why is that?
 If you have a *mutable* variable of an existential type, the
 existentialized part of the type may have different (type) values at
 different parts of the program.  Let’s use
-[the `StSource` from the projection post]({% post_url 2015-07-23-type-projection %}#a-good-reason-to-use-type-members).
+[the `StSource` from the projection post](type-projection.md#a-good-reason-to-use-type-members).
 Note that the `S` member is existential, because we did not bind it.
 
 ```scala
@@ -168,7 +168,7 @@ So, by substitution, the variable `mxs` is really a pair of functions,
 returns `StSource[String]`; each time you invoke that getter, you
 might get an `StSource[String]` with a different `S` member, because
 the `forSome` effectively occurs inside the body, as described in
-[the substitutions of “Nested existentials”]({% post_url 2015-07-27-nested-existentials %}#what-if-we-list-different-existentials).
+[the substitutions of “Nested existentials”](nested-existentials.md#what-if-we-list-different-existentials).
 
 Of course, this means you can take advantage of this in your own
 designs, to get *some* of the behavior of a type-changing value
@@ -192,7 +192,7 @@ Making variables read-only matters
 If I change the variable to `final` in Java, and remove mutation, I
 shouldn’t have this problem anymore.  Surprisingly, I do; this is what
 happened in
-[the original `copyToZero` example]({% post_url 2015-07-16-method-equiv %}),
+[the original `copyToZero` example](method-equiv.md),
 where the argument was declared `final`.  I assume that this is just a
 simplifying assumption in `javac`, that the extra guarantee of
 unchanging existentials offered by `final` isn’t understood by the
@@ -212,13 +212,13 @@ imxs.emit(s1)
 
 It can’t pull off this trick for type parameters, having just as much
 trouble as Java there.  So this is another reason for
-[our original rule of thumb]({% post_url 2015-07-13-type-members-parameters %}).
+[our original rule of thumb](type-members-parameters.md).
 
 Naming the existential
 ----------------------
 
 The benefit we get from
-[passing `copyToZeroP`’s argument to `copyToZeroT`]({% post_url 2015-07-16-method-equiv %})
+[passing `copyToZeroP`’s argument to `copyToZeroT`](method-equiv.md)
 is that we *name* the existential for the single reference to the
 argument that we make.  We name it `T` there, for the scope of its
 invocation.
@@ -228,7 +228,7 @@ existential member it has, as a type name.  There are
 [a lot of rules in Scala](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#paths)
 for exactly when this happens, but you may want to simply experiment.
 We got a hint of what that name is
-[when we used `StSource` existentially in the REPL]({% post_url 2015-07-23-type-projection %}#type-parameters-see-existentially).
+[when we used `StSource` existentially in the REPL](type-projection.md#type-parameters-see-existentially).
 Here’s the previous example again, with a type annotation for `s1`.
 
 ```scala
@@ -241,7 +241,7 @@ We have gained convenience, not power, with this *path-dependent
 types* feature; we can always pass into a type-parameterized local
 method, with only the inconvenience of having to write out the whole
 polymorphic method and call dance.  Moreover, this is nowhere near
-[a solution to the type projection problem]({% post_url 2015-07-23-type-projection %}#a-failed-attempt-at-simplified-emitting);
+[a solution to the type projection problem](type-projection.md#a-failed-attempt-at-simplified-emitting);
 there are too many things that a type parameter can do that we can’t
 with this feature.  But we’ll dive into that in a later post.
 
@@ -273,7 +273,7 @@ copyToZeroNT(time)  // not ok
 In effect, `=>` is like a type constructor; we can think of these
 arguments as `byname[PList[_]]` and `byname[PList[T]]`.  So we have
 exactly the same problem as we had with
-[`plenLength` and `plenLengthTP`]({% post_url 2015-07-27-nested-existentials %}#method-equivalence-%E2%80%A6-broken).
+[`plenLength` and `plenLengthTP`](nested-existentials.md#method-equivalence-%E2%80%A6-broken).
 
 Unfortunately,
 [Scala currently accepts this, where it shouldn’t](https://issues.scala-lang.org/browse/SI-9419).
@@ -288,7 +288,7 @@ types, **type parameterized methods are still your best friends when
 working with existential types**.
 
 In
-[the next article, “To change types, change values”]({% post_url 2015-09-21-change-values %}),
+[the next article, “To change types, change values”](change-values.md),
 we’ll look at some programs that make use of the two kinds of “type
 changing” discussed above.  After that, we’ll finally talk about
 methods that *return* values of existential type, rather than merely

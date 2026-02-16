@@ -8,12 +8,12 @@
 
 *This is the fourth of a series of articles on “Type Parameters and
 Type Members”.  If you haven’t yet, you should
-[start at the beginning]({% post_url 2015-07-13-type-members-parameters %}),
+[start at the beginning](type-members-parameters.md),
 which introduces code we refer to throughout this article without
 further ado.*
 
 In the absence of the `Aux` trick presented at the end of
-[the previous article]({% post_url 2015-07-19-forget-refinement-aux %}#why-t0-what%E2%80%99s-aux),
+[the previous article](forget-refinement-aux.md#why-t0-what%E2%80%99s-aux),
 the continuous use of structural refinement to accomplish basic tasks
 admittedly imposes a high cognitive load.  That is to say, it’s a lot
 of work to say something that ought to be very simple.
@@ -22,7 +22,7 @@ Some people go looking for a solution, and find something that almost
 seems to make sense:
 [type projection](http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#type-projection),
 or `MList#T` in terms of
-[our ongoing example]({% post_url 2015-07-13-type-members-parameters %}#two-lists-all-alike).
+[our ongoing example](type-members-parameters.md#two-lists-all-alike).
 But **type projection is, in almost all cases, too vague to really
 solve problems you have using type members**.
 
@@ -57,7 +57,7 @@ for the “state” in this sort of type definition; i.e. there are
 reasonable designs in which you want to use member `S` existentially.
 Thus, depending on how we intend to use it, it seems to meet our first
 rule of thumb about when to use type members, as described in
-[the first article of this series]({% post_url 2015-07-13-type-members-parameters %}#when-is-existential-ok).
+[the first article of this series](type-members-parameters.md#when-is-existential-ok).
 
 A failed attempt at simplified emitting
 ---------------------------------------
@@ -105,7 +105,7 @@ In reality, `StSource[A]#S` means *some* `StSource`’s `S`.  Not the
 one you gave, just any particular one.  It’s the supertype of all
 possible `S` choices.  So, the failure of the above signature is like
 the failure of `mdropFirstE` from
-[the second post of this series]({% post_url 2015-07-16-method-equiv %}#when-are-two-methods-less-alike):
+[the second post of this series](method-equiv.md#when-are-two-methods-less-alike):
 a failure to relate types strongly enough.  The problem with
 `mdropFirstE` was failure to relate the result type to argument type,
 whereas the problem with `runStSource` is to fail to relate the two
@@ -138,7 +138,7 @@ refine `S`, Scala still infers this type as the `S` argument to pass
 to `runStSource`.
 
 By analogy with type parameters, though, this isn’t too surprising.
-[We’ve already seen]({% post_url 2015-07-16-method-equiv %})
+[We’ve already seen](method-equiv.md)
 that `copyToZeroE` inferred its argument’s existential parameter to
 pass along to the named parameter to `copyToZeroP`, in the second part
 of this series.  We even saw it apply directly to type members when
@@ -160,6 +160,6 @@ features aren’t really so magical.  But before we get to that, we need
 to see just why existentials are anything but “wildcards”, and why it
 doesn’t *always* make sense to be able to lift existentials like `S`
 to type parameters.  That’s coming in
-[the next post, “Nested existentials”]({% post_url 2015-07-27-nested-existentials %}).
+[the next post, “Nested existentials”](nested-existentials.md).
 
 *This article was tested with Scala 2.11.7.*

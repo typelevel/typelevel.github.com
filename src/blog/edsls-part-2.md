@@ -436,7 +436,7 @@ encoding that solves some of them.
 and si2712fix-plugin 1.2.0 using [tut][tut].*
 
 [cats]: https://github.com/typelevel/cats "Typelevel Cats"
-[hkt]: {% post_url 2016-08-21-hkts-moving-forward %} "Higher-kinded types: the difference between giving up, and moving forward"
+[hkt]: hkts-moving-forward.md "Higher-kinded types: the difference between giving up, and moving forward"
 [mtl]: https://hackage.haskell.org/package/mtl "Monad classes"
 [mtlPaper]: http://web.cecs.pdx.edu/~mpj/pubs/springschool.html "Functional Programming with Overloading and Higher-Order Polymorphism"
 [monads]: http://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf "Monads for functional programming"
@@ -444,4 +444,4 @@ and si2712fix-plugin 1.2.0 using [tut][tut].*
 [scalaz]: https://github.com/scalaz/scalaz/tree/series/7.3.x "Scalaz 7"
 [tagless]: http://okmij.org/ftp/tagless-final/ "Typed final (tagless-final) style"
 [tut]: https://github.com/tpolecat/tut "tut: doc/tutorial generator for scala"
-[typeClassSubType]: {% post_url 2016-09-30-subtype-typeclasses %} "Subtype type classes don't work"
+[typeClassSubType]: subtype-typeclasses.md "Subtype type classes don't work"

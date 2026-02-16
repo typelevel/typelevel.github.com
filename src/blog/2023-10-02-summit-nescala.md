@@ -25,7 +25,7 @@ Whilst many of the Typelevel projects use somewhat "advanced" Scala, they are a 
 If you're interested in types and pure functional programming we'd love to see you here!
 
 This is a community conference and we strive to make it an inclusive and fulfilling event for all participants.
-All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](/conduct.html).
+All attendees, speakers, and organizers must abide by the [Typelevel Code of Conduct](/code-of-conduct/README.md).
 
 
 ## Speakers and Schedule
