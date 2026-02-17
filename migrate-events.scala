@@ -97,7 +97,12 @@ case class Event(conf: EventConfig, content: String, originalYaml: String) {
     cleaned
   }
 
-  def buildHoconMetadata(date: String, eventDate: String, eventLocation: String, tags: List[String]): String =
+  def buildHoconMetadata(
+      date: String,
+      eventDate: String,
+      eventLocation: String,
+      tags: List[String]
+  ): String =
     s"""|{%
         |  laika.html.template: event.template.html
         |  date: "$date"
@@ -166,8 +171,11 @@ case class Event(conf: EventConfig, content: String, originalYaml: String) {
   }
 
   def toLaika(date: String, stage: Int): String = {
-    val tags = Option.when(conf.title.contains("Summit"))("summits").toList ::: "events" :: Nil
-    val metadata = buildHoconMetadata(date, conf.date_string, conf.location, tags)
+    val tags = Option
+      .when(conf.title.contains("Summit"))("summits")
+      .toList ::: "events" :: Nil
+    val metadata =
+      buildHoconMetadata(date, conf.date_string, conf.location, tags)
     val title = s"# ${conf.title}"
     val image =
       conf.poster_hero.map(img => s"![${conf.title}]($img)").getOrElse("")
