@@ -2,6 +2,7 @@
   author: ${S11001001}
   date: "2015-07-30"
   tags: [technical]
+  katex: true
 %}
 
 # Values never change types
@@ -182,7 +183,7 @@ When you make a single reference, it has to be consistent; subsequent
 mutations have no effect on the value we got from that reference.  So
 we can pass that reference somewhere that asserts that this doesn’t
 happen in its own context, such as a type-parameterized
-≡*<sub><small>m</small></sub>* method.  If you have a mutable variable
+@:math \equiv_{m} @:@ method.  If you have a mutable variable
 of type `List<T>`, even if you don’t know what `T` is, you know that
 any updates to that variable will keep the same `T`.
 

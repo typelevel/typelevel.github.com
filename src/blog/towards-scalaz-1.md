@@ -2,6 +2,7 @@
   author: ${adelbertc}
   date: "2013-10-13"
   tags: [technical]
+  katex: true
 %}
 
 # Towards Scalaz (Part 1)

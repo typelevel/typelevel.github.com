@@ -2,6 +2,7 @@
   author: ${S11001001}
   date: "2016-01-28"
   tags: [technical]
+  katex: true
 %}
 
 # It’s existential on the inside
@@ -81,7 +82,7 @@ cases, `duzzle` among them, this is one where the caller determines
 the type.
 
 We’ve [discussed](method-equiv.md) how you can
-prove that `duzzle` ≡*<sub><small>m</small></sub>* `duzzle2`, in a
+prove that `duzzle` @:math \equiv_{m} @:@ `duzzle2`, in a
 previous post. Now, it’s time to see why.
 
 ## Type parameters are parameters
@@ -118,7 +119,7 @@ PList[([A], PList[A])]            // “paired”
 ## The `duzzle`s are currying
 
 With these two models, we can finally get to the bottom of
-`duzzle` ≡*<sub><small>m</small></sub>* `duzzle2`. Here are their
+`duzzle` @:math \equiv_{m} @:@ `duzzle2`. Here are their
 types, rewritten in the forms we’ve just seen.
 
 ```scala

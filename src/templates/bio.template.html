@@ -28,32 +28,32 @@
       <div class="bulma-level-left bulma-is-flex-direction-row">
         @:for(_.email)
         <a class="bulma-level-item" href="mailto:${_.email}">
-          <span class="bulma-icon bulma-is-small"><i class="fas fa-envelope"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-envelope)</span>
         </a>
         @:@
         @:for(_.url)
         <a class="bulma-level-item" href="${_.url}">
-          <span class="bulma-icon bulma-is-small"><i class="fas fa-globe"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-globe)</span>
         </a>
         @:@
         @:for(_.github)
         <a class="bulma-level-item" href="http://github.com/${_.github}">
-          <span class="bulma-icon bulma-is-small"><i class="fab fa-github"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-github)</span>
         </a>
         @:@
         @:for(_.bluesky)
         <a class="bulma-level-item" href="http://bsky.app/profile/${_.bluesky}">
-          <span class="bulma-icon bulma-is-small"><i class="fab fa-bluesky"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-bluesky)</span>
         </a>
         @:@
         @:for(_.mastodon)
         <a class="bulma-level-item" href="${_.mastodon}">
-          <span class="bulma-icon bulma-is-small"><i class="fab fa-mastodon"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-mastodon)</span>
         </a>
         @:@
         @:for(_.linkedin)
         <a class="bulma-level-item" href="${_.linkedin}">
-          <span class="bulma-icon bulma-is-small"><i class="fab fa-linkedin"></i></span>
+          <span class="bulma-icon bulma-is-small">@:svg(fa-linkedin)</span>
         </a>
         @:@
       </div>

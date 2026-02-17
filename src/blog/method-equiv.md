@@ -2,6 +2,7 @@
   author: ${S11001001}
   date: "2015-07-16"
   tags: [technical]
+  katex: true
 %}
 
 # When are two methods alike?

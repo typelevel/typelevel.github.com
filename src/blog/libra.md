@@ -2,6 +2,7 @@
   author: ${zainabali}
   date: "2017-06-13"
   tags: [technical]
+  katex: true
 %}
 
 # Compile time dimensional analysis with Libra
@@ -27,8 +28,8 @@ This is actually a form of dimensional analysis.  We're mentally assigning the d
 
 ### Why is it important?
 
-Ignoring the laws can result in serious problems. 
-Take the Mars Climate Orbiter, a $200 million space probe which successfully reached Mars after a year long voyage, but suddenly crashed into the Martian atmosphere on arrival.  Most components on the orbiter were using metric units, however a single component was sending instructions in Imperial units.  The other components did not detect this, and instead began a sudden descent causing the orbiter to burn up.  This was a simple unit conversion error!  It was a basic mistake that could have been easily avoided.  It should have been picked up during testing, or in the runtime validation layer.  
+Ignoring the laws can result in serious problems.
+Take the Mars Climate Orbiter, a $200 million space probe which successfully reached Mars after a year long voyage, but suddenly crashed into the Martian atmosphere on arrival.  Most components on the orbiter were using metric units, however a single component was sending instructions in Imperial units.  The other components did not detect this, and instead began a sudden descent causing the orbiter to burn up.  This was a simple unit conversion error!  It was a basic mistake that could have been easily avoided.  It should have been picked up during testing, or in the runtime validation layer.
 
 In fact, it could even have been caught at compile time.
 
@@ -42,21 +43,21 @@ We'll begin by working through our calculation in doubles before adding compile 
 
 The star that we're aiming for is Alpha Librae.  This is pretty far, so we can only send one very small person.  We have been given the following quantities to work with:
 
--   rocket mass of a small person - 40kg
--   fuel mass of a lot of fuel - 10<sup>4</sup>kg
--   exhaust speed of a decent fuel - 10<sup>6</sup>ms<sup>-1</sup>
--   distance to Alpha Librae - 77 ly
+-   rocket mass of a small person - @:math 40 \text{kg} @:@
+-   fuel mass of a lot of fuel - @:math 10^4 \text{kg} @:@
+-   exhaust speed of a decent fuel - @:math 10^6 \text{ms}^{-1} @:@
+-   distance to Alpha Librae - @:math 77 \text{ly} @:@
 
 We want to calculate when the rocket will arrive.
 
 To do so, we're going to make use of a formula known as the *Ideal Rocket Equation*.
 This calculates the speed of a rocket in ideal conditions.
-    
+
 ```scala
 val rocketSpeed = exhaustSpeed * log((rocketMass + fuelMass) / rocketMass)
 ```
 Once we have the speed, we can work out the travel time.
-    
+
 ```scala
 val time = distance / rocketSpeed
 ```
@@ -92,7 +93,7 @@ case class Quantity[A](value: Double)
 
 
 
-    
+
 ```scala
 type Kilogram
 type Metre
@@ -104,7 +105,7 @@ type Year
 ```
 
 We can create quantities:
-    
+
 ```scala
 val rocketMass = Quantity[Kilogram](40.0)
 val fuelMass = Quantity[Kilogram](10000.0)
@@ -196,13 +197,13 @@ type Dimensionless
 And we'll need to write instances for all combinations of dimensions.
 
 ```scala
-implicit val kgDivideKg: Divide.Aux[Kilogram, Kilogram, Dimensionless] = 
+implicit val kgDivideKg: Divide.Aux[Kilogram, Kilogram, Dimensionless] =
   new Divide[Kilogram, Kilogram] { type Out = Dimensionless }
 
-implicit val lyDivideC: Divide.Aux[LightYear, C, Year] = 
+implicit val lyDivideC: Divide.Aux[LightYear, C, Year] =
   new Divide[LightYear, C] { type Out = Year }
-	
-implicit val lyDivideMps: Divide.Aux[LightYear, MetresPerSecond, LightYearSecondsPerMetre] = 
+
+implicit val lyDivideMps: Divide.Aux[LightYear, MetresPerSecond, LightYearSecondsPerMetre] =
   new Divide[LightYear, MetresPerSecond] { type Out = LightYearSecondsPerMetre }
 
 implicit val mpsDivideC: Divide.Aux[MetresPerSecond, C, MetresPerSecondPerC] =
@@ -348,7 +349,7 @@ implicit def baseCase: Invert.Aux[HNil, HNil] = new Invert[HNil] { type Out = HN
 The inductive case assumes that the tail has an instance, and derives an instance for the head by negating the exponent:
 
 ```scala
-implicit def inductiveCase[D, Exp <: XInt, NExp <: XInt, Tail <: HList, 
+implicit def inductiveCase[D, Exp <: XInt, NExp <: XInt, Tail <: HList,
   OutTail <: HList](
     implicit negateEv: OpInt.Aux[Negate[Exp], NExp],
     tailEv: Invert.Aux[Tail, OutTail]
@@ -398,13 +399,13 @@ We can define the inductive case using the following logic:
 4.  Look for a typeclass instance for the left list tail and the remaining elements in the right list
 
 ```scala
-implicit def inductiveCase[D, R <: HList, LExp <: XInt , RExp <: XInt, 
+implicit def inductiveCase[D, R <: HList, LExp <: XInt , RExp <: XInt,
   OutExp <: XInt, RTail <: HList, LTail <: HList, OutTail <: HList](
   implicit pickEv: Selector.Aux[R, D, RExp],
   addEv: OpInt.Aux[LExp + RExp, OutExp],
   filterEv: FilterNot.Aux[R, FieldType[D, RExp], RTail],
   tailEv: Multiply.Aux[LTail, RTail, OutTail]
-): Multiply.Aux[FieldType[D, LExp] :: LTail, R, FieldType[D, OutExp] :: OutTail] = 
+): Multiply.Aux[FieldType[D, LExp] :: LTail, R, FieldType[D, OutExp] :: OutTail] =
   new Multiply[FieldType[D, LExp] :: LTail, R] {
     type Out = FieldType[D, OutExp] :: OutTail
 }
@@ -428,7 +429,7 @@ Dividing a numerator by a denominator is as simple as inverting the denominator 
 We can write this in a single non-inductive instance:
 
 ```scala
-implicit def divide[L <: HList, R <: HList, RInverted <: HList, 
+implicit def divide[L <: HList, R <: HList, RInverted <: HList,
   Divided <: HList](
   implicit invertEv: Invert.Aux[R, RInverted],
   multiplyEv: Multiply.Aux[L, RInverted, Divided]
@@ -486,7 +487,7 @@ And we finished with compile time dimensional analysis:
 
 ```scala
 val rocketSpeed = 1000000.0.mps * log(((40.0.kg +10000.0.kg) /40.0.kg).value)
-val speedConversion = 300000000.0.mps / 1.c 
+val speedConversion = 300000000.0.mps / 1.c
 val speedInC = rocketSpeed / speedConversion
 val time = 77.0.ly / speedInC
 //time: Quantity[FieldType[Year, 1] :: HNil] = Quantity(4180.65274634)
@@ -500,8 +501,8 @@ All we need to provide for the business logic of our rocket launch problem are t
 We could roll this out to any other problem.  Let's say we wanted to do a currency conversion between `GBP` and `DKK`:
 
 ```scala
-val exchangeRate: Quantity[FieldType[DKK, 1] :: FieldType[GBP, -1] :: HNil] = 
-   currentExchangeRate() 
+val exchangeRate: Quantity[FieldType[DKK, 1] :: FieldType[GBP, -1] :: HNil] =
+   currentExchangeRate()
 Val krone: Quantity[FieldType[DKK, 1] :: HNil] = 10.gbp * exchangeRate
 ```
 

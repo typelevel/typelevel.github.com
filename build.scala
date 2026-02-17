@@ -3,6 +3,7 @@
 //> using dep com.monovore::decline-effect::2.6.0
 //> using dep org.graalvm.js:js:25.0.2
 //> using dep org.webjars.npm:katex:0.16.28
+//> using dep org.webjars.npm:fortawesome__fontawesome-free:7.1.0
 //> using dep pink.cozydev::protosearch-laika:0.0-fdae301-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
@@ -11,6 +12,7 @@ import cats.effect.*
 import cats.syntax.all.*
 import com.monovore.decline.Opts
 import com.monovore.decline.effect.CommandIOApp
+import java.io.FileNotFoundException
 
 // Welcome to the typelevel.org build script!
 // This script builds the site and can serve it locally for previewing.
@@ -116,7 +118,9 @@ object LaikaBuild {
       LaikaCustomizations.Directives,
       LaikaCustomizations.RssExtensions
     )
-    .withConfigValue(LinkValidation.Global(excluded = Seq(Path.Root / "blog" / "feed.rss")))
+    .withConfigValue(
+      LinkValidation.Global(excluded = Seq(Path.Root / "blog" / "feed.rss"))
+    )
     .withConfigValue(LaikaKeys.siteBaseURL, "https://typelevel.org/")
     .parallel[IO]
     .withTheme(theme)
@@ -180,7 +184,7 @@ object LaikaCustomizations {
     val link = h.options.id.map { id =>
       SpanLink
         .internal(RelativePath.CurrentDocument(id))(
-          Literal("", Styles("fas", "fa-link", "fa-sm"))
+          RawContent(NonEmptySet.of("html"), Icons("fa-link"))
         )
         .withOptions(
           Styles("anchor-link")
@@ -247,6 +251,14 @@ object LaikaCustomizations {
             }
             .leftMap(_.message)
             .map(TemplateSpanSequence(_))
+        }
+      },
+      TemplateDirectives.create("svg") {
+        import TemplateDirectives.dsl.*
+        attribute(0).as[String].map { icon =>
+          TemplateElement(
+            RawContent(NonEmptySet.of("html", "rss"), Icons(icon))
+          )
         }
       }
     )
@@ -329,6 +341,36 @@ object LaikaCustomizations {
         }
     }
   }
+
+  val Icons = {
+    def loadFaIcon(prefix: String, name: String) = {
+      val resourcePath =
+        "/META-INF/resources/webjars/fortawesome__fontawesome-free/7.1.0"
+      val inputStream =
+        getClass.getResourceAsStream(s"$resourcePath/svgs/$prefix/$name.svg")
+      String(inputStream.readAllBytes())
+    }
+
+    Map(
+      // brands
+      "fa-bluesky" -> loadFaIcon("brands", "bluesky"),
+      "fa-discord" -> loadFaIcon("brands", "discord"),
+      "fa-github" -> loadFaIcon("brands", "github"),
+      "fa-linkedin" -> loadFaIcon("brands", "linkedin"),
+      "fa-mastodon" -> loadFaIcon("brands", "mastodon"),
+      "fa-youtube" -> loadFaIcon("brands", "youtube"),
+      // solids
+      "fa-book" -> loadFaIcon("solid", "book"),
+      "fa-envelope" -> loadFaIcon("solid", "envelope"),
+      "fa-globe" -> loadFaIcon("solid", "globe"),
+      "fa-hand-holding-heart" -> loadFaIcon("solid", "hand-holding-heart"),
+      "fa-link" -> loadFaIcon("solid", "link"),
+      "fa-magnifying-glass" -> loadFaIcon("solid", "magnifying-glass"),
+      "fa-person-chalkboard" -> loadFaIcon("solid", "person-chalkboard"),
+      "fa-puzzle-piece" -> loadFaIcon("solid", "puzzle-piece"),
+      "fa-square-rss" -> loadFaIcon("solid", "square-rss")
+    )
+  }
 }
 
 object KaTeX {
@@ -338,7 +380,7 @@ object KaTeX {
   private def loadKaTeX(): String = {
     val resourcePath = "/META-INF/resources/webjars/katex/0.16.28/dist/katex.js"
     val inputStream = getClass.getResourceAsStream(resourcePath)
-    new String(inputStream.readAllBytes())
+    String(inputStream.readAllBytes())
   }
 
   private lazy val katex = {
@@ -352,7 +394,11 @@ object KaTeX {
 
   def apply(latex: String, displayMode: Boolean = false): String =
     synchronized {
-      val options = Map("throwOnError" -> true, "strict" -> true, "displayMode" -> displayMode)
+      val options = Map(
+        "throwOnError" -> true,
+        "strict" -> true,
+        "displayMode" -> displayMode
+      )
       katex.invokeMember("renderToString", latex, options.asJava).asString
     }
 
