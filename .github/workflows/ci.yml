@@ -19,8 +19,8 @@ jobs:
       - uses: coursier/cache-action@v6
       - uses: VirtusLab/scala-cli-setup@main
         with:
-          scala-cli-version: 1.12.1
-      - run: scala-cli --server=false fmt --check .
+          scala-cli-version: 1.12.2
+      - run: scala-cli fmt --check .
       - run: scala-cli --server=false build.scala
       - if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4.0.0
