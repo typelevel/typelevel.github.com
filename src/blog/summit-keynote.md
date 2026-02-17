@@ -16,5 +16,5 @@ While the CfP for the [Philadelphia Summit][philadelphia] is still open ([have y
 Stephanie will join the Summit on March 2nd to talk about _Dependently-Typed Haskell_.
 We hope this will give us an exciting opportunity to exchange knowledge between the Haskell and Scala communities.
 
-[philadelphia]: /todo/README.md
+[philadelphia]: summit-philadelphia-2016-03-02.md
 [cfp]: http://goo.gl/forms/SX3plxsOKb

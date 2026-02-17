@@ -79,21 +79,21 @@ Let’s look at the compiled code of the `eval` body, specifically, the
 `case` line.
 
 ```nasm
-         2: aload_2       
+         2: aload_2
          3: instanceof    #60                 // class adts/AddExpr
          6: ifeq          39
-         9: aload_2       
+         9: aload_2
         10: checkcast     #60                 // class adts/AddExpr
-        13: astore_3      
-        14: aload_3       
+        13: astore_3
+        14: aload_3
         15: invokevirtual #63                 // Method adts/AddExpr.x:()I
         18: istore        4
-        20: aload_3       
+        20: aload_3
         21: invokevirtual #66                 // Method adts/AddExpr.y:()I
         24: istore        5
         26: iload         4
         28: iload         5
-        30: iadd          
+        30: iadd
 ```
 
 So, instead of calling `unapply` to presumably check whether `AddExpr`
@@ -248,9 +248,9 @@ def eval2[T](ex: Expr2[T]): T =
 
 Using the `Leibniz` proof is, unfortunately, more involved than
 producing it in the fold implementations.  See my previous posts,
-[“A function from type equality to Leibniz”](type_equality_to_leibniz.md)
+[“A function from type equality to Leibniz”](type-equality-to-leibniz.md)
 and
-[“Higher Leibniz”](higher_leibniz.md),
+[“Higher Leibniz”](higher-leibniz.md),
 for many
 details on applying `Leibniz` proof to make type transformations.
 

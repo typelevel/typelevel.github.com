@@ -557,7 +557,7 @@ def pickGreeting3[G](grt: G, rand: Int): G =
 
 I’ve touched upon this
 mistake
-[in previous articles](singleton_instance_trick_unsafe.md#types-are-erased),
+[in previous articles](singleton-instance-trick-unsafe.md#types-are-erased),
 but it’s worth taking at least one more look. Let’s examine how
 tempting this mistake is.
 

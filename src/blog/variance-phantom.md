@@ -11,7 +11,7 @@ ADT, there is typically only one
 [variance](variance-and-functors.md) that makes
 sense, if you choose to incorporate subtyping into your designs at
 all. This is
-[the natural, “parametrically sound” variance](liskov_lifting.md#parametrically-sound-covariance).
+[the natural, “parametrically sound” variance](liskov-lifting.md#parametrically-sound-covariance).
 
 ```scala
 sealed abstract class MyModel[P, I, -T, +V]

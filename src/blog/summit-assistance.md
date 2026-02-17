@@ -42,5 +42,5 @@ If you are planning on attending or speaking in Philadelphia or Oslo, and you wo
 
 [code-of-conduct]: /code-of-conduct/README.md
 [summits]: announcement_summit.md
-[philadelphia]: /todo/README.md
-[oslo]: /todo/README.md
+[philadelphia]: summit-philadelphia-2016-03-02.md
+[oslo]: summit-oslo-2016-05-04.md

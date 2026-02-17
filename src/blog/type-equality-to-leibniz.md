@@ -75,7 +75,7 @@ casting, or `AnyRef`-defined functions are permitted, what might go in
 the body of that function? Even if you know what `A` is, as a `Leib`
 implementer, it's hidden behind the unknown `F`. Even if you know that
 `B` is a supertype of `A`, you don't know that `F` is covariant,
-[by scalac or otherwise](liskov_lifting.md).
+[by scalac or otherwise](liskov-lifting.md).
 Even if you know that `A` is `Int` and `B` is `Double`, what are you
 going to do with that information?
 
@@ -175,7 +175,7 @@ These are just the basics.  Above:
 * the isomorphism between each `Leibniz` representation and all
   others.
 
-[In the next part](higher_leibniz.md), we'll
+[In the next part](higher-leibniz.md), we'll
 look at:
 
 * Why it matters that `subst` always executes to use a type equality,

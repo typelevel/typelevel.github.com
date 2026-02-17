@@ -30,7 +30,7 @@ Done #3
 List(#2, #1, #3)
 ```
 
-We'll use the concurrency primitive [`Ref[IO, List[String]]`](https://typelevel.org/cats-effect/concurrency/ref.html) to represent our internal state because it's a great fit.
+We'll use the concurrency primitive `Ref[IO, List[String]]` to represent our internal state because it's a great fit.
 
 ### Getting started
 
@@ -320,5 +320,3 @@ To conclude this post I would like to give a big shout out to [@SystemFW](https:
 > In the specific case of state sharing, this gives rise to a really nice property: since the only way to share is passing things as an argument, *the regions of sharing are exactly the same of your call graph*, so you transform an important aspect of the behaviour ("who shares this state?") into a straightforward syntactical property ("what methods take this argument"?). This makes shared state in pure FP a lot easier to reason about than its side-effectful counterpart imho.
 
 In simple terms, remind yourself about this: **"flatMap once and pass the reference as an argument!"**
-
-[string]: /todo/README.md

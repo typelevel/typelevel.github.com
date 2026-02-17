@@ -66,5 +66,5 @@ With the close tie of functional programming to mathematics, and the use of tech
 @:style(bulma-media-content) _Noel Welsh is a partner at Underscore, a consultancy that specializes in Scala. He's been using Scala for 6 years in all sorts of applications. He's the author of Advanced Scala, which is in the process of being rewritten to use Cats._@:@
 @:@
 
-[philadelphia]: /todo/README.md
+[philadelphia]: summit-philadelphia-2016-03-02.md
 [cfp]: http://goo.gl/forms/SX3plxsOKb

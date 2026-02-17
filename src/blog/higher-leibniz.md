@@ -7,7 +7,7 @@
 # Higher Leibniz
 
 We’ve previously seen
-[the basic implementation and motivation for `scalaz.Leibniz`](type_equality_to_leibniz.md).
+[the basic implementation and motivation for `scalaz.Leibniz`](type-equality-to-leibniz.md).
 But there’s still quite a bit more to this traditionally esoteric
 member of the Scalaz collection of well-typed stuff.
 
