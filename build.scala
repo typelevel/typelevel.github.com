@@ -12,7 +12,6 @@ import cats.effect.*
 import cats.syntax.all.*
 import com.monovore.decline.Opts
 import com.monovore.decline.effect.CommandIOApp
-import java.io.FileNotFoundException
 
 // Welcome to the typelevel.org build script!
 // This script builds the site and can serve it locally for previewing.
