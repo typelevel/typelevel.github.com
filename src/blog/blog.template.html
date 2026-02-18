@@ -29,6 +29,9 @@
             @:for(_.author)
             ${_.name}<span class="delimiter">,</span><span class="last-delimiter"> &</span>
             @:@
+            @:for(_.event-date)
+            ${_.event-date} at ${_.event-location}
+            @:@
           </p>
           @:for(_.tags)
           <span class="bulma-tag">${_}</span>
