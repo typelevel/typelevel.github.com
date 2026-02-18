@@ -4,7 +4,7 @@
 //> using dep org.graalvm.js:js:25.0.2
 //> using dep org.webjars.npm:katex:0.16.28
 //> using dep org.webjars.npm:fortawesome__fontawesome-free:7.1.0
-//> using dep pink.cozydev::protosearch-laika:0.0-fdae301-SNAPSHOT
+//> using dep pink.cozydev::protosearch-laika:0.0-c89fb9e-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
 
