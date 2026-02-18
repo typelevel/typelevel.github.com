@@ -4,7 +4,7 @@ We build this website with our own tooling! It is statically generated with [Lai
 
 UI components are provided by the [Bulma] CSS framework and icons by [Font Awesome]. Mathematical expressions are rendered during the build with [KaTeX] running on [GraalJS].
 
-We deploy to [GitHub Pages].
+Finally, all of this is brought together in a [Scala] script that we use to deploy to [GitHub Pages].
 
 If you encounter a problem with our website or have feedback, please open an issue on the [repository]. We also welcome contributions!
 
@@ -15,6 +15,7 @@ If you encounter a problem with our website or have feedback, please open an iss
 [Font Awesome]: https://fontawesome.com/
 [KaTeX]: https://katex.org/
 [GraalJS]: https://www.graalvm.org/latest/reference-manual/js/
+[Scala]: https://www.scala-lang.org/
 [GitHub Pages]: https://pages.github.com/
 [repository]: https://github.com/typelevel/typelevel.github.com
 
