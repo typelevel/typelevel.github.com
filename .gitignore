@@ -4,17 +4,3 @@
 .vscode
 
 target/
-
-_site
-*.sw?
-.idea
-/vendor/bundle
-css/main.css
-.sass-cache
-target
-.deploy
-.jekyll-metadata
-.jekyll-cache/
-.metals
-.DS_Store
-.direnv/

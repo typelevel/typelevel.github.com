@@ -2,6 +2,7 @@
   author: ${larsrh}
   date: "2016-10-17"
   tags: [technical]
+  katex: true
 %}
 
 # Let's build ourselves a small ScalaCheck

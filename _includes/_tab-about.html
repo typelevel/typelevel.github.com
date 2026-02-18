@@ -1,5 +1,0 @@
-<ul class="tab">
-    {% for tabItem in site.data.filter-about %}
-    <li><a href="{{ site.baseurl }}{{tabItem.url}}" {% if tabItem.url == page.url %} class="active" {% endif %}>{{tabItem.title}}</a></li>
-    {% endfor %}
-</ul>

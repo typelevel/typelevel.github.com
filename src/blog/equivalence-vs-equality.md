@@ -2,6 +2,7 @@
   author: ${TomasMikula}
   date: "2017-04-02"
   tags: [technical]
+  katex: true
 %}
 
 # Equivalence versus Equality

@@ -1,163 +1,73 @@
-typelevel website
-=================
+# typelevel.org
 
-This is the website of typelevel.scala. It is built on Jekyll and served at [typelevel.org](https://typelevel.org).
+This is the source of typelevel.org. It is built with [Laika] and deployed to GitHub Pages.
 
-## Getting Started (the short version)
+## Get Started
 
-If you just want to add a blog post or fix a typo in the content, here's how to get started.
+To work on the website, you will need:
+* Scala 3.5 or later
+* Java 21 or later
 
-### Creating a blog post
+### Preview Server
 
-1. Create a new file in the [`./collections/_posts`](./collections/_posts/) directory or copy an existing post. Its name should have the format `YYYY-MM-DD-short_title.md`.
-2. Set the `title` (short title of the post, appears as the HTML `<title>`) and `author` (your GitHub user name) in the front matter. MathJax is available via `mathjax: true` inside the front matter.
-3. If this is your first blog post, please indicate if you want your name and a profile picture to appear on the post. If not, you can remove the `author` field from the front matter. Add your details in `_data/authors.yml`.
-4. Write your content using Markdown. For code highlighting, use the usual GitHub syntax:
+For the best experience, serve the website to immediately see your changes in a live preview.
 
-```scala
-def yourCode: Here
+```bash
+scala build.scala -- serve
 ```
 
-If you haven't written a post before, please add yourself to `_data/authors.yml`.
-
-That's it, we'll take care of the rest. If you wish, you can also submit just a plain Markdown file and we'll be happy to integrate it.
-
-### Previewing your changes
-
-#### Bundler
-
-To preview your changes, you have to install [Bundler](https://bundler.io/) first.
-To download and set up all necessary dependencies, run
-
-```console
-$ bundle install
-... lots of text ...
-Bundle complete! 1 Gemfile dependency, 81 gems now installed.
-Bundled gems are installed into `./vendor/bundle`
+Within a few seconds, a preview server will be available at http://localhost:8000/. Press `Ctrl+C` to stop the server. In case you need to use a different port, you may pass it as an option.
+```bash
+scala run build.scala -- serve --port 8080
 ```
 
-Then, you can generate the site by running
+### Write a blog post
 
-```console
-$ bundle exec jekyll serve -wl --baseurl ''
+Blog posts (including event announcements) are added to the `src/blog/` directory. Content is written using [GitHub-flavored Markdown][gfm]. Code blocks support syntax highlighting in Scala and [several other languages][syntax]. Rendering of mathematical expressions is enabled for any document by setting `katex: true` in the configuration header and using the `@:math` directive.
+
+```
+@:math
+\forall a,b,c \in S : (a \cdot b) \cdot c = a \cdot (b \cdot c)
+@:@
 ```
 
-The generated site will end up in the `_site` directory.
+If this is your first blog post, be sure to add your author info to `src/directory.conf`.
 
-#### Nix
-
-A fully configured Jekyll is available as a Nix app.  Assumes that you have [installed Nix](https://nixos.org/download.html) and [enabled flakes](https://nixos.wiki/wiki/Flakes#Installing_flakes).
-
-```console
-$ nix run github:typelevel/typelevel.github.com#jekyll build
-warning: Git tree '/Users/ross.baker/src/typelevel.github.com' is dirty
-Configuration file: /Users/ross.baker/src/typelevel.github.com/_config.yml
-            Source: /Users/ross.baker/src/typelevel.github.com
-       Destination: /Users/ross.baker/src/typelevel.github.com/_site
- Incremental build: disabled. Enable with --incremental
-      Generating...
-                    done in 3.635 seconds.
- Auto-regeneration: disabled. Use --watch to enable.
+```hocon
+toolkitty {
+  name: Toolkitty
+  pronouns: "they/them"
+  avatar: "https://github.com/toolkitty.png"
+  github: toolkitty
+  bluesky: toolkitty.bsky.social
+  bio: "I am the mascot of the Scala Toolkit!"
+}
 ```
 
-There is also a devshell for direct invocation, and a convenient alias:
+Note that event announcements use a custom template with additional fields specified in the configuration header.
 
-```console
-$ nix develop github:typelevel/typelevel.github.com
-🔨 Welcome to typelevel-org-shell
-
-[general commands]
-
-  jekyll     - a jekyll bundled with this site's dependencies
-  menu       - prints this menu
-  tl-preview - preview the Jekyll site
-
-$ tl-preview
-Configuration file: /home/you/src/typelevel.github.com/_config.yml
-            Source: /home/you/src/typelevel.github.com
-       Destination: /home/you/src/typelevel.github.com/_site
- Incremental build: disabled. Enable with --incremental
-      Generating...
-                    done in 3.336 seconds.
- Auto-regeneration: enabled for '/home/you/src/typelevel.github.com'
-LiveReload address: http://127.0.0.1:35729
-    Server address: http://127.0.0.1:4000/
-  Server running... press ctrl-c to stop.
 ```
-
-
-
-## License
-
-Unless otherwise noted, all website content is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/deed.en_US).
+{%
+  laika.html.template: event.template.html
+  date: "2025-08-15" # the date the post is published
+  event-date: "August 22, 2025" # the actual date of the event
+  event-location: "École Polytechnique Fédérale de Lausanne"
+  tags: [events]
+%}
+```
 
 ## Development
 
-### CSS
+The build machinery is defined in `build.scala`. It implements several customizations, including an RSS feed generator and integrations with Protosearch, KaTeX, and Font Awesome.
 
-The stylesheets are written in SASS, and can be found in the `css` and `_sass` directories.
-It is being processed/compiled into regular CSS by Jekyll.
+To learn more about how you can develop and customize the website please reference the extensive [Laika] documentation.
 
-```
-├── css/
-│   ├── main.scss # Custom CSS, brings all stylesheets together
-├── _sass/
-│   ├── base/
-│   ├── components/
-│   ├── utils/
-```
+## Support
 
-### Javascript
+We are happy to help you contribute to our website! Please [create a discussion][discussion] or message the [#website][discord] channel on the Typelevel Discord.
 
-Javascript can be found in the `js/` folder, which also includes its dependencies.
-
-### Templates
-
-All templates/layouts can be found in the `_layouts` folder, except the blog layout, which is located inside its own subfolder `blog/`.
-
-### Images
-
-Images for styling purposes are located inside `img/`, photos inside `img/media/`.
-
-### Adding a project
-
-There are three types of projects: organization projects, affiliate projects, and core/featured projects.
-
-To add an organization project, insert a new entry, alphabetically, in the `_data/projects.yml` file with the following keys:
-
-```yml
-- title: "Cats"
-  description: "A library intended to provide abstractions for functional programming in Scala, leveraging its unique features. Design goals are approachability, modularity, documentation and efficiency."
-  github: "https://github.com/typelevel/cats"
-  platforms: [js, jvm, native]
-  permalink: "https://typelevel.org/cats/" # optional
-```
-
-Right now nothing more than the correct front matter is required.
-
-To add
-- an **affiliate** project, add `affiliate: true` to the project entry
-- a **core** project, add `core: true` to the project entry
-
-### Adding a page
-
-To add a page, 
-
-1. Create a directory in the root of the project, with at least an `index.html` file in that directory. 
-2. Update  `_data/nav.yml` to add it to the navigation. (The site navigation is not fully dynamic for simplification.)
-
-Sample front matter for a page:
-
-```yml
-layout: page
-title: "Code of Conduct"
-```
-
-### Help, CI is failing on a Dependabot PR
-
-We need to update the gemset as well.
-
-```sh
-nix run nixpkgs#bundix
-git commit -am "Update gemset"
-```
+[Laika]: https://typelevel.org/Laika
+[syntax]: https://typelevel.org/Laika/latest/03-preparing-content/05-syntax-highlighting.html#supported-languages
+[gfm]: https://github.github.com/gfm/
+[discussion]: https://github.com/typelevel/typelevel.github.com/discussions/new/choose
+[discord]: https://discord.gg/krrdNdSDFf

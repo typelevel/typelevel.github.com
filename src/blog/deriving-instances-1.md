@@ -2,6 +2,7 @@
   author: ${larsrh}
   date: "2013-06-24"
   tags: [technical]
+  katex: true
 %}
 
 # Deriving Type Class Instances

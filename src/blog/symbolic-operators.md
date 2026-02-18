@@ -2,6 +2,7 @@
   author: ${non}
   date: "2015-08-07"
   tags: [technical]
+  katex: true
 %}
 
 # Symbolic operators and type classes for Cats

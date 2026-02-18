@@ -9,15 +9,14 @@
   <link rel="icon" href="@:target(/img/favicon.svg)" type="image/svg+xml">
   <link rel="apple-touch-icon" href="@:target(/img/apple-touch-icon.png)">
 
-  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/js/all.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/fontawesome.min.css"
-    rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  @:if(katex)
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous">
+  @:@
 
   <link rel="stylesheet" href="@:target(/main.css)">
   <link rel="stylesheet" href="@:target(/css/code.css)">
-  <link rel="stylesheet" href="@:target(/search/docs.css)">
   <script src="@:target(/main.js)"></script>
 
   <title>${cursor.currentDocument.title}</title>

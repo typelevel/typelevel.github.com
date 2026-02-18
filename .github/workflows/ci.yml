@@ -1,20 +1,30 @@
-name: nix-flake-check
+name: Continuous Integration
 
 on:
   pull_request:
+    branches: ['**']
   push:
-    branches:
-      - main
-      - reboot
+    branches: ['main']
 
 jobs:
   build:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.1
-
-      - name: "Install Nix️"
-        uses: samueldr/lix-gha-installer-action@v1
-
-      - name: "Nix Flake Check"
-        run: nix -L flake check
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: coursier/cache-action@v6
+      - uses: VirtusLab/scala-cli-setup@main
+        with:
+          scala-cli-version: 1.12.2
+      - run: scala-cli fmt --check .
+      - run: scala-cli --server=false build.scala
+      - if: github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target
+          cname: typelevel.org

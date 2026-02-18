@@ -58,11 +58,19 @@ object MigrateAuthors extends IOApp.Simple {
   val authorsYamlPath = Path("_data/authors.yml")
   val directoryConfPath = Path("src/blog/directory.conf")
   val alreadyMigrated = Set(
-    "armanbilge", "djspiewak", "jducoeur",
-    "valencik", "samspills", "lukajcb",
-    "mpilquist", "satabin", "hkateu",
-    "bpholt", "rossabaker",
-    "typelevel", "foundation"
+    "armanbilge",
+    "djspiewak",
+    "jducoeur",
+    "valencik",
+    "samspills",
+    "lukajcb",
+    "mpilquist",
+    "satabin",
+    "hkateu",
+    "bpholt",
+    "rossabaker",
+    "typelevel",
+    "foundation"
   )
 
   def readAuthorsYaml: IO[String] = Files[IO]

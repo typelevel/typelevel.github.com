@@ -43,7 +43,8 @@ case class Post(conf: Conf, content: String, originalYaml: String) {
 
     // Fix links
     cleaned = cleaned.replace("/conduct.md", "/code-of-conduct/README.md")
-    cleaned = cleaned.replace("/code-of-conduct.md", "/code-of-conduct/README.md")
+    cleaned =
+      cleaned.replace("/code-of-conduct.md", "/code-of-conduct/README.md")
     cleaned = cleaned.replace("/projects", "/projects/README.md")
     cleaned = cleaned.replace("/gsoc/ideas", "/gsoc/ideas.md")
 
@@ -114,7 +115,7 @@ object MigratePosts extends IOApp {
   val renameMap: Map[String, String] = Map(
     "2023-02-23-gsoc.md" -> "gsoc-2023.md",
     "2024-03-02-gsoc.md" -> "gsoc-2024.md",
-    "2025-02-27-gsoc.md" -> "gsoc-2025.md",
+    "2025-02-27-gsoc.md" -> "gsoc-2025.md"
   )
 
   def getDateAndName(path: Path): Either[Throwable, (String, String)] = {

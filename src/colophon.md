@@ -1,6 +1,10 @@
 # Colophon
 
-We build this website with our own tooling! It is statically generated with [Laika], a Typelevel project for transforming Markdown into HTML sites and e-books. The search bar is powered by [Protosearch], an in-memory search library with advanced querying features. Both projects use [Cats] and other Typelevel libraries. Finally, UI components are provided by the [Bulma] CSS framework and we deploy to [GitHub Pages].
+We build this website with our own tooling! It is statically generated with [Laika], a Typelevel project for transforming Markdown into HTML sites and e-books. The search bar is powered by [Protosearch], an in-memory search library with advanced querying features. Both projects use [Cats] and other Typelevel libraries.
+
+UI components are provided by the [Bulma] CSS framework and icons by [Font Awesome]. Mathematical expressions are rendered during the build with [KaTeX] running on [GraalJS].
+
+We deploy to [GitHub Pages].
 
 If you encounter a problem with our website or have feedback, please open an issue on the [repository]. We also welcome contributions!
 
@@ -8,6 +12,9 @@ If you encounter a problem with our website or have feedback, please open an iss
 [Protosearch]: https://cozydev-pink.github.io/protosearch/
 [Cats]: https://typelevel.org/cats/
 [Bulma]: https://bulma.io/
+[Font Awesome]: https://fontawesome.com/
+[KaTeX]: https://katex.org/
+[GraalJS]: https://www.graalvm.org/latest/reference-manual/js/
 [GitHub Pages]: https://pages.github.com/
 [repository]: https://github.com/typelevel/typelevel.github.com
 

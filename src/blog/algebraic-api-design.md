@@ -2,6 +2,7 @@
   author: ${battermann}
   date: "2019-02-06"
   tags: [technical]
+  katex: true
 %}
 
 # Algebraic API Design - Types, Functions, Properties

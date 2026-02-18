@@ -19,13 +19,14 @@
     <div class="bulma-navbar-end">
       <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
       <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="@:target(/projects/README.md)">Projects</a></div>
       <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="@:target(/community/README.md)">Community</a></div>
       <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="@:target(/foundation/README.md)">Foundation</a></div>
       <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="@:target(/blog/README.md)">Blog</a></div>
       <div class="bulma-navbar-item">
         <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
-          <span class="bulma-icon bulma-is-small">
-            <i class="fas fa-magnifying-glass"></i>
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            @:svg(fa-magnifying-glass)
           </span>
         </a>
       </div>
@@ -41,7 +42,7 @@
       <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
         <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
         <span class="bulma-icon bulma-is-left bulma-has-text-primary">
-          <i class="fas fa-magnifying-glass"></i>
+          @:svg(fa-magnifying-glass)
         </span>
       </p>
     </header>
