@@ -1,6 +1,6 @@
 # Colophon
 
-We build this website with our own tooling! It is statically generated with [Laika], a Typelevel project for transforming Markdown into HTML sites and e-books. The search bar is powered by [Protosearch], an in-memory search library with advanced querying features. Both projects use [Cats] and other Typelevel libraries.
+We build this website with our own Scala-based tooling! It is statically generated with [Laika], a Typelevel project for transforming Markdown into HTML sites and e-books. The search bar is powered by [Protosearch], an in-memory search library with advanced querying features. Both projects use [Cats] and other Typelevel libraries.
 
 UI components are provided by the [Bulma] CSS framework and icons by [Font Awesome]. Mathematical expressions are rendered during the build with [KaTeX] running on [GraalJS].
 
