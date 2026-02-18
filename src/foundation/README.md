@@ -43,6 +43,6 @@ Have questions or specific needs? Please email us at donate@typelevel.org.
 [GitHub Sponsors]: https://github.com/sponsors/typelevel
 [Open Collective]: https://opencollective.com/typelevel-foundation
 [Maecenata Foundation]: https://www.maecenata.eu/
-[maecenata]: https://www.maecenata.eu/en/international-donations/)
+[maecenata]: https://www.maecenata.eu/internationales-spenden?fb_item_id_fix=93115
 [Swiss Philanthropy Foundation]: https://www.swissphilanthropy.ch/
 [Giving Europe]: https://giving.eu/
