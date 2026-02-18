@@ -100,8 +100,9 @@ img.sponsor {
   --ps-highlight: #ffde6d;
 }
 
-/* Equal height cards in grid */
-.bulma-cell > .bulma-card {
+/* Equal height cards in grid and column */
+.bulma-cell > .bulma-card,
+.bulma-column > .bulma-card {
   height: 100%;
 }
 
