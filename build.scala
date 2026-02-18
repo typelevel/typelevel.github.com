@@ -573,6 +573,7 @@ object Redirects {
     "/blog/technical/index.html" -> "/blog/README.md",
     "/blog/summits/index.html" -> "/blog/README.md",
     "/code-of-conduct.html" -> "/code-of-conduct/README.md",
+    "/conduct.html" -> "/code-of-conduct/README.md",
     "/event/2016-03-summit-philadelphia/index.html" -> "/blog/summit-philadelphia-2016-03-02.md",
     "/event/2016-05-summit-oslo/index.html" -> "/blog/summit-oslo-2016-05-04.md",
     "/event/2016-06-hackday/index.html" -> "/blog/hackday-2016-06-11.md",
