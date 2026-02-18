@@ -8,7 +8,7 @@
 
 # Typelevel UnConference - Lambda World Cadiz 2017
 
-![Typelevel UnConference - Lambda World Cadiz 2017](/img/media/cadiz.jpg)
+@:include(/img/places/cadiz.md)
 
 ## About the Conference
 

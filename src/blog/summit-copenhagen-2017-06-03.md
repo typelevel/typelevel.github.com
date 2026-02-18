@@ -8,7 +8,7 @@
 
 # Typelevel Summit Copenhagen
 
-![Typelevel Summit Copenhagen](/img/media/copenhagen.jpg)
+@:include(/img/places/copenhagen.md)
 
 ## About the Summit
 

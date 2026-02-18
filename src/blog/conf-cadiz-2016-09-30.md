@@ -8,7 +8,7 @@
 
 # Typelevel Community Conference Cádiz
 
-![Typelevel Community Conference Cádiz](/img/media/cadiz.jpg)
+@:include(/img/places/cadiz.md)
 
 ## About the Conference
 

@@ -8,7 +8,7 @@
 
 # Typelevel Summit Berlin
 
-![Typelevel Summit Berlin](/img/media/berlin.jpg)
+@:include(/img/places/berlin.md)
 
 ## About the Summit
 

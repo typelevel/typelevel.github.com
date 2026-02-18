@@ -8,7 +8,7 @@
 
 # Scala Exchange Hack Day and Unconference
 
-![Scala Exchange Hack Day and Unconference](/img/media/london.jpg)
+@:include(/img/places/london.md)
 
 We're partnering with [Skills Matter][skillsmatter]
 and the [London Scala User Group][lsug]

@@ -8,7 +8,7 @@
 
 # Typelevel Summit Lausanne
 
-![Typelevel Summit Lausanne](/img/media/lausanne.jpg)
+@:include(/img/places/lausanne.md)
 
 ## About the Summit
 

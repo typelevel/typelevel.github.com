@@ -8,7 +8,7 @@
 
 # Typelevel Summit Oslo
 
-![Typelevel Summit Oslo](/img/media/oslo.jpg)
+@:include(/img/places/oslo.md)
 
 ## About the Summit
 

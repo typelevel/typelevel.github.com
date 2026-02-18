@@ -8,7 +8,7 @@
 
 # Typelevel Summit Boston
 
-![Typelevel Summit Boston](/img/media/cambridge.jpg)
+@:include(/img/places/cambridge.md)
 
 ## About the Summit
 

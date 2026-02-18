@@ -196,8 +196,24 @@ object LaikaCustomizations {
     )
   }
 
-  val overrides = HTML.Overrides { case (fmt, h: Header) =>
-    addAnchorLinks(fmt, h)
+  def renderFigure(fmt: TagFormatter, fig: Figure) = {
+    val renderedImg = HTML.defaultRenderer(fmt, fig.image)
+    val contentBlock = BlockSequence(fig.content)
+    val renderedContent = HTML.defaultRenderer(fmt, contentBlock)
+    val renderedCaption =
+      fmt.rawElement("figcaption", contentBlock, renderedContent)
+    fmt.rawElement(
+      "figure",
+      fig.clearOptions,
+      s"${renderedImg}\n${renderedCaption}"
+    )
+  }
+
+  val overrides = HTML.Overrides {
+    case (fmt, h: Header) =>
+      addAnchorLinks(fmt, h)
+    case (fmt, f: Figure) =>
+      renderFigure(fmt, f)
   }
 
   object RssExtensions extends ExtensionBundle {
@@ -283,6 +299,29 @@ object LaikaCustomizations {
             KaTeX(body, true),
             Styles("bulma-has-text-centered")
           )
+        }
+      },
+      BlockDirectives.create("figure") {
+        import BlockDirectives.dsl.*
+        (
+          attribute(0).as[String].widen,
+          attribute("intrinsicWidth").as[Double].optional,
+          attribute("intrinsicHeight").as[Double].optional,
+          attribute("style").as[String].optional,
+          attribute("alt").as[String].optional,
+          attribute("title").as[String].optional,
+          parsedBody,
+          cursor
+        ).mapN { (src, width, height, style, alt, title, body, cursor) =>
+          val img = Image(
+            InternalTarget(VirtualPath.parse(src)).relativeTo(cursor.path),
+            width.map(LengthUnit.px(_)),
+            height.map(LengthUnit.px(_)),
+            alt,
+            title
+          )
+          val options = Styles(style.getOrElse("default-image-block"))
+          Figure(SpanSequence(img), Seq.empty, body, options)
         }
       }
     )

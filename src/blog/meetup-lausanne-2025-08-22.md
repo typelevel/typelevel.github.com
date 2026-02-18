@@ -8,7 +8,7 @@
 
 # Typelevel Meetup Lausanne
 
-![Typelevel Meetup Lausanne](/img/media/lausanne.jpg)
+@:include(/img/places/lausanne.md)
 
 ## About the Meetup
 

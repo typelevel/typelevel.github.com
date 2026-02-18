@@ -8,7 +8,7 @@
 
 # Typelevel Summit NYC
 
-![Typelevel Summit NYC](/img/media/nyc.jpg)
+![Typelevel Summit NYC](/img/places/nyc.jpg)
 
 ## About the Summit
 

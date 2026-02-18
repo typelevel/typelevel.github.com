@@ -8,7 +8,7 @@
 
 # Typelevel Workshop in the Lake District
 
-![Typelevel Workshop in the Lake District](/img/media/lakedistrict.jpg)
+@:include(/img/places/lakedistrict.md)
 
 ## About the Workshop
 

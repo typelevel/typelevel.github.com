@@ -8,7 +8,7 @@
 
 # Typelevel Summit Philadelphia
 
-![Typelevel Summit Philadelphia](/img/media/philly.jpg)
+@:include(/img/places/philly.md)
 
 ## About the Summit
 
