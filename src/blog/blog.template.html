@@ -1,0 +1,46 @@
+@:embed(/templates/main.template.html)
+
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title">
+      <span class="bulma-icon-text bulma-has-text-light">
+        Blog
+        <a class="bulma-icon bulma-has-text-current" href="@:target(feed.rss)">
+          @:svg(fa-square-rss)
+        </a>
+      </span>
+    </p>
+    <p class="bulma-subtitle bulma-has-text-light">
+      Follow our blog for announcements, events, and community-contributed posts.
+    </p>
+  </div>
+</section>
+
+<div class="bulma-section bulma-container bulma-is-max-desktop bulma-columns bulma-is-multiline">
+  <!-- custom Laika template directive for listing blog posts -->
+  @:forBlogPosts
+  <div class="bulma-column bulma-is-6">
+    <div class="bulma-card">
+      <a href="@:target(_.cursor.currentDocument.sourcePath)">
+        <div class="bulma-card-content">
+          <p class="bulma-is-6 bulma-has-text-right bulma-has-text-grey">@:date(_.date, "MMMM d, yyyy")</p>
+          <h4 class="bulma-title bulma-is-5">${_.cursor.currentDocument.title}</h4>
+          <p class="blog-post-byline bulma-subtitle bulma-is-6 bulma-has-text-grey">
+            @:for(_.author)
+            ${_.name}<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+            @:@
+            @:for(_.event-date)
+            ${_.event-date} at ${_.event-location}
+            @:@
+          </p>
+          @:for(_.tags)
+          <span class="bulma-tag">${_}</span>
+          @:@
+        </div>
+      </a>
+    </div>
+  </div>
+  @:@
+</div>
+
+@:@

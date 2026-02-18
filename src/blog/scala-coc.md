@@ -1,0 +1,16 @@
+{%
+  author: ${typelevel}
+  date: "2016-12-17"
+  tags: [governance]
+%}
+
+# Endorsing the new Scala Code of Conduct
+
+A couple of days ago, the new [Scala Code of Conduct](https://contributors.scala-lang.org/t/please-read-scala-code-of-conduct/28) was published.
+It applies to all official Scala channels, including mailing lists, Gitter channels and GitHub repositories.
+We would like to take this opportunity to endorse this new Code of Conduct.
+From our perspective, it does a good job of listing encouraged behaviour, instead of just banning harassment: It reflects the goal of _actively_ creating a welcoming community.
+Also, we consider it to be a decent substitute of our own [Code of Conduct](/code-of-conduct/README.md).
+That means that Typelevel project maintainers are free to switch to the Scala Code of Conduct if they wish.
+
+For some more background, please see the [discussion on GitHub](https://github.com/typelevel/general/issues/51).

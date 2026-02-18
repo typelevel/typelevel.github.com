@@ -1,0 +1,75 @@
+@:embed(/templates/main.template.html)
+<div class="bulma-section bulma-content bulma-container bulma-is-max-desktop">
+
+  ${cursor.currentDocument.content}
+
+  <h2 id="board-of-directors">
+    <a class="anchor-link" href="#board-of-directors">
+      @:svg(fa-link)
+    </a>
+    Board of Directors
+  </h2>
+  <div class="bulma-content">
+    ${cursor.currentDocument.fragments.about-board}
+  </div>
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(board)
+    <div class="bulma-cell">
+      @:include(/templates/bio.template.html) { render-title = true }
+    </div>
+    @:@
+  </div>
+
+  <h2 id="technical-steering-committee">
+    <a class="anchor-link" href="#technical-steering-committee">
+      @:svg(fa-link)
+    </a>
+    Technical Steering Committee
+  </h2>
+  <div class="bulma-content">
+    ${cursor.currentDocument.fragments.about-tsc}
+  </div>
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(tsc)
+    <div class="bulma-cell">
+      @:include(/templates/bio.template.html)
+    </div>
+    @:@
+  </div>
+
+  <h2 id="technical-steering-committee">
+    <a class="anchor-link" href="#technical-steering-committee">
+      @:svg(fa-link)
+    </a>
+    Code of Conduct Committee
+  </h2>
+  <div class="bulma-content">
+    ${cursor.currentDocument.fragments.about-coc}
+  </div>
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(coc)
+    <div class="bulma-cell">
+      @:include(/templates/bio.template.html)
+    </div>
+    @:@
+  </div>
+
+  <h2 id="security-team">
+    <a class="anchor-link" href="#technical-steering-committee">
+      @:svg(fa-link)
+    </a>
+    Security Team
+  </h2>
+  <div class="bulma-content">
+    ${cursor.currentDocument.fragments.about-security}
+  </div>
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(security)
+    <div class="bulma-cell">
+      @:include(/templates/bio.template.html)
+    </div>
+    @:@
+  </div>
+
+  @:@
+</div>

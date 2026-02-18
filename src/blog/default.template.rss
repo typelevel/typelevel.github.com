@@ -1,0 +1,10 @@
+<item>
+  <title>${cursor.currentDocument.rawTitle}</title>
+  <pubDate>@:date(date, RFC_1123_DATE_TIME)</pubDate>
+  @:for(author)
+    <dc:creator>${_.name}</dc:creator>
+  @:@
+  <link>@:target(cursor.currentDocument.sourcePath)</link>
+  <guid isPermaLink="true">@:target(cursor.currentDocument.sourcePath)</guid>
+  <description><![CDATA[${cursor.currentDocument.content}]]></description>
+</item>

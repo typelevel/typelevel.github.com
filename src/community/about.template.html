@@ -1,0 +1,73 @@
+@:embed(/templates/main.template.html)
+<div class="bulma-section bulma-content bulma-container bulma-is-max-desktop">
+
+  ${cursor.currentDocument.content}
+
+  <div class="bulma-columns bulma-is-multiline">
+    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+      <div class="bulma-card bulma-has-background-primary-light">
+        <div class="bulma-card-content bulma-has-text-centered">
+          <span class="bulma-icon bulma-large bulma-has-text-primary bulma-is-large bulma-is-size-3">
+            @:svg(fa-discord)
+          </span>
+          <h4 class="bulma-is-4 bulma-has-text-primary-25">Discord Server</h4>
+          <div class="bulma-content bulma-has-text-left hyphenate">
+            ${cursor.currentDocument.fragments.discord}
+          </div>
+          <a class="bulma-button bulma-is-primary bulma-has-text-light" href="https://discord.gg/typelevel-632277896739946517">
+            Join Server
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+      <div class="bulma-card bulma-has-background-warning-95">
+        <div class="bulma-card-content bulma-has-text-centered">
+          <span class="bulma-icon bulma-large bulma-has-text-warning bulma-is-large bulma-is-size-3">
+            @:svg(fa-person-chalkboard)
+          </span>
+          <h4 class="bulma-is-4 bulma-has-text-warning-20">Virtual Meetups</h4>
+          <div class="bulma-content bulma-has-text-left hyphenate">
+            ${cursor.currentDocument.fragments.meetups}
+          </div>
+          <a class="bulma-button bulma-is-warning" href="@:target(meetups.md)">
+            View Calendar
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+      <div class="bulma-card bulma-has-background-success-95">
+        <div class="bulma-card-content bulma-has-text-centered">
+          <span class="bulma-icon bulma-large bulma-has-text-success bulma-is-large bulma-is-size-3">
+            @:svg(fa-puzzle-piece)
+          </span>
+          <h4 class="bulma-is-4 bulma-has-text-success-20">Affiliate Projects</h4>
+          <div class="bulma-content bulma-has-text-left hyphenate">
+            ${cursor.currentDocument.fragments.projects}
+          </div>
+          <a class="bulma-button bulma-is-success" href="@:target(/projects/README.md)">
+            Explore Projects
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+      <div class="bulma-card bulma-has-background-danger-95">
+        <div class="bulma-card-content bulma-has-text-centered">
+          <span class="bulma-icon bulma-large bulma-has-text-danger bulma-is-large bulma-is-size-3">
+            @:svg(fa-hand-holding-heart)
+          </span>
+          <h4 class="bulma-is-4 bulma-has-text-danger-20">Code of Conduct</h4>
+          <div class="bulma-content bulma-has-text-left hyphenate">
+            ${cursor.currentDocument.fragments.coc}
+          </div>
+          <a class="bulma-button bulma-is-danger bulma-has-text-light" href="@:target(/code-of-conduct/README.md)">
+            Read the Code of Conduct
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@:@

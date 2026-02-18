@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="@:target(/img/favicon.ico)" sizes="32x32">
+  <link rel="icon" href="@:target(/img/favicon.svg)" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="@:target(/img/apple-touch-icon.png)">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  @:if(katex)
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous">
+  @:@
+
+  <link rel="stylesheet" href="@:target(/main.css)">
+  <link rel="stylesheet" href="@:target(/css/code.css)">
+  <script src="@:target(/main.js)"></script>
+
+  <title>${cursor.currentDocument.title}</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  @:include(/templates/nav.template.html)
+  <main class="bulma-is-flex-grow-1">
+    ${_.embeddedBody}
+  </main>
+  @:include(/templates/footer.template.html)
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+@:embed(/templates/main.template.html)
+<div class="bulma-section bulma-content bulma-container bulma-is-max-desktop">
+
+  ${cursor.currentDocument.content}
+
+  <h2 id="board-of-directors">
+    <a class="anchor-link" href="#board-of-directors">
+      @:svg(fa-link)
+    </a>
+    Board of Directors
+  </h2>
+  <div class="bulma-grid bulma-is-col-min-12">
+    @:for(board)
+    <div class="bulma-cell">
+      @:include(/templates/bio.template.html) { render-title = true }
+    </div>
+    @:@
+  </div>
+
+  <h2 id="foundation-sponsors">
+    <a class="anchor-link" href="#foundation-sponsors">
+      @:svg(fa-link)
+    </a>
+    Foundation Sponsors
+  </h2>
+  <div class="bulma-grid bulma-is-col-min-6 bulma-is-align-items-center">
+    @:for(sponsors)
+    <div class="bulma-cell bulma-has-text-centered">
+      <a href="${_.url}"><img class="sponsor" src="@:target(_.logo)" /></a>
+    </div>
+    @:@
+  </div>
+</div>
+@:@

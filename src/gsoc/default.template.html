@@ -1,0 +1,8 @@
+@:embed(/templates/main.template.html)
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  @:include(gsoc.template.html)
+  <div class="bulma-content">
+    ${cursor.currentDocument.content}
+  </div>
+</div>
+@:@

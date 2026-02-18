@@ -1,0 +1,22 @@
+{%
+  author: ${typelevel}
+  date: "2019-05-29"
+  tags: [governance]
+%}
+
+# Support Typelevel thanks to Triplequote Hydra and compile Scala faster!
+
+Hello Community!
+
+As you all know, back in April we announced the [Typelevel Sustainability Program](typelevel-sustainability-program-announcement.md) and we have been delighted by the overwhelming support we received both from companies and individuals: thank you all!
+
+In just a little bit more than one month we reached 10% of the fundraising goal we set to $150,000. While this is an excellent start, to successfully support the long term sustainability of our ecosystem, we need you to keep advocating for us.
+
+One difficulty we are aware of is that it can be hard to convince a company to donate money even if it benefits extensively from our ecosystem. This, despite developers knowing how important it is to sustain the maintenance and development of the open source libraries they love and use every day.
+
+### Announcing: Give 25%, Get 25%, Compile Scala 75% faster!
+
+To help us get over this hurdle, we are stoked to announce that [Triplequote](https://triplequote.com/), the creator of [Triplequote Hydra](https://triplequote.com/hydra) - the only multicore Scala compiler with built-in compile-time monitoring - has kindly offered to donate 25% of each yearly Hydra license [purchased online](https://triplequote.com/hydra/pricing/) until June 30th using the discount code **TYPELEVEL25**. But that’s not it, by using the discount code you also benefit from a 25% discount on their list pricing!
+
+
+Using Hydra has proven to be incredibly valuable for Scala projects that rely on our ecosystem, and it delivered impressive compilation speedups. Nowadays, even [Cats is compiled with Hydra](https://github.com/typelevel/cats/pull/2848). Therefore, if you are looking for a way to help us reach our fundraising goal, while also profiting from a great product, don’t let this opportunity slip away. Head over to the [Hydra trial page](https://triplequote.com/hydra/trial) and get started with it in no time using your preferred development tool, whether that is sbt, Maven, Gradle, or IntelliJ IDEA! Just don’t forget to use the discount code **TYPELEVEL25**

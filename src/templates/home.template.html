@@ -1,0 +1,41 @@
+{%
+sponsors: [${spotify}, ${aruna}, ${shopify}, ${famly}]
+%}
+
+@:embed(/templates/main.template.html)
+<div class="bulma-section">
+  <div class="bulma-container bulma-is-max-desktop">
+    <h1 class="bulma-title bulma-is-1 bulma-is-size-3-mobile">
+      We develop industry-proven, <br class="bulma-is-hidden-mobile">
+      state-of-the-art libraries for <br class="bulma-is-hidden-mobile">
+      functional programming.
+    </h1>
+    <h2 class="bulma-subtitle bulma-is-3 bulma-is-size-4-mobile">
+      Start building scalable, performant applications <br class="bulma-is-hidden-mobile">
+      that you can grow and maintain
+      with confidence.
+    </h2>
+  </div>
+</div>
+<section class="bulma-hero bulma-is-primary bulma-has-text-light">
+  <div class="bulma-hero-body">
+    <p class="bulma-is-size-4 bulma-has-text-weight-medium">
+      Typelevel is an ecosystem of projects and a community of people united to foster an inclusive, welcoming, and safe
+      environment around functional programming.
+    </p>
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns bulma-is-vcentered">
+    @:for(sponsors)
+    <div class="bulma-column bulma-has-text-centered">
+      <a href="${_.url}"><img class="sponsor" src="@:target(_.logo)" /></a>
+    </div>
+    @:@
+  </div>
+  <h4 class="bulma-subtitle bulma-is-4 bulma-has-text-centered">
+    Typelevel is built by a vibrant global community and backed by a nonprofit Foundation with the support of our
+    industry sponsors.
+  </h4>
+</div>
+@:@

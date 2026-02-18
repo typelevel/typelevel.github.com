@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>navbar-icon</title>
-    <g id="navbar-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="path" fill="#21303F" x="2" y="4" width="20" height="3"></rect>
-        <rect id="path" fill="#21303F" x="2" y="10" width="20" height="3"></rect>
-        <rect id="path" fill="#21303F" x="2" y="16" width="20" height="3"></rect>
-    </g>
-</svg>

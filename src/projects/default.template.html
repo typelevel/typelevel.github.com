@@ -1,0 +1,41 @@
+@:embed(/templates/main.template.html)
+
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <h1 class="bulma-title bulma-is-1 bulma-has-text-centered">Project Index</h1>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    <div class="bulma-cell">
+      <div class="bulma-card">
+        <header class="bulma-card-header">
+          <p class="bulma-card-header-title">
+            ${_.title}
+          </p>
+          <a href="${_.github}" class="bulma-card-header-icon">
+            <span class="bulma-icon">@:svg(fa-github)</span>
+          </a>
+          @:for(_.permalink)
+          <a href="${_.permalink}" class="bulma-card-header-icon">
+            <span class="bulma-icon">@:svg(fa-book)</span>
+          </a>
+          @:@
+        </header>
+        <div class="bulma-card-content">
+          <p class="bulma-content">${_.description}</p>
+          <div class="bulma-tags">
+            @:if(_.affiliate)
+            <span class="bulma-tag bulma-is-primary bulma-is-light">Affiliate Project</span>
+            @:else
+            <span class="bulma-tag bulma-is-info bulma-is-light">Organization Project</span>
+            @:@
+            @:for(_.platforms)
+            <span class="bulma-tag">${_}</span>
+            @:@
+          </div>
+        </div>
+      </div>
+    </div>
+    @:@
+  </div>
+</div>
+
+@:@
