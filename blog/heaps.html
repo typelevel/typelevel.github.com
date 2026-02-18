@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>API Design for Heaps (aka Priority Queues)</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">API Design for Heaps (aka Priority Queues)</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Chris Okasaki<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on November 17, 2016
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="api-design-for-heaps-aka-priority-queues" class="title">API Design for Heaps (aka Priority Queues)</h1>
+    <p><em>This is a guest post by Chris Okasaki. It was initially published as the <a href="https://github.com/chrisokasaki/scads/blob/e78233ac6a787b7c66b44cd6139392418b214eb9/design/heaps.md">design document</a> behind <a href="https://github.com/chrisokasaki/scads">scads</a>. It is being republished here with the permission of the original author.</em></p>
+    <p>A heap (or priority queue) is a collection of elements ordered by some <code>Ordering</code>, optimized for retrieving the first element according to that ordering.
+    Duplicate elements are allowed.
+    Applications vary in whether they need the first element to be the smallest or the biggest element according to the ordering, so both variations should be easy to use.
+    (However, any given heap is expected to offer easy access to either the smallest element only or the biggest element only, not both at the same time.)
+    I will consider immutable heaps in this document, but the core issues discussed below apply to both immutable heaps and mutable heaps.</p>
+    <p>Even if an element type has a natural ordering, that ordering may not be the one we want to use, so we must allow the user to specify the ordering.</p>
+    
+    <h2 id="problem-1-don-t-mix-two-different-orderings-in-the-same-heap" class="section"><a class="anchor-link" href="#problem-1-don-t-mix-two-different-orderings-in-the-same-heap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Problem 1: Don&#39;t mix two different orderings in the same heap</h2>
+    <p>Here is a strawman design for a very simple heap API:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>] {  </span><span class="comment">// WARNING: THIS IS BROKEN!!!
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">isEmpty</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Boolean</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">add</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">first</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">rest</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]
+}
+
+</span><span class="comment">// factory method, probably in some companion object
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>[</span><span class="type-name">Elem</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>] = ???</span></code></pre>
+    <p>You may think it strange that all of these methods are taking an <code>ord</code> parameter.
+    From a Scala point of view, that doesn&#39;t make much sense.
+    But you can find variations of this design in many implementations of heaps on GitHub, including in the well-respected Scalaz library.
+    Why? As far as I can tell, the answer is <em>because Haskell does it that way</em>.
+    Here&#39;s the equivalent design in Haskell:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span>
+</span><span class="identifier">empty</span><span>   :: </span><span class="type-name">Ord</span><span> </span><span class="identifier">a</span><span> =&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span>
+</span><span class="identifier">isEmpty</span><span> :: </span><span class="type-name">Ord</span><span> </span><span class="identifier">a</span><span> =&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span> -&gt; </span><span class="type-name">Bool</span><span>
+</span><span class="identifier">add</span><span>     :: </span><span class="type-name">Ord</span><span> </span><span class="identifier">a</span><span> =&gt; </span><span class="identifier">a</span><span> -&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span> -&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span>
+</span><span class="identifier">first</span><span>   :: </span><span class="type-name">Ord</span><span> </span><span class="identifier">a</span><span> =&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span> -&gt; </span><span class="identifier">a</span><span>
+</span><span class="identifier">rest</span><span>    :: </span><span class="type-name">Ord</span><span> </span><span class="identifier">a</span><span> =&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span><span> -&gt; </span><span class="type-name">Heap</span><span> </span><span class="identifier">a</span></code></pre>
+    <p>In Haskell, this makes perfect sense.
+    Behind the scenes, each method takes an <code>Ord</code> dictionary as a hidden parameter.
+    But there&#39;s one critical difference between Haskell and Scala: in Haskell, there can only be a <em>single</em> ordering for an element type, but in Scala, there can be <em>many</em> orderings for the same element type.</p>
+    <p>For example, consider this Scala code:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">ord1</span><span> = </span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">ord2</span><span> = </span><span class="identifier">ord1</span><span>.</span><span class="identifier">reverse</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap1</span><span> = </span><span class="identifier">empty</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="identifier">ord1</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">5</span><span>)(</span><span class="identifier">ord1</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">7</span><span>)(</span><span class="identifier">ord1</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap2</span><span> = </span><span class="identifier">heap1</span><span>.</span><span class="identifier">add</span><span>(</span><span class="number-literal">4</span><span>)(</span><span class="identifier">ord2</span><span>)
+</span><span class="identifier">println</span><span>(</span><span class="identifier">heap2</span><span>.</span><span class="identifier">first</span><span>)</span></code></pre>
+    <p>What should this print?
+    Of course, that depends on the details of the implementation, but you would expect it to print either 4 (the smallest element) or 7 (the biggest element).
+    However, because one ordering was used for two of the <code>add</code>s and the opposite ordering was used for the third <code>add</code>, there&#39;s an excellent chance that the actual result will be 5, which is the wrong answer for both orderings.</p>
+    <p>The magic of implicit parameters is that you usually don&#39;t need to pass them explicitly.
+    But (A) there&#39;s nothing to stop you from doing so, and (B) there&#39;s nothing to prevent you from calling methods in different scopes with different orderings.
+    No, if you&#39;re anything like me, the possibility that this could happen by accident is making your skin crawl.
+    Surely, the API should prevent this from happening!</p>
+    <p>Fortunately, this problem is very easy to fix.
+    <em>Only the <code>empty</code> method should take an ordering.</em>
+    Once that initial heap has been created, all future heaps derived from that heap via any sequence of <code>add</code>s or <code>rest</code>s should use the same ordering.
+    With this change, the API becomes:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">isEmpty</span><span>: </span><span class="type-name">Boolean</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">add</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">first</span><span>: </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">rest</span><span>: </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]
+}
+
+</span><span class="comment">// factory method, probably in some companion object
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>[</span><span class="type-name">Elem</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>] = ???</span></code></pre>
+    <p>Yay! That is both simpler and safer.</p>
+    
+    <h2 id="problem-2-merge" class="section"><a class="anchor-link" href="#problem-2-merge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Problem 2: <code>merge</code></h2>
+    <p>Another operation supported by many kinds of heaps is <code>merge</code>, which combines two heaps into a single heap.
+    Examples of heaps supporting merge include leftist heaps, skew heaps, binomial heaps (aka binomial queues), Fibonacci heaps, etc.</p>
+    <p>We can easily add <code>merge</code> to the existing <code>Heap[Elem]</code> trait.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>] {
+  ...
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">merge</span><span>(</span><span class="identifier">other</span><span>: </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">Heap</span><span>[</span><span class="type-name">Elem</span><span>]
+}</span></code></pre>
+    <p>However, there are at last two problems with this.
+    First, traits allow for subclassing, so we might have several different implementations, such as leftist heaps and binomial heaps.
+    But we only want to merge leftist heaps with leftist heaps and binomial heaps with binomial heaps&amp;mdash;we do <em>not</em> want to merge leftist heaps with binomial heaps.</p>
+    <p>There are several ways to address this problem.
+    For example, leftist heaps and binomial heaps could just use completely separate trait hierarchies, and each could use a <code>sealed trait</code> to prevent this unwanted mixing of types.</p>
+    <p>But the code duplication this would entail is unsatisfying.
+    It would also make it more difficult to share code (such as a testing harness) between different implementations.</p>
+    <p>Alternatively, we can control the types more precisely by adding a second type parameter for the specific representation being used, as in:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>, </span><span class="type-name">Heap</span><span>] {
+  </span><span class="comment">// MHeap is &quot;Mergeable Heap&quot;
+</span><span>  </span><span class="comment">// Heap is the specific Heap representation being used
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">isEmpty</span><span>: </span><span class="type-name">Boolean</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">add</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>): </span><span class="type-name">Heap</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">first</span><span>: </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">rest</span><span>: </span><span class="type-name">Heap</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">merge</span><span>(</span><span class="identifier">other</span><span>: </span><span class="type-name">Heap</span><span>): </span><span class="type-name">Heap</span><span>
+}
+
+</span><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">LeftistHeap</span><span>[</span><span class="type-name">Elem</span><span>] </span><span class="keyword">extends</span><span> </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>, </span><span class="type-name">LeftistHeap</span><span>[</span><span class="type-name">Elem</span><span>]]
+
+</span><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">BinomialHeap</span><span>[</span><span class="type-name">Elem</span><span>] </span><span class="keyword">extends</span><span> </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>, </span><span class="type-name">BinomialHeap</span><span>[</span><span class="type-name">Elem</span><span>]]</span></code></pre>
+    <p>Because of the extra type parameter, a leftist heap and binomial heap are incompatible and cannot be merged.</p>
+    
+    <h2 id="problem-3-merge-continued" class="section"><a class="anchor-link" href="#problem-3-merge-continued"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Problem 3: <code>merge</code> (continued)</h2>
+    <p>There&#39;s a second problem with <code>merge</code>.  A particular implementation, such as leftist heaps, would provide a factory method for creating a new heap.</p>
+    <pre><code class="nohighlight"><span class="keyword">object</span><span> </span><span class="type-name">LeftistHeap</span><span> { </span><span class="comment">// companion object
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>[</span><span class="type-name">Elem</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Elem</span><span>]): </span><span class="type-name">LeftistHeap</span><span>[</span><span class="type-name">Elem</span><span>] = ???
+}</span></code></pre>
+    <p>Because of the <code>MHeap</code> definition, we can&#39;t <code>merge</code> a leftist heap with a binomial heap.
+    But now we&#39;ve re-introduced the problem of incompatible orderings!</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">ord1</span><span> = </span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">ord2</span><span> = </span><span class="identifier">ord1</span><span>.</span><span class="identifier">reverse</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap1</span><span> = </span><span class="identifier">empty</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="identifier">ord1</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">5</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">7</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap2</span><span> = </span><span class="identifier">empty</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="identifier">ord2</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">6</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">4</span><span>)
+</span><span class="keyword">var</span><span> </span><span class="identifier">heap3</span><span> = </span><span class="identifier">heap1</span><span>.</span><span class="identifier">merge</span><span>(</span><span class="identifier">heap2</span><span>)
+</span><span class="keyword">while</span><span> (!</span><span class="identifier">heap3</span><span>.</span><span class="identifier">isEmpty</span><span>) {
+  </span><span class="identifier">println</span><span>(</span><span class="identifier">heap3</span><span>.</span><span class="identifier">first</span><span>)
+  </span><span class="identifier">heap3</span><span> = </span><span class="identifier">heap3</span><span>.</span><span class="identifier">rest</span><span>
+}</span></code></pre>
+    <p>Notice that <code>heap1</code> and <code>heap2</code> were created with opposite orderings.
+    What happens if we merge them? Nothing good!
+    The exact results depend on details of the implementation, but a likely result is that loop will print the elements in the order 5,6,4,7&amp;mdash;or maybe 5,7,6,4&amp;mdash;when it <em>should</em> print them in sorted order!</p>
+    <p>We would really like to make this sort of situation impossible!
+    Maybe we could test the orderings for object equality at runtime, and throw an exception if they&#39;re different?
+    That could actually work for simple types like integers with a built-in ordering object.
+    But for more complicated types, such as tuples, the orderings are generated on demand from the orderings of their constituent parts.
+    And this generation is not memoized, so if we demand an ordering for, say, <code>(Int,String)</code> twice, we&#39;ll get two separate ordering objects, which will cause a false negative for our hypothetical dynamic equality check.</p>
+    <p>No, we would really like to make merging two heaps with different orderings a type error.
+    We can achieve this by making the notion of a factory explicit.
+    The idea is that heaps can only be merged with other heaps from the same factory.
+    Attempting to merge heaps from different factories will cause a type error.</p>
+    <p>In code, we might express this as follows:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">HeapFactory</span><span> {
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Heap</span><span> &lt;: </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>,</span><span class="type-name">Heap</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>: </span><span class="type-name">Heap</span><span>
+  </span><span class="comment">// plus other factory methods
+</span><span>}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">LeftistHeap</span><span> { </span><span class="comment">// companion object
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">factory</span><span>[</span><span class="type-name">E</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">E</span><span>]): </span><span class="type-name">HeapFactory</span><span> { </span><span class="keyword">type</span><span> </span><span class="type-name">Elem</span><span> = </span><span class="type-name">E</span><span> } = ???
+}</span></code></pre>
+    <p>Now we can say:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">minHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">maxHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>.</span><span class="identifier">reverse</span><span>)
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap1</span><span> = </span><span class="identifier">minHeaps</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">add</span><span>(</span><span class="number-literal">5</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">7</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap2</span><span> = </span><span class="identifier">minHeaps</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">add</span><span>(</span><span class="number-literal">6</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">4</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap3</span><span> = </span><span class="identifier">heap1</span><span>.</span><span class="identifier">merge</span><span>(</span><span class="identifier">heap2</span><span>) </span><span class="comment">// this typechecks
+</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap4</span><span> = </span><span class="identifier">maxHeaps</span><span>.</span><span class="identifier">empty</span><span>.</span><span class="identifier">add</span><span>(</span><span class="number-literal">6</span><span>).</span><span class="identifier">add</span><span>(</span><span class="number-literal">4</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">heap5</span><span> = </span><span class="identifier">heap1</span><span>.</span><span class="identifier">merge</span><span>(</span><span class="identifier">heap4</span><span>) </span><span class="comment">// !!!type error!!!</span></code></pre>
+    <p>Notice that <code>heap1</code>, <code>heap2</code>, and <code>heap3</code> have type <code>minHeaps.Heap</code> but <code>heap4</code> has type <code>maxHeaps.Heap</code>.
+    According to Scala&#39;s notion of <em>path-dependent types</em>, these types are incompatible so attempting to merge <code>heap1</code> and <code>heap4</code> causes a type error, as desired.</p>
+    
+    <h2 id="a-question" class="section"><a class="anchor-link" href="#a-question"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>A question</h2>
+    <p>Clearly, if I create two factories with incompatible element types, then a heap from one factory should not be mergeable with a heap from the other factory.
+    Similarly, if I create two factories with the same element type but incompatible orderings, then again a heap from one factory should not be mergeable with a heap from the other factory.</p>
+    <p>But what if I create two separate factories with the same element type and the same ordering?
+    Should a heap created from one of these factories be mergeable with a heap created from the other factory?
+    It&#39;s not clear.
+    If this duplication of factories was deliberate, then the answer is probably “no”.
+    This often happens with units of measure.
+    For example, maybe one of the factories is using integers to represent inches and the other is using integers to represent grams.
+    Even if the factories are using the same ordering, we probably don&#39;t want to merge a heap of inches with a heap of grams!</p>
+    <p>On the other hand, the duplication of factories could be accidental, perhaps the result of two chunks of code being written separately and then brought together later.
+    In that case, we might very well want to be able to merge a heap from one factory with a heap from another accidentally-separate-but-equivalent factory.</p>
+    <p>Regardless of where you come down on what <em>should</em> happen, what <em>will</em> happen in the above design is that attempting to merge heaps from distinct factories will cause a type error, even if the factories were made for the same element type and ordering.</p>
+    
+    <h2 id="problem-4-usability-in-the-simple-case" class="section"><a class="anchor-link" href="#problem-4-usability-in-the-simple-case"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Problem 4: Usability in the simple case</h2>
+    <p>Most applications of priority queues do not need the <code>merge</code> method.
+    Trying to make <code>merge</code> typesafe has made the API more complicated and harder to use because of the need to instantiate a factory before creating actual heaps.
+    Can we hide these complications from a user until and unless they actually need to use <code>merge</code>? Yes.</p>
+    <p>I&#39;ll re-introduce the interface without <code>merge</code>, but now called <code>SHeap</code> for “Simple Heap”:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">Elem</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">isEmpty</span><span>: </span><span class="type-name">Boolean</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">add</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>): </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">Elem</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">first</span><span>: </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">rest</span><span>: </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">Elem</span><span>]
+}</span></code></pre>
+    <p>Then <code>MHeap</code> should be a subtype of <code>SHeap</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>, </span><span class="type-name">Heap</span><span> &lt;: </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">Elem</span><span>]] </span><span class="keyword">extends</span><span> </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">Elem</span><span>] {
+  </span><span class="comment">// inherits isEmpty and first from SHeap[Elem]
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">add</span><span>(</span><span class="identifier">elem</span><span>: </span><span class="type-name">Elem</span><span>): </span><span class="type-name">Heap</span><span> </span><span class="comment">// more specific return type
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">rest</span><span>: </span><span class="type-name">Heap</span><span> </span><span class="comment">// more specific return type
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">merge</span><span>(</span><span class="identifier">other</span><span>: </span><span class="type-name">Heap</span><span>): </span><span class="type-name">Heap</span><span>
+}</span></code></pre>
+    <p>The <code>HeapFactory</code> definition is unchanged:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">HeapFactory</span><span> {
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Elem</span><span>
+  </span><span class="keyword">type</span><span> </span><span class="type-name">Heap</span><span> &lt;: </span><span class="type-name">MHeap</span><span>[</span><span class="type-name">Elem</span><span>,</span><span class="type-name">Heap</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>: </span><span class="type-name">Heap</span><span>
+  </span><span class="comment">// plus other factory methods
+</span><span>}</span></code></pre>
+    <p>The last part is that the companion object should supply simple factory methods in terms of <code>SHeap</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">object</span><span> </span><span class="type-name">LeftistHeap</span><span> { </span><span class="comment">// companion object
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>[</span><span class="type-name">E</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">E</span><span>]): </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">E</span><span>] = ???
+  </span><span class="comment">// plus other ordinary factory methods, similar to other Scala collections
+</span><span>
+  </span><span class="comment">// the big bad
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">factory</span><span>[</span><span class="type-name">E</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">E</span><span>]): </span><span class="type-name">HeapFactory</span><span> { </span><span class="keyword">type</span><span> </span><span class="type-name">Elem</span><span> = </span><span class="type-name">E</span><span> } = ???
+}</span></code></pre>
+    <p>Now the user can proceed in blissful ignorance of <code>factory</code> or <code>MHeap</code>, treating this essentially just like any other Scala collection, until they need <code>merge</code>.
+    Of course, <code>empty</code> will probably be defined as</p>
+    <pre><code class="nohighlight"><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>[</span><span class="type-name">E</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">E</span><span>]): </span><span class="type-name">SHeap</span><span>[</span><span class="type-name">E</span><span>] = </span><span class="identifier">factory</span><span>[</span><span class="type-name">E</span><span>](</span><span class="identifier">ord</span><span>).</span><span class="identifier">empty</span></code></pre>
+    <p>(and similarly for the other ordinary factory methods), but the user doesn&#39;t need to know that.</p>
+    
+    <h2 id="problem-5-min-vs-max" class="section"><a class="anchor-link" href="#problem-5-min-vs-max"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Problem 5: <code>min</code> vs <code>max</code></h2>
+    <p>Should a heap favor smaller elements or bigger elements?
+    There&#39;s no obvious answer&amp;mdash;applications abound for both.
+    Therefore, an interface should easily support both flavors.
+    Right now, the ordering parameter allows us to say</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">minHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">maxHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>.</span><span class="identifier">reverse</span><span>)</span></code></pre>
+    <p>But how did I know that <code>Ordering.Int</code> was the right ordering for min-heaps and <code>Ordering.Int.reverse</code> was the right ordering for max-heaps?
+    The opposite could just as easily have been true.
+    Sure, this detail would probably be documented in the API, but it was fundamentally a flip-a-coin arbitrary decision.
+    And arbitrary decisions with no logic favoring one choice over the other are the hardest to remember.</p>
+    <p>In an easier-to-use interface, the user might write:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">minHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">minFactory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">maxHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">maxFactory</span><span>[</span><span class="type-name">Int</span><span>](</span><span class="type-name">Ordering</span><span>.</span><span class="type-name">Int</span><span>)</span></code></pre>
+    <p>Now, the user doesn&#39;t need to worry whether to use <code>Ordering.Int</code> or <code>Ordering.Int.reverse</code>.
+    Instead, if they want min-oriented heaps, they call <code>minFactory(Ordering.Int)</code> and if they want max-oriented heaps, they call <code>maxFactory(Ordering.Int)</code>.
+    In fact, it&#39;s even better than that.
+    The whole point of implicit parameters is that you usually don&#39;t need to write them down explicitly.
+    In reality, the user would probably only write:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">minHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">minFactory</span><span>[</span><span class="type-name">Int</span><span>]
+</span><span class="keyword">val</span><span> </span><span class="identifier">maxHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="identifier">maxFactory</span><span>[</span><span class="type-name">Int</span><span>]</span></code></pre>
+    <p>Actually, in the current version of scads, this is now</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">minHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="type-name">Min</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>]
+</span><span class="keyword">val</span><span> </span><span class="identifier">maxHeaps</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="type-name">Max</span><span>.</span><span class="identifier">factory</span><span>[</span><span class="type-name">Int</span><span>]</span></code></pre>
+    <p>where <code>LeftistHeap.Min</code> and <code>LeftistHeap.Max</code> both support other simpler methods for creating <code>SHeap</code>s for users who don&#39;t need <code>merge</code>.
+    For example, a user could write:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">h1</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="type-name">Min</span><span>.</span><span class="identifier">empty</span><span>[</span><span class="type-name">Int</span><span>] </span><span class="comment">// an empty min-heap of integers
+</span><span class="keyword">val</span><span> </span><span class="identifier">h2</span><span> = </span><span class="type-name">LeftistHeap</span><span>.</span><span class="type-name">Max</span><span>(</span><span class="number-literal">1</span><span>,</span><span class="number-literal">2</span><span>,</span><span class="number-literal">3</span><span>) </span><span class="comment">// a max-heap containing 1, 2, and 3</span></code></pre>
+    <p>Of course, there&#39;s lots more needed to flesh the whole design out into an industrial-strength API, and even more to integrate it with the current Scala collections.
+    I&#39;ll continue to work on this, and I welcome discussion on these issues.</p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/chrisokasaki.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Chris Okasaki</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/chrisokasaki">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

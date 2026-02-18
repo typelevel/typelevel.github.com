@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>An IO monad for cats</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">An IO monad for cats</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Daniel Spiewak<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on May 2, 2017
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="an-io-monad-for-cats" class="title">An IO monad for cats</h1>
+    <p>Haskell is a pure language.  Every Haskell expression is <em>referentially transparent</em>, meaning that you can substitute that expression with its evaluated result without changing the program.  Or, put into code:</p>
+    <pre><code class="nohighlight"><span class="comment">-- this program
+</span><span class="identifier">f</span><span> </span><span class="identifier">expr</span><span> </span><span class="identifier">expr</span><span> </span><span class="comment">-- apply function f to arguments expr, expr
+</span><span>
+</span><span class="comment">-- is equivalent to this one, which factors out `expr`
+</span><span class="keyword">let</span><span>
+  </span><span class="identifier">x</span><span> = </span><span class="identifier">expr</span><span> </span><span class="comment">-- introduce a new variable `x` with the value of `expr`
+</span><span class="keyword">in</span><span>
+  </span><span class="identifier">f</span><span> </span><span class="identifier">x</span><span> </span><span class="identifier">x</span></code></pre>
+    <p>And this is true for <em>all</em> expressions <code>e</code>, and all functions <code>f</code>.  These could be complex expressions which describe ways of manipulating network channels or window buffers, or something trivial like a numeric literal.  You can <em>always</em> substitute the expression with its value.</p>
+    <p>This is not true in Scala, simply because Scala allows <em>unrestricted</em> side-effects.  Unlike Haskell, Scala puts no limitations on where and when we can use things like mutable state (<code>var</code>s) or evaluated external effects like <code>println</code> or <code>launchTheMissiles</code>.  Since there are no restrictions on where and when we can do evil, the Scala equivalent to the above just doesn&#39;t work:</p>
+    <pre><code class="nohighlight"><span class="identifier">f</span><span>(</span><span class="identifier">e</span><span>, </span><span class="identifier">e</span><span>)
+</span><span class="comment">// isn&#39;t really equivalent to!
+</span><span class="keyword">val</span><span> </span><span class="identifier">x</span><span> = </span><span class="identifier">e</span><span>
+</span><span class="identifier">f</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>)</span></code></pre>
+    <p>The reason it isn&#39;t equivalent comes from the different sorts of expressions that we could find in <code>e</code>.  For example, what if <code>e</code> is <code>println(&quot;hi!&quot;)</code>.  If we make that substitution, our snippet looks like the following:</p>
+    <pre><code class="nohighlight"><span class="identifier">f</span><span>(</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;hi&quot;</span><span>), </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;hi&quot;</span><span>))
+</span><span class="comment">// isn&#39;t really equivalent to!
+</span><span class="keyword">val</span><span> </span><span class="identifier">x</span><span> = </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;hi&quot;</span><span>)
+</span><span class="identifier">f</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>)</span></code></pre>
+    <p>Clearly these are not the same two programs.  The first prints <code>&quot;hi&quot;</code> twice, while the second only prints it once.  This is a violation of referential transparency, and it&#39;s why we sometimes say that Scala is an <em>impure</em> language.  Any expression which is not referentially transparent must contain <em>side-effects</em>, by definition.</p>
+    <p>Now of course, we found this problem by using a side-effecting function: namely, <code>println</code>.  Haskell clearly has the ability to print to standard output, so how does it avoid this issue?  If we build the same program in Haskell, can we violate referential transparency?</p>
+    <pre><code class="nohighlight"><span class="identifier">f</span><span> (</span><span class="identifier">putStrLn</span><span> </span><span class="string-literal">&quot;hi&quot;</span><span>) (</span><span class="identifier">putStrLn</span><span> </span><span class="string-literal">&quot;hi&quot;</span><span>)
+</span><span class="comment">-- is equivalent to
+</span><span class="keyword">let</span><span> </span><span class="identifier">x</span><span> = </span><span class="identifier">putStrLn</span><span> </span><span class="string-literal">&quot;hi&quot;</span><span> </span><span class="keyword">in</span><span> </span><span class="identifier">f</span><span> </span><span class="identifier">x</span><span> </span><span class="identifier">x</span></code></pre>
+    <p>As it turns out, this is still referentially transparent!  These two programs still have the same meaning.  This is possible only because <em>neither</em> program actually prints anything!</p>
+    <p>In Haskell, effects are treated as first-class values.  The <code>putStrLn</code> function doesn&#39;t print to standard out, it returns a value (of type <code>IO ()</code>) which describes <em>how</em> to print to standard out, but stops short of actually <em>doing</em> it.  These sorts of values can be composed using the monadic operators (in Scala, <code>flatMap</code> and <code>pure</code>), allowing Haskell programmers to build up expressions composed of sequences of dependent effects, all of which are merely <em>descriptions</em> of the side-effects which will eventually be performed by the runtime.  Ultimately, the description which comprises your <em>whole</em> program is the return result from the <code>main</code> function.  The Haskell runtime runs the <code>main</code> function to get this description of all your effects, and then runs the effects per your instructions.</p>
+    <p>This is kind of a clever trick.  It allows Haskell to simultaneously be pure <em>and</em> still have excellent support for manipulating effects and interacting with the &quot;real world&quot;.  But why is it relevant to Scala?  After all, Scala is an impure language.  We don&#39;t <em>need</em> to go through this complex rigmarole of describing our effects and composing those descriptions; the language lets us <em>just do it!</em>  So why wouldn&#39;t we just, you know, evaluate the effects that we need evaluated?</p>
+    <p>The answer is that we want to reason about <em>where</em> and <em>when</em> our effects are evaluated.  And of course, we want to be able to leverage laws and abstractions which assume equational semantics for expressions (i.e. referential transparency).  Cats is full of these sorts of abstractions, and cats-laws provides a vast set of laws which describe them.  But all of these abstractions and all of these laws break down the <em>moment</em> you introduce some sort of side-effecting expression.  Because, much like our referential transparency example from earlier, these abstractions <em>assume</em> that you can substitute expressions with their evaluated results, and that&#39;s just not true in the presence of side-effects.</p>
+    <p>What we need is a data type which allows us to encapsulate Scala-style side-effects in the form of a <em>pure</em> value, on which referential transparency holds and which we can compose using other well-defined abstractions, such as <code>Monad</code>.  Scalaz defines two such data types which meet these criteria: <code>scalaz.effect.IO</code> and <code>scalaz.concurrent.Task</code>.  But in practice, nearly everyone uses <code>Task</code> instead of <code>IO</code> because of its support for <em>asynchronous</em> effects.</p>
+    <p>Cats does not define any such abstraction, and what&#39;s worse is the cats <em>ecosystem</em> also doesn&#39;t really provide any such abstraction.  There are two <code>Task</code> implementations that are relatively commonly used with cats – namely, <code>monix.eval.Task</code> and <code>fs2.Task</code> – but these are not part of cats per se, nor are they deeply integrated into its abstraction hierarchy.  Additionally, the proliferation of broadly equivalent options has led to confusion in the ecosystem, with middleware authors often forced to choose a solution for their end-users, and end-users uncertain as to which choice is &quot;right&quot;.</p>
+    
+    <h2 id="introducing-cats-effect" class="section"><a class="anchor-link" href="#introducing-cats-effect"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Introducing cats-effect</h2>
+    <p>The <a href="https://github.com/typelevel/cats-effect">cats-effect</a> project aims to change all of that.  The goal of cats-effect is to provide an &quot;easy default&quot; <code>IO</code> type for the cats ecosystem, deeply integrated with cats-core, with all of the features and performance that are required for real world production use.  Additionally, cats-effect defines a set of abstractions in the form of several typeclasses which describe what it means to <em>be</em> a pure effect type.  These abstractions are extremely useful both in enabling MTL-style program composition and to ensure that other pre-existing <code>Task</code> implementations remain first-class citizens of the ecosystem.  <code>IO</code> does not overshadow <code>monix.eval.Task</code> or <code>fs2.Task</code>; it <em>complements</em> them by providing a set of abstractions and laws which allow users to write safe, parametric code which supports each of them equally.</p>
+    <p>One important sidebar here: cats-effect does <em>not</em> provide any concurrency primitives.  <code>scalaz.concurrent.Task</code> and <code>monix.eval.Task</code> are both notable for providing functions such as <code>both</code>, which takes two <code>Task</code>s and runs them in parallel, returning a <code>Task</code> of a tuple of the results.  The <code>cats.effect.IO</code> type does not provide any such function, and while it would be possible to define such a function (and others like it!), we strongly encourage users to instead consider full-on streaming frameworks such as <strong>fs2</strong> or <strong>Monix</strong> for their concurrency needs, as these frameworks are able to provide a much sounder foundation for such functions.  See <a href="https://gist.github.com/djspiewak/a775b73804c581f4028fea2e98482b3c">here</a> for a rough outline of why this is.  Also note that some <code>Task</code> implementations, such as Monix&#39;s, can and do provide parallelism on a sound foundation by enriching their internal algebraic structures.  Thus, <code>monix.eval.Task</code> is actually quite different from <code>cats.effect.IO</code>, despite having a similar core set of operations.</p>
+    
+    <h2 id="enough-talk" class="section"><a class="anchor-link" href="#enough-talk"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Enough Talk…</h2>
+    <p>What does this look like in practice?  Well, ideally, as convenient as possible!  Let&#39;s look at our println example:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">putStrLn</span><span>(</span><span class="identifier">line</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] =
+  </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="identifier">line</span><span>) }
+
+</span><span class="identifier">f</span><span>(</span><span class="identifier">putStrLn</span><span>(</span><span class="string-literal">&quot;hi!&quot;</span><span>), </span><span class="identifier">putStrLn</span><span>(</span><span class="string-literal">&quot;hi!&quot;</span><span>))
+
+</span><span class="comment">// is equivalent to
+</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">x</span><span> = </span><span class="identifier">putStrLn</span><span>(</span><span class="string-literal">&quot;hi!&quot;</span><span>)
+</span><span class="identifier">f</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>)</span></code></pre>
+    <p>Great!  We can write Haskell fanfic in Scala.  😛</p>
+    <p>The notable element here is the use of the <code>IO.apply</code> constructor to wrap the <code>println</code> effect in a <em>pure</em> <code>IO</code> value.  This pattern can be applied to any side-effect.  You can think of this sort of like an FFI that converts impure code (like <code>println</code>) into pure code (like <code>putStrLn</code>).  The goal of this API was to be as simple and straightforward as possible.  If you have a curly brace block of impure side-effecting code, you can wrap it in a composable and pure abstraction by just adding two characters: <code>IO</code>.  You can wrap arbitrarily large or small blocks of code, potentially involving complex allocations, JNI calls, resource semantics, etc; but it is generally considered a best practice to wrap side-effects into the smallest composable units that make sense and do all of your sequentialization using <code>flatMap</code> and <code>for</code>-comprehensions.</p>
+    <p>For example, here&#39;s a program that performs some simple user interaction in the shell:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">program</span><span> = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Welcome to Scala!  What&#39;s your name?&quot;</span><span>) }
+  </span><span class="identifier">name</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="type-name">Console</span><span>.</span><span class="identifier">readLine</span><span> }
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;Well hello, </span><span class="substitution">$name</span><span class="string-literal">!&quot;</span><span>) }
+} </span><span class="keyword">yield</span><span> ()</span></code></pre>
+    <p>We could have just as easily written this program in the following way:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">program</span><span> = </span><span class="type-name">IO</span><span> {
+  </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Welcome to Scala!  What&#39;s your name?&quot;</span><span>)
+  </span><span class="keyword">val</span><span> </span><span class="identifier">name</span><span> = </span><span class="type-name">Console</span><span>.</span><span class="identifier">readLine</span><span>
+  </span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;Well hello, </span><span class="substitution">$name</span><span class="string-literal">!&quot;</span><span>)
+}</span></code></pre>
+    <p>But this gives us less flexibility for composition.  Remember that even though <code>program</code> is a pure and referentially transparent value, its <em>definition</em> is not, which is to say that <code>IO { expr }</code> is not the same as <code>val x = expr; IO { x }</code>.  Anything inside the <code>IO {</code> … <code>}</code> block is not referentially transparent, and so should be treated with extreme care and suspicion.  The less of our program we have inside these blocks, the better!</p>
+    <p>As a sidebar that is actually kinda cool, we can implement a <code>readString</code> <code>IO</code> action that wraps <code>Console.readLine</code> <em>as a <code>val</code>!</em></p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">readString</span><span> = </span><span class="type-name">IO</span><span> { </span><span class="type-name">Console</span><span>.</span><span class="identifier">readLine</span><span> }</span></code></pre>
+    <p>This is totally valid!  We don&#39;t need to worry about the difference between <code>def</code> and <code>val</code> anymore, because <code>IO</code> is referentially transparent.  So you use <code>def</code> when you need parameters, and you use <code>val</code> when you don&#39;t, and you don&#39;t have to think about evaluation semantics.  No more subtle bugs caused by accidentally memoizing your effects!</p>
+    <p>Of course, if <code>program</code> is referentially transparent, then clearly repeated values of <code>program</code> cannot possibly run the effects it represents multiple times.  For example:</p>
+    <pre><code class="nohighlight"><span class="identifier">program</span><span>
+</span><span class="identifier">program</span><span>
+</span><span class="identifier">program</span><span>
+
+</span><span class="comment">// must be the same as!
+</span><span>
+</span><span class="identifier">program</span></code></pre>
+    <p>If this weren&#39;t the case, then we would be in trouble when trying to construct examples like the Haskell one from earlier.  But there is an implication here that is quite profound: <code>IO</code> cannot eagerly evaluate its effects, and similarly cannot memoize its results!  If <code>IO</code> were to eagerly evaluate or to memoize, then we could no longer replace references to the expression with the expression itself, since that would result in a <em>different</em> <code>IO</code> instance to be evaluated separately.</p>
+    <p>This is precisely why <code>scala.concurrent.Future</code> is <em>not</em> a suitable type for encapsulating effects in this way: constructing a <code>Future</code> that will eventually side-effect is itself a side-effect!  <code>Future</code> evaluates eagerly (sort of, see below) and memoizes its results, meaning that a <code>println</code> inside of a given <code>Future</code> will only evaluate <em>once</em>, even if the <code>Future</code> is sequenced multiple times.  This in turn means that <code>val x = Future(...); f(x, x)</code> is not the same program as <code>f(Future(...), Future(...))</code>, which is the very definition of a violation of referential transparency.</p>
+    <p>Coming back to <code>IO</code>…  If <code>program</code> does not evaluate eagerly, then clearly there must be some mechanism for asking it to evaluate.  After all, Scala is not like Haskell: we don&#39;t return a value of type <code>IO[Unit]</code> from our <code>main</code> function.  <code>IO</code> provides an FFI of sorts for wrapping side-effecting code into pure <code>IO</code> values, so it must also provide an FFI for going in the opposite direction: taking a pure <code>IO</code> value and evaluating its constituent actions as side-effects.</p>
+    <pre><code class="nohighlight"><span class="identifier">program</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()    </span><span class="comment">// uh oh!</span></code></pre>
+    <p>This function is called <code>unsafeRunSync()</code>.  Given an <code>IO[A]</code>, the <code>unsafeRunSync()</code> function will give you a value of type <code>A</code>.  You should only call this function <em>once</em>, ideally at the very end of your program!  (i.e. in your <code>main</code> function)  Just as with <code>IO.apply</code>, any expression involving <code>unsafeRunSync()</code> is not referentially transparent.  For example:</p>
+    <pre><code class="nohighlight"><span class="identifier">program</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()
+</span><span class="identifier">program</span><span>.</span><span class="identifier">unsafeRunSync</span><span>()</span></code></pre>
+    <p>The above will run <code>program</code> <em>twice</em>.  So clearly, referential transparency is out the window whenever we do this, and we cannot expect the normal laws and abstractions to remain sound in the presence of this function.</p>
+    
+    <h3 id="a-sidebar-on-future-s-eager-evaluation" class="section"><a class="anchor-link" href="#a-sidebar-on-future-s-eager-evaluation"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>A sidebar on <code>Future</code>&#39;s eager evaluation</h3>
+    <p>As Viktor Klang is fond of pointing out, <code>Future</code> doesn&#39;t <em>need</em> to evaluate eagerly.  It is possible to define an <code>ExecutionContext</code> in which <code>Future</code> defers its evaluation until some indefinitely later point.  However, this is not the default mode of operation for 99% of all <code>Future</code>s ever constructed; most people just use <code>ExecutionContext.global</code> and leave it at that.  Additionally, if someone hands me an arbitrary <code>Future</code>, perhaps as a return value from a function, I really have no idea whether or not that <code>Future</code> is secretly running without my consent.  In other words, the referential transparency (or lack thereof) of functions that I write using <code>Future</code> is dependent on the runtime configuration of some other function which is hidden from me.  That&#39;s not referential transparency anymore.  Because we cannot be <em>certain</em> that <code>Future</code> is deferring its evaluation, we must defensively assume that it is not.</p>
+    <p>This, in a nutshell, is precisely why <code>Future</code> is not appropriate for functional programming.  <code>IO</code> provides a pair of functions (<code>fromFuture</code> and <code>unsafeToFuture</code>) for interacting with <code>Future</code>-using APIs, but in general, you should try to stick with <code>IO</code> as much as possible when manipulating effects.</p>
+    
+    <h2 id="asynchrony-and-the-jvm" class="section"><a class="anchor-link" href="#asynchrony-and-the-jvm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Asynchrony and the JVM</h2>
+    <p>Scala runs on three platforms: the JVM, JavaScript and LLVM.  For the moment, we&#39;ll just focus on the first two.  The JVM has support for multiple threads, but those threads are <em>native</em> (i.e. kernel) threads, meaning that they are relatively expensive to create and maintain in the runtime.  They are a very limited resource, sort of like file handles or heap space, and you can&#39;t just write programs which require an unbounded number of them.  The exact upper bound on the JVM varies from platform to platform, and varies considerably depending on your GC configuration, but a general rule of thumb is &quot;a few thousand&quot;, where &quot;few&quot; is a small number.  In practice, you&#39;re going to want <em>far</em> less threads than that if you want to avoid thrashing your GC, and most applications will divide themselves into a bounded &quot;main&quot; thread pool (usually bounded to exactly the number of CPUs) on which all CPU-bound tasks are performed and most of the program runs, as well as a set of unbounded &quot;blocking&quot; thread pools on which blocking IO actions (such as anything in <code>java.io</code>) are run.  When you add NIO worker pools into the mix, the final number of threads in a practical production service is usually around 30-40 on an 8 CPU machine, growing roughly linearly as you add CPUs.  Clearly, this is not a very large number.</p>
+    <p>On JavaScript runtimes (such as <code>node</code> or in the browser), the situation is even worse: you have exactly one thread!  JavaScript simply doesn&#39;t have multi-threading in any (real) form, and so it&#39;s like the JVM situation, but 30-40x more constraining.</p>
+    <p>For this reason, we need to be very careful when writing Scala to treat threads as an extremely scarce resource.  <em>Blocking</em> threads (using mechanisms such as <code>wait</code>, <code>join</code> or <code>CountDownLatch</code>) should be considered absolutely anathema, since it selfishly wastes a very finite and very critical resource, leading to thread starvation and deadlocks.</p>
+    <p>This is very different from how things are in Haskell though!  The Haskell runtime is implemented around the concept of <em>green threads</em>, which is to say, <em>emulated</em> concurrency by means of a runtime dispatch lock.  Haskell basically creates a global bounded thread pool in the runtime with the same number of threads as your machine has CPUs.  On top of that pool, it runs dispatch trampolines that schedule and evict expression evaluation, effectively emulating an arbitrarily large number of &quot;fake&quot; threads atop a small fixed set of &quot;real&quot; threads.  So when you write code in Haskell, you generally just assume that threads are extremely cheap and you can have as many of them as you want.  Under these circumstances, blocking a thread is not really a big deal (as long as you don&#39;t do it in FFI native code), so there&#39;s no reason to go out of your way to avoid it in abstractions like <code>IO</code>.</p>
+    <p>This presents a bit of a dilemma for cats-effect: we want to provide a <em>practical</em> pure abstraction for encapsulating effects, but we need to run on the JVM and on JavaScript which means we need to provide a way to avoid thread blocking.  So, the <code>IO</code> implementation in cats-effect is going to <em>necessarily</em> end up looking very, very different from the one in Haskell, providing a very different set of operations.</p>
+    <p>Specifically, <code>cats.effect.IO</code> provides an additional constructor, <code>async</code>, which allows the construction of <code>IO</code> instances from callback-driven APIs.  This is generally referred to as &quot;asynchronous&quot; control flow, as opposed to &quot;synchronous&quot; control flow (represented by the <code>apply</code> constructor).  To see how this works, we&#39;re going to need a bit of setup.</p>
+    <p>Consider the following somewhat-realistic NIO API (translated to Scala):</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Response</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">onError</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">Throwable</span><span>): </span><span class="type-name">Unit</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">onSuccess</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>): </span><span class="type-name">Unit</span><span>
+}
+</span><span class="comment">// defined trait Response
+</span><span>
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Channel</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">sendBytes</span><span>(</span><span class="identifier">chunk</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>], </span><span class="identifier">handler</span><span>: </span><span class="type-name">Response</span><span>[</span><span class="type-name">Unit</span><span>]): </span><span class="type-name">Unit</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">receiveBytes</span><span>(</span><span class="identifier">handler</span><span>: </span><span class="type-name">Response</span><span>[</span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>]]): </span><span class="type-name">Unit</span><span>
+}
+</span><span class="comment">// defined trait Channel</span></code></pre>
+    <p>This is an asynchronous API.  Neither of the functions <code>sendBytes</code> or <code>receiveBytes</code> attempt to block on completion.  Instead, they <em>schedule</em> their operations via some underlying mechanism.  This interface could be implemented on top of <code>java.io</code> (which is a synchronous API) through the use of an internal thread pool, but most NIO implementations are actually going to delegate their scheduling all the way down to the kernel layer, avoiding the consumption of a precious thread while waiting for the underlying IO – which, in the case of network sockets, may be a very long wait indeed!</p>
+    <p>Wrapping this sort of API in a referentially transparent and uniform fashion is a very important feature of <code>IO</code>, <em>precisely</em> because of Scala&#39;s underlying platform constraints.  Clearly, <code>sendBytes</code> and <code>receiveBytes</code> both represent side-effects, but they&#39;re different than <code>println</code> and <code>readLine</code> in that they don&#39;t produce their results in a sequentially returned value.  Instead, they take a callback, <code>Response</code>, which will eventually be notified (likely on some other thread!) when the result is available.  The <code>IO.async</code> constructor is designed for precisely these situations:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">send</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Channel</span><span>, </span><span class="identifier">chunk</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>]): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = {
+  </span><span class="type-name">IO</span><span> </span><span class="identifier">async</span><span> { </span><span class="identifier">cb</span><span> =&gt;
+    </span><span class="identifier">c</span><span>.</span><span class="identifier">sendBytes</span><span>(</span><span class="identifier">chunk</span><span>, </span><span class="keyword">new</span><span> </span><span class="type-name">Response</span><span>[</span><span class="type-name">Unit</span><span>] {
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">onError</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">Throwable</span><span>) = </span><span class="identifier">cb</span><span>(</span><span class="type-name">Left</span><span>(</span><span class="identifier">t</span><span>))
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">onSuccess</span><span>(</span><span class="identifier">v</span><span>: </span><span class="type-name">Unit</span><span>) = </span><span class="identifier">cb</span><span>(</span><span class="type-name">Right</span><span>(()))
+    })
+  }
+}
+</span><span class="comment">// send: (c: Channel, chunk: Array[Byte])cats.effect.IO[Unit]
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">receive</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Channel</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>]] = {
+  </span><span class="type-name">IO</span><span> </span><span class="identifier">async</span><span> { </span><span class="identifier">cb</span><span> =&gt;
+    </span><span class="identifier">c</span><span>.</span><span class="identifier">receiveBytes</span><span>(</span><span class="keyword">new</span><span> </span><span class="type-name">Response</span><span>[</span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>]] {
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">onError</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">Throwable</span><span>) = </span><span class="identifier">cb</span><span>(</span><span class="type-name">Left</span><span>(</span><span class="identifier">t</span><span>))
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">onSuccess</span><span>(</span><span class="identifier">chunk</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Byte</span><span>]) = </span><span class="identifier">cb</span><span>(</span><span class="type-name">Right</span><span>(</span><span class="identifier">chunk</span><span>))
+    })
+  }
+}
+</span><span class="comment">// receive: (c: Channel)cats.effect.IO[Array[Byte]]</span></code></pre>
+    <p>Obviously, this is a little more daunting than the <code>println</code> examples from earlier, but that&#39;s mostly the fault of the anonymous inner class syntactic ceremony.  The <code>IO</code> interaction is actually quite simple!</p>
+    <p>The <code>async</code> constructor takes a function which is handed a <em>callback</em> (represented above by <code>cb</code> in both cases).  This callback is <em>itself</em> a function of type <code>Either[Throwable, A] =&gt; Unit</code>, where <code>A</code> is the type produced by the <code>IO</code>.  So when our <code>Response</code> comes back as <code>onSuccess</code> in the <code>send</code> example, we invoke the callback with a <code>Right(())</code> since we&#39;re trying to produce an <code>IO[Unit]</code>.  When the <code>Response</code> comes back as <code>onSuccess</code> in the <code>receive</code> example, we invoke the callback with <code>Right(chunk)</code>, since the <code>IO</code> produces an <code>Array[Byte]</code>.</p>
+    <p>Now remember, <code>IO</code> is still a monad, and <code>IO</code> values constructed with <code>async</code> are perfectly capable of all of the things that &quot;normal&quot;, synchronous <code>IO</code> values are, which means that you can use these values inside <code>for</code>-comprehensions and other conventional composition!  This is incredibly, unbelievably nice in practice, because it takes your complex, nested, callback-driven code and flattens it into simple, easy-to-read sequential composition.  For example:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">c</span><span>: </span><span class="type-name">Channel</span><span> = </span><span class="literal-value">null</span><span> </span><span class="comment">// pretend this is an actual channel
+</span><span>
+</span><span class="keyword">for</span><span> {
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="identifier">send</span><span>(</span><span class="identifier">c</span><span>, </span><span class="string-literal">&quot;SYN&quot;</span><span>.</span><span class="identifier">getBytes</span><span>)
+  </span><span class="identifier">response</span><span> &lt;- </span><span class="identifier">receive</span><span>(</span><span class="identifier">c</span><span>)
+
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">response</span><span> == </span><span class="string-literal">&quot;ACK&quot;</span><span>.</span><span class="identifier">getBytes</span><span>)   </span><span class="comment">// pretend == works on Array[Byte]
+</span><span>    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;found the guy!&quot;</span><span>) }
+  </span><span class="keyword">else</span><span>
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;no idea what happened, but it wasn&#39;t good&quot;</span><span>) }
+} </span><span class="keyword">yield</span><span> ()</span></code></pre>
+    <p>This is kind of amazing.  There&#39;s no thread blocking at all in the above (other than the <code>println</code> blocking on standard output).  The <code>receive</code> could take quite a long time to come back to us, and our thread is free to do other things in the interim.  Everything is driven by callbacks under the surface, and asynchronous actions can be manipulated just as easily as synchronous ones.</p>
+    <p>Of course, this is an even bigger win on JavaScript, where nearly everything is callback-based, and gigantic, deeply nested chunks of code are not unusual.  <code>IO</code> allows you to flatten those deeply nested chunks of code into a nice, clean, linear and sequential formulation.</p>
+    
+    <h2 id="thread-shifting" class="section"><a class="anchor-link" href="#thread-shifting"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Thread Shifting</h2>
+    <p>Now there is a caveat here.  When our <code>Response</code> handler is invoked by <code>Channel</code>, it is very likely that the callback will be run on a thread which is part of a different thread pool than our main program.  Remember from earlier where I described how <em>most</em> well-designed Java services are organized:</p>
+    <ul>
+      <li>A bounded thread pool set to <em>num CPUs</em> in size for any non-IO actions</li>
+      <li>A set of unbounded thread pools for blocking IO</li>
+      <li>Some bounded internal thread worker pools for NIO polling</li>
+    </ul>
+    <p>We definitely want to run nearly everything on that first pool (which is probably <code>ExecutionContext.global</code>), but we&#39;re probably going to receive the <code>Response</code> callback on one of the third pools.  So how can we force the rest of our program (including those <code>println</code>s) back onto the main pool?</p>
+    <p>The answer is the <code>shift</code> function.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">scala</span><span>.</span><span class="identifier">concurrent</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">ec</span><span> = </span><span class="type-name">ExecutionContext</span><span>.</span><span class="identifier">global</span><span>
+
+</span><span class="keyword">for</span><span> {
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="identifier">send</span><span>(</span><span class="identifier">c</span><span>, </span><span class="string-literal">&quot;SYN&quot;</span><span>.</span><span class="identifier">getBytes</span><span>)
+  </span><span class="identifier">response</span><span> &lt;- </span><span class="identifier">receive</span><span>(</span><span class="identifier">c</span><span>).</span><span class="identifier">shift</span><span>    </span><span class="comment">// there&#39;s no place like home!
+</span><span>
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">response</span><span> == </span><span class="string-literal">&quot;ACK&quot;</span><span>.</span><span class="identifier">getBytes</span><span>)   </span><span class="comment">// pretend == works on Array[Byte]
+</span><span>    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;found the guy!&quot;</span><span>) }
+  </span><span class="keyword">else</span><span>
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;no idea what happened, but it wasn&#39;t good&quot;</span><span>) }
+} </span><span class="keyword">yield</span><span> ()</span></code></pre>
+    <p><code>shift</code>&#39;s functionality is a little complicated, but generally speaking, you should think of it as a &quot;force this <code>IO</code> onto this <em>other</em> thread pool&quot; function.  Of course, when <code>receive</code> executes, most of its work isn&#39;t done on any thread at all (since it is simply registering a hook with the kernel), and so that work isn&#39;t thread shifted to any pool, main or otherwise.  But when <code>receive</code> gets back to us with the network response, the callback will be handled and then <em>immediately</em> thread-shifted back onto the main pool, which is passed implicitly as a parameter to <code>shift</code> (you can also pass this explicitly if you like).  This thread-shifting means that all of the subsequent actions within the <code>for</code>-comprehension – which is to say, the <em>continuation</em> of <code>receive(c)</code> – will be run on the <code>ec</code> thread pool, rather than whatever worker pool is used internally by <code>Channel</code>.  This is an <em>extremely</em> common use-case in practice, and <code>IO</code> attempts to make it as straightforward as possible.</p>
+    <p>Another possible application of thread shifting is ensuring that a blocking <code>IO</code> action is relocated from the main, CPU-bound thread pool onto one of the pools designated for blocking IO.  An example of this would be any interaction with <code>java.io</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">java</span><span>.</span><span class="identifier">io</span><span>.{</span><span class="type-name">BufferedReader</span><span>, </span><span class="type-name">FileReader</span><span>}
+</span><span class="comment">// import java.io.{BufferedReader, FileReader}
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">readLines</span><span>(</span><span class="identifier">name</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Vector</span><span>[</span><span class="type-name">String</span><span>]] = </span><span class="type-name">IO</span><span> {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">reader</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">BufferedReader</span><span>(</span><span class="keyword">new</span><span> </span><span class="type-name">FileReader</span><span>(</span><span class="identifier">name</span><span>))
+  </span><span class="keyword">var</span><span> </span><span class="identifier">back</span><span>: </span><span class="type-name">Vector</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">Vector</span><span>.</span><span class="identifier">empty</span><span>
+
+  </span><span class="keyword">try</span><span> {
+    </span><span class="keyword">var</span><span> </span><span class="identifier">line</span><span>: </span><span class="type-name">String</span><span> = </span><span class="literal-value">null</span><span>
+    </span><span class="keyword">do</span><span> {
+      </span><span class="identifier">line</span><span> = </span><span class="identifier">reader</span><span>.</span><span class="identifier">readLine</span><span>()
+      </span><span class="identifier">back</span><span> :+ </span><span class="identifier">line</span><span>
+    } </span><span class="keyword">while</span><span> (</span><span class="identifier">line</span><span> != </span><span class="literal-value">null</span><span>)
+  } </span><span class="keyword">finally</span><span> {
+    </span><span class="identifier">reader</span><span>.</span><span class="identifier">close</span><span>()
+  }
+
+  </span><span class="identifier">back</span><span>
+}
+</span><span class="comment">// readLines: (name: String)cats.effect.IO[Vector[String]]</span></code></pre>
+    <pre><code class="nohighlight"><span class="keyword">for</span><span> {
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Name, pls.&quot;</span><span>) }
+  </span><span class="identifier">name</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="type-name">Console</span><span>.</span><span class="identifier">readLine</span><span> }
+  </span><span class="identifier">lines</span><span> &lt;- </span><span class="identifier">readLines</span><span>(</span><span class="string-literal">&quot;names.txt&quot;</span><span>)
+
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">lines</span><span>.</span><span class="identifier">contains</span><span>(</span><span class="identifier">name</span><span>))
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;You&#39;re on the list, boss.&quot;</span><span>) }
+  </span><span class="keyword">else</span><span>
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Get outa here!&quot;</span><span>) }
+} </span><span class="keyword">yield</span><span> ()</span></code></pre>
+    <p>Clearly, <code>readLines</code> is blocking the underlying thread while it waits for the disk to return the file contents to us, and for a large file, we might be blocking the thread for quite a long time!  Now if we&#39;re treating our thread pools with respect (as described above), then we probably have a pair of <code>ExecutionContext</code>(s) sitting around in our code somewhere:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">java</span><span>.</span><span class="identifier">util</span><span>.</span><span class="identifier">concurrent</span><span>.</span><span class="type-name">Executors</span><span>
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="type-name">Main</span><span> = </span><span class="type-name">ExecutionContext</span><span>.</span><span class="identifier">global</span><span>
+</span><span class="keyword">val</span><span> </span><span class="type-name">BlockingFileIO</span><span> = </span><span class="type-name">ExecutionContext</span><span>.</span><span class="identifier">fromExecutor</span><span>(</span><span class="type-name">Executors</span><span>.</span><span class="identifier">newCachedThreadPool</span><span>())</span></code></pre>
+    <p>We want to ensure that <code>readLines</code> runs on the <code>BlockingFileIO</code> pool, while everything else in the <code>for</code>-comprehension runs on <code>Main</code>.  How can we achieve this?</p>
+    <p>With <code>shift</code>!</p>
+    <pre><code class="nohighlight"><span class="keyword">for</span><span> {
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Name, pls.&quot;</span><span>) }
+  </span><span class="identifier">name</span><span> &lt;- </span><span class="type-name">IO</span><span> { </span><span class="type-name">Console</span><span>.</span><span class="identifier">readLine</span><span> }
+  </span><span class="identifier">lines</span><span> &lt;- </span><span class="identifier">readLines</span><span>(</span><span class="string-literal">&quot;names.txt&quot;</span><span>).</span><span class="identifier">shift</span><span>(</span><span class="type-name">BlockingFileIO</span><span>).</span><span class="identifier">shift</span><span>(</span><span class="type-name">Main</span><span>)
+
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">lines</span><span>.</span><span class="identifier">contains</span><span>(</span><span class="identifier">name</span><span>))
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;You&#39;re on the list, boss.&quot;</span><span>) }
+  </span><span class="keyword">else</span><span>
+    </span><span class="type-name">IO</span><span> { </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;Get outa here!&quot;</span><span>) }
+} </span><span class="keyword">yield</span><span> ()</span></code></pre>
+    <p>Now we&#39;re definitely in bizarro land.  <em>Two</em> calls to <code>shift</code>, one after the other?  Let&#39;s break this apart:</p>
+    <pre><code class="nohighlight"><span class="identifier">readLines</span><span>(</span><span class="string-literal">&quot;names.txt&quot;</span><span>).</span><span class="identifier">shift</span><span>(</span><span class="type-name">BlockingFileIO</span><span>)</span></code></pre>
+    <p>One of the functions of <code>shift</code> is to take the <code>IO</code> action it is given and relocate that action onto the given thread pool.  In the case of <code>receive</code>, this component of <code>shift</code> was meaningless since <code>receive</code> didn&#39;t use a thread under the surface (it was asynchronous!).  However, <code>readLines</code> <em>does</em> use a thread under the surface (hint: it was constructed with <code>IO.apply</code> rather than <code>IO.async</code>), and so that work will be relocated onto the <code>BlockingFileIO</code> pool by the above expression.</p>
+    <p><em>Additionally</em>, the continuation of this work will also be relocated onto the <code>BlockingFileIO</code> pool, and that&#39;s definitely not what we want.  The evaluation of the <code>contains</code> function is definitely CPU-bound, and should be run on the <code>Main</code> pool.  So we need to <code>shift</code> a second time, but only the <em>continuation</em> of the <code>readLines</code> action, not <code>readLines</code> itself.  As it turns out, we can achieve this just by adding the second <code>shift</code> call:</p>
+    <pre><code class="nohighlight"><span class="identifier">readLines</span><span>(</span><span class="string-literal">&quot;names.txt&quot;</span><span>).</span><span class="identifier">shift</span><span>(</span><span class="type-name">BlockingFileIO</span><span>).</span><span class="identifier">shift</span><span>(</span><span class="type-name">Main</span><span>)</span></code></pre>
+    <p>Now, <code>readLines</code> will be run on the <code>BlockingFileIO</code> pool, but the <em>continuation</em> of <code>readLines</code> (namely, everything that follows it in the <code>for</code>-comprehension) will be run on <code>Main</code>.  This works because <code>shift</code> creates an asynchronous <code>IO</code> that schedules the target action on the given thread pool and invokes its continuation <em>from a callback</em>.  The <a href="http://www.scala-lang.org/api/current/scala/concurrent/ExecutionContext.html#execute(runnable:Runnable):Unit">ExecutionContext#execute</a> function should give you an idea of how this works.  This means that the result of the first <code>shift</code> is an <code>IO</code> constructed with <code>async</code>, and cannot <em>itself</em> be thread-shifted (unlike an <code>IO</code> constructed with <code>apply</code>), but its continuation <em>can</em> be thread-shifted, which is exactly what happens.</p>
+    <p>This sort of double-<code>shift</code> idiom is very common in production service code that makes use of legacy blocking IO libraries such as <code>java.io</code>.</p>
+    
+    <h3 id="synchronous-vs-asynchronous-execution" class="section"><a class="anchor-link" href="#synchronous-vs-asynchronous-execution"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Synchronous vs Asynchronous Execution</h3>
+    <p>Speaking of asynchrony, readers who have been looking ahead in the class syllabus probably realized that the type signature of <code>unsafeRunSync()</code> is more than a little suspicious.  Specifically, it promises to give us an <code>A</code> <em>immediately</em> given an <code>IO[A]</code>; but if that <code>IO[A]</code> is an asynchronous action invoked with a callback, how can it achieve this promise?</p>
+    <p>The answer is that it blocks a thread.  (<em>gasp!!!</em>)  Under the surface, a <code>CountDownLatch</code> is used to block the calling thread whenever an <code>IO</code> is encountered that was constructed with <code>IO.async</code>.  Functionally, this is very similar to the <code>Await.result</code> function in <code>scala.concurrent</code>, and it is just as dangerous.  Additionally, it clearly cannot possibly work on JavaScript, since you only have one thread to block!  If you try to call <code>unsafeRunSync()</code> on JavaScript with an underlying <code>IO.async</code>, it will just throw an exception rather than deadlock your application.</p>
+    <p>This is not such a great state of affairs.  I mean, it <em>works</em> if <code>unsafeRunSync()</code> is being run in test code, or as the last line of your <code>main</code> function, but sometimes we need to interact with legacy code or with Java APIs that weren&#39;t designed for purity.  Sometimes, we just <em>have</em> to evaluate our <code>IO</code> actions before &quot;the end of the world&quot;, and when we do that, we don&#39;t want to block any of our precious threads.</p>
+    <p>So <code>IO</code> provides an additional function: <code>unsafeRunAsync</code>.  This function takes a callback (of type <code>Either[Throwable, A] =&gt; Unit</code>) which it will run when (and if) the <code>IO[A]</code> completes its execution.  As the name implies, this function is <em>also</em> not referentially transparent, but unlike <code>unsafeRunSync()</code>, it will not block a thread.</p>
+    <p>As a sidebar that will be important in a few paragraphs, <code>IO</code> also defines a <em>safe</em> function called <code>runAsync</code> which has a very similar signature to <code>unsafeRunAsync</code>, except it returns an <code>IO[Unit]</code>.  The <code>IO[Unit]</code> which is returned from this function <em>will not block</em> if you call <code>unsafeRunAsync()</code>.  In other words, it is always safe to call <code>unsafeRunSync()</code> on the results of <code>runAsync</code>, even on JavaScript.</p>
+    <p>Another way to look at this is in terms of <code>unsafeRunAsync</code>.  You can define <code>unsafeRunAsync</code> in terms of <code>runAsync</code> and <code>unsafeRunSync()</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">unsafeRunAsync</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">ioa</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">cb</span><span>: </span><span class="type-name">Either</span><span>[</span><span class="type-name">Throwable</span><span>, </span><span class="type-name">A</span><span>] =&gt; </span><span class="type-name">Unit</span><span>): </span><span class="type-name">Unit</span><span> =
+  </span><span class="identifier">ioa</span><span>.</span><span class="identifier">runAsync</span><span>(</span><span class="identifier">e</span><span> =&gt; </span><span class="type-name">IO</span><span> { </span><span class="identifier">cb</span><span>(</span><span class="identifier">e</span><span>) }).</span><span class="identifier">unsafeRunSync</span><span>()
+</span><span class="comment">// unsafeRunAsync: [A](ioa: cats.effect.IO[A])(cb: Either[Throwable,A] =&gt; Unit)Unit</span></code></pre>
+    <p>This isn&#39;t the actual definition, but it would be a valid one, and it would run correctly on every platform.</p>
+    
+    <h2 id="abstraction-and-lawfulness" class="section"><a class="anchor-link" href="#abstraction-and-lawfulness"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Abstraction and Lawfulness</h2>
+    <p>As mentioned earlier (about 10000 words ago…), the cats-effect project not only provides a concrete <code>IO</code> type with a lot of nice features, it also provides a set of abstractions characterized by typeclasses and associated laws.  These abstractions collectively define what it means to be a type which encapsulates side-effects in a pure fashion, and they are implemented by <code>IO</code> as well as several other types (including <code>fs2.Task</code> and <code>monix.eval.Task</code>).  The hierarchy looks like this:</p>
+    <p><img src="../img/media/cats-effect-diagram.png" alt="cats-effect typeclasses"></p>
+    <p><code>Monad</code> and <code>MonadError</code> are of course a part of cats-core, while everything else is in cats-effect.  <code>MonadError</code> is functionally equivalent to the familiar <code>scalaz.Catchable</code> typeclass, which was commonly used in conjunction with <code>scalaz.concurrent.Task</code>.  It literally means &quot;a monad with error-handling capabilities&quot;.  <code>IO</code> certainly fits that description, as any exceptions thrown within its <code>apply</code> method (or within <code>async</code>) will be caught and may be handled in pure code by means of the <code>attempt</code> function.  <code>Sync</code>, <code>Async</code>, <code>LiftIO</code> and <code>Effect</code> are the new typeclasses.</p>
+    <p><code>Sync</code> simply describes the <code>IO.apply</code> function (in the typeclasses, this function is called <code>delay</code>).  Which is to say, any type constructor <code>F[_]</code> which has a <code>Sync[F]</code> has the capability to suspend <em>synchronous</em> side-effecting code.  <code>Async</code> is very similar to this in that it describes the <code>async</code> function.  So any type constructor <code>F[_]</code> which has an <code>Async[F]</code> can suspend <em>asynchronous</em> side-effecting code.  <code>LiftIO</code> should be familiar to Haskell veterans, and is broadly useful for defining parametric signatures and composing monad transformer stacks.</p>
+    <p><code>Effect</code> is where everything is brought together.  In addition to being able to suspend synchronous and asynchronous side-effecting code, anything that has an <code>Effect</code> instance may also be <em>asynchronously interpreted</em> into an <code>IO</code>.  The way this is specified is using the <code>runAsync</code> function:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.{</span><span class="type-name">Async</span><span>, </span><span class="type-name">LiftIO</span><span>, </span><span class="type-name">Sync</span><span>}
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Effect</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] </span><span class="keyword">extends</span><span> </span><span class="type-name">Sync</span><span>[</span><span class="type-name">F</span><span>] </span><span class="keyword">with</span><span> </span><span class="type-name">Async</span><span>[</span><span class="type-name">F</span><span>] </span><span class="keyword">with</span><span> </span><span class="type-name">LiftIO</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">runAsync</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">cb</span><span>: </span><span class="type-name">Either</span><span>[</span><span class="type-name">Throwable</span><span>, </span><span class="type-name">A</span><span>] =&gt; </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>]): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>]
+}</span></code></pre>
+    <p>What this is saying is that any <code>Effect</code> must define the ability to evaluate as a side-effect, but of course, we don&#39;t want to have side-effects in our pure and reasonable code.  So how are side-effects <em>purely</em> represented?  With <code>IO</code>!</p>
+    <p>From a parametric reasoning standpoint, <code>IO</code> means &quot;here be effects&quot;, and so any type signature which involves <code>IO</code> thus also involves side-effects (well, <em>effects</em> anyway), and any type signature which requires side-effects must also involve <code>IO</code>.  This bit of trickery allows us to reason about <code>Effect</code> in a way that would have been much harder if we had defined <code>unsafeRunAsync</code> as a member, and it ensures that downstream projects which write code abstracting over <code>Effect</code> types can do so without using any <code>unsafe</code> functions if they so choose (especially when taken together with the <code>liftIO</code> function).</p>
+    
+    <h2 id="conclusion" class="section"><a class="anchor-link" href="#conclusion"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Conclusion</h2>
+    <p>The lack of a production-ready <code>Task</code>-like type fully integrated into the cats ecosystem has been a sticking point for a lot of people considering adopting cats.  With the introduction of <a href="https://github.com/typelevel/cats-effect">cats-effect</a>, this should no longer be a problem!  As of right now, the only releases are snapshots with hash-based versions, the latest of which can be found in the maven badge at the top of the readme.  These snapshots are stable versions (in the repeatable-build sense), but they should not be considered stable, production-ready, future-proof software.  We are quickly moving towards a final 0.1 release, which will depend on cats-core and will represent the stable, finalized API.</p>
+    <p>Once cats releases a final 1.0 version, cats-effect will also release version 1.0 which will depend on the corresponding version of cats-core.  Changes to cats-effect are expected to be extremely rare, and thus the dependency should be considered quite stable for the purposes of upstream compatibility.  Nevertheless, the release and versioning cycle is decoupled from cats-core to account for the possibility that breaking changes may need to be made independent of the cats-core release cycle.</p>
+    <p>Check out the sources!  Check out the documentation.  Play around with the snapshots, and let us know what you think!  Now is the time to make your opinion heard.  If <code>IO</code> in its current form doesn&#39;t meet your needs, we want to hear about it!</p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/djspiewak.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Daniel Spiewak</strong> 
+        
+        
+        <br />
+        I write code, read papers, and think thoughts. Broadly, I'm interested in: type theory, parser theory, functional abstractions, data structures, performance.
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/djspiewak">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        <a class="bulma-level-item" href="https://fosstodon.org/@djspiewak">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg></span>
+        </a>
+        
+        
+        <a class="bulma-level-item" href="https://www.linkedin.com/in/djspiewak/">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg></span>
+        </a>
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

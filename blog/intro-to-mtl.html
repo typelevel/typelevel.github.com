@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>A comprehensive introduction to Cats-mtl</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">A comprehensive introduction to Cats-mtl</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Luka Jacobowitz<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on October 6, 2018
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="a-comprehensive-introduction-to-cats-mtl" class="title">A comprehensive introduction to Cats-mtl</h1>
+    <p>MTL is a library for composing monad transformers and making it easier to work with nested monad transformer stacks.
+    It originates from the land of Haskell, but has made it into Scala a long time ago.
+    For the longest time however, it was barely usable, because of a bunch of different Scala quirks coming together.
+    With all this, I feel many have the impression that mtl is something scary, abstract or too complicated.
+    In this blog post, I&#39;ll try my best to disprove this notion and demonstrate the simplicity and elegance of Cats-mtl. After reading this, I hope you&#39;ll agree that one should prefer <code>mtl</code>  whenever one needs to compose more than one monad transformer nested inside of each other.</p>
+    
+    <h2 id="what-is-mtl" class="section"><a class="anchor-link" href="#what-is-mtl"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>What is mtl?</h2>
+    <p>Mtl is an acronym and stands for <em>Monad Transformer Library</em>. Its main purpose it make it easier to work with nested monad transformers. It achieves this by encoding the effects of most common monad transformers as type classes.
+    To understand what this means we&#39;ll first have to look at some of the common monad transformers.</p>
+    <p>I&#39;ll go over some of the lesser known transformers <code>StateT</code> and <code>ReaderT</code> next, so feel free to skip the next section if you already know about <code>StateT</code> and <code>ReaderT</code>.</p>
+    
+    <h3 id="readert" class="section"><a class="anchor-link" href="#readert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>ReaderT</h3>
+    <p><code>ReaderT</code> allows us to <em>read</em> from an environment and create other values that depend on the environment.
+    This can be especially useful for e.g. reading from some external configuration.
+    Some like to describe this as the functional programming equivalent of dependency injection.</p>
+    <p>As an example, let&#39;s imagine we want to make a call to a service, but to make that call we need to pass some configuration.</p>
+    <p>First, some imports and some declarations:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">data</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="comment">// These are just String for simplicity
+</span><span class="keyword">type</span><span> </span><span class="type-name">Config</span><span> = </span><span class="type-name">String</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Result</span><span> = </span><span class="type-name">String</span></code></pre>
+    <p>Now let&#39;s say we have these two functions for the service we want to call and the configuration we want to read from.</p>
+    <pre><code class="nohighlight"><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">getConfig</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Config</span><span>] = ???
+</span><span class="comment">// getConfig: cats.effect.IO[Config]
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">serviceCall</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Config</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Result</span><span>] = ???
+</span><span class="comment">// serviceCall: (c: Config)cats.effect.IO[Result]</span></code></pre>
+    <p>The easiest thing would be to just pass down the configuration from the very top of your application.
+    However that can be pretty tedious, so what we do instead is use <code>ReaderT</code>.
+    <code>ReaderT</code> gives us the <code>ask</code> function, which gives us access to a read-only environment value of type <code>E</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">ask</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Applicative</span><span>, </span><span class="type-name">E</span><span>]: </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>, </span><span class="type-name">E</span><span>]</span></code></pre>
+    <p>We can then use <code>flatMap</code>, <code>map</code> or for-comprehensions to actually use that value and do things with it: </p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">readerProgram</span><span>: </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>, </span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">ask</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>]
+  </span><span class="identifier">result</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="identifier">serviceCall</span><span>(</span><span class="identifier">config</span><span>))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span><span>
+</span><span class="comment">// readerProgram: cats.data.ReaderT[cats.effect.IO,Config,Result]</span></code></pre>
+    <p>Now that we have a value of <code>ReaderT</code> that gives us back our result, the next step is to actually &quot;inject&quot; the dependency.
+    For this purpose, <code>ReaderT[F, E, A]</code> gives us a <code>run</code> function that expects us to give it a value of <code>E</code> and will then return an <code>F[A]</code>, so in our case an <code>IO</code> of <code>Result</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(</span><span class="identifier">e</span><span>: </span><span class="type-name">E</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]</span></code></pre>
+    <p>Combined with our <code>getConfig</code> function we can now write the entry point to our program:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="identifier">getConfig</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">readerProgram</span><span>.</span><span class="identifier">run</span><span>)
+</span><span class="comment">// main: cats.effect.IO[Result]</span></code></pre>
+    <p>And that is how we can do functional dependency injection in Scala.
+    However, I believe this pattern isn&#39;t used very often, because it forces you to wrap all of your steps in <code>ReaderT</code>.
+    If you continue reading on, we&#39;ll go through how this problem can be mitigated using MTL.</p>
+    
+    <h3 id="statet" class="section"><a class="anchor-link" href="#statet"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>StateT</h3>
+    <p>Like <code>ReaderT</code>, <code>StateT</code> also allows us to read from an environment.
+    However, unlike <code>ReaderT</code>, it also allows us to write to that environment, making it capable of holding state, hence the name. 
+    With <code>StateT</code> over <code>IO</code>, we can deliberately create programs that can access the outside world and also maintain mutable state.
+    This is very powerful and, when used without care, can give rise to similar problems as can be found in imperative programs that abuse global mutable state and unlimited side effects.
+    Use <code>StateT</code> with care however, and it can be a really great tool for parts of your application that require some notion of mutable state.</p>
+    <p>An example use case that comes up very often is the ability to send some requests to an external services and after each of those requests, use the resulting value to modify an environment with which you&#39;ll create the next request.
+    This environment could be used for something simple like a cache, or something more complex like dynamically changing the parameters of each request, depening on what state the environment currently holds.
+    Let&#39;s look at an abstract example, that showcases this ability.</p>
+    <p>First, we&#39;ll define a function that calls our external service which will take the environment into account.</p>
+    <pre><code class="nohighlight"><span class="comment">// Again we use String here for simplicity, in real code this would be something else
+</span><span class="keyword">type</span><span> </span><span class="type-name">Env</span><span> = </span><span class="type-name">String</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Request</span><span> = </span><span class="type-name">String</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Response</span><span> = </span><span class="type-name">String</span><span>
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">initialEnv</span><span>: </span><span class="type-name">Env</span><span> = ???
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">request</span><span>(</span><span class="identifier">r</span><span>: </span><span class="type-name">Request</span><span>, </span><span class="identifier">env</span><span>: </span><span class="type-name">Env</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Response</span><span>] = ???</span></code></pre>
+    <p>Next, we&#39;ll also need a function that given a response and an old environment will return a new updated environment.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">updateEnv</span><span>(</span><span class="identifier">r</span><span>: </span><span class="type-name">Response</span><span>, </span><span class="identifier">env</span><span>: </span><span class="type-name">Env</span><span>): </span><span class="type-name">Env</span><span> = ???
+
+</span><span class="comment">// We also need some fake requests
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">req1</span><span>: </span><span class="type-name">Request</span><span> = ???
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">req2</span><span>: </span><span class="type-name">Request</span><span> = ???
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">req3</span><span>: </span><span class="type-name">Request</span><span> = ???
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">req4</span><span>: </span><span class="type-name">Request</span><span> = ???</span></code></pre>
+    <p>Now we can get started with <code>StateT</code>.
+    To do so, we&#39;ll create a new request function that will make the request with the current environment and update it after we&#39;ve received the response:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">requestWithState</span><span>(</span><span class="identifier">r</span><span>: </span><span class="type-name">Request</span><span>): </span><span class="type-name">StateT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Env</span><span>, </span><span class="type-name">Response</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">env</span><span> &lt;- </span><span class="type-name">StateT</span><span>.</span><span class="identifier">get</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Env</span><span>]
+  </span><span class="identifier">resp</span><span> &lt;- </span><span class="type-name">StateT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="identifier">request</span><span>(</span><span class="identifier">r</span><span>, </span><span class="identifier">env</span><span>))
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">StateT</span><span>.</span><span class="identifier">modify</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Env</span><span>](</span><span class="identifier">updateEnv</span><span>(</span><span class="identifier">resp</span><span>, </span><span class="identifier">_</span><span>))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">resp</span></code></pre>
+    <p>This demonstrates the power of <code>StateT</code>.
+    We can get the current state by using <code>StateT.get</code> (which returns a <code>StateT[IO, Env, Env]</code> similar to <code>ReaderT.ask</code>) and we can also modify it using <code>StateT.modify</code> (which takes a function <code>Env =&gt; Env</code> and returns a <code>StateT[IO, Env, Unit]</code>).</p>
+    <p>Now, if we wanted to make those different requests, we could just reuse that <code>requestWithState</code> function N number of times:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">stateProgram</span><span>: </span><span class="type-name">StateT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Env</span><span>, </span><span class="type-name">Response</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">resp1</span><span> &lt;- </span><span class="identifier">requestWithState</span><span>(</span><span class="identifier">req1</span><span>)
+  </span><span class="identifier">resp2</span><span> &lt;- </span><span class="identifier">requestWithState</span><span>(</span><span class="identifier">req2</span><span>)
+  </span><span class="identifier">resp3</span><span> &lt;- </span><span class="identifier">requestWithState</span><span>(</span><span class="identifier">req3</span><span>)
+  </span><span class="identifier">resp4</span><span> &lt;- </span><span class="identifier">requestWithState</span><span>(</span><span class="identifier">req4</span><span>)
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">resp4</span></code></pre>
+    <p>And now we have a fully fledged program exactly as we wanted.
+    But what can we actually do with the <code>StateT</code> value?
+    To run the full program, we need an <code>IO</code>. 
+    Of course, just like <code>ReaderT</code>, we can turn <code>StateT</code> into <code>IO</code> by using the <code>run</code> method and supplying an initial value for our environment. 
+    Let&#39;s try that out!</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[(</span><span class="type-name">Env</span><span>, </span><span class="type-name">Response</span><span>)] = </span><span class="identifier">stateProgram</span><span>.</span><span class="identifier">run</span><span>(</span><span class="identifier">initialEnv</span><span>)
+</span><span class="comment">// main: cats.effect.IO[(Env, Response)]</span></code></pre>
+    <p>And that gives us a fully working stateful application. Cool.
+    Next, we&#39;ll look at how we can combine different transformers and what monad transformers actually represent.</p>
+    
+    <h2 id="monad-transformers-encode-some-notion-of-effect" class="section"><a class="anchor-link" href="#monad-transformers-encode-some-notion-of-effect"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Monad Transformers encode some notion of <em>effect</em></h2>
+    <p><code>EitherT</code> encodes the effect of short-circuiting errors.
+    <code>ReaderT</code> encodes the effect of reading a value from the environment.
+    <code>StateT</code> encodes the effect of pure local mutable state.</p>
+    <p>All of these monad transformers encode their effects as data structures, but there&#39;s another way to achieve the same result: Type classes!</p>
+    <p>For example we&#39;ve looked extensively at the <code>ReaderT.ask</code> function, what would it look like if we used a type class here instead?
+    Well, Cats-mtl has an answer and it&#39;s called <code>ApplicativeAsk</code>.
+    You can think of it as <code>ReaderT</code> encoded as a type class:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">ApplicativeAsk</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>] {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">applicative</span><span>: </span><span class="type-name">Applicative</span><span>[</span><span class="type-name">F</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">ask</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">E</span><span>]
+}</span></code></pre>
+    <p>At it&#39;s core <code>ApplicativeAsk</code> just encodes the fact that we can ask for a value from the environment, exactly like <code>ReaderT</code> does.
+    Exactly like <code>ReaderT</code>, it also includes another type parameter <code>E</code>, that represents that environment.</p>
+    <p>If you&#39;re wondering why <code>ApplicativeAsk</code> has an <code>Applicative</code> field instead of just extending from <code>Applicative</code>, that is to avoid implicit ambiguities that arise from having multiple subclasses of a given type (here <code>Applicative</code>) in scope implicitly.
+    So in this case we favor composition over inheritance as otherwise, we could not e.g. use <code>Monad</code> together with <code>ApplicativeAsk</code>.
+    You can read more about this issue in this excellent <a href="subtype-typeclasses.html">blog post by Adelbert Chang</a>.</p>
+    
+    <h3 id="effect-type-classes" class="section"><a class="anchor-link" href="#effect-type-classes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Effect type classes</h3>
+    <p><code>ApplicativeAsk</code> is an example for what is at the core of Cats-mtl.
+    Cats-mtl provides type classes for most common effects which let you choose what kind of effects you need without committing to a specific monad transformer stack.</p>
+    <p>Ideally, you&#39;d write all your code using only an abstract type constructor <code>F[_]</code> with different type class constraints and then at the end run that code with a specific data type that is able to fulfill those constraints.</p>
+    <p>So without further ado, let&#39;s try to convert our <code>Reader</code> program from earlier into mtl-style.
+    First, I&#39;ll include the original program again:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">getConfig</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Config</span><span>] = ???
+</span><span class="comment">// getConfig: cats.effect.IO[Config]
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">serviceCall</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Config</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Result</span><span>] = ???
+</span><span class="comment">// serviceCall: (c: Config)cats.effect.IO[Result]
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">readerProgram</span><span>: </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>, </span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">ask</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>]
+  </span><span class="identifier">result</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="identifier">serviceCall</span><span>(</span><span class="identifier">config</span><span>))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span><span>
+</span><span class="comment">// readerProgram: cats.data.ReaderT[cats.effect.IO,Config,Result]
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="identifier">getConfig</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">readerProgram</span><span>.</span><span class="identifier">run</span><span>)
+</span><span class="comment">// main: cats.effect.IO[Result]</span></code></pre>
+    <p>Now we should just replace that <code>ReaderT</code> with an <code>F</code> and add an <code>ApplicativeAsk[F, Config]</code> constraint, right?
+    We have one small problem though, how can we lift our <code>serviceCall</code> which is an <code>IO</code> value, into our abstract <code>F</code> context?
+    Fortunately <code>cats-effect</code> already defines a typeclass designed to help us out here called <code>LiftIO</code>.
+    It defines a single function <code>liftIO</code> that does exactly what you&#39;d expect:</p>
+    <pre><code class="nohighlight"><span class="annotation">@typeclass</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">LiftIO</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">liftIO</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">io</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]
+}</span></code></pre>
+    <p>If there&#39;s an instance for <code>LiftIO[F]</code> we can lift any <code>IO[A]</code> into an <code>F[A]</code>.
+    Furthermore <code>IO</code> defines a method <code>to</code> which makes use of this type class to provide some nicer looking syntax.</p>
+    <p>With this in mind, we can now define our <code>readerProgram</code> fully using MTL:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">instances</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">readerProgram</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Monad</span><span>: </span><span class="type-name">LiftIO</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="type-name">A</span><span>: </span><span class="type-name">ApplicativeAsk</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Config</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">A</span><span>.</span><span class="identifier">ask</span><span>
+  </span><span class="identifier">result</span><span> &lt;- </span><span class="identifier">serviceCall</span><span>(</span><span class="identifier">config</span><span>).</span><span class="identifier">to</span><span>[</span><span class="type-name">F</span><span>]
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span></code></pre>
+    <p>We replaced our call to <code>ReaderT.ask</code> with a call to <code>ask</code> provided by <code>ApplicativeAsk</code> and instead of using <code>ReaderT.liftF</code> to lift an <code>IO</code> into <code>ReaderT</code>, we can simply use the <code>to</code> function on <code>IO</code>, pretty neat if you ask me.</p>
+    <p>Now to run it, all we need to do is specify the target <code>F</code> to run in, in our case <code>ReaderT[IO, Config, Result]</code> fits perfectly:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">materializedProgram</span><span> = </span><span class="identifier">readerProgram</span><span>[</span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>, ?]]
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="identifier">getConfig</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">materializedProgram</span><span>.</span><span class="identifier">run</span><span>)</span></code></pre>
+    <p>This process of turning a program defined by an abstract type constructor with additional type class constraints into an actual concrete data type is sometimes called <em>interpreting</em>  or <em>materializing</em>  a program.</p>
+    <p>Another thing we can do is define a type alias for <code>ApplicativeAsk[F, Config]</code> so that we can more easily use it with the context bound syntax:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">ApplicativeConfig</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] = </span><span class="type-name">ApplicativeAsk</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Config</span><span>]
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">readerProgram</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Monad</span><span>: </span><span class="type-name">LiftIO</span><span>: </span><span class="type-name">ApplicativeConfig</span><span>]: </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = ???</span></code></pre>
+    <p>So far so good, but this doesn&#39;t seem to be any better than what we had before.
+    I&#39;ve teased at the beginning that MTL really shines once you use more than one monad transformer.
+    So let&#39;s say our program now also needs to be able to handle errors (which I think is a very reasonable requirement).</p>
+    <p>To do so, we&#39;ll use <code>MonadError</code>, which can be found in cats-core instead of mtl, but in its essence, it encodes the short circuting effect that&#39;s shared with <code>EitherT</code>.</p>
+    <p>To keep things simple for now, we want to raise an error if the configuration we got was invalid somehow.
+    For this purpose we&#39;ll have this simple function that will simply return if a <code>Config</code> is valid or not:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">validConfig</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Config</span><span>): </span><span class="type-name">Boolean</span><span> = ???</span></code></pre>
+    <p>Then we&#39;ll also want to define an error ADT for our app:</p>
+    <pre><code class="nohighlight"><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">AppError</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">InvalidConfig</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">AppError</span></code></pre>
+    <p>Now we can go and extend our program from earlier. 
+    We&#39;ll add a <code>MonadError[F, AppError]</code> type alias, <code>MonadAppError</code> and then add a constraint for it in our program.</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">MonadAppError</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] = </span><span class="type-name">MonadError</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">AppError</span><span>]
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">program</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">MonadAppError</span><span>: </span><span class="type-name">ApplicativeConfig</span><span>: </span><span class="type-name">LiftIO</span><span>]: </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = ???</span></code></pre>
+    <p>Now we want so ensure somehow that our config is valid and raise an <code>InvalidConfig</code> error if it&#39;s not.
+    To do so, we&#39;ll simply use the <code>ensure</code> function provided by <code>MonadError</code>.
+    It looks like this:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">ensure</span><span>(</span><span class="identifier">error</span><span>: =&gt; </span><span class="type-name">E</span><span>)(</span><span class="identifier">predicate</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">Boolean</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]</span></code></pre>
+    <p>And it fills our need exactly. It will raise the passed <code>error</code>, if the <code>predicate</code> function returns <code>false</code>.
+    Let&#39;s go and try it out:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">program</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">MonadAppError</span><span>: </span><span class="type-name">ApplicativeConfig</span><span>: </span><span class="type-name">LiftIO</span><span>]: </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">ApplicativeAsk</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Config</span><span>].</span><span class="identifier">ask</span><span>
+              .</span><span class="identifier">ensure</span><span>(</span><span class="type-name">InvalidConfig</span><span>)(</span><span class="identifier">validConfig</span><span>)
+  </span><span class="identifier">result</span><span> &lt;- </span><span class="identifier">serviceCall</span><span>(</span><span class="identifier">config</span><span>).</span><span class="identifier">to</span><span>[</span><span class="type-name">F</span><span>]
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span><span>
+</span><span class="comment">// program: [F[_]](implicit evidence$1: MonadAppError[F], implicit evidence$2: ApplicativeConfig[F], implicit evidence$3: cats.effect.LiftIO[F])F[Result]</span></code></pre>
+    <p>Pretty simple, now let&#39;s materialize it!
+    To do so, we&#39;ll use a monad stack of <code>ReaderT</code>, <code>EitherT</code> and <code>IO</code>.
+    Unwrapped it should look like this <code>IO[Either[AppError, Reader[Config, A]]]</code>.</p>
+    <p>We&#39;ll create some type aliases to get a better overview:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">EitherApp</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">EitherT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">AppError</span><span>, </span><span class="type-name">A</span><span>]
+</span><span class="keyword">type</span><span> </span><span class="type-name">Stack</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">EitherApp</span><span>, </span><span class="type-name">Config</span><span>, </span><span class="type-name">A</span><span>]
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">materializedProgram</span><span>: </span><span class="type-name">Stack</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="identifier">program</span><span>[</span><span class="type-name">Stack</span><span>]
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Either</span><span>[</span><span class="type-name">AppError</span><span>, </span><span class="type-name">Result</span><span>]] =
+  </span><span class="type-name">EitherT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="identifier">getConfig</span><span>).</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">materializedProgram</span><span>.</span><span class="identifier">run</span><span>).</span><span class="identifier">value</span></code></pre>
+    <p>This is the magic of mtl, it is able to give you type class instances for every single monad transformer in the stack.
+    This means that when you stack <code>EitherT</code>, <code>ReaderT</code> and <code>StateT</code>, you&#39;ll be able to get instances for <code>MonadError</code>, <code>ApplicativeAsk</code> and <code>MonadState</code>, which is really useful!</p>
+    <p>If you&#39;re wondering how this works, well let&#39;s just have a quick look at how the <code>MonadError</code> instance for <code>ReaderT</code></p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">monadErrorForReaderT</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>, </span><span class="type-name">R</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="type-name">F</span><span>: </span><span class="type-name">MonadError</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]): </span><span class="type-name">MonadError</span><span>[</span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, ?], </span><span class="type-name">E</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">MonadError</span><span>[</span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, ?], </span><span class="type-name">E</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">raiseError</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">e</span><span>: </span><span class="type-name">E</span><span>): </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, </span><span class="type-name">A</span><span>] =
+      </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="type-name">F</span><span>.</span><span class="identifier">raiseError</span><span>(</span><span class="identifier">e</span><span>))
+
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">handleErrorWith</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, </span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">E</span><span> =&gt; </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, </span><span class="type-name">A</span><span>]): </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>, </span><span class="type-name">A</span><span>] =
+      </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">ask</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">R</span><span>].</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">r</span><span> =&gt; 
+        </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="identifier">fa</span><span>.</span><span class="identifier">run</span><span>(</span><span class="identifier">r</span><span>).</span><span class="identifier">handleErrorWith</span><span>(</span><span class="identifier">e</span><span> =&gt; </span><span class="identifier">f</span><span>(</span><span class="identifier">e</span><span>).</span><span class="identifier">run</span><span>(</span><span class="identifier">r</span><span>)))
+      }
+  }</span></code></pre>
+    <p>To get an instance of <code>MonadError</code> for <code>ReaderT[F, R, ?]</code>, we need to have a <code>MonadError</code> for <code>F</code>.
+    Then we can easily use that underlying instance to handle and raise the errors instead.
+    Again, this means that if some part of transformer stack is capable of raising and handling errors, now your whole stack is.
+    So if it includes <code>EitherT</code> somewhere, you can &quot;lift&quot; that capability. </p>
+    <p>There are different strategies for lifting these capabilities throughout your monad stack, but they&#39;d be out of scope for this article.</p>
+    <p>What this means for us, is that we never have to think about lifting individual monads through transformer stacks.
+    The implicit search used by the type class mechanic takes care of it.
+    Pretty neat, I think.
+    Now contrast this lack of lifting, with the same program written without mtl:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">EitherApp</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">EitherT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">AppError</span><span>, </span><span class="type-name">A</span><span>]
+</span><span class="comment">// defined type alias EitherApp
+</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Stack</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">EitherApp</span><span>, </span><span class="type-name">Config</span><span>, </span><span class="type-name">A</span><span>]
+</span><span class="comment">// defined type alias Stack
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">program</span><span>: </span><span class="type-name">Stack</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">ask</span><span>[</span><span class="type-name">EitherApp</span><span>, </span><span class="type-name">Config</span><span>]
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">validConfig</span><span>(</span><span class="identifier">config</span><span>)) ().</span><span class="identifier">pure</span><span>[</span><span class="type-name">Stack</span><span>]
+       </span><span class="keyword">else</span><span> </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>[</span><span class="type-name">EitherApp</span><span>, </span><span class="type-name">Config</span><span>, </span><span class="type-name">Unit</span><span>](</span><span class="type-name">EitherT</span><span>.</span><span class="identifier">leftT</span><span>(</span><span class="type-name">InvalidConfig</span><span>))
+  </span><span class="identifier">result</span><span> &lt;- </span><span class="type-name">ReaderT</span><span>.</span><span class="identifier">liftF</span><span>(</span><span class="type-name">EitherT</span><span>.</span><span class="identifier">liftF</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">AppError</span><span>, </span><span class="type-name">Result</span><span>](</span><span class="identifier">serviceCall</span><span>(</span><span class="identifier">config</span><span>)))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span><span>
+</span><span class="comment">// program: Stack[Result]</span></code></pre>
+    <p>It&#39;s the same program, but now we have to add type annotations and <code>liftF</code>s everywhere.
+    If you try to take away one of those type annotations the program will fail to compile, so this is the minimum amount of boilerplate you need.</p>
+    
+    <h3 id="adding-state" class="section"><a class="anchor-link" href="#adding-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Adding State</h3>
+    <p>For the next step, let&#39;s imagine we want to send multiple requests and after each, use information we retrieved from the response for the next request, similar to how we did earlier in the <code>StateT</code> example.</p>
+    <p>Instead of using <code>StateT</code>, we&#39;ll use the <code>MonadState</code> type class:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">MonadState</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">S</span><span>] {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">monad</span><span>: </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">get</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">S</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">set</span><span>(</span><span class="identifier">s</span><span>: </span><span class="type-name">S</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">modify</span><span>(</span><span class="identifier">f</span><span>: </span><span class="type-name">S</span><span> =&gt; </span><span class="type-name">S</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="identifier">get</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">s</span><span> =&gt; </span><span class="identifier">set</span><span>(</span><span class="identifier">f</span><span>(</span><span class="identifier">s</span><span>)))
+}</span></code></pre>
+    <p>Let&#39;s imagine we have a list of requests, where we want to update the environment after each request, and we also want to use the environment to create the next request.
+    At the very end we want to return the list of all the responses we got:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">Result</span><span> = </span><span class="type-name">List</span><span>[</span><span class="type-name">Response</span><span>]
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">updateEnv</span><span>(</span><span class="identifier">r</span><span>: </span><span class="type-name">Response</span><span>, </span><span class="identifier">env</span><span>: </span><span class="type-name">Env</span><span>): </span><span class="type-name">Env</span><span> = ???
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">requests</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Request</span><span>] = ???
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">newServiceCall</span><span>(</span><span class="identifier">c</span><span>: </span><span class="type-name">Config</span><span>, </span><span class="identifier">req</span><span>: </span><span class="type-name">Request</span><span>, </span><span class="identifier">e</span><span>: </span><span class="type-name">Env</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Response</span><span>] = ???</span></code></pre>
+    <p>So far, so good, next we&#39;ll use <code>MonadState</code> to create a new function that will wrap <code>newServiceCall</code> with the addition of modifying the environment using <code>updateEnv</code>.
+    To do so, we&#39;ll create a new type alias for <code>MonadState[F, Env]</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">MonadStateEnv</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] = </span><span class="type-name">MonadState</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Env</span><span>]
+</span><span class="comment">// defined type alias MonadStateEnv
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">requestWithState</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Monad</span><span>: </span><span class="type-name">MonadStateEnv</span><span>: </span><span class="type-name">LiftIO</span><span>](</span><span class="identifier">c</span><span>: </span><span class="type-name">Config</span><span>, </span><span class="identifier">req</span><span>: </span><span class="type-name">Request</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Response</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">env</span><span> &lt;- </span><span class="type-name">MonadState</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Env</span><span>].</span><span class="identifier">get</span><span>
+  </span><span class="identifier">response</span><span> &lt;- </span><span class="identifier">newServiceCall</span><span>(</span><span class="identifier">c</span><span>, </span><span class="identifier">req</span><span>, </span><span class="identifier">env</span><span>).</span><span class="identifier">to</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">MonadState</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Env</span><span>].</span><span class="identifier">modify</span><span>(</span><span class="identifier">updateEnv</span><span>(</span><span class="identifier">response</span><span>, </span><span class="identifier">_</span><span>))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">response</span><span>
+</span><span class="comment">// requestWithState: [F[_]](c: Config, req: Request)(implicit evidence$1: cats.Monad[F], implicit evidence$2: MonadStateEnv[F], implicit evidence$3: cats.effect.LiftIO[F])F[Response]</span></code></pre>
+    <p>Here, we use <code>get</code> to retrieve the current state of the environment, then we use <code>newServiceCall</code> and lift it into <code>F</code> and use the response to modify the environment with <code>updateEnv</code>.</p>
+    <p>Now, we can use  <code>requestWithState</code> on our list of requests and embed this new part into our program.
+    The best way to do that, is of course <code>traverse</code>, as we want to go from a <code>List[Request]</code> and a function <code>Request =&gt; F[Response]</code> to an <code>F[List[Response]]</code>.
+    So without further ado, this is our final program, using all three different mtl type classes we learned about in this article: </p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">program</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">MonadAppError</span><span>: </span><span class="type-name">MonadStateEnv</span><span>: </span><span class="type-name">ApplicativeConfig</span><span>: </span><span class="type-name">LiftIO</span><span>]: </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = </span><span class="keyword">for</span><span> {
+  </span><span class="identifier">config</span><span> &lt;- </span><span class="type-name">ApplicativeAsk</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Config</span><span>].</span><span class="identifier">ask</span><span>
+    .</span><span class="identifier">ensure</span><span>(</span><span class="type-name">InvalidConfig</span><span>)(</span><span class="identifier">validConfig</span><span>)
+  </span><span class="identifier">responses</span><span> &lt;- </span><span class="identifier">requests</span><span>.</span><span class="identifier">traverse</span><span>(</span><span class="identifier">req</span><span> =&gt; </span><span class="identifier">requestWithState</span><span>[</span><span class="type-name">F</span><span>](</span><span class="identifier">config</span><span>, </span><span class="identifier">req</span><span>))
+} </span><span class="keyword">yield</span><span> </span><span class="identifier">responses</span><span>
+</span><span class="comment">// program: [F[_]](implicit evidence$1: MonadAppError[F], implicit evidence$2: MonadStateEnv[F], implicit evidence$3: ApplicativeConfig[F], implicit evidence$4: cats.effect.LiftIO[F])F[Result]</span></code></pre>
+    <p>And that is it! 
+    Of course, we still have to run it, so let&#39;s materialize our <code>F</code> into an appropriate data type.
+    We&#39;ll be using a stack of <code>EitherT</code>, <code>StateT</code> and <code>ReaderT</code>, with <code>IO</code> as our base to satisfy <code>LiftIO</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">materializedProgram</span><span> = </span><span class="identifier">program</span><span>[</span><span class="type-name">StateT</span><span>[</span><span class="type-name">EitherT</span><span>[</span><span class="type-name">ReaderT</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Config</span><span>, ?], </span><span class="type-name">AppError</span><span>, ?], </span><span class="type-name">Env</span><span>, ?]]</span></code></pre>
+    <p>And now we have a fully applied transformer stack.</p>
+    <p>The only thing left is to turn that stack back into an <code>IO</code> by running the individual layers.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">main</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Either</span><span>[</span><span class="type-name">AppError</span><span>, (</span><span class="type-name">Env</span><span>, </span><span class="type-name">Result</span><span>)]] = 
+  </span><span class="identifier">getConfig</span><span>.</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">conf</span><span> =&gt; 
+    </span><span class="identifier">materializedProgram</span><span>.</span><span class="identifier">run</span><span>(</span><span class="identifier">initialEnv</span><span>) </span><span class="comment">//Run the StateT layer
+</span><span>      .</span><span class="identifier">value</span><span> </span><span class="comment">//Run the EitherT layer
+</span><span>      .</span><span class="identifier">run</span><span>(</span><span class="identifier">conf</span><span>) </span><span class="comment">//Run the ReaderT layer
+</span><span>  ) </span></code></pre>
+    <p>If we were to get that same value using just transformers and no mtl, the amount of boilerplate would be excruciating. We would need multiple <code>liftF</code>s for every monad transformer and dozens of type annotations, leaving the actual code hidden under layers and layers of boilerplate.</p>
+    <p>With Cats-mtl, dealing with different effects is simple and free of boilerplate.
+    We can describe our application as functions dealing with an abstract context <code>F[_]</code> that must be able to provide certain effect constraints.
+    These constraints are provided by the different MTL type classes in Cats-mtl and their instances can be lifted up to the highest layer with Cats-mtl&#39;s underlying machinery.</p>
+    <p>In summary Cats-mtl provides two things:
+    MTL type classes representing effects and a way to lift instances of these classes through transformer stacks.
+    If you&#39;d like to learn more about Cats-mtl, <a href="https://typelevel.org/cats-mtl/">check out its new website!</a></p>
+    
+    <h3 id="other-mtl-class-instances" class="section"><a class="anchor-link" href="#other-mtl-class-instances"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Other mtl class instances</h3>
+    <p>Now I said that <code>ApplicativeAsk</code> is the type class encoding of <code>ReaderT</code>, but it&#39;s by no means the only one that can form an <code>ApplicativeAsk</code> instance.
+    Monad transformer stacks are known to be quite unperformant, especially so on the JVM, so there are some alternate solutions. For example, one could use <a href="https://github.com/traneio/arrows">the Arrows library</a>, which provides effect types with an input type in addition to its output type <code>Arrow[A, B]</code>. If you squint a bit, it&#39;s practically equivalent to a function <code>A =&gt; IO[B]</code> or <code>ReaderT[IO, A, B]</code>. At the same time, however, it can be substantially more performant.</p>
+    <p>Other examples include using something like <code>cats-effect</code>&#39; <code>Ref</code> for <code>MonadState</code> (a working instance <a href="https://github.com/oleg-py/meow-mtl">can be found here</a>), or using a bifunctor <code>IO</code> that includes an extra type parameter for the error type, i.e. <code>BIO[E, A]</code> instead of using <code>EitherT[IO, E, A]</code> (a WIP for cats-effect <a href="https://github.com/LukaJCB/cats-bio">can be found here</a>).</p>
+    <p>In general, we can think up more performant solutions to our effect type class instances by using more specialized data structures. Monad Transformers are extremely general, which makes them very flexible, but that flexibility may come at a price. One of the great things about <code>mtl</code> is that we don&#39;t have to choose up front, but only at the very end when our program is run.
+    For example, we might choose to use only monad transformers at the begining when developing our application. Then, when we want to scale up, we can move to more performant instances simply by changing a few lines when materializing our programs.</p>
+    <p>In the long term, I&#39;d like to provide a submodule of <code>cats-mtl</code> that has very specialized and performant data types for every combination of effect type classes.
+    For this purpose, I&#39;ve created <a href="https://github.com/LukaJCB/cats-mtl-special">the cats-mtl-special library</a> some time ago, but it still remains very much a work in progress.
+    Shoutout also to Jamie Pullar who has been using cats-mtl extensively in production and has also built some more performant instances along with some benchmarks which you can find <a href="https://www.slideshare.net/RyanAdams12/jamie-pullar-cats-mtl-in-action/39">as part of his talk here</a>.</p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/LukaJCB.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Luka Jacobowitz</strong> 
+        
+        
+        <br />
+        Luka is a functional programmer in love with finding great abstractions to engineering problems. He’s also a maintainer of several typelevel projects and seeks to make learning of pure functional programming as easy as possible.
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/LukaJCB">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

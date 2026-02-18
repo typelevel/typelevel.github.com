@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>There are more types than classes</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">There are more types than classes</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Stephen Compall<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on February 13, 2017
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="there-are-more-types-than-classes" class="title">There are more types than classes</h1>
+    <p>As programmers, we are very incautious with our use of the word
+    “type”. The concept of “type” is sufficiently abstract and specific
+    that we are tempted to understand it by analogy, so much that we begin
+    to confuse analogy with sameness.</p>
+    <p>The colloquial “runtime type”, a fair approximation of “class”, makes
+    it tempting to equate <em>types</em> with “classes, interfaces, traits, that
+    sort of thing”, which I will name <em>classes</em> for the rest of this
+    article. But they aren’t the same. The type system is much richer and
+    more interesting than the class system, even in Java.</p>
+    <p>To appreciate this richness, we must stop thinking of types as classes
+    and stop drawing conclusions from that weak analogy. Luckily, the
+    compiler will readily reveal how unlike classes types are, if we ask
+    it some simple questions.</p>
+    
+    <h2 id="one-value-with-class-many-variables-with-type" class="section"><a class="anchor-link" href="#one-value-with-class-many-variables-with-type"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>One value with class, many variables with type</h2>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">greeting</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;hi there!&quot;</span></code></pre>
+    <p>Here I have constructed a <code>String</code> and assigned it to a variable. (I
+    have also constructed the <code>char</code> array in the <code>String</code> and various
+    other details, but immediately handed those off to the <code>String</code> and
+    forgotten about them.) This value has class <code>String</code>. It has several
+    classes, really.</p>
+    <ol class="arabic">
+      <li><code>String</code></li>
+      <li><code>java.io.Serializable</code></li>
+      <li><code>CharSequence</code></li>
+      <li><code>Comparable[String]</code></li>
+      <li><code>Object</code>/<code>AnyRef</code></li>
+    </ol>
+    <p>That seems like a lot of classes for one value. And they are genuine
+    classes of <code>greeting</code>, though 2-5 are all implied by #1.</p>
+    <p><code>greeting</code> also has all five of these <em>types</em>. We can ask the compiler
+    to verify that this <em>type</em> truth holds, entirely separately from the
+    class truth.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; (</span><span class="identifier">greeting</span><span>: </span><span class="type-name">String</span><span>, </span><span class="identifier">greeting</span><span>: </span><span class="identifier">java</span><span>.</span><span class="identifier">io</span><span>.</span><span class="type-name">Serializable</span><span>,
+        </span><span class="identifier">greeting</span><span>: </span><span class="type-name">CharSequence</span><span>, </span><span class="identifier">greeting</span><span>: </span><span class="type-name">Comparable</span><span>[</span><span class="type-name">String</span><span>],
+        </span><span class="identifier">greeting</span><span>: </span><span class="type-name">AnyRef</span><span>)
+</span><span class="identifier">res3</span><span>: (</span><span class="type-name">String</span><span>, </span><span class="identifier">java</span><span>.</span><span class="identifier">io</span><span>.</span><span class="type-name">Serializable</span><span>, </span><span class="type-name">CharSequence</span><span>,
+       </span><span class="type-name">Comparable</span><span>[</span><span class="type-name">String</span><span>], </span><span class="type-name">AnyRef</span><span>) =
+  (</span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!,</span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!,</span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!,</span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!,</span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!)</span></code></pre>
+    <p>So we have exhausted the classes, but aren’t quite done with types.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">greeting</span><span>: </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>
+</span><span class="identifier">res0</span><span>: </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!</span></code></pre>
+    <p><code>greeting.type</code> is not like the other five types we just tested. It is
+    a strict subtype of <code>String</code>, and has no class with the same name.</p>
+    <pre><code class="nohighlight"><span class="comment">// If and only if call compiles, A is a subtype of B.
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">conformance</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]: </span><span class="type-name">Unit</span><span> = ()
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">conformance</span><span>[</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>, </span><span class="type-name">String</span><span>]
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">conformance</span><span>[</span><span class="type-name">String</span><span>, </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">arguments</span><span> [</span><span class="type-name">String</span><span>,</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>] </span><span class="keyword">do</span><span> </span><span class="identifier">not</span><span> </span><span class="identifier">conform</span><span>
+              </span><span class="identifier">to</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">conformance</span><span>&#39;</span><span class="identifier">s</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">parameter</span><span> </span><span class="identifier">bounds</span><span> [</span><span class="type-name">A</span><span>,</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]</span></code></pre>
+    <p>Fine, we can accept that object identity is represented at the type
+    level without our universe imploding, by inventing the theory that
+    this is about object identity; hold on, though:</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">val</span><span> </span><span class="identifier">salutation</span><span> = </span><span class="identifier">greeting</span><span>
+</span><span class="identifier">salutation</span><span>: </span><span class="type-name">String</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!</span></code></pre>
+    <p>Fine, <code>salutation</code> is just another name for <code>greeting</code>, right?</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">conformance</span><span>[</span><span class="identifier">salutation</span><span>.</span><span class="keyword">type</span><span>, </span><span class="type-name">String</span><span>]
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span> =:= </span><span class="identifier">salutation</span><span>.</span><span class="keyword">type</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="type-name">Cannot</span><span> </span><span class="identifier">prove</span><span> </span><span class="identifier">that</span><span> </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span> =:= </span><span class="identifier">salutation</span><span>.</span><span class="keyword">type</span><span>.</span></code></pre>
+    <p>Now we have seven. I’ll spare you spelling out the induction: each new
+    variable defined like <code>salutation</code> will yield a new alias with a
+    distinct type. This is not about <em>objects</em>; this is about <em>variables</em>!</p>
+    <pre><code class="nohighlight"><span class="comment">// find a type for the literal &quot;hi there!&quot;
+</span><span class="identifier">scala</span><span>&gt; </span><span class="keyword">val</span><span> </span><span class="identifier">literalHiThere</span><span> = </span><span class="identifier">shapeless</span><span>.</span><span class="type-name">Witness</span><span>(</span><span class="string-literal">&quot;hi there!&quot;</span><span>)
+</span><span class="identifier">literalHiThere</span><span>: </span><span class="identifier">shapeless</span><span>.</span><span class="type-name">Witness</span><span>.</span><span class="type-name">Aux</span><span>[</span><span class="type-name">String</span><span>(</span><span class="string-literal">&quot;hi there!&quot;</span><span>)] = </span><span class="identifier">shapeless</span><span>.</span><span class="type-name">Witness$$anon$1</span><span>@</span><span class="number-literal">1d</span><span>1537bb
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">conformance</span><span>[</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>, </span><span class="identifier">literalHiThere</span><span>.</span><span class="type-name">T</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">15</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">arguments</span><span> [</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>,</span><span class="identifier">literalHiThere</span><span>.</span><span class="type-name">T</span><span>] </span><span class="keyword">do</span><span> </span><span class="identifier">not</span><span> </span><span class="identifier">conform</span><span>
+              </span><span class="identifier">to</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">conformance</span><span>&#39;</span><span class="identifier">s</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">parameter</span><span> </span><span class="identifier">bounds</span><span> [</span><span class="type-name">A</span><span>,</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">conformance</span><span>[</span><span class="identifier">literalHiThere</span><span>.</span><span class="type-name">T</span><span>, </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">15</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">arguments</span><span> [</span><span class="identifier">literalHiThere</span><span>.</span><span class="type-name">T</span><span>,</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>] </span><span class="keyword">do</span><span> </span><span class="identifier">not</span><span> </span><span class="identifier">conform</span><span>
+              </span><span class="identifier">to</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">conformance</span><span>&#39;</span><span class="identifier">s</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">parameter</span><span> </span><span class="identifier">bounds</span><span> [</span><span class="type-name">A</span><span>,</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]</span></code></pre>
+    <p>As local variables are a strictly compile-time abstraction, and we
+    have anyway seen that the numbers don’t match up, that should be the
+    end of the “types are classes” confusion for you. But maybe this is
+    just some Scala oddity! And anyhow I haven’t even begun to demonstrate
+    the overwhelming richness of the type model as it blindingly outshines
+    the paucity of the class model. Let’s go further.</p>
+    
+    <h2 id="no-values-infinite-types-method-type-parameters" class="section"><a class="anchor-link" href="#no-values-infinite-types-method-type-parameters"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>No values, infinite types: method type parameters</h2>
+    <p>To our small program of a greeting, we can add a small method.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting</span><span>[</span><span class="type-name">G</span><span>](</span><span class="identifier">grt</span><span>: </span><span class="type-name">G</span><span>, </span><span class="identifier">rand</span><span>: </span><span class="type-name">Int</span><span>) = </span><span class="identifier">grt</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">pickGreeting</span><span>(</span><span class="identifier">greeting</span><span>, </span><span class="number-literal">42</span><span>)
+</span><span class="identifier">res9</span><span>: </span><span class="type-name">String</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!</span></code></pre>
+    <p>It seems like <code>G</code> must be <code>String</code>, because the argument passed to
+    <code>pickGreeting</code> is a string, and in that case so must its return value
+    be, according to the implementation. And from the perspective of this
+    call, <a href="existential-inside.html">outside</a>
+    <code>pickGreeting</code>’s implementation, it is <code>String</code> indeed.</p>
+    <p>But that implementation’s perspective matters, too; it is also part of
+    our program. And it sees things quite differently. We can ask its
+    thoughts on the matter by adding to its body</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting</span><span>[</span><span class="type-name">G</span><span>](</span><span class="identifier">grt</span><span>: </span><span class="type-name">G</span><span>, </span><span class="identifier">rand</span><span>: </span><span class="type-name">Int</span><span>) = {
+  </span><span class="identifier">implicitly</span><span>[</span><span class="type-name">G</span><span> =:= </span><span class="type-name">String</span><span>]
+  </span><span class="identifier">grt</span><span>
+}
+
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">12</span><span>: </span><span class="identifier">error</span><span>: </span><span class="type-name">Cannot</span><span> </span><span class="identifier">prove</span><span> </span><span class="identifier">that</span><span> </span><span class="type-name">G</span><span> =:= </span><span class="type-name">String</span><span>.
+         </span><span class="identifier">implicitly</span><span>[</span><span class="type-name">G</span><span> =:= </span><span class="type-name">String</span><span>]
+                   ^</span></code></pre>
+    <p>In fact, <code>G</code> bears no direct relationship to <code>String</code> at all.</p>
+    <pre><code class="nohighlight"><span class="comment">// replace implicitly with
+</span><span class="identifier">conformance</span><span>[</span><span class="type-name">G</span><span>, </span><span class="type-name">String</span><span>]
+
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">13</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">arguments</span><span> [</span><span class="type-name">G</span><span>,</span><span class="type-name">String</span><span>] </span><span class="keyword">do</span><span> </span><span class="identifier">not</span><span> </span><span class="identifier">conform</span><span>
+              </span><span class="identifier">to</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">conformance</span><span>&#39;</span><span class="identifier">s</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">parameter</span><span> </span><span class="identifier">bounds</span><span> [</span><span class="type-name">A</span><span>,</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]
+         </span><span class="identifier">conformance</span><span>[</span><span class="type-name">G</span><span>, </span><span class="type-name">String</span><span>]
+                    ^
+
+</span><span class="comment">// or with
+</span><span class="identifier">conformance</span><span>[</span><span class="type-name">String</span><span>, </span><span class="type-name">G</span><span>]
+
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">13</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">arguments</span><span> [</span><span class="type-name">String</span><span>,</span><span class="type-name">G</span><span>] </span><span class="keyword">do</span><span> </span><span class="identifier">not</span><span> </span><span class="identifier">conform</span><span>
+              </span><span class="identifier">to</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">conformance</span><span>&#39;</span><span class="identifier">s</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">parameter</span><span> </span><span class="identifier">bounds</span><span> [</span><span class="type-name">A</span><span>,</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>]
+         </span><span class="identifier">conformance</span><span>[</span><span class="type-name">String</span><span>, </span><span class="type-name">G</span><span>]
+                    ^</span></code></pre>
+    <p>Let’s apply the pigeonhole principle. Imagine that you had a list of
+    every class that ever was or ever will be. Imagine that, somehow, all
+    of these classes, from <code>String</code> to
+    <code>AbstractFactoryMethodProxyBuilder</code>, were on your classpath, available
+    to your program.</p>
+    <p>Next, imagine that you had the time and inclination to try the <code>=:=</code>
+    test with every last one of these classes.</p>
+    <pre><code class="nohighlight"><span class="identifier">implicitly</span><span>[</span><span class="type-name">G</span><span> =:= </span><span class="identifier">javax</span><span>.</span><span class="identifier">swing</span><span>.</span><span class="type-name">JFrame</span><span>]
+</span><span class="identifier">implicitly</span><span>[</span><span class="type-name">G</span><span> =:= </span><span class="type-name">AbstractFactoryMethodProxyBuilder</span><span>]
+</span><span class="comment">// ad [in]finitum</span></code></pre>
+    <p>Your search will be futile; every class on your list-of-every-class
+    will give the same compiler error we got with <code>String</code>.</p>
+    <p>So, since <code>G</code> is not equal to anything on this list, it must be
+    something else that doesn’t appear on the list. Because this list
+    contains all classes, <code>G</code> must be something other than a class.</p>
+    
+    <h3 id="it-must-not-necessarily-be-anything" class="section"><a class="anchor-link" href="#it-must-not-necessarily-be-anything"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>It must not necessarily be anything</h3>
+    <p>It seems like it might be convenient to say “well, in this program <code>G</code>
+    is only ever <code>String</code> by substitution, so therefore it is, even if the
+    compiler doesn’t see that.” However, thinking like this misses out on
+    the second key advantage of type parameterization, the one not based
+    on multiplicity of substitution, or the type-safety of callers:
+    blindness.</p>
+    <p>The implementation of type-parameterized classes and methods are
+    required to treat each type parameter uniquely, uniformly, and without
+    prejudice. The compiler enforces this by making the implementation
+    blind to what that parameter, like <code>G</code>, could be. It can only use what
+    the caller, the “outside”, has told it about <code>G</code>—arguments whose
+    types contain <code>G</code>, like <code>List[G]</code>, <code>(G,&nbsp;G)&nbsp;=&gt;&nbsp;G</code>, or <code>G</code> itself, like
+    the argument to <code>pickGreeting</code>. This
+    is
+    <a href="information-hiding.html">information-hiding at the type level</a>;
+    if you find information-hiding a useful tool for implementing correct
+    programs, you will find the same of the fresh, unique, and mysterious
+    types induced by each introduction of a type parameter.</p>
+    <p class="bulma-notification">Each operation a language permits by default, not via an argument,
+      on values of a type parameter is a leak in this abstraction. This
+      includes testing the value’s class, converting to string, and
+      comparing to other values of supposedly utter mystery for
+      equality. The ability to create a “default” value is also a leak. A
+      function is always permitted to ask only that of these that it needs
+      from the caller; make them default, and this design choice is taken
+      away. That is why <code>Object#equals</code> is little better for
+      type-safety than reflection-based calls, and why total type erasure
+      is a desirable feature rather than a design flaw—plugging these
+      leaks gives the programmer as much freedom to abstract by
+      information-hiding as she wishes.</p>
+    
+    <h3 id="how-many-calls-are-there" class="section"><a class="anchor-link" href="#how-many-calls-are-there"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>How many calls are there?</h3>
+    <p>Put another way, when implementing the code in the scope of a type
+    parameter, your implementation must be equally valid <em>for all</em>
+    possible <code>G</code> substitutions, including the ones that haven’t been
+    invented yet. This is why we call it <em>universal</em> quantification.</p>
+    <p>But it is not merely each declaration of a type parameter that yields
+    a distinct type—each call does! Consider two consecutive calls to
+    <code>pickGreeting</code>.</p>
+    <pre><code class="nohighlight"><span class="identifier">pickGreeting</span><span>(</span><span class="identifier">greeting</span><span>, </span><span class="number-literal">42</span><span>)
+</span><span class="identifier">pickGreeting</span><span>(</span><span class="number-literal">33</span><span>, </span><span class="number-literal">84</span><span>)</span></code></pre>
+    <p>Externally, there are two <code>G</code> types. However, the possibility of
+    writing this demands another level of uniqueness treatment when
+    typechecking <code>pickGreeting</code>’s definition: whatever <code>G</code> is now, like
+    <code>String</code>, it might be something else in the next call, like <code>Int</code> in
+    the above example. With recursion, it might even be two different
+    things at the same time. There’s nothing to hold this at two, either:
+    there may be an unbounded number of substitutions for a given type
+    parameter within a single program, at a single point in time.</p>
+    <p>While <code>G</code> <em>may</em> be the same between two invocations of <code>pickGreeting</code>,
+    it might not. So we have no choice but to treat the <code>G</code> types of <em>each
+    call</em> as separate types. There may be infinitely many calls, so there
+    are so many types.</p>
+    <p>Incidentally, the same happens for singleton types. Each time <code>val
+greeting</code> comes into scope, it induces a separate singleton type. It
+    is easy enough to arrange for an unbounded number of scope entries in
+    a particular program. This isn’t so practical as the type parameter
+    phenomenon, though.</p>
+    
+    <h2 id="more-types-from-variable-copies" class="section"><a class="anchor-link" href="#more-types-from-variable-copies"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>More types from variable copies</h2>
+    <p>Suppose we’d like to wait a while to compute our greeting. We can
+    define a type-and-class to represent that conveniently.</p>
+    <pre><code class="nohighlight"><span class="comment">// like Coyoneda Id, if that helps
+</span><span class="keyword">sealed</span><span> </span><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Later</span><span>[</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">type</span><span> </span><span class="type-name">I</span><span>
+  </span><span class="keyword">val</span><span> </span><span class="identifier">i</span><span>: </span><span class="type-name">I</span><span>
+  </span><span class="keyword">val</span><span> </span><span class="identifier">f</span><span>: </span><span class="type-name">I</span><span> =&gt; </span><span class="type-name">A</span><span>
+}
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">later</span><span>[</span><span class="type-name">In</span><span>, </span><span class="type-name">A</span><span>](</span><span class="identifier">now</span><span>: </span><span class="type-name">In</span><span>)(</span><span class="identifier">later</span><span>: </span><span class="type-name">In</span><span> =&gt; </span><span class="type-name">A</span><span>)
+  : </span><span class="type-name">Later</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Later</span><span>[</span><span class="type-name">A</span><span>] {
+    </span><span class="keyword">type</span><span> </span><span class="type-name">I</span><span> = </span><span class="type-name">In</span><span>
+    </span><span class="keyword">val</span><span> </span><span class="identifier">i</span><span> = </span><span class="identifier">now</span><span>
+    </span><span class="keyword">val</span><span> </span><span class="identifier">f</span><span> = </span><span class="identifier">later</span><span>
+}
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">greeting3</span><span> = </span><span class="identifier">later</span><span>(</span><span class="number-literal">3</span><span>){
+  </span><span class="identifier">n</span><span> =&gt; </span><span class="type-name">List</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="identifier">n</span><span>)(</span><span class="string-literal">&quot;hi&quot;</span><span>).</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot; &quot;</span><span>)
+}</span></code></pre>
+    <p>How many <em>classes</em> are involved here, in the type of <code>greeting3</code>?</p>
+    <ol class="arabic">
+      <li><code>Later</code>, obviously;</li>
+      <li><code>Function1</code>, the <code>greeting3.f</code> overall class;</li>
+      <li><code>String</code>, the output type of <code>greeting3.f</code>;</li>
+      <li><code>Int</code>, the <code>I</code> type.</li>
+    </ol>
+    <p>How many types?</p>
+    <p>The first difference is that <code>greeting3.I</code> is not <code>Int</code>.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span> =:= </span><span class="type-name">Int</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="type-name">Cannot</span><span> </span><span class="identifier">prove</span><span> </span><span class="identifier">that</span><span> </span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span> =:= </span><span class="type-name">Int</span><span>.
+       </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span> =:= </span><span class="type-name">Int</span><span>]
+                 ^</span></code></pre>
+    <p>They are unrelated for much the same reason as <code>G</code> was unrelated to
+    <code>String</code> in the previous example: the only things code following
+    <code>val&nbsp;greeting3</code> may know are those embodied in the <code>greeting3.i</code> and
+    <code>greeting3.f</code> members. You can almost think of them as “arguments”.</p>
+    <p>But that’s not all.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">salut3</span><span> = </span><span class="identifier">greeting3</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">greeting3</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">greeting3</span><span>.</span><span class="identifier">i</span><span>)
+</span><span class="identifier">res11</span><span>: </span><span class="type-name">String</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">hi</span><span> </span><span class="identifier">hi</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">salut3</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">salut3</span><span>.</span><span class="identifier">i</span><span>)
+</span><span class="identifier">res12</span><span>: </span><span class="type-name">String</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">hi</span><span> </span><span class="identifier">hi</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">greeting3</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">salut3</span><span>.</span><span class="identifier">i</span><span>)
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">mismatch</span><span>;
+ </span><span class="identifier">found</span><span>   : </span><span class="identifier">salut3</span><span>.</span><span class="identifier">i</span><span>.</span><span class="keyword">type</span><span> (</span><span class="keyword">with</span><span> </span><span class="identifier">underlying</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">salut3</span><span>.</span><span class="type-name">I</span><span>)
+ </span><span class="identifier">required</span><span>: </span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span>
+       </span><span class="identifier">greeting3</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">salut3</span><span>.</span><span class="identifier">i</span><span>)
+                          ^
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span> =:= </span><span class="identifier">salut3</span><span>.</span><span class="type-name">I</span><span>]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="type-name">Cannot</span><span> </span><span class="identifier">prove</span><span> </span><span class="identifier">that</span><span> </span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span> =:= </span><span class="identifier">salut3</span><span>.</span><span class="type-name">I</span><span>.</span></code></pre>
+    <p>Just like every call to <code>pickGreeting</code> induces a new <code>G</code> type, each
+    simple <code>val</code> copy of <code>greeting3</code> will induce a new, unique <code>I</code>
+    type. It doesn’t matter that they’re all the same value; this is a
+    matter of variables, not values, just as with singleton types.</p>
+    <p>But that’s <em>still</em> not all.</p>
+    
+    <h2 id="one-value-with-class-many-variable-references-with-types" class="section"><a class="anchor-link" href="#one-value-with-class-many-variable-references-with-types"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>One value with class, many variable <em>references</em> with types</h2>
+    <p>The preceding is more delicate than it seems.</p>
+    <pre><code class="nohighlight"><span class="keyword">var</span><span> </span><span class="identifier">allo</span><span> = </span><span class="identifier">greeting3</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">allo</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">allo</span><span>.</span><span class="identifier">i</span><span>)
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">13</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">mismatch</span><span>;
+ </span><span class="identifier">found</span><span>   : </span><span class="type-name">Later</span><span>[</span><span class="type-name">String</span><span>]#</span><span class="type-name">I</span><span>
+ </span><span class="identifier">required</span><span>: </span><span class="identifier">_1</span><span>.</span><span class="type-name">I</span><span> </span><span class="identifier">where</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">_1</span><span>: </span><span class="type-name">Later</span><span>[</span><span class="type-name">String</span><span>]
+       </span><span class="identifier">allo</span><span>.</span><span class="identifier">f</span><span>(</span><span class="identifier">allo</span><span>.</span><span class="identifier">i</span><span>)
+                   ^</span></code></pre>
+    <p>All we have done differently is use a mutable <code>var</code> instead of an
+    immutable <code>val</code>. Why is this enough to throw a wrench in the works?</p>
+    <p>Suppose you had another <em>value</em> of the <code>Later[String]</code> type.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">bhello</span><span> = </span><span class="identifier">later</span><span>(</span><span class="string-literal">&quot;olleh&quot;</span><span>)(</span><span class="identifier">_</span><span>.</span><span class="identifier">reverse</span><span>)</span></code></pre>
+    <p>The <code>I</code> substitution here is <code>String</code>. So the <code>f</code> takes a <code>String</code>
+    argument, and the <code>I</code> is a <code>String</code>.</p>
+    <p><code>bhello</code> is of a compatible type with the <code>allo</code> var. So this
+    assignment will work.</p>
+    <pre><code class="nohighlight"><span class="identifier">allo</span><span> = </span><span class="identifier">bhello</span></code></pre>
+    <p>In a sense, when this mutation occurs, the <code>I</code> type <em>also</em> mutates,
+    from <code>Int</code> to <code>String</code>. But that isn’t quite right; types cannot
+    mutate.</p>
+    <p>Suppose that this assignment happened in the middle of that line of
+    code that could not compile. We could imagine the sequence of events,
+    were it permitted.</p>
+    <ol class="arabic">
+      <li><code>allo.f</code> (which is <code>greeting3.f</code>) evaluates. It is the function
+      <code>(n:&nbsp;Int)&nbsp;=&gt;&nbsp;List.fill(n)(&quot;hi&quot;).mkString(&quot; &quot;)</code>.</li>
+      <li>The <code>allo&nbsp;=&nbsp;bhello</code> assignment occurs.</li>
+      <li><code>allo.i</code> (which is <code>bhello.i</code>) evaluates. It is the string
+      <code>&quot;olleh&quot;</code>.</li>
+      <li>We attempt to pass <code>&quot;olleh&quot;</code> as the <code>(n:&nbsp;Int)</code> argument to complete
+      the evaluation, and get stuck.</li>
+    </ol>
+    <p>Just as it makes no difference what concrete substitutions you make
+    for <code>G</code>, it makes no difference whether such an assignment could ever
+    happen in your specific program; the compiler takes it as a
+    possibility because you declared a <code>var</code>. (<code>def&nbsp;allo&nbsp;=&nbsp;greeting3</code> gets
+    the same treatment, lest you think non-functional programs get to have
+    all the fun here.) Each <em>reference</em> to <code>allo</code> gets a new <code>I</code> type
+    member. That failing line of code had two <code>allo</code> references, so was
+    working with two incompatible <code>I</code> types.</p>
+    <p>Since the number of references to a variable in a program is also
+    unbounded...you get the picture.</p>
+    <p class="bulma-notification">This also occurs with existential type parameters, which are equally
+      expressive to type members. Accordingly, Java <em>also</em>
+      generates new types from occurrences of expressions of existential
+      type.</p>
+    
+    <h2 id="how-do-we-tell-the-two-apart" class="section"><a class="anchor-link" href="#how-do-we-tell-the-two-apart"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>How do we tell the two apart?</h2>
+    <p>All of this is simply to say that we must be working with two separate
+    concepts here.</p>
+    <ol class="arabic">
+      <li>The <em>runtime</em> shape and properties of the <em>values</em> that end up
+      flying around when a program actually <em>runs</em>. <strong>This we call
+      class.</strong></li>
+      <li>The <em>compile-time</em>, statically-discoverable shape and properties of
+      the <em>expressions</em> that fly around when a program is
+      <em>written</em>. <strong>This we call type.</strong></li>
+    </ol>
+    <p>The case with <code>var</code> is revealing. Maybe the <code>I</code> type will always be
+    the same for a given mutable variable. But demonstrating that this
+    holds true for <em>one</em> run of the program (#1, class) isn’t nearly good
+    enough to <em>prove</em> that it will be true for <em>all</em> runs of the program
+    (#2, type).</p>
+    <p>We refuse to apply the term “type” to the #1, ‘class’ concept because
+    it does not live up to the name. The statement “these two types are
+    the same” is another level of power entirely; “these two values have
+    the same class” is extraordinarily weak by comparison.</p>
+    <p>It is tempting to use the term “runtime type” to refer to
+    classes. However, in the case of Scala, as with all type systems
+    featuring parametric polymorphism, classes are so dissimilar to types
+    that the similar-sounding term leads to false intuition, not helpful
+    analogy. It is a detriment to learning, not an aid.</p>
+    <p>Types are compile-time, and classes are runtime.</p>
+    
+    <h3 id="when-are-types-real" class="section"><a class="anchor-link" href="#when-are-types-real"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>When are types real?</h3>
+    <p>The phase separation—compile-time versus runtime—is the key to
+    the strength of types in Scala and similar type systems. The static
+    nature of types means that the truths they represent must be
+    universally quantified—true in all possible cases, not just some
+    test cases.</p>
+    <p>We need this strength because the phase separation forbids us from
+    taking into account anything that cannot be known about the program
+    without running it. We need to think in terms of “could happen”, not
+    “pretty sure it doesn’t”.</p>
+    
+    <h2 id="how-do-classes-give-rise-to-types" class="section"><a class="anchor-link" href="#how-do-classes-give-rise-to-types"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>How do classes give rise to types?</h2>
+    <p>There appears to be some overlap between the classes of <code>greeting</code> and
+    its types. While <code>greeting</code> has the <em>class</em> <code>String</code>, it also has the
+    <em>type</em> <code>String</code>.</p>
+    <p>We want types to represent static truths about the expressions in a
+    program. That’s why it makes sense to include a “model of the classes”
+    in the type system. When we define a class, we also define an
+    associated type or family of types.</p>
+    <p>When we use a class to construct a value, as in <code>new&nbsp;Blob</code>, we would
+    like to assign as much specific meaning to that expression as we can
+    at compile time. So, because we know right now that this expression
+    will make a value of class <code>Blob</code>, we assign it the type <code>Blob</code> too.</p>
+    
+    <h3 id="how-do-the-types-disappear" class="section"><a class="anchor-link" href="#how-do-the-types-disappear"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>How do the types disappear?</h3>
+    <p>There’s a common way to throw away type information in Scala,
+    especially popular in object-oriented style.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">absGreeting</span><span>: </span><span class="type-name">CharSequence</span><span> = </span><span class="identifier">greeting</span></code></pre>
+    <p><code>absGreeting</code> has the same value as <code>greeting</code>, so it has the same
+    five classes. However, it only has two of those five types, because we
+    threw away the other three statically. It has lost some other types,
+    too, namely <code>greeting.type</code>, and acquired some new ones, namely
+    <code>absGreeting.type</code>.</p>
+    <p>Once a value is constructed, the expression will naturally cast off
+    the types specifying its precise identity, as it moves into more
+    abstract contexts. Ironically, the best way to preserve that
+    information as it passes through abstract contexts is to take
+    advantage of purely abstract types—type parameters and type
+    members.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">pickGreeting</span><span>[</span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span>](</span><span class="identifier">greeting</span><span>, </span><span class="number-literal">100</span><span>)
+</span><span class="identifier">res16</span><span>: </span><span class="identifier">greeting</span><span>.</span><span class="keyword">type</span><span> = </span><span class="identifier">hi</span><span> </span><span class="identifier">there</span><span>!</span></code></pre>
+    <p>While the implementation must treat its argument as being of the
+    abstract type <code>G</code>, the caller knows that the more specific
+    <code>greeting.type</code> must come out of that process.</p>
+    
+    <h3 id="how-do-the-types-come-back" class="section"><a class="anchor-link" href="#how-do-the-types-come-back"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>How do the types come back?</h3>
+    <p>There is a feature in Scala that lets you use class to get back <em>some</em>
+    type information via a dynamic, runtime test.</p>
+    <pre><code class="nohighlight"><span class="identifier">absGreeting</span><span> </span><span class="keyword">match</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="identifier">hiAgain</span><span>: </span><span class="type-name">String</span><span> =&gt;
+    </span><span class="identifier">conformance</span><span>[</span><span class="identifier">hiAgain</span><span>.</span><span class="keyword">type</span><span>, </span><span class="type-name">String</span><span>] </span><span class="comment">// will compile
+</span><span>}</span></code></pre>
+    <p>The name “type test” for this feature is poorly chosen. The
+    <em>conclusion</em> affects the type level—<code>hiAgain</code> is, indeed, proven
+    statically to be of type <code>String</code>—but the <em>test</em> occurs only at
+    the class level.</p>
+    <p>The compiler will tell you about this limitation sometimes.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting2</span><span>[</span><span class="type-name">G</span><span>](</span><span class="identifier">grt</span><span>: </span><span class="type-name">G</span><span>, </span><span class="identifier">rand</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">G</span><span> =
+  (</span><span class="string-literal">&quot;magic&quot;</span><span>: </span><span class="type-name">Any</span><span>) </span><span class="keyword">match</span><span> {
+    </span><span class="keyword">case</span><span> </span><span class="identifier">ok</span><span>: </span><span class="type-name">G</span><span> =&gt; </span><span class="identifier">ok</span><span>
+    </span><span class="keyword">case</span><span> </span><span class="identifier">_</span><span> =&gt; </span><span class="identifier">sys</span><span> </span><span class="identifier">error</span><span> </span><span class="string-literal">&quot;failed!&quot;</span><span>
+  }
+
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">13</span><span>: </span><span class="identifier">warning</span><span>: </span><span class="keyword">abstract</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">pattern</span><span> </span><span class="type-name">G</span><span> </span><span class="identifier">is</span><span> </span><span class="identifier">unchecked</span><span>
+              </span><span class="identifier">since</span><span> </span><span class="identifier">it</span><span> </span><span class="identifier">is</span><span> </span><span class="identifier">eliminated</span><span> </span><span class="identifier">by</span><span> </span><span class="identifier">erasure</span><span>
+           </span><span class="keyword">case</span><span> </span><span class="identifier">ok</span><span>: </span><span class="type-name">G</span><span> =&gt; </span><span class="identifier">ok</span><span>
+                    ^</span></code></pre>
+    <p>But reflecting the runtime classes back to compile-time types is a
+    subtle art, and the compiler often can’t explain exactly what you got
+    wrong.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting3</span><span>[</span><span class="type-name">G</span><span>](</span><span class="identifier">grt</span><span>: </span><span class="type-name">G</span><span>, </span><span class="identifier">rand</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">G</span><span> =
+  </span><span class="identifier">grt</span><span> </span><span class="keyword">match</span><span> {
+    </span><span class="keyword">case</span><span> </span><span class="identifier">_</span><span>: </span><span class="type-name">String</span><span> =&gt;
+      </span><span class="string-literal">&quot;Surely type G is String, right?&quot;</span><span>
+    </span><span class="keyword">case</span><span> </span><span class="identifier">_</span><span> =&gt; </span><span class="identifier">grt</span><span>
+  }
+
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">mismatch</span><span>;
+ </span><span class="identifier">found</span><span>   : </span><span class="type-name">String</span><span>(</span><span class="string-literal">&quot;Surely type G is String, right?&quot;</span><span>)
+ </span><span class="identifier">required</span><span>: </span><span class="type-name">G</span><span>
+             </span><span class="string-literal">&quot;Surely type G is String, right?&quot;</span><span>
+             ^</span></code></pre>
+    <p>I’ve touched upon this
+    mistake
+    <a href="singleton-instance-trick-unsafe.html#types-are-erased">in previous articles</a>,
+    but it’s worth taking at least one more look. Let’s examine how
+    tempting this mistake is.</p>
+    <p><code>String</code> is a <code>final class</code>. So it is true that <code>G</code> can contain no
+    more specific class than <code>String</code>, if the first <code>case</code> matches. For
+    example, given <code>trait MyAwesomeMixin</code>, <code>G</code> cannot be
+    <code>String&nbsp;with&nbsp;MyAwesomeMixin</code> if this <code>case</code> succeeds, because that
+    can’t be instantiated; you would need to create a subclass of <code>String</code>
+    that implemented <code>MyAwesomeMixin</code>.</p>
+    <p>This pattern match isn’t enough evidence to say that <code>G</code> is exactly
+    <code>String</code>. There are still other class-based types it could be, like
+    <code>Serializable</code>.</p>
+    <pre><code class="nohighlight"><span class="identifier">pickGreeting3</span><span>[</span><span class="identifier">java</span><span>.</span><span class="identifier">io</span><span>.</span><span class="type-name">Serializable</span><span>](</span><span class="identifier">greeting</span><span>, </span><span class="number-literal">4055</span><span>)</span></code></pre>
+    <p>Instead, it feels like this pattern match confirms <code>Serializable</code> as a
+    possibility, instead of denying it.</p>
+    <p>But we don’t need <code>G&nbsp;=&nbsp;String</code> for this code to compile; we only need
+    <code>G&nbsp;&gt;:&nbsp;String</code>. If that was true, then <code>&quot;Surely type G is String,
+right?&quot;</code>, a <code>String</code>, could simply upcast to <code>G</code>.</p>
+    <p>However, even <code>G&nbsp;&gt;:&nbsp;String</code> is unproven. There are no subclasses of
+    <code>String</code>, but there are infinitely many <em>subtypes</em> of
+    <code>String</code>. Including the <code>G</code> created by each entry into
+    <code>pickGreeting3</code>, every abstract and existential type bounded by
+    <code>String</code>, and every singleton type of <code>String</code> variable definitions.</p>
+    <p>This mistake is, once again, confusing a demonstration of one case
+    with a proof. Pattern matching tells us a great deal about one value,
+    the <code>grt</code> argument, but very little about the type <code>G</code>. All we know
+    for sure is that “<code>grt</code> is of type <code>G</code>, and also of type <code>String</code>, so
+    these types overlap by at least one value.” In the type system, if you
+    don’t know something for sure, you don’t know it at all.</p>
+    
+    <h2 id="classes-are-a-concrete-source-of-values" class="section"><a class="anchor-link" href="#classes-are-a-concrete-source-of-values"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Classes are a concrete source of values</h2>
+    <p>In the parlance of functional Scala, concrete classes are often called
+    “data constructors”.</p>
+    <p>When you are creating a value, you must ultimately be concrete about
+    its class, at the bottom of all the abstractions and indirections used
+    to hide this potentially messy detail.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting4</span><span>[</span><span class="type-name">G</span><span>]: </span><span class="type-name">G</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">G</span><span>
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">12</span><span>: </span><span class="identifier">error</span><span>: </span><span class="keyword">class</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">required</span><span> </span><span class="identifier">but</span><span> </span><span class="type-name">G</span><span> </span><span class="identifier">found</span><span>
+       </span><span class="keyword">def</span><span> </span><span class="declaration-name">pickGreeting4</span><span>[</span><span class="type-name">G</span><span>]: </span><span class="type-name">G</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">G</span><span>
+                                     ^</span></code></pre>
+    <p>You’ll have to do something else here, like take an argument
+    <code>()&nbsp;=&gt;&nbsp;G</code>, to let <code>pickGreeting4</code> construct <code>G</code>s.</p>
+    <p>The truly essential role that classes play is that they encapsulate
+    instructions for constructing concrete values of various types. In a
+    safe program, this is the only feature of classes you’ll use.</p>
+    <p>In Scala, classes leave fingerprints on the values that they
+    construct, without fail. This is merely an auxiliary part of their
+    primary function as value factories, like a “Made in <code>class Blah</code>”
+    sticker on the back. Pattern matching’s “type tests” work by checking
+    this fingerprint of construction.</p>
+    
+    <h2 id="most-runtime-type-test-mechanisms-do-not-work-for-types" class="section"><a class="anchor-link" href="#most-runtime-type-test-mechanisms-do-not-work-for-types"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Most runtime “type test” mechanisms do not work for types</h2>
+    <p>These fingerprints only come from classes, not types. So “type tests”
+    only work for “classy” types, like <code>String</code> and <code>MyAwesomeMixin</code>. They
+    also work for specific singleton types because construction also
+    leaves an “object identity” fingerprint that the test can use.</p>
+    <p>The
+    <a href="http://www.scala-lang.org/api/2.12.1/scala/reflect/ClassTag.html"><code>ClassTag</code> typeclass</a> does
+    not change this restriction. When you add a <code>ClassTag</code> or <code>TypeTag</code>
+    context bound, you also prevent that type parameter from working with
+    most types.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">reflect</span><span>.</span><span class="type-name">ClassTag</span><span>[</span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span>]]
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">14</span><span>: </span><span class="identifier">error</span><span>: </span><span class="type-name">No</span><span> </span><span class="type-name">ClassTag</span><span> </span><span class="identifier">available</span><span> </span><span class="keyword">for</span><span> </span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span>
+       </span><span class="identifier">implicitly</span><span>[</span><span class="identifier">reflect</span><span>.</span><span class="type-name">ClassTag</span><span>[</span><span class="identifier">greeting3</span><span>.</span><span class="type-name">I</span><span>]]
+                 ^</span></code></pre>
+    <p>As such, judicious use of <code>ClassTag</code> is not a great solution to
+    excessive use of type tests in abstract contexts. There are so many
+    more types than classes that this is to confine the expressivity of
+    your types to a very small, class-reflective box. Set them free!</p>
+    
+    <h2 id="but-doesn-t-python-javascript-c-have-both-types-and-classes-at-runtime" class="section"><a class="anchor-link" href="#but-doesn-t-python-javascript-c-have-both-types-and-classes-at-runtime"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>“But doesn’t Python/JavaScript/&amp;c have both types and classes at runtime?”</h2>
+    <p>In JavaScript, there’s a very general runtime classification of values
+    called “type”, meant to classify built-in categories like <code>string</code>,
+    <code>number</code>, and the like.</p>
+    <pre><code class="nohighlight"><span>&gt;&gt; </span><span class="keyword">typeof</span><span> </span><span class="string-literal">&quot;hi&quot;</span><span>
+</span><span class="string-literal">&quot;string&quot;</span><span>
+&gt;&gt; </span><span class="keyword">typeof</span><span> </span><span class="number-literal">42</span><span>
+</span><span class="string-literal">&quot;number&quot;</span><span>
+&gt;&gt;&gt; </span><span class="keyword">typeof</span><span> [</span><span class="number-literal">1</span><span>, </span><span class="string-literal">&#39;a&#39;</span><span>]
+</span><span class="string-literal">&quot;object&quot;</span></code></pre>
+    <p>Defining a class with the new <code>class</code> keyword doesn’t extend this
+    partition with new “types”; instead, it further subdivides <em>one</em> of
+    those with a separate classification.</p>
+    <pre><code class="nohighlight"><span>&gt;&gt; </span><span class="keyword">class</span><span> </span><span class="identifier">Foo</span><span>() {}
+&gt;&gt; </span><span class="keyword">class</span><span> </span><span class="identifier">Bar</span><span>() {}
+&gt;&gt; </span><span class="keyword">typeof</span><span> (</span><span class="keyword">new</span><span> </span><span class="identifier">Foo</span><span>)
+</span><span class="string-literal">&quot;object&quot;</span><span>
+&gt;&gt; </span><span class="keyword">typeof</span><span> (</span><span class="keyword">new</span><span> </span><span class="identifier">Bar</span><span>)
+</span><span class="string-literal">&quot;object&quot;</span><span>
+&gt;&gt; </span><span class="keyword">new</span><span> </span><span class="identifier">Foo</span><span>().</span><span class="identifier">constructor</span><span>
+</span><span class="keyword">function</span><span> </span><span class="identifier">Foo</span><span>()
+&gt;&gt; </span><span class="keyword">new</span><span> </span><span class="identifier">Bar</span><span>().</span><span class="identifier">constructor</span><span>
+</span><span class="keyword">function</span><span> </span><span class="identifier">Bar</span><span>()</span></code></pre>
+    <p>So, if you treat JavaScript’s definition of the word “type” as
+    analogous to the usage in this article, then yes, JavaScript has
+    “runtime types”.</p>
+    <p>But JavaScript can only conveniently get away with this because its
+    static types are uninteresting. It has one type—the type of all
+    values—and no opportunities to do interesting type-level modeling,
+    at least not as part of the standard language.</p>
+    <p>Hence, JavaScript is free to repurpose the word “type” for a flavor of
+    its classes, because our “types” aren’t a tool you make much use of in
+    JavaScript. But when you come back to Scala, Haskell, the ML family,
+    et al, you need a word for the static concept once again.</p>
+    
+    <h2 id="thinking-about-types-as-just-classes-leads-to-incorrect-conclusions" class="section"><a class="anchor-link" href="#thinking-about-types-as-just-classes-leads-to-incorrect-conclusions"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Thinking about types as <em>just</em> classes leads to incorrect conclusions</h2>
+    <p>Setting aside the goal of principled definition of terms, this
+    separation is the one that makes the most sense for a practitioner of
+    Scala. Consider the practicalities:</p>
+    <p>Types and classes have different behavior, are equal and unequal
+    according to different rules, and there are a lot more types than
+    classes. So we need different words to distinguish them.</p>
+    <p>Saying “compile-time type” or “runtime type” is not a practical
+    solution—no one wants to speak such an unwieldy qualifier every
+    time they refer to such a commonly-used concept.</p>
+    <p>While I’ve given a sampling of the richness of the type system in this
+    article, it’s not necessary to know that full richness to appreciate
+    or remember the difference between the two: types are static and
+    compile-time; classes are dynamic and runtime.</p>
+    <p><em>This article was tested with Scala 2.12.1, Shapeless 2.3.2, and
+    Firefox 53.0a2.</em></p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/S11001001.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Stephen Compall</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/S11001001">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Custom Error Types Using Cats Effect and MTL</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Custom Error Types Using Cats Effect and MTL</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Daniel Spiewak<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on September 2, 2025
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="custom-error-types-using-cats-effect-and-mtl" class="title">Custom Error Types Using Cats Effect and MTL</h1>
+    <p><strong>tl;dr</strong> Cats MTL 1.6.0 introduces a brand new lightweight syntax for managing user-defined error types in the Cats ecosystem without requiring complex monad transformers.</p>
+    <p>One of the most famous and longstanding limitations of the Cats Effect <code>IO</code> type (and the Cats generic typeclasses) is the fact that the only available error channel is <code>Throwable</code>. This stands in contrast to bifunctor or polyfunctor techniques, which add a typed error channel within the monad itself. You can see this easily in type signatures: <code>IO[String]</code> indicates an <code>IO</code> which returns a <code>String</code> or may produce a <code>Throwable</code> error (<code>Future[String]</code> is directly analogous). Something like <code>BIO[ParseError, String]</code> would represent a <code>BIO</code> that produces a <code>String</code> <em>or</em> raises a <code>ParseError</code>. The latter type signature is more general than <code>Throwable</code>, since it allows for user-specified error types, and it&#39;s somewhat more explicit about where errors can and cannot occur.</p>
+    <p>In a meaningful sense, this type of bifunctor error encoding is analogous to <em>checked</em> exceptions in Java, whereas monofunctor error encoding (like Cats Effect&#39;s <code>IO</code>) is analogous to <em>unchecked</em> exceptions. Both are valid design decisions for an effect type, but they come with different benefits and tradeoffs.</p>
+    <p>Cats has long been quite prescriptive about monofunctor effects, in part because this considerably simplifies the compositional integration space. Libraries like Fs2, Http4s, Calico, and so many more are able to build on top of parametric effects (the famous <code>F[_]</code>) with a consistent understanding of what error channels are available and how they&#39;re going to behave. This has <em>very</em> subtle interactions with concurrent logic and resource handling, and by insisting on a monofunctor calculus, the Cats ecosystem is able to maintain very strong properties with relatively simple implementations in these areas.</p>
+    <p>However, the core problem of custom error types doesn&#39;t <em>really</em> go away. Parsing is a great example of this. For example, Circe has a <code>ParsingFailure</code> type which carries a specific JSON parse error message as well as some associated traceback context. While this type does happen to extend <code>Exception</code>, and thus can be raised within an <code>IO</code>, it&#39;s not necessarily <em>right</em> for it to do so. This is common, but arguably it&#39;s only common because of the prevalence of monofunctors.</p>
+    <p>A standard solution to this problem, if you <em>don&#39;t</em> want to extend <code>Exception</code> with your error types, is to simply return <code>Either</code> everywhere. Unfortunately, that results in a lot of type signatures which look like this:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>(</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Either</span><span>[</span><span class="type-name">Failure</span><span>, </span><span class="type-name">Result</span><span>]] = ???</span></code></pre>
+    <p>And then of course, everything you do with that result must be explicitly <code>flatMap</code>ped into the <code>Either</code>, and higher-order control flow libraries like Fs2 will often need some extra coaxing in order to make everything work the way you want it to. This gets old in a hurry, which often results in reaching for alternatives like <code>EitherT</code>. That way lies frustration and woe.</p>
+    
+    <h2 id="capabilities" class="section"><a class="anchor-link" href="#capabilities"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Capabilities</h2>
+    <p>The good news is that we now have a better answer here, and one which composes very nicely with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type-infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.</p>
+    <p>The name &quot;Cats MTL&quot; comes from Haskell&#39;s MTL package, which in turn was pretty aptly named: &quot;Monad Transformer Library&quot;. Haskell&#39;s MTL is entirely oriented around making it easier and more ergonomic to manipulate monad transformer <em>stacks</em>, which is to say, multiple layers of datatypes like <code>EitherT</code>, <code>Kleisli</code>, and so on. Monad transformer stacks are extremely difficult to work with, both in Scala and in Haskell, and so over time people progressively evolved techniques involving typeclasses in Haskell and implicits in Scala to more ergonomically manipulate composable effect types. Cats MTL was rooted in an adaptation of some of these ideas.</p>
+    <p>Over time though, we&#39;ve learned that monad transformer datatypes <em>themselves</em> are often too clunky and even unnecessary. They work well in a few contexts, most notably local scopes (i.e. within the body of a single method), but they&#39;re generally the wrong solution for the problem. Quite notably, while the Cats Effect concurrent typeclasses do <em>work</em> on monad transformer stacks and derive lawful results, the practical outcomes can be very unintuitive. For that reason, it&#39;s generally not advisable to use types like <code>EitherT</code> or <code>IorT</code> composed together with libraries like Fs2 or similar.</p>
+    <p>However, the basic idea of MTL itself, divorced from the <em>datatypes</em> (like <code>EitherT</code>), is actually a very good one. At its core, MTL is just about expressing capabilities available within a given scope using implicit evidence. Capabilities can be things like parallelism, resource safety, error handling, dependency injection, sequential composition, or similar. When done correctly, this can be a very powerful and lightweight way of expressing compositional effects with a high degree of granularity and type safety. It&#39;s not a coincidence that this is exactly the route being explored by many of the researchers working on Scala academically!</p>
+    
+    <h2 id="scoped-error-capabilities" class="section"><a class="anchor-link" href="#scoped-error-capabilities"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Scoped Error Capabilities</h2>
+    <p>The problem has been to find a way to blend all of these constructs together in a way that practically <em>works</em> with the ecosystem, is syntactically lightweight, has pleasant type inference and errors, and doesn&#39;t confuse the heck out of anyone who touches it. That is a problem we feel we have now solved, at least with errors.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Monad</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.{</span><span class="type-name">Handle</span><span>, </span><span class="type-name">Raise</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="comment">// define a domain error type
+</span><span class="keyword">enum</span><span> </span><span class="type-name">ParseError</span><span>:
+  </span><span class="keyword">case</span><span> </span><span class="type-name">UnclosedBracket</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">MissingSemicolon</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>: </span><span class="type-name">String</span><span>)
+
+</span><span class="comment">// use that error type in some function
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>)(</span><span class="keyword">using</span><span> </span><span class="type-name">Raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">ParseError</span><span>], </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] =
+  </span><span class="comment">// do some hardcore parsing
+</span><span>  </span><span class="keyword">if</span><span> </span><span class="identifier">missingBracket</span><span> </span><span class="keyword">then</span><span>
+    </span><span class="type-name">UnclosedBracket</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Result</span><span>]
+  </span><span class="keyword">else</span><span> </span><span class="keyword">if</span><span> </span><span class="identifier">missingSemicolon</span><span> </span><span class="keyword">then</span><span>
+    </span><span class="type-name">MissingSemicolon</span><span>.</span><span class="identifier">raise</span><span> </span><span class="comment">// we can rely on type inference and omit extra typings
+</span><span>  </span><span class="keyword">else</span><span>
+    </span><span class="identifier">result</span><span>.</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+
+</span><span class="comment">// use allow/rescue like try/catch to create scoped error handling
+</span><span class="keyword">val</span><span> </span><span class="identifier">program</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="type-name">Handle</span><span>.</span><span class="identifier">allow</span><span>[</span><span class="type-name">ParseError</span><span>]:
+  </span><span class="keyword">for</span><span>
+    </span><span class="identifier">x</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputX</span><span>)
+    </span><span class="identifier">y</span><span> &lt;- </span><span class="identifier">parse</span><span>(</span><span class="identifier">inputY</span><span>)
+    </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;successfully parsed </span><span class="substitution">$x</span><span class="string-literal"> and </span><span class="substitution">$y</span><span class="string-literal">&quot;</span><span>)
+  </span><span class="keyword">yield</span><span> ()
+.</span><span class="identifier">rescue</span><span>:
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">UnclosedBracket</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you didn&#39;t close your brackets&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">MissingSemicolon</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you missed your semicolons very much&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>) =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;error: </span><span class="substitution">$msg</span><span class="string-literal">&quot;</span><span>)</span></code></pre>
+    <p>There&#39;s a lot to unpack here! At the very beginning we define a custom error type, <code>ParseError</code>. This is just a domain error like any other, and you&#39;ll note that it <em>doesn&#39;t</em> extend <code>Exception</code> or <code>Throwable</code> or similar. Without Cats MTL, we would generally have to wrap this error up in <code>Either</code> in all our function&#39;s result types, if we wanted to use it (similar to what Circe does). In this case though, instead of adding the error to the result type, we added a <code>using</code> parameter to our <code>parse</code> function!</p>
+    <p>Specifically, what we&#39;re doing here when we say <code>using Raise[F, ParseError]</code> is that the <code>parse</code> method requires the ability to raise (but not handle!) errors of type <code>ParseError</code>. This is a bit like saying <code>throws ParseError</code> in Java, except it isn&#39;t an exception!</p>
+    <p>Later on, in the body of <code>parse</code>, we use this <code>Raise</code> capability to call the <code>raise</code> method, producing errors in failure cases. This is a bit like the <code>throw</code> keyword, but again with our own custom domain error type. Btw, if we had expanded our <code>Monad[F]</code> using into something like <code>MonadError[F, Throwable]</code> or, more aggressively, <code>Async[F]</code>, we would have <em>also</em> had the ability to raise any error of type <code>Throwable</code> using the same syntax! In this case though, <code>parse</code> is only able to raise domain errors.</p>
+    <p>As an aside, the <code>F[_]</code> here could be instantiated with many different monadic types. While we&#39;re using <code>IO</code> in production, perhaps we would want to test this function using <code>Either[ParseError, A]</code> as our type. This is very much supported! And in fact, if you did this, the <code>Raise</code> would have been implicitly materialized by Cats MTL, since <code>Either</code> has an obvious implementation of that function.</p>
+    <p>Finally, at the end of the snippet above, we define <code>program</code> using the brand new syntax: <code>allow</code>/<code>rescue</code>. This is where things get <em>very</em> fancy. What we&#39;re doing here is we&#39;re introducing a new lexical scope (indented after the <code>allow[ParseError]:</code>) in which it is valid to <code>raise</code> an error of type <code>ParseError</code>. You should think of this as being very similar to <code>try</code>/<code>catch</code>, except it works with effect types like <code>IO</code> and any error type you define (not just <code>Throwable</code>). Within this scope, we write code as usual, and we&#39;re allowed to call the <code>parse</code> function. Note that if we had tried to call <code>parse</code> <em>outside</em> of this scope, it would have been a compile error informing us that we&#39;re missing the <code>Raise</code> capability.</p>
+    <p>At the end of the <code>allow</code> scope, we call <code>.rescue</code>, and this requires us to pass a function which <em>handles</em> any errors which could have been raised by the body of the <code>allow</code>. This works exactly like <code>catch</code>, except with your own domain error types. In this case, we are apparently just logging the existence of the errors and moving on with our life, because we do some printing and away we go, but you could imagine perhaps returning a custom HTTP error code, or triggering some fallback behavior, or really any other error handling logic.</p>
+    
+    <h3 id="scala-2" class="section"><a class="anchor-link" href="#scala-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Scala 2</h3>
+    <p>Oh, and just in case you were wondering, this syntax <em>does</em> work on Scala 2 as well, it&#39;s just a bit less fancy! Here&#39;s the same snippet from above, but with 100% more braces and a lot more explicit types:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Monad</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.{</span><span class="type-name">Handle</span><span>, </span><span class="type-name">Raise</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="comment">// define a domain error type
+</span><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">ParseError</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">Product</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Serializable</span><span>
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">ParseError</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">UnclosedBracket</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">MissingSemicolon</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+}
+
+</span><span class="comment">// use that error type in some function
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">r</span><span>: </span><span class="type-name">Raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">ParseError</span><span>], </span><span class="identifier">m</span><span>: </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = {
+  </span><span class="comment">// do some hardcore parsing
+</span><span>  </span><span class="keyword">if</span><span> (</span><span class="identifier">missingBracket</span><span>)
+    </span><span class="type-name">UnclosedBracket</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">else</span><span> </span><span class="keyword">if</span><span> (</span><span class="identifier">missingSemicolon</span><span>)
+    </span><span class="type-name">MissingSemicolon</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">else</span><span>
+    </span><span class="identifier">result</span><span>.</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+}
+
+</span><span class="comment">// use allow/rescue like try/catch to create scoped error handling
+</span><span class="keyword">val</span><span> </span><span class="identifier">program</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="type-name">Handle</span><span>.</span><span class="identifier">allowF</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">ParseError</span><span>] { </span><span class="keyword">implicit</span><span> </span><span class="identifier">h</span><span> =&gt;
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">x</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputX</span><span>)
+    </span><span class="identifier">y</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputY</span><span>)
+    </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;successfully parsed </span><span class="substitution">$x</span><span class="string-literal"> and </span><span class="substitution">$y</span><span class="string-literal">&quot;</span><span>)
+  } </span><span class="keyword">yield</span><span> ()
+} </span><span class="identifier">rescue</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">UnclosedBracket</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you didn&#39;t close your brackets&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">MissingSemicolon</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you missed your semicolons very much&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>) =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;error: </span><span class="substitution">$msg</span><span class="string-literal">&quot;</span><span>)
+}</span></code></pre>
+    <p>We need to do a lot more hand-holding for the compiler by using the <code>allowF</code> function instead of <code>allow</code>, but in general this is very much the same idea!</p>
+    
+    <h2 id="under-the-hood" class="section"><a class="anchor-link" href="#under-the-hood"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Under the Hood</h2>
+    <p>Behind the scenes, this functionality is doing two very creative things. First, as the Scala 2 snippet hints, we&#39;re introducing a new implicit within the local scope of the function passed to <code>allow</code>/<code>allowF</code>. This is one of Scala&#39;s more unique features and we&#39;re leveraging it quite heavily. In Scala 3, we&#39;re able to hide this syntax <em>entirely</em> by using context functions (the <code>A ?=&gt; B</code> syntax), but in Scala 2 we need to use the <code>implicit x =&gt;</code> lambda syntax in order to make this work.</p>
+    <p>That implicit is introduced targeting the effect type we passed to <code>allowF</code>, or in Scala 3&#39;s case, the type which was inferred from the return. In this case, that type is <code>IO</code>! In other words, you don&#39;t need to be using parametric effects (<code>F[_]</code>) in order to make all this work! <code>Raise[IO, ParseError]</code> is a totally valid <code>Raise</code> instance, and it&#39;s exactly what we have in scope here. Or rather, we actually have <code>Handle[IO, ParseError]</code> (which extends <code>Raise</code>), which gives us the ability to both raise <em>and</em> handle errors.</p>
+    <p>Once the scope is closed, syntactically, we force the user to supply an error handler to ensure that any errors which were raised and unhandled within the body are correctly managed. This is a pretty logical way of setting up your error handling, and precisely mirrors the way that you would do this same thing with a more imperative direct syntax like <code>try</code>/<code>catch</code>/<code>throw</code>/<code>throws</code>.</p>
+    <p>In the way way deep underdark of the implementation, this whole thing works at runtime by creating what we call a &quot;submarine error&quot;. Specifically, we have a local traceless exception type called <code>Submarine</code> inside of the <code>allow</code> implementation which extends <code>RuntimeException</code>. When you <code>raise</code> a custom domain error (<code>ParseError</code> in this case), we use <code>Submarine</code> to &quot;submerge&quot; your error within the <code>Throwable</code> error channel of the enclosing effect – in this case, <code>IO</code>. Since we catch this error at the boundary, this whole process is entirely invisible to you <em>unless</em> you write something like <code>handleErrorWith</code> and catch all <code>Throwable</code>-typed errors within the scope, in which case you might see something of type <code>Submarine</code>. The correct thing to do with this error type, should you see it, depends considerably on exactly <em>why</em> you&#39;re writing <code>handleErrorWith</code>, and as it turns out this is exactly the whole point!</p>
+    <p>By implementing this functionality without extending the number of actual error channels within the effect type (either with a bifunctor or something like <code>EitherT</code>), we ensure that everything continues to compose correctly around all resource handling, structured and unstructured concurrency, and otherwise-oblivious generic library code which has no idea what your domain errors are or how they might behave. Even in the case of an explicit <code>handleErrorWith</code>, you might be adding that type of error handler because you&#39;re writing some logic which must make <em>certain</em> that there is no possible way to short-circuit without passing through your handler (e.g. perhaps you&#39;re trying to make sure that some critical resource is cleaned up), or alternatively you may just be trying to observe <code>Throwable</code> errors to log and re-raise them, or any number of other things you <em>might</em> be doing with the error channel that we don&#39;t have any insight into.</p>
+    <p>Rather than trying to impose a particular multi-channel composition semantic on your code, we simply stick with a single error channel with known and well-understood supremacy semantics, and everything else follows from there.</p>
+    
+    <h2 id="conclusion" class="section"><a class="anchor-link" href="#conclusion"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Conclusion</h2>
+    <p>Hopefully you find this technique helpful! This has been in the works for a <em>surprisingly</em> long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le (<a href="https://github.com/lenguyenthanh">@lenguyenthanh</a>) who ultimately pushed it over the line. Huge shoutout! He has already begun leveraging this functionality in Lichess, one of the larger production Scala projects: <a href="https://github.com/lichess-org/lila/pull/17944">lichess-org/lila#17944</a></p>
+    <p>Even more excitingly, this is a bit of a taste of the next phase of the effect type ecosystem. Scala is continuing to move heavily in the direction of implicit capabilities for these types of behaviors, and while efforts such as Caprese are still a long way from bearing real-world fruit, much of the work that is being done in that direction also creates the primitives needed to encode a compositional capabilities ecosystem for our existing production effect types, such as Cats Effect <code>IO</code>!</p>
+    <p>Cats MTL will continue to evolve in this area, with an eye towards advancing the capabilities and improving syntax and ergonomics of this type of functionality both now and in the future.</p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/djspiewak.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Daniel Spiewak</strong> 
+        
+        
+        <br />
+        I write code, read papers, and think thoughts. Broadly, I'm interested in: type theory, parser theory, functional abstractions, data structures, performance.
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/djspiewak">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        <a class="bulma-level-item" href="https://fosstodon.org/@djspiewak">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg></span>
+        </a>
+        
+        
+        <a class="bulma-level-item" href="https://www.linkedin.com/in/djspiewak/">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg></span>
+        </a>
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

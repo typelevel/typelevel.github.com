@@ -1,0 +1,67 @@
+{
+  "version": "v1.1.0",
+  "entity": {
+    "type": "organisation",
+    "role": "owner",
+    "name": "Typelevel Foundation",
+    "email": "donate@typelevel.org",
+    "description": "The Typelevel Foundation is a nonprofit 501(c)(3) public charity (EIN: 39-3611111). Our mission is to ensure the long-term sustainability of the Typelevel ecosystem, advance research and education in functional programming, and grow our community of curious and passionate developers.",
+    "webpageUrl": {
+      "url": "https://typelevel.org"
+    }
+  },
+  "projects": [
+    {
+      "guid": "cats-effect",
+      "name": "Cats Effect",
+      "description": "Use functional programming to write a concurrent application and execute it on a high-performance, asynchronous runtime targeting the platform of your choice.",
+      "webpageUrl": {
+        "url": "https://typelevel.org"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/typelevel/cats-effect"
+      },
+      "licenses": [
+        "spdx:Apache-2.0"
+      ],
+      "tags": [
+        "functional-programming",
+        "effect-systems",
+        "concurrency",
+        "async",
+        "runtimes",
+        "scala"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "github-sponsors",
+        "type": "payment-provider",
+        "address": "https://github.com/sponsors/typelevel/"
+      },
+      {
+        "guid": "every-org",
+        "type": "payment-provider",
+        "address": "https://www.every.org/typelevel-foundation"
+      }
+    ],
+    "plans": [
+      {
+        "guid": "supporter",
+        "status": "active",
+        "name": "Supporter",
+        "description": "Enjoy free virtual admission to Typelevel Summits.",
+        "amount": 75,
+        "currency": "USD",
+        "frequency": "yearly",
+        "channels": [
+          "github-sponsors",
+          "every-org"
+        ]
+      }
+    ],
+    "history": []
+  }
+}

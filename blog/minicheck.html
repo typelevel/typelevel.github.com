@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Let&#39;s build ourselves a small ScalaCheck</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Let&#39;s build ourselves a small ScalaCheck</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Lars Hupel<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on October 17, 2016
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="let-s-build-ourselves-a-small-scalacheck" class="title">Let&#39;s build ourselves a small ScalaCheck</h1>
+    <p><em><a href="http://scalacheck.org/">ScalaCheck</a> is a well-known property-based testing library, based on ideas from Haskell&#39;s <a href="https://hackage.haskell.org/package/QuickCheck">QuickCheck</a>.
+    It is also a <a href="../projects/">Typelevel project</a>.
+    In this post, I&#39;d like to show some of the underlying mechanisms, stripped down to the bare minimum.</em></p>
+    <p>Testing with properties is well-understood in academia and widely used in parts of the industry – namely the parts which embrace functional programming.
+    However, the design space of property-testing libraries is rather large.
+    I think it is high time to talk about various tradeoffs done in libraries.
+    Here, I&#39;d like to contribute by implementing a ScalaCheck clone from scratch using a very similar design and explaining the design choices along the way.</p>
+    <p>This is not an introduction to property testing.
+    However, it can be read as a guide to implementation ideas.
+    QuickCheck, ScalaCheck and the like are nice examples of functional library design, but their internals are often obscured by technicalities.
+    I hope that by clearing up some of the concepts it will become easier to read their code and perhaps designing your own property-testing library.</p>
+    
+    <h2 id="the-first-design-decision" class="section"><a class="anchor-link" href="#the-first-design-decision"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The first design decision</h2>
+    <p>The basic point of a property testing library is providing an interface looking roughly like this:</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">Prop</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">check</span><span>(): </span><span class="type-name">Unit</span><span> = ???
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Prop</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">forAll</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">prop</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">Boolean</span><span>): </span><span class="type-name">Prop</span><span> = ???
+}</span></code></pre>
+    <p>Now, you can use that in your test code:</p>
+    <pre><code class="nohighlight"><span class="type-name">Prop</span><span>.</span><span class="identifier">forAll</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+  </span><span class="identifier">x</span><span> == </span><span class="identifier">x</span><span>
+}</span></code></pre>
+    <p>This expresses that you have a property which is parameterized on a single integer number.
+    Hence, the library must somehow provide these integer numbers.
+    The original Haskell QuickCheck, ScalaCheck and many other libraries use a <em>random generator</em> for this.
+    This comes with a number of advantages:</p>
+    <ul>
+      <li>It is relatively simple and efficient to implement.</li>
+      <li>Random number generators compose exceedingly well.</li>
+      <li>The confidence in the tests can be increased by just generating more inputs.</li>
+      <li>Depending on the random distributions of the generators used, you have chances that both “exotic” and “common” inputs are covered.</li>
+      <li>In practice, it turns out that random generators are decent at finding edge cases.</li>
+    </ul>
+    <p>But it is also not without problems:</p>
+    <ul>
+      <li>For more complex inputs, the default generators are basically useless, because they will produce invalid input most of the time.</li>
+      <li>Filtering random values before feeding them into the property can dramatically slow down the whole process.</li>
+      <li>By default, it is non-deterministic (but there are remedies available).</li>
+      <li>Generation of <em>random functions</em> to be used as inputs for higher-order properties is quite round-about.</li>
+    </ul>
+    <p>Of course, there are other possible design choices:</p>
+    <ul>
+      <li><a href="https://hackage.haskell.org/package/smallcheck">SmallCheck</a> instead enumerates <em>all</em> values up to a certain size.
+      For example, you can specify that you want to test some function over integer lists with all lists up to size 5, containing all integers between -5 and +5.
+      In some situations, namely when your input is finite, you can even <em>exhaustively</em> check all inputs, which is equivalent to a <em>proof</em> that your program is correct.
+      The disadvantage is that even for small sizes, the input space may explode exponentially or worse (e.g. when generating lists of lists).</li>
+      <li><a href="https://isabelle.in.tum.de">Isabelle</a> Quickcheck supports multiple modes, including <em>narrowing</em>, which is a form of symbolically exploring the search space.
+      This is based on Haskell&#39;s <a href="https://hackage.haskell.org/package/lazysmallcheck">Lazy SmallCheck</a> (see also the <a href="https://www.cs.york.ac.uk/fp/smallcheck/smallcheck.pdf">paper by Runciman et.al.</a>).
+      The basic idea is that we can try to evaluate properties with <em>partially-defined inputs</em> and refine them on demand.</li>
+    </ul>
+    <p><strong>For this post, we&#39;re assuming that random generation is a given.</strong></p>
+    
+    <h2 id="the-second-design-decision" class="section"><a class="anchor-link" href="#the-second-design-decision"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The second design decision</h2>
+    <blockquote>Do we want to do this purely or poorly?</blockquote>
+    <p>Of course, this motto is tongue-in-cheek.
+    Just because something isn&#39;t <em>pure</em> doesn&#39;t mean that it is <em>poor.</em></p>
+    <p>To understand the design space here, let&#39;s focus on the smallest building block: A primitive random generator.
+    There are two possible ways to model this.
+    The <em>mutable</em> way is what Java, Scala and many other languages offer in their libraries:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Random</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextInt</span><span>(</span><span class="identifier">min</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">max</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Int</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextFloat</span><span>(): </span><span class="type-name">Float</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextItem</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">pool</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">A</span><span>
+}</span></code></pre>
+    <p>By looking at the types alone, we can already see that two subsequent calls of <code>nextInt</code> will produce different results; the interface is thus <em>impure.</em></p>
+    <p>The <em>pure</em> way is to make the internal state (also known as “seed” in the context of random generators) explicit:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Seed</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextInt</span><span>(</span><span class="identifier">min</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">max</span><span>: </span><span class="type-name">Int</span><span>): (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Seed</span><span>)
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextFloat</span><span>: (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Seed</span><span>)
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">nextItem</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">pool</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]): (</span><span class="type-name">A</span><span>, </span><span class="type-name">Seed</span><span>)
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Seed</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">init</span><span>(): </span><span class="type-name">Seed</span><span> = ???
+}</span></code></pre>
+    <p>Because this is difficult to actually use (don&#39;t mix up the <code>Seed</code> instances and use them twice!), one would wrap this into a state monad:</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">Random</span><span>[</span><span class="type-name">A</span><span>](</span><span class="keyword">private</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">op</span><span>: </span><span class="type-name">Seed</span><span> =&gt; (</span><span class="type-name">A</span><span>, </span><span class="type-name">Seed</span><span>)) { </span><span class="identifier">self</span><span> =&gt;
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(): </span><span class="type-name">A</span><span> = </span><span class="identifier">op</span><span>(</span><span class="type-name">Seed</span><span>.</span><span class="identifier">init</span><span>())</span><span class="number-literal">._1</span><span>
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">B</span><span>](</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">Random</span><span>[</span><span class="type-name">B</span><span>] =
+    </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>[</span><span class="type-name">B</span><span>]({ </span><span class="identifier">seed0</span><span> =&gt;
+      </span><span class="keyword">val</span><span> (</span><span class="identifier">a</span><span>, </span><span class="identifier">seed1</span><span>) = </span><span class="identifier">self</span><span>.</span><span class="identifier">op</span><span>(</span><span class="identifier">seed0</span><span>)
+      (</span><span class="identifier">f</span><span>(</span><span class="identifier">a</span><span>), </span><span class="identifier">seed1</span><span>)
+    })
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">flatMap</span><span>[</span><span class="type-name">B</span><span>](</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">Random</span><span>[</span><span class="type-name">B</span><span>]): </span><span class="type-name">Random</span><span>[</span><span class="type-name">B</span><span>] =
+    </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>[</span><span class="type-name">B</span><span>]({ </span><span class="identifier">seed0</span><span> =&gt;
+      </span><span class="keyword">val</span><span> (</span><span class="identifier">a</span><span>, </span><span class="identifier">seed1</span><span>) = </span><span class="identifier">self</span><span>.</span><span class="identifier">op</span><span>(</span><span class="identifier">seed0</span><span>)
+      </span><span class="identifier">f</span><span>(</span><span class="identifier">a</span><span>).</span><span class="identifier">op</span><span>(</span><span class="identifier">seed1</span><span>)
+    })
+
+  </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toString</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;&lt;random&gt;&quot;</span><span>
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Random</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">int</span><span>(</span><span class="identifier">min</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">max</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Random</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">min</span><span>, </span><span class="identifier">max</span><span>))
+  </span><span class="keyword">val</span><span> </span><span class="identifier">float</span><span>: </span><span class="type-name">Random</span><span>[</span><span class="type-name">Float</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">nextFloat</span><span>)
+}</span></code></pre>
+    <p>Now we can use Scala&#39;s <code>for</code> comprehensions:</p>
+    <pre><code class="nohighlight"><span class="keyword">for</span><span> {
+  </span><span class="identifier">x</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">5</span><span>, </span><span class="number-literal">5</span><span>)
+  </span><span class="identifier">y</span><span> &lt;- </span><span class="type-name">Random</span><span>.</span><span class="identifier">int</span><span>(-</span><span class="number-literal">3</span><span>, </span><span class="number-literal">3</span><span>)
+} </span><span class="keyword">yield</span><span> (</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>)
+</span><span class="comment">// res2: Random[(Int, Int)] = &lt;random&gt;</span></code></pre>
+    <p>The tradeoffs here are the usual when we&#39;re talking about functional programming in Scala: Reasoning ability, convenience, performance, …
+    In the pure case, there are also multiple other possible encodings, including free monads.
+    Luckily, this blog covers that topic in another <a href="edsls-part-1.html">post</a>.</p>
+    <p>How do other libraries fare here?</p>
+    <ul>
+      <li>ScalaCheck up to 1.12.x uses a mutable random number generator; namely, <code>scala.util.Random</code>.</li>
+      <li>ScalaCheck 1.13.x+ uses its own, immutable implementation.</li>
+      <li>Another Scala library for property testing, <a href="https://github.com/scalaprops/scalaprops">scalaprops</a>, does not.
+      I&#39;m not familiar with it, but as far as I can tell from the <a href="https://github.com/scalaprops/scalaprops/blob/v0.3.4/gen/src/main/scala/scalaprops/Rand.scala">sources</a>, it&#39;s similar to the <code>Seed</code> trait from above, and there is also an additional state-monadic layer on top of it.</li>
+      <li>In QuickCheck, the encoding seems strange at first.
+      They use a primitive generator which looks a lot like <code>Seed</code>, but they don&#39;t use the updated seed.
+      Instead, their approach is via an additional primitive <code>split</code> of type <code>Seed =&gt; (Seed, Seed)</code>, which gets used to “distribute” randomness during composition (see the <a href="http://publications.lib.chalmers.se/records/fulltext/183348/local_183348.pdf">paper by Claessen &amp; Pałka</a> about the theory behind that).
+      It is worth noting that Java 8 introduced a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/SplittableRandom.html"><code>SplittableRandom</code></a> class.</li>
+    </ul>
+    <p><strong>For this post, we&#39;re assuming that mutable state is a given.</strong>
+    We&#39;ll use <code>scala.util.Random</code> (because it&#39;s readily available) in a similar fashion to ScalaCheck 1.12.x.</p>
+    
+    <h2 id="the-third-design-decision" class="section"><a class="anchor-link" href="#the-third-design-decision"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The third design decision</h2>
+    <p>Asynchronous programming is all the rage these days.
+    This means that many functions will not return plain values of type <code>A</code>, but rather <code>Future[A]</code>, <code>Task[A]</code> or some other similar type.
+    For our testing framework, this poses a challenge:
+    If our properties call such asynchronous functions, the framework needs to know how to deal with a lot of <code>Future[Boolean]</code> values.
+    On the JVM, although not ideal, we could fall back to blocking on the result and proceed as usual.
+    On <a href="http://www.scala-js.org/">Scala.js</a>, this won&#39;t fly, because you just can&#39;t block in JavaScript.</p>
+    <p>Most general-purpose testing frameworks, like Specs2, have a <a href="https://etorreborre.github.io/specs2/guide/SPECS2-3.8.5/org.specs2.guide.Matchers.html">story about this</a>, enabling asynchronous checking of assertions.</p>
+    <p>In theory, it&#39;s not a problem to support this in a property testing library.
+    But in practice, there are some complications:</p>
+    <ul>
+      <li>Has the library been designed that way? If not, can we change it to support it?
+      This is a real problem: It took quite some time and some significant refactorings to support <code>Future</code>s in <a href="http://www.scalatest.org/user_guide/async_testing">ScalaTest</a>.</li>
+      <li>Should random generators also return <code>Future</code> values?
+      We can easily imagine wanting to draw from a pool of inputs stemming from a database, or possibly to get better randomness from <a href="https://www.random.org/">random.org</a>.
+      (The latter is a joke.)</li>
+      <li>What async type constructor should we support?
+      <a href="http://www.scala-lang.org/files/archive/api/2.11.8/#scala.concurrent.Future">The built-in one</a>?
+      <a href="https://monix.io/docs/2x/eval/task.html">Monix&#39; <code>Task</code></a>?
+      <a href="https://github.com/functional-streams-for-scala/fs2/blob/v0.9.1/core/shared/src/main/scala/fs2/Task.scala">fs2&#39;s <code>Task</code></a>?
+      All of them?</li>
+    </ul>
+    <p>If in the first design decisions we had chosen exhaustive generators, this problem would be even tougher, because designing a correct effectful stream type (of all possible inputs) is not trivial.</p>
+    <p><strong>For this post, we&#39;re assuming that we&#39;re only interested in synchronous properties, or can always block.</strong>
+    However, I&#39;d like to add, I&#39;d probably try to incorporate async properties right from the start if I were to implement a testing library from scratch.</p>
+    <p>What about the existing libraries?</p>
+    <ul>
+      <li>ScalaCheck itself does not support asynchronous properties.</li>
+      <li>In SmallCheck, both <a href="https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Serial">generators</a> and <a href="https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck.html#t:Property">properties</a> may be monadic.</li>
+      <li>QuickCheck supports arbitrary I/O actions in a property via a function called <a href="https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Property.html#v:morallyDubiousIOProperty"><code>morallyDubiosIOProperty</code></a> (nowadays just <code>ioProperty</code>).
+      But there is also <a href="https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Monadic.html">more advanced support</a> for monadic testing.</li>
+    </ul>
+    
+    <h2 id="the-fourth-design-decision" class="section"><a class="anchor-link" href="#the-fourth-design-decision"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The fourth design decision</h2>
+    <p>Let&#39;s summarize what we have so far:</p>
+    <ol class="arabic">
+      <li>randomly generated inputs</li>
+      <li>... using a stateful primitive generator</li>
+      <li>synchronous properties</li>
+    </ol>
+    <p>Now, I&#39;d like to talk about how to “package” random generators.
+    Earlier, we&#39;ve only seen random integer and floating-point numbers, but of course, we want something more complex, including custom data structures.
+    It is convenient to abstract over this and specify the concept of a <em>generator</em> for type <code>A</code>.
+    The idea is to make a generator for a type as “general” as possible and then provide combinators to compose them.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">scala</span><span>.</span><span class="identifier">util</span><span>.</span><span class="type-name">Random</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">T</span><span>
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Gen</span><span> {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">int</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Int</span><span> =
+      </span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>()
+  }
+}</span></code></pre>
+    <p>An obvious combinator is a generator for tuples:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">zip</span><span>[</span><span class="type-name">T</span><span>, </span><span class="type-name">U</span><span>](</span><span class="identifier">genT</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>], </span><span class="identifier">genU</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>]): </span><span class="type-name">Gen</span><span>[(</span><span class="type-name">T</span><span>, </span><span class="type-name">U</span><span>)] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[(</span><span class="type-name">T</span><span>, </span><span class="type-name">U</span><span>)] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): (</span><span class="type-name">T</span><span>, </span><span class="type-name">U</span><span>) =
+    (</span><span class="identifier">genT</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">rnd</span><span>), </span><span class="identifier">genU</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">rnd</span><span>))
+}</span></code></pre>
+    <p>But we still have a problem:
+    There is currently no way to talk about the <em>size</em> of the generated inputs.
+    Let&#39;s say we want to check an expensive algorithm over lists, for example with a complexity of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> \mathcal O(n^3) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> over lists.
+    A naive implemenation of a list generator would take a a random size, and then give you some generator for lists.
+    The problem arises at the use site: Whenver you want to change the size of the generated inputs, you need to change the expression constructing the generator.</p>
+    <p>But we&#39;d like to do better here:</p>
+    <p><strong>For this post, there should be a way to specify a maximum size of generated values, together with a way to influence that size in the tests without having to modify the generators.</strong></p>
+    <p>Here&#39;s how we can do that:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">scala</span><span>.</span><span class="identifier">util</span><span>.</span><span class="type-name">Random</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">T</span><span>
+
+  </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toString</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;&lt;gen&gt;&quot;</span><span>
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Gen</span><span> {
+
+  </span><span class="keyword">val</span><span> </span><span class="identifier">int</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Int</span><span> = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">range</span><span> = </span><span class="identifier">size</span><span> * </span><span class="number-literal">2</span><span> + </span><span class="number-literal">1</span><span>
+      </span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">range</span><span>) - </span><span class="identifier">size</span><span>
+    }
+  }
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">list</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">genA</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>] = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">length</span><span> = </span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">size</span><span> + </span><span class="number-literal">1</span><span>)
+      </span><span class="type-name">List</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="identifier">length</span><span>)(</span><span class="identifier">genA</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>))
+    }
+  }
+
+}</span></code></pre>
+    <p>We can now check this (note that for the purpose of this post we&#39;ll be using fixed seeds):</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">printSample</span><span>[</span><span class="type-name">T</span><span>](</span><span class="identifier">genT</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>], </span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">count</span><span>: </span><span class="type-name">Int</span><span> = </span><span class="number-literal">10</span><span>): </span><span class="type-name">Unit</span><span> = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">rnd</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>(</span><span class="number-literal">0</span><span>)
+  </span><span class="keyword">for</span><span> (</span><span class="identifier">i</span><span> &lt;- </span><span class="number-literal">0</span><span> </span><span class="identifier">until</span><span> </span><span class="identifier">size</span><span>)
+    </span><span class="identifier">println</span><span>(</span><span class="identifier">genT</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>))
+}</span></code></pre>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">printSample</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>, </span><span class="number-literal">10</span><span>)
+</span><span class="number-literal">2</span><span>
+</span><span class="number-literal">6</span><span>
+-</span><span class="number-literal">6</span><span>
+-</span><span class="number-literal">8</span><span>
+</span><span class="number-literal">1</span><span>
+</span><span class="number-literal">4</span><span>
+-</span><span class="number-literal">8</span><span>
+</span><span class="number-literal">5</span><span>
+-</span><span class="number-literal">4</span><span>
+-</span><span class="number-literal">8</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">printSample</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>, </span><span class="number-literal">3</span><span>)
+</span><span class="number-literal">2</span><span>
+-</span><span class="number-literal">1</span><span>
+</span><span class="number-literal">1</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">printSample</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">list</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>), </span><span class="number-literal">10</span><span>)
+</span><span class="type-name">List</span><span>()
+</span><span class="type-name">List</span><span>(-</span><span class="number-literal">6</span><span>, -</span><span class="number-literal">8</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="number-literal">4</span><span>, -</span><span class="number-literal">8</span><span>, </span><span class="number-literal">5</span><span>)
+</span><span class="type-name">List</span><span>(-</span><span class="number-literal">8</span><span>, -</span><span class="number-literal">2</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">4</span><span>, </span><span class="number-literal">6</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">4</span><span>, </span><span class="number-literal">0</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">10</span><span>, </span><span class="number-literal">4</span><span>, -</span><span class="number-literal">9</span><span>, -</span><span class="number-literal">7</span><span>, </span><span class="number-literal">7</span><span>)
+</span><span class="type-name">List</span><span>(-</span><span class="number-literal">8</span><span>, </span><span class="number-literal">6</span><span>, -</span><span class="number-literal">4</span><span>, </span><span class="number-literal">9</span><span>, -</span><span class="number-literal">1</span><span>, </span><span class="number-literal">10</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">7</span><span>, -</span><span class="number-literal">8</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">7</span><span>, -</span><span class="number-literal">7</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">5</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">9</span><span>, </span><span class="number-literal">7</span><span>, </span><span class="number-literal">4</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">5</span><span>, </span><span class="number-literal">9</span><span>, -</span><span class="number-literal">3</span><span>, </span><span class="number-literal">3</span><span>, -</span><span class="number-literal">10</span><span>)
+</span><span class="type-name">List</span><span>()
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">printSample</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">list</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>), </span><span class="number-literal">3</span><span>)
+</span><span class="type-name">List</span><span>(-</span><span class="number-literal">1</span><span>, </span><span class="number-literal">1</span><span>)
+</span><span class="type-name">List</span><span>(</span><span class="number-literal">1</span><span>, -</span><span class="number-literal">3</span><span>)
+</span><span class="type-name">List</span><span>(-</span><span class="number-literal">2</span><span>, </span><span class="number-literal">3</span><span>)</span></code></pre>
+    <p>That&#39;s already pretty cool.
+    But there&#39;s another hidden design decision here:
+    We&#39;re using the same size on all sub-elements in the generated thing.
+    For example, in <code>Gen.list</code>, we&#39;re just passing the size through to the child generator.</p>
+    <p>SmallCheck does that differently: The “size” is defined to be the total number of constructors in the generated value.
+    For integer numbers, the “number of constructors” is basically the number itself.
+    For example, the value <code>List(1, 2)</code> has size <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex"> 2 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> in our framework (length of the list), but size <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex"> 1 + 2 + 2 = 5 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> in SmallCheck (roughly: size of all elements plus length of list).</p>
+    <p>Of course, our design decision might mean that stuff grows too fast.
+    The explicit size parameter can be used to alleviate that, especially for writing recursive generators:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">recList</span><span>[</span><span class="type-name">T</span><span>](</span><span class="identifier">genT</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>]): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">T</span><span>]] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">T</span><span>]] {
+  </span><span class="comment">// extremely stupid implementation, don&#39;t use it
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">T</span><span>] =
+    </span><span class="keyword">if</span><span> (</span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">size</span><span> + </span><span class="number-literal">1</span><span>) &gt; </span><span class="number-literal">0</span><span>)
+      </span><span class="identifier">genT</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>) :: </span><span class="identifier">recList</span><span>(</span><span class="identifier">genT</span><span>).</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span> - </span><span class="number-literal">1</span><span>, </span><span class="identifier">rnd</span><span>)
+    </span><span class="keyword">else</span><span>
+      </span><span class="type-name">Nil</span><span>
+}
+</span><span class="comment">// recList: [T](genT: Gen[T])Gen[List[T]]
+</span><span>
+</span><span class="identifier">printSample</span><span>(</span><span class="identifier">recList</span><span>(</span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>), </span><span class="number-literal">10</span><span>)
+</span><span class="comment">// List()
+// List(-6, 1, -6)
+// List(-8, 8, 4, 7, 0, 5, -4)
+// List(-8)
+// List(9, -3, 4)
+// List(1, 3, -7, -2, -3, 0, -3, 3)
+// List()
+// List(10, 5, -8, -4, -5, 4, -1)
+// List(-5, 9, 7)
+// List(-8)</span></code></pre>
+    <p>We can also provide a combinator for this:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">resize</span><span>[</span><span class="type-name">T</span><span>](</span><span class="identifier">genT</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>], </span><span class="identifier">newSize</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">T</span><span> =
+    </span><span class="identifier">genT</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">newSize</span><span>, </span><span class="identifier">rnd</span><span>)
+}</span></code></pre>
+    <p>That one is useful because in reality ScalaCheck&#39;s <code>generate</code> method takes some more parameters than just the size.
+    Some readers might be reminded that this is just the reader monad and its <code>local</code> combinator in disguise.</p>
+    
+    <h2 id="some-sugar" class="section"><a class="anchor-link" href="#some-sugar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Some sugar</h2>
+    <p>In order to make these generators nicely composable, we can leverage <code>for</code> comprehensions.
+    We just need to implement <code>map</code>, <code>flatMap</code> and <code>withFilter</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">scala</span><span>.</span><span class="identifier">util</span><span>.</span><span class="type-name">Random</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] { </span><span class="identifier">self</span><span> =&gt;
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">T</span><span>
+
+  </span><span class="comment">// Generate a value and then apply a function to it
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">U</span><span>](</span><span class="identifier">f</span><span>: </span><span class="type-name">T</span><span> =&gt; </span><span class="type-name">U</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">U</span><span> =
+      </span><span class="identifier">f</span><span>(</span><span class="identifier">self</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>))
+  }
+
+  </span><span class="comment">// Generate a value and then use it to produce a new generator
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">flatMap</span><span>[</span><span class="type-name">U</span><span>](</span><span class="identifier">f</span><span>: </span><span class="type-name">T</span><span> =&gt; </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>]): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">U</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">U</span><span> =
+      </span><span class="identifier">f</span><span>(</span><span class="identifier">self</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)).</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)
+  }
+
+  </span><span class="comment">// Repeatedly generate values until one passes the check
+</span><span>  </span><span class="comment">// (We would usually call this `filter`, but Scala requires us to
+</span><span>  </span><span class="comment">// call it `withFilter` in order to be used in `for` comprehensions)
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">withFilter</span><span>(</span><span class="identifier">p</span><span>: </span><span class="type-name">T</span><span> =&gt; </span><span class="type-name">Boolean</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">T</span><span> = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">candidate</span><span> = </span><span class="identifier">self</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)
+      </span><span class="keyword">if</span><span> (</span><span class="identifier">p</span><span>(</span><span class="identifier">candidate</span><span>))
+        </span><span class="identifier">candidate</span><span>
+      </span><span class="keyword">else</span><span> </span><span class="comment">// try again
+</span><span>        </span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)
+    }
+  }
+
+  </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toString</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;&lt;gen&gt;&quot;</span><span>
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Gen</span><span> {
+
+  </span><span class="comment">// unchanged from above
+</span><span>
+  </span><span class="keyword">val</span><span> </span><span class="identifier">int</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Int</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Int</span><span> = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">range</span><span> = </span><span class="identifier">size</span><span> * </span><span class="number-literal">2</span><span> + </span><span class="number-literal">1</span><span>
+      </span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">range</span><span>) - </span><span class="identifier">size</span><span>
+    }
+  }
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">list</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">genA</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]] = </span><span class="keyword">new</span><span> </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>]] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">generate</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>] = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">length</span><span> = </span><span class="identifier">rnd</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">size</span><span> + </span><span class="number-literal">1</span><span>)
+      </span><span class="type-name">List</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="identifier">length</span><span>)(</span><span class="identifier">genA</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>))
+    }
+  }
+
+}</span></code></pre>
+    <p>Look how simple composition is now:</p>
+    <pre><code class="nohighlight"><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Frac</span><span>(</span><span class="identifier">numerator</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">denominator</span><span>: </span><span class="type-name">Int</span><span>)
+</span><span class="comment">// defined class Frac
+</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">fracGen</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Frac</span><span>] =
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">num</span><span> &lt;- </span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>
+    </span><span class="identifier">den</span><span> &lt;- </span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>
+    </span><span class="keyword">if</span><span> </span><span class="identifier">den</span><span> != </span><span class="number-literal">0</span><span>
+  } </span><span class="keyword">yield</span><span> </span><span class="type-name">Frac</span><span>(</span><span class="identifier">num</span><span>, </span><span class="identifier">den</span><span>)
+</span><span class="comment">// fracGen: Gen[Frac] = &lt;gen&gt;
+</span><span>
+</span><span class="identifier">printSample</span><span>(</span><span class="identifier">fracGen</span><span>, </span><span class="number-literal">10</span><span>)
+</span><span class="comment">// Frac(2,6)
+// Frac(-6,-8)
+// Frac(1,4)
+// Frac(-8,5)
+// Frac(-4,-8)
+// Frac(-2,-8)
+// Frac(4,6)
+// Frac(1,4)
+// Frac(0,-10)
+// Frac(10,4)</span></code></pre>
+    <p>And we can even read the construction nicely: “First draw a numerator, then draw a denominator, then check that the denominator is not zero, then construct a fraction.”
+    However, we need to be cautious with the filtering.
+    If you look closely at the implementation of <code>withFilter</code>, you can see that there is potential for an infinite loop.
+    For example, when you pass in the filter <code>_ =&gt; false</code>.
+    It will just keep generating values and then discard them.
+    How do existing frameworks alleviate this?</p>
+    <ul>
+      <li>QuickCheck has two filter combinators: one that returns <code>Gen[A]</code> as above, and one that return <code>Gen[Option[A]]</code>.
+      The latter uses a number of tries and if they all fail, terminates and returns <code>None</code>.
+      The former uses the latter, but keeps increasing the size parameter.
+      Of course, this might not terminate.</li>
+      <li>ScalaCheck&#39;s <code>filter</code> method returns <code>Gen[A]</code>, but the possibility of failure is encoded in the return type of its equivalent of the <code>generate</code> method, which always returns <code>Option[T]</code>.
+      But there is also a combinator which retries until it finds a valid input, called <code>retryUntil</code>.</li>
+    </ul>
+    <p>As a side note: <code>Gen</code> as it is right now is <em>definitely not</em> a valid monad, because it internally relies on mutable state.
+    But in my opinion, it is still justified to offer the <code>map</code> and <code>flatMap</code> methods, but don&#39;t give a <code>Monad</code> instance.
+    This prevents you from shoving <code>Gen</code> into functions which expect lawful monads.</p>
+    <p>It&#39;s still tedious to having to construct these generators by hand.
+    Both QuickCheck and ScalaCheck introduce a thin layer atop generators, called <code>Arbitrary</code>.
+    This is just a type class which contains a generator, nothing more.
+    Here&#39;s how it would look like in Scala:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Arbitrary</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">gen</span><span>: </span><span class="type-name">Gen</span><span>[</span><span class="type-name">T</span><span>]
+}
+
+</span><span class="comment">// in practice we would put that into the companion object
+//object Arbitrary {
+</span><span>
+  </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">arbitraryInt</span><span>: </span><span class="type-name">Arbitrary</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Arbitrary</span><span>[</span><span class="type-name">Int</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">gen</span><span> = </span><span class="type-name">Gen</span><span>.</span><span class="identifier">int</span><span>
+  }
+
+</span><span class="comment">//}</span></code></pre>
+    <p>Based on this definition, ScalaCheck provides a lot of pre-defined instances for all sorts of types.
+    For your custom types, the idea is that you define a low-level generator and wrap it into an implicit <code>Arbitrary</code>.
+    Then, in your tests, you just use the implicitly provided generator, and avoid to drop down to constructing them manually.</p>
+    <p>The purpose of the additional layer is explained easily: It is common to have multiple <code>Gen[T]</code> for the same <code>T</code> depending on which context it is needed in.
+    But there should only be one <code>Arbitrary[T]</code> for each <code>T</code>.
+    For example, you might have <code>Gen[Int]</code> for positive and negative integers, but you only have a single <code>Arbitrary[Int]</code> which covers all integers.
+    You use the latter when you actually need to supply an integer to your property, and the former to construct more complex generators, like for <code>Frac</code> above.</p>
+    
+    <h2 id="the-fifth-design-decision" class="section"><a class="anchor-link" href="#the-fifth-design-decision"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The fifth design decision</h2>
+    <p>This is where everything really comes together.
+    We&#39;re now looking at how to use <code>Gen</code> to implement the desired <code>forAll</code> function we&#39;ve seen early in the introduction of the post, and how that is related to the <code>Prop</code> type I didn&#39;t define.
+    I&#39;ll readily admit that the following isn&#39;t really a design decision per se, because we&#39;ll be guided by the presence of type classes in Scala.
+    Still, one could reasonably structure this differently, and in fact, the design of the <code>Prop</code> type in e.g. QuickCheck is much more complex than what you&#39;ll see.</p>
+    <p>The rest of this post will now depart from the way it&#39;s done in ScalaCheck, although the ideas are still similar.
+    Instead, I&#39;ll try to show a simplified version without introducing complications required to make it work nicely.</p>
+    <p>Let&#39;s start with the concept of a <em>property.</em>
+    A property is something that we can <em>run</em> and which returns a <em>result</em>.
+    The result should ideally be something like a boolean: Either the property holds or it doesn&#39;t.
+    But one of the main features of any property testing library is that it will return a counterexample for the inputs where the property doesn&#39;t hold.
+    Hence, we need to store this counterexample in the failure case.
+    In practice, the result type would be much richer, with attached labels, reasons, expectations, counters, ... and more diagnostic fields.</p>
+    <pre><code class="nohighlight"><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">Result</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">Success</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">Result</span><span>
+</span><span class="keyword">final</span><span> </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Failure</span><span>(</span><span class="identifier">counterexample</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">String</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Result</span><span>
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Result</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">fromBoolean</span><span>(</span><span class="identifier">b</span><span>: </span><span class="type-name">Boolean</span><span>): </span><span class="type-name">Result</span><span> =
+    </span><span class="keyword">if</span><span> (</span><span class="identifier">b</span><span>)
+      </span><span class="type-name">Success</span><span>
+    </span><span class="keyword">else</span><span>
+      </span><span class="comment">// if it&#39;s false, it&#39;s false; no input has been produced,
+</span><span>      </span><span class="comment">// so the counterexample is empty
+</span><span>      </span><span class="type-name">Failure</span><span>(</span><span class="type-name">Nil</span><span>)
+}</span></code></pre>
+    <p>You&#39;ll note that I&#39;ve used <code>List[String]</code> here, because in the end we only want to print the counterexample on the console.
+    ScalaCheck has a dedicated <code>Pretty</code> type for that.
+    We could do even more fancy things here if we wanted to, but let&#39;s keep it simple.</p>
+    <p>Now we define the <code>Prop</code> type:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Prop</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Result</span><span>
+
+  </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">toString</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;&lt;prop&gt;&quot;</span><span>
+}</span></code></pre>
+    <p>What&#39;s missing is a way to construct properties.
+    Sure, we could implement the trait manually in our tests, but that would be tedious.
+    Type classes to the rescue!
+    We call something <em>testable</em> if it can be converted to a <code>Prop</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Testable</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">asProp</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>): </span><span class="type-name">Prop</span><span>
+}
+
+</span><span class="comment">// in practice we would put these into the companion object
+//object Testable {
+</span><span>
+  </span><span class="comment">// Booleans can be trivially converted to a property:
+</span><span>  </span><span class="comment">// They are already basically a `Result`, so no need
+</span><span>  </span><span class="comment">// to run anything!
+</span><span>  </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">booleanIsTestable</span><span>: </span><span class="type-name">Testable</span><span>[</span><span class="type-name">Boolean</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Testable</span><span>[</span><span class="type-name">Boolean</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">asProp</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">Boolean</span><span>): </span><span class="type-name">Prop</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">Prop</span><span> {
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Result</span><span> =
+        </span><span class="type-name">Result</span><span>.</span><span class="identifier">fromBoolean</span><span>(</span><span class="identifier">t</span><span>)
+    }
+  }
+
+  </span><span class="comment">// Props are already `Prop`s.
+</span><span>  </span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">propIsTestable</span><span>: </span><span class="type-name">Testable</span><span>[</span><span class="type-name">Prop</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Testable</span><span>[</span><span class="type-name">Prop</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">asProp</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">Prop</span><span>): </span><span class="type-name">Prop</span><span> = </span><span class="identifier">t</span><span>
+  }
+
+</span><span class="comment">//}</span></code></pre>
+    <p>Now we&#39;re all set:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">forAll</span><span>[</span><span class="type-name">I</span><span>, </span><span class="type-name">O</span><span>](</span><span class="identifier">prop</span><span>: </span><span class="type-name">I</span><span> =&gt; </span><span class="type-name">O</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">arbI</span><span>: </span><span class="type-name">Arbitrary</span><span>[</span><span class="type-name">I</span><span>], </span><span class="identifier">testO</span><span>: </span><span class="type-name">Testable</span><span>[</span><span class="type-name">O</span><span>]): </span><span class="type-name">Prop</span><span> =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Prop</span><span> {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">rnd</span><span>: </span><span class="type-name">Random</span><span>): </span><span class="type-name">Result</span><span> = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">input</span><span> = </span><span class="identifier">arbI</span><span>.</span><span class="identifier">gen</span><span>.</span><span class="identifier">generate</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)
+      </span><span class="keyword">val</span><span> </span><span class="identifier">subprop</span><span> = </span><span class="identifier">testO</span><span>.</span><span class="identifier">asProp</span><span>(</span><span class="identifier">prop</span><span>(</span><span class="identifier">input</span><span>))
+      </span><span class="identifier">subprop</span><span>.</span><span class="identifier">run</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>) </span><span class="keyword">match</span><span> {
+        </span><span class="keyword">case</span><span> </span><span class="type-name">Success</span><span> =&gt;
+          </span><span class="type-name">Success</span><span>
+        </span><span class="keyword">case</span><span> </span><span class="type-name">Failure</span><span>(</span><span class="identifier">counterexample</span><span>) =&gt;
+          </span><span class="type-name">Failure</span><span>(</span><span class="identifier">input</span><span>.</span><span class="identifier">toString</span><span> :: </span><span class="identifier">counterexample</span><span>)
+      }
+    }
+  }</span></code></pre>
+    <p>Let&#39;s unpack this step by step.</p>
+    <ol class="arabic">
+      <li>We&#39;re taking a function from <code>I =&gt; O</code>.
+      This is supposed to be our parameterized property, for example <code>{ (x: Int) =&gt; x == x }</code>.
+      Because we abstracted over values that can be generated (<code>Arbitrary</code>) and things that can be tested (<code>Testable</code>), the input and output types are completely generic.
+      In the <code>implicit</code> block, we&#39;re taking the instructions of how to fit everything together.</li>
+      <li>We&#39;re constructing a <code>Prop</code>; that is, a thing that we can run and that produces a boolean-ish <code>Result</code>.</li>
+      <li>To run the property, we need to construct a random input.
+      We can use the <code>Gen[I]</code> which we get from the <code>Arbitrary[I]</code>.</li>
+      <li>We pass that <code>I</code> into the parameterized property.
+      To stick with the example, we evaluate the anonymous function <code>{ (x: Int) =&gt; x == x }</code> at input <code>5</code>, and obtain <code>true</code>.</li>
+      <li>We convert the result to a <code>Prop</code> again.
+      This allows us to recursively nest <code>forAll</code>s, for example when we need two inputs.</li>
+      <li>We run the resulting property and check if it fails.
+      If it does, we prepend the generated input to the counterexample.
+      In the nested scenario, this allows us to see all generated inputs and the order in which we sticked them into the property.</li>
+    </ol>
+    <p>At this point we should look at an example.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">propReflexivity</span><span> =
+  </span><span class="identifier">forAll</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+    </span><span class="identifier">x</span><span> == </span><span class="identifier">x</span><span>
+  }
+</span><span class="comment">// propReflexivity: Prop = &lt;prop&gt;</span></code></pre>
+    <p>Cool, but how do we run this?</p>
+    <p>Remember that our tool is supposed to evaluate a property on multiple inputs.
+    All these evaluations will produce a <code>Result</code>.
+    Hence, we need to merge those together into a single result.
+    We&#39;ll also define a convenient function that runs a property multiple times on different sizes:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">merge</span><span>(</span><span class="identifier">rs</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Result</span><span>]): </span><span class="type-name">Result</span><span> =
+  </span><span class="identifier">rs</span><span>.</span><span class="identifier">foldLeft</span><span>(</span><span class="type-name">Success</span><span>: </span><span class="type-name">Result</span><span>) {
+    </span><span class="keyword">case</span><span> (</span><span class="type-name">Failure</span><span>(</span><span class="identifier">cs</span><span>), </span><span class="identifier">_</span><span>) =&gt; </span><span class="type-name">Failure</span><span>(</span><span class="identifier">cs</span><span>)
+    </span><span class="keyword">case</span><span> (</span><span class="type-name">Success</span><span>, </span><span class="type-name">Success</span><span>) =&gt; </span><span class="type-name">Success</span><span>
+    </span><span class="keyword">case</span><span> (</span><span class="type-name">Success</span><span>, </span><span class="type-name">Failure</span><span>(</span><span class="identifier">cs</span><span>)) =&gt; </span><span class="type-name">Failure</span><span>(</span><span class="identifier">cs</span><span>)
+  }
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">check</span><span>[</span><span class="type-name">P</span><span>](</span><span class="identifier">prop</span><span>: </span><span class="type-name">P</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">testP</span><span>: </span><span class="type-name">Testable</span><span>[</span><span class="type-name">P</span><span>]): </span><span class="type-name">Unit</span><span> = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">rnd</span><span> = </span><span class="keyword">new</span><span> </span><span class="type-name">Random</span><span>(</span><span class="number-literal">0</span><span>)
+  </span><span class="keyword">val</span><span> </span><span class="identifier">rs</span><span> =
+    </span><span class="keyword">for</span><span> (</span><span class="identifier">size</span><span> &lt;- </span><span class="number-literal">0</span><span> </span><span class="identifier">to</span><span> </span><span class="number-literal">100</span><span>)
+    </span><span class="keyword">yield</span><span> </span><span class="identifier">testP</span><span>.</span><span class="identifier">asProp</span><span>(</span><span class="identifier">prop</span><span>).</span><span class="identifier">run</span><span>(</span><span class="identifier">size</span><span>, </span><span class="identifier">rnd</span><span>)
+  </span><span class="identifier">merge</span><span>(</span><span class="identifier">rs</span><span>.</span><span class="identifier">toList</span><span>) </span><span class="keyword">match</span><span> {
+    </span><span class="keyword">case</span><span> </span><span class="type-name">Success</span><span> =&gt;
+      </span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;✓ Property successfully checked&quot;</span><span>)
+    </span><span class="keyword">case</span><span> </span><span class="type-name">Failure</span><span>(</span><span class="identifier">counterexample</span><span>) =&gt;
+      </span><span class="keyword">val</span><span> </span><span class="identifier">pretty</span><span> = </span><span class="identifier">counterexample</span><span>.</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot;(&quot;</span><span>, </span><span class="string-literal">&quot;, &quot;</span><span>, </span><span class="string-literal">&quot;)&quot;</span><span>)
+      </span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;✗ Property failed with counterexample: </span><span class="substitution">$pretty</span><span class="string-literal">&quot;</span><span>)
+  }
+}</span></code></pre>
+    <p>What is happening here?</p>
+    <ol class="arabic">
+      <li>The <code>merge</code> function takes a list of <code>Result</code>s and returns the first <code>Failure</code>, if it exists.
+      Otherwise it returns <code>Success</code>.
+      In case there are multiple <code>Failure</code>s, it doesn&#39;t care and just discards the later ones.</li>
+      <li>The <code>check</code> function initializes a fresh random generator.</li>
+      <li>We have fixed the maximum size to 100 and will run the passed property with each size from 0 to 100.
+      This ensures that we get a nice coverage of various input sizes.
+      An obvious optimisation here would be to stop after the first failure, instead of merging the results in a subsequent step.</li>
+      <li>In case there&#39;s a failure, we just print the counterexample.</li>
+    </ol>
+    <p>Let&#39;s check our property!</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span>(</span><span class="identifier">propReflexivity</span><span>)
+✓ </span><span class="type-name">Property</span><span> </span><span class="identifier">successfully</span><span> </span><span class="identifier">checked</span></code></pre>
+    <p>... and how about something wrong?</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span>(</span><span class="identifier">forAll</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+     |   </span><span class="identifier">x</span><span> &gt; </span><span class="identifier">x</span><span>
+     | })
+✗ </span><span class="type-name">Property</span><span> </span><span class="identifier">failed</span><span> </span><span class="keyword">with</span><span> </span><span class="identifier">counterexample</span><span>: (</span><span class="number-literal">0</span><span>)</span></code></pre>
+    
+    <h2 id="some-more-sugar" class="section"><a class="anchor-link" href="#some-more-sugar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Some more sugar</h2>
+    <p>Okay, we&#39;re almost done.
+    The only tedious thing that remains is that we have to use the <code>forAll</code> combinator, especially in the nested case.
+    It would be great if we could just use <code>check</code> and pass it a function.
+    But since we&#39;ve used type classes for everything, we&#39;re in luck!</p>
+    <pre><code class="nohighlight"><span class="keyword">implicit</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">funTestable</span><span>[</span><span class="type-name">I</span><span> : </span><span class="type-name">Arbitrary</span><span>, </span><span class="type-name">O</span><span> : </span><span class="type-name">Testable</span><span>]: </span><span class="type-name">Testable</span><span>[</span><span class="type-name">I</span><span> =&gt; </span><span class="type-name">O</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Testable</span><span>[</span><span class="type-name">I</span><span> =&gt; </span><span class="type-name">O</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">asProp</span><span>(</span><span class="identifier">f</span><span>: </span><span class="type-name">I</span><span> =&gt; </span><span class="type-name">O</span><span>): </span><span class="type-name">Prop</span><span> =
+    </span><span class="comment">// wait for it ...
+</span><span>    </span><span class="comment">// ...
+</span><span>    </span><span class="comment">// ...
+</span><span>    </span><span class="comment">// it&#39;s really simple ...
+</span><span>    </span><span class="identifier">forAll</span><span>(</span><span class="identifier">f</span><span>)
+}</span></code></pre>
+    <p>Now we can check our functions even easier!</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+     |   </span><span class="identifier">x</span><span> == </span><span class="identifier">x</span><span>
+     | }
+✓ </span><span class="type-name">Property</span><span> </span><span class="identifier">successfully</span><span> </span><span class="identifier">checked</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+     |   </span><span class="identifier">x</span><span> &gt; </span><span class="identifier">x</span><span>
+     | }
+✗ </span><span class="type-name">Property</span><span> </span><span class="identifier">failed</span><span> </span><span class="keyword">with</span><span> </span><span class="identifier">counterexample</span><span>: (</span><span class="number-literal">0</span><span>)
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt; (</span><span class="identifier">y</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+     |   </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span><span> == </span><span class="identifier">y</span><span> + </span><span class="identifier">x</span><span>
+     | }
+✓ </span><span class="type-name">Property</span><span> </span><span class="identifier">successfully</span><span> </span><span class="identifier">checked</span><span>
+
+</span><span class="identifier">scala</span><span>&gt; </span><span class="identifier">check</span><span> { (</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>) =&gt; (</span><span class="identifier">y</span><span>: </span><span class="type-name">Int</span><span>) =&gt;
+     |   </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span><span> == </span><span class="identifier">x</span><span> * </span><span class="identifier">y</span><span>
+     | }
+✗ </span><span class="type-name">Property</span><span> </span><span class="identifier">failed</span><span> </span><span class="keyword">with</span><span> </span><span class="identifier">counterexample</span><span>: (</span><span class="number-literal">0</span><span>, </span><span class="number-literal">1</span><span>)</span></code></pre>
+    <p>Now, if you look closely, you can basically get rid of the <code>Prop</code> class and define it as</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">Prop</span><span> = </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Result</span><span>]</span></code></pre>
+    <p>If you think about this for a moment, it makes sense: A “property” is really just a thing which feeds on randomness and produces a result.
+    The only thing left is to define a driver which runs a couple of iterations and gathers the results; in our implementation, that&#39;s the <code>check</code> function.
+    I encourage you to spell out the other functions (e.g. <code>forAll</code>), and you will notice that our <code>Prop</code> trait is indeed isomorphic to <code>Gen[Result]</code>.
+    In practice, QuickCheck uses such a representation (although with some more contraptions).</p>
+    
+    <h2 id="summary" class="section"><a class="anchor-link" href="#summary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Summary</h2>
+    <p>It turns out that it&#39;s not that hard to write a small property-testing library.
+    I&#39;m going to stop here with the implementation, although there are still some things to explore:</p>
+    <ul>
+      <li>How to <a href="https://github.com/alexarchambault/scalacheck-shapeless">get rid of the boilerplate</a> to generate “boring” data structures?</li>
+      <li>How to <a href="https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck-Arbitrary.html#t:CoArbitrary">generate functions</a>?</li>
+      <li>How to improve usability?</li>
+      <li>How to <a href="https://github.com/typelevel/discipline">bundle up a bunch of properties</a>?</li>
+      <li>How to <a href="https://github.com/rickynils/scalacheck/blob/1.13.2/doc/UserGuide.md#test-case-minimisation">show useful counterexamples</a>?</li>
+      <li>How to test <a href="https://github.com/rickynils/scalacheck/blob/1.13.2/doc/UserGuide.md#properties">conditional properties</a>?</li>
+      <li>How to test the library itself?</li>
+      <li>How to make sure that your generators produce reasonable values?</li>
+      <li>How to make sure that your generators <a href="https://hackage.haskell.org/package/QuickCheck-2.9.2/docs/Test-QuickCheck.html#v:label">cover a wide range of values</a>?</li>
+      <li>How to test <a href="https://github.com/larsrh/polycheck">polymorphic properties</a>?</li>
+      <li>...</li>
+    </ul>
+    <p>Finally, I&#39;d like to note that there are many more libraries out there than I&#39;ve mentioned here, some of which depart more, some less, from the original Haskell implementation.
+    They even exist for not-functional languages, e.g. <a href="http://www.javaslang.io/javaslang-docs/#_property_checking">Javaslang</a> for Java or <a href="http://hypothesis.works/">Hypothesis</a> for Python.</p>
+    <p><em>Correction: In a previous version of this post, I incorrectly stated that ScalaCheck uses a mutable random generator. This is only true up to ScalaCheck 1.12.x. I have updated that section in the post.</em></p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/larsrh.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Lars Hupel</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/larsrh">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Error handling in Http4s with classy optics – Part 2</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Error handling in Http4s with classy optics – Part 2</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Gabriel Volpe<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on November 28, 2018
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="error-handling-in-http4s-with-classy-optics-part-2" class="title">Error handling in Http4s with classy optics – Part 2</h1>
+    <p>This is a continuation of my <a href="http4s-error-handling-mtl.html">previous blog post</a>. Make sure you have read that one before continuing here.</p>
+    <p>I recently gave a 20 minutes talk on <code>classy optics</code> at the unconference of <a href="http://scale.bythebay.io/">Scale by the Bay</a> where I also talked about this error handling technique and on my way back home I was still thinking of different ways of doing this. So, after some exploratory work, I came up with a few different alternatives.</p>
+    
+    <h3 id="issues-with-first-approach" class="section"><a class="anchor-link" href="#issues-with-first-approach"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Issues with first approach</h3>
+    <p>Something that made me cringe and that a few of my colleagues at work were not happy with was that the algebras had no association with the error type defined in <code>HttpErrorHandler[F, E]</code> so the type-safety was down to the programmer&#39;s discipline and in this case the compiler was not able to do much.</p>
+    <p>When working with <code>EitherT[F, E, A]</code> or a bifunctor <code>IO[E, A]</code> we have a clear error type whereas by just relying on a single <code>F[A]</code> with a <code>MonadError[F, Throwable]</code> instance we lose this property. There are a few issues with the first though:</p>
+    <ul>
+      <li>It has a &quot;double error channel&quot;, meaning that can report errors via <code>Left</code> or via its effect type <code>IO</code>.</li>
+      <li>As any other Monad Transformer in Scala, introduces a performance overhead due to the extra <code>flatMap</code> calls and extra allocations.</li>
+      <li>Code becomes cumbersome as we need to lift effects and pure <code>Either</code> values into the transformer stack.</li>
+    </ul>
+    <p>The <code>IO[E, A]</code> model is naturally a better approach but I found out polymorphic code is more cumbersome than working with <code>F[A]</code>. Although this might change once <a href="https://github.com/typelevel/cats-effect/issues/321">Cats Effect 2.0</a> is out, it&#39;ll take a while until we get there.</p>
+    
+    <h4 id="errors-vs-failures" class="section"><a class="anchor-link" href="#errors-vs-failures"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Errors vs Failures</h4>
+    <p>What I like about the <code>IO[E, A]</code> model is that we can distinguish between &quot;business errors&quot; and &quot;unexpected failures&quot; such as a database connection failure (learn more about <code>zio</code>&#39;s error model <a href="https://scalaz.github.io/scalaz-zio/">here</a>). Eg: when working on a REST API, most of the time we only care about mapping a few business errors into the appropriate http responses. The unexpected failures should be handled by someone else. In this case <code>http4s</code> will convert any failure into a response with code 500 (internal server error).</p>
+    <p>And this is exactly what we want to achieve here. Writing polymorphic code using <code>cats-effect</code> while trying to keep it as simple as possible. Here&#39;s an encoding I would like to explore further:</p>
+    
+    <h3 id="error-channel" class="section"><a class="anchor-link" href="#error-channel"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Error Channel</h3>
+    <p>In the previous blog post we defined the algebras as a single trait. In this case we are going to try a different encoding but first we need to introduce an <code>ErrorChannel[F, E]</code> typeclass where the error type is a subtype of <code>Throwable</code> to be compatible with the error type of the <code>cats-effect</code> typeclasses:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">raise</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">e</span><span>: </span><span class="type-name">E</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]
+}</span></code></pre>
+    <p>An instance can be derived for any <code>ApplicativeError[F, Throwable]</code> so we don&#39;t need to write it manually for every error type.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">ApplicativeError</span><span>
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">ErrorChannel</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]) = </span><span class="identifier">ev</span><span>
+
+  </span><span class="keyword">implicit</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">instance</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="type-name">F</span><span>: </span><span class="type-name">ApplicativeError</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Throwable</span><span>]): </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>] =
+    </span><span class="keyword">new</span><span> </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>] {
+      </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">raise</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">e</span><span>: </span><span class="type-name">E</span><span>) = </span><span class="type-name">F</span><span>.</span><span class="identifier">raiseError</span><span>(</span><span class="identifier">e</span><span>)
+    }
+
+  </span><span class="keyword">object</span><span> </span><span class="identifier">syntax</span><span> {
+    </span><span class="keyword">implicit</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">ErrorChannelOps</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">ErrorChannel</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](</span><span class="identifier">e</span><span>: </span><span class="type-name">E</span><span>) {
+      </span><span class="keyword">def</span><span> </span><span class="declaration-name">raise</span><span>[</span><span class="type-name">A</span><span>]: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>].</span><span class="identifier">raise</span><span>[</span><span class="type-name">A</span><span>](</span><span class="identifier">e</span><span>)
+    }
+  }
+}</span></code></pre>
+    
+    <h3 id="user-algebra" class="section"><a class="anchor-link" href="#user-algebra"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>User Algebra</h3>
+    <p>Our <code>UserAlg</code> will now be defined as an <code>abstract class</code> instead in order to be able to add typeclass constraint.</p>
+    <pre><code class="nohighlight"><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">User</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>, </span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>)
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">UserUpdateAge</span><span>(</span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>)
+
+</span><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">ErrorChannel</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">find</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Option</span><span>[</span><span class="type-name">User</span><span>]]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">save</span><span>(</span><span class="identifier">user</span><span>: </span><span class="type-name">User</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">updateAge</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>, </span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>]
+}</span></code></pre>
+    <p>And here&#39;s the ADT of the possible errors that may arise (notice the <code>extends Exception</code> part):</p>
+    <pre><code class="nohighlight"><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">UserError</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">Exception</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">UserAlreadyExists</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">UserError</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">UserNotFound</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">UserError</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">InvalidUserAge</span><span>(</span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">UserError</span></code></pre>
+    <p>We want to make sure our ADT is a subtype of <code>Throwable</code> and indeed <code>Exception &lt;: Throwable</code>.</p>
+    
+    <h3 id="user-interpreter" class="section"><a class="anchor-link" href="#user-interpreter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>User Interpreter</h3>
+    <p>Here&#39;s a similar <code>UserAlg</code> interpreter to the one presented in the previous post. Note that in a real-life project an interpreter will more likely connect to a database instead of using an in-memory representation based on <code>Ref</code>.</p>
+    <p>The interesting part is that in order to construct a <code>UserAlg[F, UserError]</code> we now need an <code>ErrorChannel[F, UserError]</code> instance in scope. This will be the chosen strategy to report errors in the context of <code>F</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.{ </span><span class="type-name">Concurrent</span><span>, </span><span class="type-name">Sync</span><span> }
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">concurrent</span><span>.</span><span class="type-name">Ref</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">UserInterpreter</span><span> {
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">mkUserAlg</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Sync</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">error</span><span>: </span><span class="type-name">ErrorChannel</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>]] =
+    </span><span class="type-name">Ref</span><span>.</span><span class="identifier">of</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Map</span><span>[</span><span class="type-name">String</span><span>, </span><span class="type-name">User</span><span>]](</span><span class="type-name">Map</span><span>.</span><span class="identifier">empty</span><span>).</span><span class="identifier">map</span><span> { </span><span class="identifier">state</span><span> =&gt;
+      </span><span class="keyword">new</span><span> </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>] {
+        </span><span class="keyword">private</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">validateAge</span><span>(</span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>] =
+          </span><span class="keyword">if</span><span> (</span><span class="identifier">age</span><span> &lt;= </span><span class="number-literal">0</span><span>) </span><span class="identifier">error</span><span>.</span><span class="identifier">raise</span><span>(</span><span class="type-name">InvalidUserAge</span><span>(</span><span class="identifier">age</span><span>)) </span><span class="keyword">else</span><span> ().</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+
+        </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">find</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Option</span><span>[</span><span class="type-name">User</span><span>]] =
+          </span><span class="identifier">state</span><span>.</span><span class="identifier">get</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">get</span><span>(</span><span class="identifier">username</span><span>))
+
+        </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">save</span><span>(</span><span class="identifier">user</span><span>: </span><span class="type-name">User</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>] =
+          </span><span class="identifier">validateAge</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">age</span><span>) *&gt;
+            </span><span class="identifier">find</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">username</span><span>).</span><span class="identifier">flatMap</span><span> {
+              </span><span class="keyword">case</span><span> </span><span class="type-name">Some</span><span>(</span><span class="identifier">_</span><span>) =&gt;
+                </span><span class="identifier">error</span><span>.</span><span class="identifier">raise</span><span>(</span><span class="type-name">UserAlreadyExists</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">username</span><span>))
+</span><span class="comment">//                error.raise(new Exception(&quot;asd&quot;)) // Does not compile
+//                Sync[F].raiseError(new Exception(&quot;&quot;)) // Should be considered an unrecoverable failure
+</span><span>              </span><span class="keyword">case</span><span> </span><span class="type-name">None</span><span> =&gt;
+                </span><span class="identifier">state</span><span>.</span><span class="identifier">update</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">updated</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">username</span><span>, </span><span class="identifier">user</span><span>))
+            }
+
+        </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">updateAge</span><span>(</span><span class="identifier">username</span><span>: </span><span class="type-name">String</span><span>, </span><span class="identifier">age</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>] =
+          </span><span class="identifier">validateAge</span><span>(</span><span class="identifier">age</span><span>) *&gt;
+            </span><span class="identifier">find</span><span>(</span><span class="identifier">username</span><span>).</span><span class="identifier">flatMap</span><span> {
+              </span><span class="keyword">case</span><span> </span><span class="type-name">Some</span><span>(</span><span class="identifier">user</span><span>) =&gt;
+                </span><span class="identifier">state</span><span>.</span><span class="identifier">update</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">updated</span><span>(</span><span class="identifier">username</span><span>, </span><span class="identifier">user</span><span>.</span><span class="identifier">copy</span><span>(</span><span class="identifier">age</span><span> = </span><span class="identifier">age</span><span>)))
+              </span><span class="keyword">case</span><span> </span><span class="type-name">None</span><span> =&gt;
+                </span><span class="identifier">error</span><span>.</span><span class="identifier">raise</span><span>(</span><span class="type-name">UserNotFound</span><span>(</span><span class="identifier">username</span><span>))
+            }
+      }
+    }
+
+}</span></code></pre>
+    <p>Notice that we could still call <code>Sync[F].raiseError(new Exception(&quot;boom&quot;))</code> and it will still compile. However, if we choose to use <code>ErrorChannel</code> to signal business errors we will have the compiler on our side and it&#39;ll warn us when we try to raise an error that is not part of the ADT we have declared. So signaling error in a different way should just be considered unrecoverable. These are the same semantics you get when working with <code>EitherT[IO, Throwable, ?]</code> as shown in the comparison table at the beginning.</p>
+    
+    <h3 id="http-error-handler" class="section"><a class="anchor-link" href="#http-error-handler"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Http Error Handler</h3>
+    <p>Here&#39;s the same <code>HttpErrorHandler</code> defined in the previous blog post:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.{ </span><span class="type-name">ApplicativeError</span><span>, </span><span class="type-name">MonadError</span><span> }
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">data</span><span>.{ </span><span class="type-name">Kleisli</span><span>, </span><span class="type-name">OptionT</span><span> }
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">handle</span><span>(</span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">RoutesHttpErrorHandler</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">ApplicativeError</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](
+      </span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]
+  )(</span><span class="identifier">handler</span><span>: </span><span class="type-name">E</span><span> =&gt; </span><span class="type-name">F</span><span>[</span><span class="type-name">Response</span><span>[</span><span class="type-name">F</span><span>]]): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] =
+    </span><span class="type-name">Kleisli</span><span> { </span><span class="identifier">req</span><span> =&gt;
+      </span><span class="type-name">OptionT</span><span> {
+        </span><span class="identifier">routes</span><span>.</span><span class="identifier">run</span><span>(</span><span class="identifier">req</span><span>).</span><span class="identifier">value</span><span>.</span><span class="identifier">handleErrorWith</span><span>(</span><span class="identifier">e</span><span> =&gt; </span><span class="identifier">handler</span><span>(</span><span class="identifier">e</span><span>).</span><span class="identifier">map</span><span>(</span><span class="type-name">Option</span><span>(</span><span class="identifier">_</span><span>)))
+      }
+    }
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">HttpErrorHandler</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]) = </span><span class="identifier">ev</span><span>
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">mkInstance</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">ApplicativeError</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](
+      </span><span class="identifier">handler</span><span>: </span><span class="type-name">E</span><span> =&gt; </span><span class="type-name">F</span><span>[</span><span class="type-name">Response</span><span>[</span><span class="type-name">F</span><span>]]
+  ): </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>] =
+    (</span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]) =&gt; </span><span class="type-name">RoutesHttpErrorHandler</span><span>(</span><span class="identifier">routes</span><span>)(</span><span class="identifier">handler</span><span>)
+}</span></code></pre>
+    
+    <h3 id="http-routes-with-error-handling" class="section"><a class="anchor-link" href="#http-routes-with-error-handling"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Http Routes with error handling</h3>
+    <p>Now let&#39;s look at the new implementation of <code>UserRoutes</code> using the error-type algebra:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">Sync</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="identifier">generic</span><span>.</span><span class="identifier">auto</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="type-name">CirceEntityDecoder</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">circe</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">http4s</span><span>.</span><span class="identifier">dsl</span><span>.</span><span class="type-name">Http4sDsl</span><span>
+
+</span><span class="keyword">class</span><span> </span><span class="type-name">PreUserRoutesMTL</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Sync</span><span>](</span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">HttpRoutes</span><span>.</span><span class="identifier">of</span><span>[</span><span class="type-name">F</span><span>] {
+
+    </span><span class="keyword">case</span><span> </span><span class="type-name">GET</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> / </span><span class="identifier">username</span><span> =&gt;
+      </span><span class="identifier">users</span><span>.</span><span class="identifier">find</span><span>(</span><span class="identifier">username</span><span>).</span><span class="identifier">flatMap</span><span> {
+        </span><span class="keyword">case</span><span> </span><span class="type-name">Some</span><span>(</span><span class="identifier">user</span><span>) =&gt; </span><span class="type-name">Ok</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">asJson</span><span>)
+        </span><span class="keyword">case</span><span> </span><span class="type-name">None</span><span>       =&gt; </span><span class="type-name">NotFound</span><span>(</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+      }
+
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">POST</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> =&gt;
+      </span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">User</span><span>].</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">user</span><span> =&gt;
+        </span><span class="identifier">users</span><span>.</span><span class="identifier">save</span><span>(</span><span class="identifier">user</span><span>) *&gt; </span><span class="type-name">Created</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+      }
+
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">PUT</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> / </span><span class="identifier">username</span><span> =&gt;
+      </span><span class="identifier">req</span><span>.</span><span class="identifier">as</span><span>[</span><span class="type-name">UserUpdateAge</span><span>].</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">userUpdate</span><span> =&gt;
+        </span><span class="identifier">users</span><span>.</span><span class="identifier">updateAge</span><span>(</span><span class="identifier">username</span><span>, </span><span class="identifier">userUpdate</span><span>.</span><span class="identifier">age</span><span>) *&gt; </span><span class="type-name">Created</span><span>(</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+      }
+  }
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">routes</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="type-name">H</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>]): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] =
+    </span><span class="type-name">H</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">httpRoutes</span><span>)
+
+}</span></code></pre>
+    <p>Notice that in contrast to the example shown in the previous blog post there is now a relationship between <code>UserAlg</code> and <code>HttpErrorHandler</code>: the error type is the same. However, this is not enforced by the compiler. <em>Can we be more strict about it?</em></p>
+    <p>We could define a generic <code>Routes[F, E]</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Routes</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="type-name">H</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">protected</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">val</span><span> </span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">H</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">httpRoutes</span><span>)
+}</span></code></pre>
+    <p>But we&#39;ll also need something else to connect the error types of the algebra and the http error handler:</p>
+    <pre><code class="nohighlight"><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">UserRoutes</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">HttpErrorHandler</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">Routes</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]</span></code></pre>
+    <p>That&#39;s it! We are now enforcing this relationship at compile time. Let&#39;s see how the <code>HttpRoutes</code> looks like:</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">UserRoutesAlt</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">HttpErrorHandler</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">UserError</span><span>]: </span><span class="type-name">Sync</span><span>](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">UserRoutes</span><span>(</span><span class="identifier">users</span><span>) {
+
+  </span><span class="keyword">protected</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">HttpRoutes</span><span>.</span><span class="identifier">of</span><span>[</span><span class="type-name">F</span><span>] {
+
+    </span><span class="keyword">case</span><span> </span><span class="type-name">GET</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> / </span><span class="identifier">username</span><span> =&gt;
+      </span><span class="identifier">users</span><span>.</span><span class="identifier">find</span><span>(</span><span class="identifier">username</span><span>).</span><span class="identifier">flatMap</span><span> {
+        </span><span class="keyword">case</span><span> </span><span class="type-name">Some</span><span>(</span><span class="identifier">user</span><span>) =&gt; </span><span class="type-name">Ok</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">asJson</span><span>)
+        </span><span class="keyword">case</span><span> </span><span class="type-name">None</span><span>       =&gt; </span><span class="type-name">NotFound</span><span>(</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+      }
+
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">POST</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> =&gt;
+      </span><span class="identifier">req</span><span>
+        .</span><span class="identifier">as</span><span>[</span><span class="type-name">User</span><span>]
+        .</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">user</span><span> =&gt;
+          </span><span class="identifier">users</span><span>.</span><span class="identifier">save</span><span>(</span><span class="identifier">user</span><span>) *&gt; </span><span class="type-name">Created</span><span>(</span><span class="identifier">user</span><span>.</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+        }
+
+    </span><span class="keyword">case</span><span> </span><span class="identifier">req</span><span> @ </span><span class="type-name">PUT</span><span> -&gt; </span><span class="type-name">Root</span><span> / </span><span class="string-literal">&quot;users&quot;</span><span> / </span><span class="identifier">username</span><span> =&gt;
+      </span><span class="identifier">req</span><span>
+        .</span><span class="identifier">as</span><span>[</span><span class="type-name">UserUpdateAge</span><span>]
+        .</span><span class="identifier">flatMap</span><span> { </span><span class="identifier">userUpdate</span><span> =&gt;
+          </span><span class="identifier">users</span><span>.</span><span class="identifier">updateAge</span><span>(</span><span class="identifier">username</span><span>, </span><span class="identifier">userUpdate</span><span>.</span><span class="identifier">age</span><span>) *&gt; </span><span class="type-name">Ok</span><span>(</span><span class="identifier">username</span><span>.</span><span class="identifier">asJson</span><span>)
+        }
+  }
+
+}</span></code></pre>
+    <p>Neat! Right? If we try to change the error type of <code>UserAlg</code> it wouldn&#39;t compile!</p>
+    
+    <h3 id="more-than-one-algebra-per-http-route" class="section"><a class="anchor-link" href="#more-than-one-algebra-per-http-route"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>More than one algebra per Http Route</h3>
+    <p>In most of my programs I tend to specify an <code>HttpRoute</code> per algebra. But what if we wanted to just define a single <code>HttpRoute</code> that uses multiple algebras? There are a couple of options.</p>
+    <p>Let&#39;s first define a new ADT of errors and a new algebra to illustrate the problem:</p>
+    
+    <h4 id="catalog-error" class="section"><a class="anchor-link" href="#catalog-error"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Catalog Error</h4>
+    <pre><code class="nohighlight"><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">CatalogError</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">Exception</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">ItemAlreadyExists</span><span>(</span><span class="identifier">item</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">CatalogError</span><span>
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">CatalogNotFound</span><span>(</span><span class="identifier">id</span><span>: </span><span class="type-name">Long</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">CatalogError</span></code></pre>
+    
+    <h4 id="catalogalg" class="section"><a class="anchor-link" href="#catalogalg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>CatalogAlg</h4>
+    <pre><code class="nohighlight"><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Item</span><span>(</span><span class="identifier">name</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">AnyVal</span><span>
+
+</span><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">CatalogAlg</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">ErrorChannel</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">find</span><span>(</span><span class="identifier">id</span><span>: </span><span class="type-name">Long</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">Item</span><span>]]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">save</span><span>(</span><span class="identifier">id</span><span>: </span><span class="type-name">Long</span><span>, </span><span class="identifier">item</span><span>: </span><span class="type-name">Item</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>]
+}</span></code></pre>
+    
+    <h4 id="httproutes-with-multiple-algebras" class="section"><a class="anchor-link" href="#httproutes-with-multiple-algebras"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>HttpRoutes with multiple algebras</h4>
+    <p>Here we have an <code>HttpRoutes</code> that makes use of two algebras with different error types:</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">UserRoutesMTL</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Sync</span><span>](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>],
+    </span><span class="identifier">catalog</span><span>: </span><span class="type-name">CatalogAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">CatalogError</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = ???
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">routes</span><span>(
+    </span><span class="keyword">implicit</span><span> </span><span class="type-name">H1</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>],
+             </span><span class="type-name">H2</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">CatalogError</span><span>]
+  ): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] =
+    </span><span class="type-name">H2</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="type-name">H1</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">httpRoutes</span><span>))
+
+}</span></code></pre>
+    <p>It works! But it&#39;s not as elegant as we would like it to be and if we add more algebras this would quicky get out of control.</p>
+    <p><em>Can we generalize this pattern?</em></p>
+    
+    <h3 id="shapeless-coproduct" class="section"><a class="anchor-link" href="#shapeless-coproduct"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Shapeless Coproduct</h3>
+    <p>We can define our error type as a coproduct of different errors, in our case <code>UserError</code> and <code>CatalogError</code>. For example:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">shapeless</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">routes</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="keyword">implicit</span><span> </span><span class="type-name">H</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span> :+: </span><span class="type-name">CatalogError</span><span> :+: </span><span class="type-name">CNil</span><span>]) = ???</span></code></pre>
+    <p>However, this doesn&#39;t compile because the error type is no longer a subtype of <code>Throwable</code>. It is now a <code>Coproduct</code>.</p>
+    <p>But we might be able to derive an instance for a coproduct of errors if we have an instance of <code>HttpErrorHandler[F, E]</code> for each error type. Let&#39;s give it a try! We need to define a new typeclass <code>CoHttpErrorHandler</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">shapeless</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">Err</span><span> &lt;: </span><span class="type-name">Coproduct</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">handle</span><span>(</span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">CoHttpErrorHandler</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">Err</span><span> &lt;: </span><span class="type-name">Coproduct</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Err</span><span>]) = </span><span class="identifier">ev</span><span>
+
+  </span><span class="keyword">implicit</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">cNilInstance</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]]: </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">CNil</span><span>] =
+    (</span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]) =&gt; </span><span class="identifier">routes</span><span>
+
+  </span><span class="keyword">implicit</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">consInstance</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Throwable</span><span>, </span><span class="type-name">T</span><span> &lt;: </span><span class="type-name">Coproduct</span><span>](
+      </span><span class="keyword">implicit</span><span> </span><span class="type-name">H</span><span>: </span><span class="type-name">HttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>],
+      </span><span class="type-name">CH</span><span>: </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">T</span><span>]
+  ): </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span> :+: </span><span class="type-name">T</span><span>] =
+    (</span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]) =&gt; </span><span class="type-name">CH</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="type-name">H</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">routes</span><span>))
+}</span></code></pre>
+    <p>Voilà! We introduced a <code>CoHttpErrorHandler</code> where the error type is a coproduct and the instance can only be derived if each type is a subtype of <code>Throwable</code> making it impossible to define an invalid coproduct. So it compiles! But how do we use it?</p>
+    
+    <h3 id="httproutes-for-a-coproduct-of-errors" class="section"><a class="anchor-link" href="#httproutes-for-a-coproduct-of-errors"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>HttpRoutes for a coproduct of errors</h3>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">CoUserRoutesMTL</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Sync</span><span>](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>],
+    </span><span class="identifier">catalog</span><span>: </span><span class="type-name">CatalogAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">CatalogError</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+
+  </span><span class="keyword">private</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = ???
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">routes</span><span>(</span><span class="keyword">implicit</span><span> </span><span class="type-name">CH</span><span>: </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span> :+: </span><span class="type-name">CatalogError</span><span> :+: </span><span class="type-name">CNil</span><span>]): </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] =
+    </span><span class="type-name">CH</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">httpRoutes</span><span>)
+
+}</span></code></pre>
+    <p>Yay!!! Now this is more elegant and generic so we can re-use the same pattern in different routes. But now again we have lost the relationship between the error types of the algebras and the error type of <code>CoHttpErrorHandler</code>. So maybe we could do something similar to what we have done previously?</p>
+    <p>It&#39;s possible but in the case of coproducts we need to introduce some boilerplate...</p>
+    
+    <h4 id="coroutes" class="section"><a class="anchor-link" href="#coroutes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>CoRoutes</h4>
+    <pre><code class="nohighlight"><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">CoRoutes</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Coproduct</span><span>](</span><span class="keyword">implicit</span><span> </span><span class="type-name">CH</span><span>: </span><span class="type-name">CoHttpErrorHandler</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]) </span><span class="keyword">extends</span><span> </span><span class="type-name">Http4sDsl</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">protected</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">val</span><span> </span><span class="identifier">routes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="type-name">CH</span><span>.</span><span class="identifier">handle</span><span>(</span><span class="identifier">httpRoutes</span><span>)
+}</span></code></pre>
+    <p>This one is pretty basic and similar to <code>Routes</code> defined before.</p>
+    
+    <h4 id="couserroutes" class="section"><a class="anchor-link" href="#couserroutes"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>CoUserRoutes</h4>
+    <pre><code class="nohighlight"><span class="keyword">abstract</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">CoUserRoutes</span><span>[
+    </span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">CoHttpErrorHandler</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">E</span><span>],
+    </span><span class="type-name">A</span><span> &lt;: </span><span class="type-name">Throwable</span><span>,
+    </span><span class="type-name">B</span><span> &lt;: </span><span class="type-name">Throwable</span><span>,
+    </span><span class="type-name">E</span><span> &lt;: </span><span class="type-name">Coproduct</span><span>: =:=[?, </span><span class="type-name">A</span><span> :+: </span><span class="type-name">B</span><span> :+: </span><span class="type-name">CNil</span><span>]
+](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">A</span><span>],
+    </span><span class="identifier">catalog</span><span>: </span><span class="type-name">CatalogAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">B</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">CoRoutes</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">E</span><span>]
+
+</span><span class="keyword">type</span><span> </span><span class="type-name">CustomError</span><span> = </span><span class="type-name">UserError</span><span> :+: </span><span class="type-name">CatalogError</span><span> :+: </span><span class="type-name">CNil</span></code></pre>
+    <p>Here we have a couple of constraints:</p>
+    <ul>
+      <li><code>F[_]</code> needs to have an instance of <code>CoHttpErrorHandler[F, E]</code>.</li>
+      <li><code>A</code> and <code>B</code> are the error types of the two algebras.</li>
+      <li><code>E</code> needs to be a <code>Coproduct</code> of type <code>A :+: B :+: CNil</code>.</li>
+    </ul>
+    
+    <h4 id="httproutes-with-multiple-algebras-strict-version" class="section"><a class="anchor-link" href="#httproutes-with-multiple-algebras-strict-version"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>HttpRoutes with multiple algebras - Strict version</h4>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">CoUserRoutesMTL</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">CoHttpErrorHandler</span><span>[?[</span><span class="identifier">_</span><span>], </span><span class="type-name">CustomError</span><span>]: </span><span class="type-name">Sync</span><span>](
+    </span><span class="identifier">users</span><span>: </span><span class="type-name">UserAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">UserError</span><span>],
+    </span><span class="identifier">catalog</span><span>: </span><span class="type-name">CatalogAlg</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">CatalogError</span><span>]
+) </span><span class="keyword">extends</span><span> </span><span class="type-name">CoUserRoutes</span><span>(</span><span class="identifier">users</span><span>, </span><span class="identifier">catalog</span><span>) {
+
+  </span><span class="keyword">protected</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">httpRoutes</span><span>: </span><span class="type-name">HttpRoutes</span><span>[</span><span class="type-name">F</span><span>] = ???
+
+}</span></code></pre>
+    <p>Now we are saying that the error type of our <code>CoHttpErrorHandler</code> is a coproduct of each error type of the algebras. And we wouldn&#39;t be able to change the error type of any of them without getting a compiler error.</p>
+    
+    <h3 id="source-code" class="section"><a class="anchor-link" href="#source-code"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Source code</h3>
+    <p>You can see all the compiling examples <a href="https://github.com/gvolpe/classy-optics">here</a>. Make sure you check out all the different branches.</p>
+    
+    <h3 id="conclusion" class="section"><a class="anchor-link" href="#conclusion"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Conclusion</h3>
+    <p>The last approach is probably too much but we have demonstrated that it&#39;s possible to push the boundaries to make our application very type-safe. However, we also need to consider the trade-offs of writing more boilerplate.</p>
+    <p>Personally, I settle for the previous approach where the error type of the algebra matches the error type of the <code>HttpErrorHandler</code> even if it requires a bit more of discipline. The choice is yours! Just make sure you understand the trade-offs of every mechanism.</p>
+    <p>I hope you have enjoyed this post and please do let me know if you have other ideas to keep broadening my understanding!</p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/gvolpe.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Gabriel Volpe</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/gvolpe">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

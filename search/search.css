@@ -1,0 +1,110 @@
+/* Protosearch - Core UI Styles */
+
+:root {
+  --ps-bg: #fafafa;
+  --ps-border: #ddd;
+  --ps-text-muted: #666;
+  --ps-link: #0055aa;
+  --ps-highlight: #fff3b0;
+}
+
+/* Search page layout */
+.ps-page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.ps-page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.ps-page-header h1 {
+  margin: 0 0 0.5rem;
+}
+
+.ps-page-header p {
+  color: var(--ps-text-muted);
+  margin: 0;
+}
+
+/* Search input */
+.ps-page-search {
+  margin-bottom: 2rem;
+}
+
+#search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 4px;
+  background: var(--ps-bg);
+}
+
+#search-input:focus {
+  outline: 2px solid var(--ps-link);
+  outline-offset: 1px;
+}
+
+/* Results container */
+.ps-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Top bar search (for nav integration) */
+#search-top-bar {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 4px;
+  background: var(--ps-bg);
+}
+
+.search-row {
+  margin-left: auto;
+}
+
+/* Modal */
+.search-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.search-modal-content {
+  background: var(--ps-bg);
+  margin: 2rem auto;
+  padding: 1rem;
+  width: 80%;
+  border-radius: 8px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#search-modal-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.search-close {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding-bottom: 0.5rem;
+}
+
+.search-close:hover {
+  color: var(--ps-link);
+}

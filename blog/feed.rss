@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+<title>Typelevel Blog</title>
+<link>https://typelevel.org/blog/</link>
+<description>The Typelevel Blog RSS Feed</description>
+<item>
+  <title>Custom Error Types Using Cats Effect and MTL</title>
+  <pubDate>Tue, 2 Sep 2025 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Daniel Spiewak</dc:creator>
+  
+  <link>https://typelevel.org/blog/custom-error-types.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/custom-error-types.html</guid>
+  <description><![CDATA[
+<p><strong>tl;dr</strong> Cats MTL 1.6.0 introduces a brand new lightweight syntax for managing user-defined error types in the Cats ecosystem without requiring complex monad transformers.</p>
+<p>One of the most famous and longstanding limitations of the Cats Effect <code>IO</code> type (and the Cats generic typeclasses) is the fact that the only available error channel is <code>Throwable</code>. This stands in contrast to bifunctor or polyfunctor techniques, which add a typed error channel within the monad itself. You can see this easily in type signatures: <code>IO[String]</code> indicates an <code>IO</code> which returns a <code>String</code> or may produce a <code>Throwable</code> error (<code>Future[String]</code> is directly analogous). Something like <code>BIO[ParseError, String]</code> would represent a <code>BIO</code> that produces a <code>String</code> <em>or</em> raises a <code>ParseError</code>. The latter type signature is more general than <code>Throwable</code>, since it allows for user-specified error types, and it&#39;s somewhat more explicit about where errors can and cannot occur.</p>
+<p>In a meaningful sense, this type of bifunctor error encoding is analogous to <em>checked</em> exceptions in Java, whereas monofunctor error encoding (like Cats Effect&#39;s <code>IO</code>) is analogous to <em>unchecked</em> exceptions. Both are valid design decisions for an effect type, but they come with different benefits and tradeoffs.</p>
+<p>Cats has long been quite prescriptive about monofunctor effects, in part because this considerably simplifies the compositional integration space. Libraries like Fs2, Http4s, Calico, and so many more are able to build on top of parametric effects (the famous <code>F[_]</code>) with a consistent understanding of what error channels are available and how they&#39;re going to behave. This has <em>very</em> subtle interactions with concurrent logic and resource handling, and by insisting on a monofunctor calculus, the Cats ecosystem is able to maintain very strong properties with relatively simple implementations in these areas.</p>
+<p>However, the core problem of custom error types doesn&#39;t <em>really</em> go away. Parsing is a great example of this. For example, Circe has a <code>ParsingFailure</code> type which carries a specific JSON parse error message as well as some associated traceback context. While this type does happen to extend <code>Exception</code>, and thus can be raised within an <code>IO</code>, it&#39;s not necessarily <em>right</em> for it to do so. This is common, but arguably it&#39;s only common because of the prevalence of monofunctors.</p>
+<p>A standard solution to this problem, if you <em>don&#39;t</em> want to extend <code>Exception</code> with your error types, is to simply return <code>Either</code> everywhere. Unfortunately, that results in a lot of type signatures which look like this:</p>
+<pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>(</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Either</span><span>[</span><span class="type-name">Failure</span><span>, </span><span class="type-name">Result</span><span>]] = ???</span></code></pre>
+<p>And then of course, everything you do with that result must be explicitly <code>flatMap</code>ped into the <code>Either</code>, and higher-order control flow libraries like Fs2 will often need some extra coaxing in order to make everything work the way you want it to. This gets old in a hurry, which often results in reaching for alternatives like <code>EitherT</code>. That way lies frustration and woe.</p>
+
+<h2 id="capabilities" class="section">Capabilities</h2>
+<p>The good news is that we now have a better answer here, and one which composes very nicely with the existing (and future) ecosystem, maintains all relevant concurrency properties, and which type-infers extremely well, particularly in Scala 3. The answer has been to double down on the relatively little-used implicit capabilities library for Cats, known under the very misleading name of Cats MTL.</p>
+<p>The name &quot;Cats MTL&quot; comes from Haskell&#39;s MTL package, which in turn was pretty aptly named: &quot;Monad Transformer Library&quot;. Haskell&#39;s MTL is entirely oriented around making it easier and more ergonomic to manipulate monad transformer <em>stacks</em>, which is to say, multiple layers of datatypes like <code>EitherT</code>, <code>Kleisli</code>, and so on. Monad transformer stacks are extremely difficult to work with, both in Scala and in Haskell, and so over time people progressively evolved techniques involving typeclasses in Haskell and implicits in Scala to more ergonomically manipulate composable effect types. Cats MTL was rooted in an adaptation of some of these ideas.</p>
+<p>Over time though, we&#39;ve learned that monad transformer datatypes <em>themselves</em> are often too clunky and even unnecessary. They work well in a few contexts, most notably local scopes (i.e. within the body of a single method), but they&#39;re generally the wrong solution for the problem. Quite notably, while the Cats Effect concurrent typeclasses do <em>work</em> on monad transformer stacks and derive lawful results, the practical outcomes can be very unintuitive. For that reason, it&#39;s generally not advisable to use types like <code>EitherT</code> or <code>IorT</code> composed together with libraries like Fs2 or similar.</p>
+<p>However, the basic idea of MTL itself, divorced from the <em>datatypes</em> (like <code>EitherT</code>), is actually a very good one. At its core, MTL is just about expressing capabilities available within a given scope using implicit evidence. Capabilities can be things like parallelism, resource safety, error handling, dependency injection, sequential composition, or similar. When done correctly, this can be a very powerful and lightweight way of expressing compositional effects with a high degree of granularity and type safety. It&#39;s not a coincidence that this is exactly the route being explored by many of the researchers working on Scala academically!</p>
+
+<h2 id="scoped-error-capabilities" class="section">Scoped Error Capabilities</h2>
+<p>The problem has been to find a way to blend all of these constructs together in a way that practically <em>works</em> with the ecosystem, is syntactically lightweight, has pleasant type inference and errors, and doesn&#39;t confuse the heck out of anyone who touches it. That is a problem we feel we have now solved, at least with errors.</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Monad</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.{</span><span class="type-name">Handle</span><span>, </span><span class="type-name">Raise</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.*
+
+</span><span class="comment">// define a domain error type
+</span><span class="keyword">enum</span><span> </span><span class="type-name">ParseError</span><span>:
+  </span><span class="keyword">case</span><span> </span><span class="type-name">UnclosedBracket</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">MissingSemicolon</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>: </span><span class="type-name">String</span><span>)
+
+</span><span class="comment">// use that error type in some function
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>)(</span><span class="keyword">using</span><span> </span><span class="type-name">Raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">ParseError</span><span>], </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] =
+  </span><span class="comment">// do some hardcore parsing
+</span><span>  </span><span class="keyword">if</span><span> </span><span class="identifier">missingBracket</span><span> </span><span class="keyword">then</span><span>
+    </span><span class="type-name">UnclosedBracket</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Result</span><span>]
+  </span><span class="keyword">else</span><span> </span><span class="keyword">if</span><span> </span><span class="identifier">missingSemicolon</span><span> </span><span class="keyword">then</span><span>
+    </span><span class="type-name">MissingSemicolon</span><span>.</span><span class="identifier">raise</span><span> </span><span class="comment">// we can rely on type inference and omit extra typings
+</span><span>  </span><span class="keyword">else</span><span>
+    </span><span class="identifier">result</span><span>.</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+
+</span><span class="comment">// use allow/rescue like try/catch to create scoped error handling
+</span><span class="keyword">val</span><span> </span><span class="identifier">program</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="type-name">Handle</span><span>.</span><span class="identifier">allow</span><span>[</span><span class="type-name">ParseError</span><span>]:
+  </span><span class="keyword">for</span><span>
+    </span><span class="identifier">x</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputX</span><span>)
+    </span><span class="identifier">y</span><span> &lt;- </span><span class="identifier">parse</span><span>(</span><span class="identifier">inputY</span><span>)
+    </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;successfully parsed </span><span class="substitution">$x</span><span class="string-literal"> and </span><span class="substitution">$y</span><span class="string-literal">&quot;</span><span>)
+  </span><span class="keyword">yield</span><span> ()
+.</span><span class="identifier">rescue</span><span>:
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">UnclosedBracket</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you didn&#39;t close your brackets&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">MissingSemicolon</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you missed your semicolons very much&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>) =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;error: </span><span class="substitution">$msg</span><span class="string-literal">&quot;</span><span>)</span></code></pre>
+<p>There&#39;s a lot to unpack here! At the very beginning we define a custom error type, <code>ParseError</code>. This is just a domain error like any other, and you&#39;ll note that it <em>doesn&#39;t</em> extend <code>Exception</code> or <code>Throwable</code> or similar. Without Cats MTL, we would generally have to wrap this error up in <code>Either</code> in all our function&#39;s result types, if we wanted to use it (similar to what Circe does). In this case though, instead of adding the error to the result type, we added a <code>using</code> parameter to our <code>parse</code> function!</p>
+<p>Specifically, what we&#39;re doing here when we say <code>using Raise[F, ParseError]</code> is that the <code>parse</code> method requires the ability to raise (but not handle!) errors of type <code>ParseError</code>. This is a bit like saying <code>throws ParseError</code> in Java, except it isn&#39;t an exception!</p>
+<p>Later on, in the body of <code>parse</code>, we use this <code>Raise</code> capability to call the <code>raise</code> method, producing errors in failure cases. This is a bit like the <code>throw</code> keyword, but again with our own custom domain error type. Btw, if we had expanded our <code>Monad[F]</code> using into something like <code>MonadError[F, Throwable]</code> or, more aggressively, <code>Async[F]</code>, we would have <em>also</em> had the ability to raise any error of type <code>Throwable</code> using the same syntax! In this case though, <code>parse</code> is only able to raise domain errors.</p>
+<p>As an aside, the <code>F[_]</code> here could be instantiated with many different monadic types. While we&#39;re using <code>IO</code> in production, perhaps we would want to test this function using <code>Either[ParseError, A]</code> as our type. This is very much supported! And in fact, if you did this, the <code>Raise</code> would have been implicitly materialized by Cats MTL, since <code>Either</code> has an obvious implementation of that function.</p>
+<p>Finally, at the end of the snippet above, we define <code>program</code> using the brand new syntax: <code>allow</code>/<code>rescue</code>. This is where things get <em>very</em> fancy. What we&#39;re doing here is we&#39;re introducing a new lexical scope (indented after the <code>allow[ParseError]:</code>) in which it is valid to <code>raise</code> an error of type <code>ParseError</code>. You should think of this as being very similar to <code>try</code>/<code>catch</code>, except it works with effect types like <code>IO</code> and any error type you define (not just <code>Throwable</code>). Within this scope, we write code as usual, and we&#39;re allowed to call the <code>parse</code> function. Note that if we had tried to call <code>parse</code> <em>outside</em> of this scope, it would have been a compile error informing us that we&#39;re missing the <code>Raise</code> capability.</p>
+<p>At the end of the <code>allow</code> scope, we call <code>.rescue</code>, and this requires us to pass a function which <em>handles</em> any errors which could have been raised by the body of the <code>allow</code>. This works exactly like <code>catch</code>, except with your own domain error types. In this case, we are apparently just logging the existence of the errors and moving on with our life, because we do some printing and away we go, but you could imagine perhaps returning a custom HTTP error code, or triggering some fallback behavior, or really any other error handling logic.</p>
+
+<h3 id="scala-2" class="section">Scala 2</h3>
+<p>Oh, and just in case you were wondering, this syntax <em>does</em> work on Scala 2 as well, it&#39;s just a bit less fancy! Here&#39;s the same snippet from above, but with 100% more braces and a lot more explicit types:</p>
+<pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Monad</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">mtl</span><span>.{</span><span class="type-name">Handle</span><span>, </span><span class="type-name">Raise</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">syntax</span><span>.</span><span class="identifier">all</span><span>.</span><span class="identifier">_</span><span>
+
+</span><span class="comment">// define a domain error type
+</span><span class="keyword">sealed</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">ParseError</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">Product</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Serializable</span><span>
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">ParseError</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">UnclosedBracket</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="keyword">object</span><span> </span><span class="type-name">MissingSemicolon</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>: </span><span class="type-name">String</span><span>) </span><span class="keyword">extends</span><span> </span><span class="type-name">ParseError</span><span>
+}
+
+</span><span class="comment">// use that error type in some function
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">parse</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]](</span><span class="identifier">input</span><span>: </span><span class="type-name">String</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">r</span><span>: </span><span class="type-name">Raise</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">ParseError</span><span>], </span><span class="identifier">m</span><span>: </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Result</span><span>] = {
+  </span><span class="comment">// do some hardcore parsing
+</span><span>  </span><span class="keyword">if</span><span> (</span><span class="identifier">missingBracket</span><span>)
+    </span><span class="type-name">UnclosedBracket</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">else</span><span> </span><span class="keyword">if</span><span> (</span><span class="identifier">missingSemicolon</span><span>)
+    </span><span class="type-name">MissingSemicolon</span><span>.</span><span class="identifier">raise</span><span>[</span><span class="type-name">F</span><span>]
+  </span><span class="keyword">else</span><span>
+    </span><span class="identifier">result</span><span>.</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+}
+
+</span><span class="comment">// use allow/rescue like try/catch to create scoped error handling
+</span><span class="keyword">val</span><span> </span><span class="identifier">program</span><span>: </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="type-name">Handle</span><span>.</span><span class="identifier">allowF</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">ParseError</span><span>] { </span><span class="keyword">implicit</span><span> </span><span class="identifier">h</span><span> =&gt;
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">x</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputX</span><span>)
+    </span><span class="identifier">y</span><span> &lt;- </span><span class="identifier">parse</span><span>[</span><span class="type-name">IO</span><span>](</span><span class="identifier">inputY</span><span>)
+    </span><span class="identifier">_</span><span> &lt;- </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;successfully parsed </span><span class="substitution">$x</span><span class="string-literal"> and </span><span class="substitution">$y</span><span class="string-literal">&quot;</span><span>)
+  } </span><span class="keyword">yield</span><span> ()
+} </span><span class="identifier">rescue</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">UnclosedBracket</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you didn&#39;t close your brackets&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">MissingSemicolon</span><span> =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">&quot;you missed your semicolons very much&quot;</span><span>)
+  </span><span class="keyword">case</span><span> </span><span class="type-name">ParseError</span><span>.</span><span class="type-name">Other</span><span>(</span><span class="identifier">msg</span><span>) =&gt;
+    </span><span class="type-name">IO</span><span>.</span><span class="identifier">println</span><span>(</span><span class="string-literal">s&quot;error: </span><span class="substitution">$msg</span><span class="string-literal">&quot;</span><span>)
+}</span></code></pre>
+<p>We need to do a lot more hand-holding for the compiler by using the <code>allowF</code> function instead of <code>allow</code>, but in general this is very much the same idea!</p>
+
+<h2 id="under-the-hood" class="section">Under the Hood</h2>
+<p>Behind the scenes, this functionality is doing two very creative things. First, as the Scala 2 snippet hints, we&#39;re introducing a new implicit within the local scope of the function passed to <code>allow</code>/<code>allowF</code>. This is one of Scala&#39;s more unique features and we&#39;re leveraging it quite heavily. In Scala 3, we&#39;re able to hide this syntax <em>entirely</em> by using context functions (the <code>A ?=&gt; B</code> syntax), but in Scala 2 we need to use the <code>implicit x =&gt;</code> lambda syntax in order to make this work.</p>
+<p>That implicit is introduced targeting the effect type we passed to <code>allowF</code>, or in Scala 3&#39;s case, the type which was inferred from the return. In this case, that type is <code>IO</code>! In other words, you don&#39;t need to be using parametric effects (<code>F[_]</code>) in order to make all this work! <code>Raise[IO, ParseError]</code> is a totally valid <code>Raise</code> instance, and it&#39;s exactly what we have in scope here. Or rather, we actually have <code>Handle[IO, ParseError]</code> (which extends <code>Raise</code>), which gives us the ability to both raise <em>and</em> handle errors.</p>
+<p>Once the scope is closed, syntactically, we force the user to supply an error handler to ensure that any errors which were raised and unhandled within the body are correctly managed. This is a pretty logical way of setting up your error handling, and precisely mirrors the way that you would do this same thing with a more imperative direct syntax like <code>try</code>/<code>catch</code>/<code>throw</code>/<code>throws</code>.</p>
+<p>In the way way deep underdark of the implementation, this whole thing works at runtime by creating what we call a &quot;submarine error&quot;. Specifically, we have a local traceless exception type called <code>Submarine</code> inside of the <code>allow</code> implementation which extends <code>RuntimeException</code>. When you <code>raise</code> a custom domain error (<code>ParseError</code> in this case), we use <code>Submarine</code> to &quot;submerge&quot; your error within the <code>Throwable</code> error channel of the enclosing effect – in this case, <code>IO</code>. Since we catch this error at the boundary, this whole process is entirely invisible to you <em>unless</em> you write something like <code>handleErrorWith</code> and catch all <code>Throwable</code>-typed errors within the scope, in which case you might see something of type <code>Submarine</code>. The correct thing to do with this error type, should you see it, depends considerably on exactly <em>why</em> you&#39;re writing <code>handleErrorWith</code>, and as it turns out this is exactly the whole point!</p>
+<p>By implementing this functionality without extending the number of actual error channels within the effect type (either with a bifunctor or something like <code>EitherT</code>), we ensure that everything continues to compose correctly around all resource handling, structured and unstructured concurrency, and otherwise-oblivious generic library code which has no idea what your domain errors are or how they might behave. Even in the case of an explicit <code>handleErrorWith</code>, you might be adding that type of error handler because you&#39;re writing some logic which must make <em>certain</em> that there is no possible way to short-circuit without passing through your handler (e.g. perhaps you&#39;re trying to make sure that some critical resource is cleaned up), or alternatively you may just be trying to observe <code>Throwable</code> errors to log and re-raise them, or any number of other things you <em>might</em> be doing with the error channel that we don&#39;t have any insight into.</p>
+<p>Rather than trying to impose a particular multi-channel composition semantic on your code, we simply stick with a single error channel with known and well-understood supremacy semantics, and everything else follows from there.</p>
+
+<h2 id="conclusion" class="section">Conclusion</h2>
+<p>Hopefully you find this technique helpful! This has been in the works for a <em>surprisingly</em> long time (I think it was first suggested in the Typelevel Discord about two or three years ago), and it was Thanh Le (<a href="https://github.com/lenguyenthanh">@lenguyenthanh</a>) who ultimately pushed it over the line. Huge shoutout! He has already begun leveraging this functionality in Lichess, one of the larger production Scala projects: <a href="https://github.com/lichess-org/lila/pull/17944">lichess-org/lila#17944</a></p>
+<p>Even more excitingly, this is a bit of a taste of the next phase of the effect type ecosystem. Scala is continuing to move heavily in the direction of implicit capabilities for these types of behaviors, and while efforts such as Caprese are still a long way from bearing real-world fruit, much of the work that is being done in that direction also creates the primitives needed to encode a compositional capabilities ecosystem for our existing production effect types, such as Cats Effect <code>IO</code>!</p>
+<p>Cats MTL will continue to evolve in this area, with an eye towards advancing the capabilities and improving syntax and ergonomics of this type of functionality both now and in the future.</p>]]></description>
+</item>
+<item>
+  <title>Evolving Typelevel</title>
+  <pubDate>Tue, 19 Aug 2025 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Typelevel Steering Committee</dc:creator>
+  
+    <dc:creator>Typelevel Foundation</dc:creator>
+  
+  <link>https://typelevel.org/blog/evolving-typelevel.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/evolving-typelevel.html</guid>
+  <description><![CDATA[
+<p>In recent years, Typelevel has existed in a somewhat grey area legally. We have long managed a good deal of intellectual
+property (the Organization Libraries) and raised funds. In 2022, <a href="https://typelevel.org/blog/governing-documents.html">we adopted a Charter</a> establishing our governance.
+However, we have not had a well-defined legal status.</p>
+<p>We have decided it is time to become a legally-recognized organization. To that end, we have formed the Typelevel
+Foundation, a nonprofit organization incorporated in the United States, in the state of California. Additionally, we are applying for
+501(c)(3) tax-exempt status from the IRS (the US tax agency), but this process will take several months.</p>
+<p>The initial Board of Directors for the Foundation will be:</p>
+<ul>
+  <li>Arman Bilge</li>
+  <li>Daniel Spiewak</li>
+  <li>Andrew Valencik</li>
+  <li>Mark Waks (known in the community as Justin du Coeur)</li>
+</ul>
+<p>Arman will also be acting as our interim, part-time Executive Director. In the coming months, we will refine the
+mission of the Foundation and define the roles that will carry out its work.</p>
+<p>The Foundation Board will assume the responsibilities of governance, particularly legal and financial matters.
+Meanwhile, the Steering Committee will become the Technical Steering Committee and focus on the technical work of
+overseeing the Typelevel ecosystem. (The Code of Conduct Committee and Security Team will also continue their essential
+work.) Our intent is that, by separating the governance and technical responsibilities, everyone can better focus on
+what they enjoy and are good at.</p>
+
+<h3 id="updates-to-the-technical-steering-committee" class="section">Updates to the Technical Steering Committee</h3>
+<p>Besides the new name and refined scope of the Technical Steering Committee, we are also announcing changes to its
+membership. Zach McCoy and Jasna Rodulfa-Blemberg have completed their terms on the Committee; we thank them for their
+service!</p>
+
+<h3 id="next-steps" class="section">Next steps</h3>
+<p>Our core mission remains the same: we will continue to steward the code and culture that are at the heart of Typelevel.
+This transition supports our ongoing effort to build a more transparent and sustainable organization that serves our
+growing community. Please stay tuned for upcoming announcements of new initiatives, a roadmap for the Foundation, and
+opportunities to become involved.</p>]]></description>
+</item>
+<item>
+  <title>Typelevel Meetup Lausanne</title>
+  <pubDate>Fri, 15 Aug 2025 00:00:00 GMT</pubDate>
+  
+  <link>https://typelevel.org/blog/meetup-lausanne-2025-08-22.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/meetup-lausanne-2025-08-22.html</guid>
+  <description><![CDATA[
+<div class="default-image-block figure">
+  <img src="https://typelevel.org/img/places/lausanne.html">
+  <p class="caption"></p>
+  <div class="legend">
+    <p>&quot;<a href="https://www.flickr.com/photos/harmishhk/15052138480">lauvax</a>&quot; by <a href="https://www.flickr.com/people/harmishhk/">harmishhk</a> is licensed under <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>.</p>
+  </div>
+</div>
+
+<h2 id="about-the-meetup" class="section">About the Meetup</h2>
+<p>Join the Typelevel community at an <a href="https://lu.ma/g7qow6h3">in-person meetup</a> on EPFL campus in Lausanne, organized by <a href="https://github.com/armanbilge">Arman Bilge</a> and <a href="https://github.com/antoniojimeneznieto">Antonio Jimenez</a>. This meetup is open to (aspiring) Typelevel users and contributors and anyone curious to learn more about functional programming in Scala, no matter their prior experience.</p>
+<p>During this meetup you can expect:</p>
+<ul>
+  <li>chat/q&amp;a about functional programming and Typelevel libraries</li>
+  <li>a small tutorial on <a href="https://typelevel.org/cats-effect">Cats Effect</a>, <a href="https://fs2.io/">FS2</a>, and <a href="https://armanbilge.github.io/calico">Calico</a></li>
+  <li>a group activity building widgets with Calico</li>
+  <li>lunch</li>
+</ul>
+<p>More details and registration are available on the <a href="https://lu.ma/g7qow6h3">event page</a>. All participants and organizers must abide by the <a href="https://typelevel.org/code-of-conduct/README.html">Typelevel Code of Conduct</a>.</p>]]></description>
+</item>
+<item>
+  <title>Typelevel Weaver released</title>
+  <pubDate>Tue, 10 Jun 2025 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Zainab Ali</dc:creator>
+  
+  <link>https://typelevel.org/blog/weaver-test-release.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/weaver-test-release.html</guid>
+  <description><![CDATA[
+<p>We are delighted to announce the release of <a href="https://typelevel.org/weaver-test/">weaver-test</a> under Typelevel.</p>
+
+<h1 id="what-is-weaver" class="section">What is weaver?</h1>
+<p>Weaver is a test framework for integration and end-to-end testing. It makes tests faster and easier to debug by using <code>cats</code>, <code>cats-effect</code> and <code>fs2</code>.</p>
+<p>Weaver provides a high quality experience when writing and running tests:</p>
+<ul>
+  <li>Tests within a suite are run in parallel for the quickest results possible. This is especially suited to IO heavy tests, such as those making API calls or reading files.</li>
+  <li>Expectations (ie assertions) are composable values. This enables
+  developers to separate the scenario of the test from the checks they perform,
+  generally keeping tests cleaner and clearer.</li>
+  <li>Failures are aggregated and reported at the end of the run. This prevents the developer from having to &quot;scroll up&quot; forever when trying to understand what failed.</li>
+  <li>A lazy logger is provided for each test, and log statements are only displayed in case of a test failure. This lets the developer enrich their tests with clues and works perfectly well with parallel runs. Even though all tests are run in parallel, the developer can browse a sequential log of the test failure.</li>
+  <li>“beforeAll” and “afterAll” logic is represented using a <code>cats.effect.Resource</code>. This ensures that shared resources, such as HTTP clients, connection pools and file handles, are cleaned up correctly and predictably.</li>
+</ul>
+
+<h1 id="why-is-weaver-moving-under-the-typelevel-umbrella" class="section">Why is weaver moving under the Typelevel umbrella?</h1>
+<p>Weaver makes heavy use of the <code>cats-effect</code> and <code>fs2</code> Typelevel projects. These enable weaver to run tests concurrently, provide safe resource handling, composable assertions and much more. By becoming part of the Typelevel umbrella, weaver can be maintained more easily alongside its core dependencies.</p>
+
+<h1 id="migrating-to-the-0-9-0-release" class="section">Migrating to the <code>0.9.0</code> release</h1>
+<p>If you use <a href="https://github.com/scala-steward-org/scala-steward">Scala Steward</a>, you will migrate automatically. If not, read the <a href="https://github.com/typelevel/weaver-test/releases/tag/v0.9.0"><code>0.9.0</code> migration guide</a>.</p>]]></description>
+</item>
+<item>
+  <title>Typelevel Summer of Code 2025</title>
+  <pubDate>Thu, 27 Feb 2025 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Arman Bilge</dc:creator>
+  
+  <link>https://typelevel.org/blog/gsoc-2025.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/gsoc-2025.html</guid>
+  <description><![CDATA[
+<p>We are proud to announce that Typelevel is a Mentoring Organization for <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2025</a>! If you are a student, this is a wonderful opportunity to spend your summer working on Scala open source projects with mentorship from Typelevel maintainers, while earning a stipend. You can learn more about what the experience is like in <a href="https://typelevel.org/blog/gsoc24-going-feral-on-the-cloud.html">this blog post</a> by our 2024 contributor Ching Hian Chew.</p>
+<p>Please check out <a href="https://typelevel.org/gsoc/ideas.html">our project ideas and mentors</a> spanning AI/ML, serverless, build tooling, frontend/UIs, systems programming, web assembly, and more. Furthermore, if you have an idea of your own, we would love to hear it: Typelevel members have a wide range of interests and a special fondness for building “at the cutting edge of some incredibly bizarre stuff.”</p>
+<p>We look forward to welcoming you to the Typelevel community and we hope that this program will be only the beginning of your open source journey. <a href="https://summerofcode.withgoogle.com/get-started">Applications open on March 24!</a> Until then, please join us on <a href="https://discord.gg/hAKabfGjUw">Discord</a> or email us at <a href="mailto:gsoc@typelevel.org"><a href="mailto:gsoc@typelevel.org">gsoc@typelevel.org</a></a>; we are excited to get to know you :)</p>
+
+<h2 id="_2024-recap" class="section">2024 recap</h2>
+<p>Congratulations to our GSoC contributors last year:</p>
+<ul>
+  <li><a href="https://github.com/Chingles2404">Ching</a> expanded Feral’s serverless integrations, in particular adding support for Google Cloud Run HTTP Functions. Her work landed in the <a href="https://github.com/typelevel/feral/releases/tag/v0.3.1">v0.3.1</a> release. <a href="https://typelevel.org/blog/gsoc24-going-feral-on-the-cloud.html">Read her blog post!</a></li>
+  <li><a href="https://github.com/Hombre-x">Gaby</a> designed and implemented <a href="https://github.com/typelevel/governance/issues/149">Catscript</a>, a new library for beginner-friendly scripting with Cats Effect, complete with tutorials and documentation. It will become an essential part of the <a href="https://typelevel.org/toolkit/">Typelevel Toolkit</a>.</li>
+  <li><a href="https://github.com/golden-skipper03">Abhi</a> integrated <a href="https://github.com/cozydev-pink/protosearch/pull/241">Protosearch with Scaladoc</a>, enabling a unified search experience across written and API documentation. It will roll out to all Typelevel libraries in a forthcoming sbt-typelevel release.</li>
+</ul>
+<p>Our program culminated in a <a href="https://github.com/orgs/typelevel/discussions/151">virtual meetup</a> where each of them gave a lighting talk about their project. Thank you to everyone in our community who showed up for our contributors, especially our mentors Tonio Gela, Thanh Le, Michael Pilquist, Rishad Sewnarain, and Andrew Valencik!</p>
+<p>Finally, we are making a broad call for any and all new contributors. Even if you are not eligible to participate in GSoC, you are <em>always</em> welcome to join the Typelevel community and contribute to our projects!</p>]]></description>
+</item>
+<item>
+  <title>Spotify FOSS Fund 2024</title>
+  <pubDate>Fri, 21 Feb 2025 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Andrew Valencik</dc:creator>
+  
+  <link>https://typelevel.org/blog/spotify-foss-fund.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/spotify-foss-fund.html</guid>
+  <description><![CDATA[
+<p>We&#39;re excited to announce that Typelevel has been chosen as a recipient of the 2024 Spotify FOSS Fund!
+As a result, Spotify has donated €20,000 to <a href="https://opencollective.com/typelevel">Typelevel&#39;s OpenCollective.</a></p>
+<p>Our current funding goes towards recurring infrastructure expenses, and sending members of our code of conduct committee for training to better support our community.
+With these extra funds we’d like to expand our initiatives to encourage and support new contributors and users!
+We’ve specifically discussed funding student or first time contributors through an initiative like Outreachy and engaging a technical writer to help improve documentation.</p>
+<p>You can read more about the 2024 Spotify FOSS Fund and the other recipients over at <a href="https://engineering.atspotify.com/2024/11/congratulations-to-the-recipients-of-the-2024-spotify-foss-fund/">Spotify&#39;s engineering blog.</a></p>]]></description>
+</item>
+</channel>
+</rss>

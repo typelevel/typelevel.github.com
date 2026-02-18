@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Algebraic API Design - Types, Functions, Properties</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Algebraic API Design - Types, Functions, Properties</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Leif Battermann<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on February 6, 2019
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="algebraic-api-design-types-functions-properties" class="title">Algebraic API Design - Types, Functions, Properties</h1>
+    <p>In this post we are going to explore the concept of <em>algebraic API design</em> which is based on types, pure functions, and the relationships between them known as domain rules or properties. We will do this based on a complete, self-contained example using Cats and Cats Effect and walk through the process of designing and implementing the domain of solving complex, deterministic single player games.</p>
+    <p>An API in this context describes the types and operations that a module exposes to the user.</p>
+    <p>SameGame is a deterministic single player game with perfect information. It has a game-tree complexity of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mn>82</mn></msup></mrow><annotation encoding="application/x-tex"> 10^{82} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">82</span></span></span></span></span></span></span></span></span></span></span></span>. In other words it is extremely hard to solve. Exhaustive search strategies and traditional path finding algorithms do not perform well. Monte Carlo tree search which is based on random sampling on the other hand is a promising approach. We will go into more details on these concepts below.</p>
+    <p>But how can we implement this with functional programming? How can we express algorithms that are based on randomness, mutable state, and side effects in a purely functional way?</p>
+    <p>All the code in this post is interpreted with <a href="https://github.com/tpolecat/tut">tut</a> to make sure everything type-checks so that the reader gets a complete picture rather than simplistic code samples that don&#39;t actually work. As a downside some of the code is quite lengthy. Please note that it is not required to read and understand every single line.</p>
+    <p>Let&#39;s have a quick recap on the definition of algebraic structures and how they relate to programming and domain modeling.</p>
+    
+    <h2 id="algebraic-structures" class="section"><a class="anchor-link" href="#algebraic-structures"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Algebraic Structures</h2>
+    <p>An algebraic structure consists of:</p>
+    <ul>
+      <li>One or more <em>sets</em></li>
+      <li>A set of <em>operators</em></li>
+      <li>A collection of <em>axioms</em> (which the operators are required to satisfy)</li>
+    </ul>
+    <p>A prototypical example of an algebraic structure from mathematics is a group. A concrete example of a group is the set <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">Z</mi></mrow><annotation encoding="application/x-tex"> \mathbb{Z} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord mathbb">Z</span></span></span></span> of integers together with the addition operator denoted as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="double-struck">Z</mi><mo separator="true">,</mo><mo>+</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> (\mathbb{Z}, +) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathbb">Z</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mclose">)</span></span></span></span> that satisfy the group axioms.</p>
+    <p>A group can be defined in an abstract way like this:</p>
+    <ul>
+      <li><em>Set</em> and <em>operator</em>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>G</mi><mo separator="true">,</mo><mo>∘</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> (G, \circ) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">G</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∘</span><span class="mclose">)</span></span></span></span></li>
+      <li>
+        <em>Axioms</em>:
+        <ul>
+          <li>Closure: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi>a</mi><mo>∘</mo><mi>b</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex"> \forall a, b \in G:a \circ b \in G </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">∀</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span></li>
+          <li>Associativity: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi>a</mi><mo>∘</mo><mo stretchy="false">(</mo><mi>b</mi><mo>∘</mo><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>a</mi><mo>∘</mo><mi>b</mi><mo stretchy="false">)</mo><mo>∘</mo><mi>c</mi></mrow><annotation encoding="application/x-tex"> \forall a, b, c \in G: a \circ (b \circ c) = (a \circ b) \circ c </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">∀</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></li>
+          <li>Identity: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∃</mi><mi>e</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi mathvariant="normal">∀</mi><mi>a</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi>e</mi><mo>∘</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>=</mo><mi>a</mi><mo>∘</mo><mi>e</mi></mrow><annotation encoding="application/x-tex"> \exists e \in G: \forall a \in G:e \circ a = a = a \circ e </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">∃</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">∀</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span></li>
+          <li>Inverse: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>a</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi mathvariant="normal">∃</mi><mi>b</mi><mo>∈</mo><mi>G</mi><mo>:</mo><mi>a</mi><mo>∘</mo><mi>b</mi><mo>=</mo><mi>e</mi><mo>=</mo><mi>b</mi><mo>∘</mo><mi>a</mi></mrow><annotation encoding="application/x-tex"> \forall a \in G: \exists b \in G:a \circ b = e = b \circ a </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">∀</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">∃</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></li>
+        </ul>
+      </li>
+    </ul>
+    
+    <h2 id="programming" class="section"><a class="anchor-link" href="#programming"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Programming</h2>
+    <p>There is an analogy in programming where:</p>
+    <ul>
+      <li>Sets are <em>types</em> (specifically algebraic data types)</li>
+      <li>Operators are <em>functions</em></li>
+      <li>Axioms are <em>properties</em> (predicates expressed in terms of the algebra backed up by property-based tests)</li>
+    </ul>
+    <p>The <a href="https://typelevel.org/cats/typeclasses.html">type classes provided by Cats</a> follow exactly this pattern. Cats provides representations of many algebraic structures, one of which is <code>Group[A]</code>. It is defined by a <em>type</em> <code>A</code> and an <em>operator</em> <code>combine</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Group</span><span>[</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>: </span><span class="type-name">A</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">combine</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">A</span><span>, </span><span class="identifier">y</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">A</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">inverse</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">A</span><span>
+}</span></code></pre>
+    <p><code>Group</code> additionally has an empty and an inverse element. Closure is already enforced by the types of the operators. The axioms are expressed as properties.</p>
+    <p>E.g. for all objects <code>x</code>, <code>y</code>, <code>z</code> of type <code>A</code>, the (<a href="https://github.com/typelevel/cats/blob/master/kernel-laws/src/main/scala/cats/kernel/laws/SemigroupLaws.scala#L8">associative property</a>) must hold:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">semigroupAssociative</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">A</span><span>, </span><span class="identifier">y</span><span>: </span><span class="type-name">A</span><span>, </span><span class="identifier">z</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">IsEq</span><span>[</span><span class="type-name">A</span><span>] =
+  </span><span class="type-name">S</span><span>.</span><span class="identifier">combine</span><span>(</span><span class="type-name">S</span><span>.</span><span class="identifier">combine</span><span>(</span><span class="identifier">x</span><span>, </span><span class="identifier">y</span><span>), </span><span class="identifier">z</span><span>) &lt;-&gt; </span><span class="type-name">S</span><span>.</span><span class="identifier">combine</span><span>(</span><span class="identifier">x</span><span>, </span><span class="type-name">S</span><span>.</span><span class="identifier">combine</span><span>(</span><span class="identifier">y</span><span>, </span><span class="identifier">z</span><span>))</span></code></pre>
+    <p>We can create a concrete instance of <code>Group[A]</code>, e.g. according to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="double-struck">Z</mi><mo separator="true">,</mo><mo>+</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> (\mathbb{Z}, +) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathbb">Z</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mclose">)</span></span></span></span>:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Group</span><span>
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">group</span><span>: </span><span class="type-name">Group</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Group</span><span>[</span><span class="type-name">Int</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">inverse</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Int</span><span>         = -</span><span class="identifier">a</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">empty</span><span>: </span><span class="type-name">Int</span><span>                   = </span><span class="number-literal">0</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">combine</span><span>(</span><span class="identifier">x</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">y</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Int</span><span> = </span><span class="identifier">x</span><span> + </span><span class="identifier">y</span><span>
+}</span></code></pre>
+    <p>The verification of the <code>Group</code> properties for the instance we created can be done with the help of <a href="https://github.com/typelevel/discipline">discipline</a>.</p>
+    <p>Please note that, while property-based testing is a very powerful tool, it is not the only way to verify properties. There are other methods like dependant types, formal verification, or example-based testing. However, property-based testing works really well and has a huge return on investment.</p>
+    
+    <h2 id="domain-modeling" class="section"><a class="anchor-link" href="#domain-modeling"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Domain Modeling</h2>
+    <p>Algebraic design is not exclusively applicable to modeling algebraic structures from mathematics such as groups from the example above. We can use exactly the same technique to model the API of any domain.</p>
+    <p>The elements of algebraic structures can be related to domain driven design as follows:</p>
+    <ul>
+      <li>Sets are <em>types of entities or value objects</em></li>
+      <li>Operators are <em>business behavior</em></li>
+      <li>Axioms are <em>business rules</em></li>
+    </ul>
+    <p>Here is an overview of how algebraic structures, programming, and domain modeling relate to each other:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Algebraic Structure</th>
+          <th>Programming</th>
+          <th>Domain Modeling</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sets</td>
+          <td>Algebraic data types</td>
+          <td>Types of entities/value objects</td>
+        </tr>
+        <tr>
+          <td>Operators</td>
+          <td>Functions</td>
+          <td>Business behavior</td>
+        </tr>
+        <tr>
+          <td>Axioms</td>
+          <td>Properties</td>
+          <td>Business rules</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h2 id="programs-1" class="section"><a class="anchor-link" href="#programs-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Programs</h2>
+    <p>Once we&#39;ve defined the algebras that model the API of our domain, we can describe <em>programs</em> in terms of one or more of these algebras. Algebras in programming are also sometimes referred to as embedded domain specific languages (EDSLs). Programs that are composed of algebras or EDSLs are parametrically polymorphic and they know nothing about the algebras&#39; concrete implementations other than that they satisfy certain properties.</p>
+    <p>Programs are therefore flexible and constrained at the same time. Flexible in the sense that they can be used with any lawful implementation of the given algebra. And constrained because they can only use the operators provided by the algebra to manipulate values of the types that the algebra is expressed with.</p>
+    <p>To give a crude, concrete example, a program <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex"> p </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> is expressed in terms of the algebra of <code>Group[A]</code>. <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex"> p </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> can only produce a result by using the operators <code>combine</code> and <code>inverse</code> on given input parameters of type <code>A</code>. Those parameters cannot be manipulated in any other way. Which leaves less room for mistakes and leads to correct programs. The caller of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex"> p </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> decides which concrete implementation of <code>Group[A]</code> they want to provide. Which makes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex"> p </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> reusable in multiple different contexts.</p>
+    <p>We could define a program as follows:</p>
+    <blockquote>A program is a pure polymorphic function that uses algebras by combining their operators with other input parameters to produce a pure value.</blockquote>
+    
+    <h2 id="interpreters" class="section"><a class="anchor-link" href="#interpreters"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Interpreters</h2>
+    <p>The concrete implementation of an algebra is also know as the <em>interpreter</em> of the algebra. In the example from above the value <code>group</code> of type <code>Group[Int]</code> is an interpreter of the algebra of <code>Group[A]</code>.</p>
+    <p>This might all sound a bit abstract and theoretical at first. In fact, talking about the concept of algebraic design is one thing, but applying this concept to a real business domain is another.</p>
+    <p>Let&#39;s look at a concrete and self-contained example.</p>
+    
+    <h2 id="solving-single-player-games" class="section"><a class="anchor-link" href="#solving-single-player-games"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Solving single player games</h2>
+    <p><span class="bulma-columns bulma-is-centered"> <img class="bulma-column bulma-is-half" src="../img/media/samegame.png"> </span></p>
+    <p>We will write a program that finds solutions for deterministic single player games with a high game-tree complexity like SameGame.</p>
+    <p>SameGame is played on a <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn><mo>×</mo><mn>15</mn></mrow><annotation encoding="application/x-tex"> 15 \times 15 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">15</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">15</span></span></span></span> board initially filled with blocks of 5 colors. The goal of the game is to remove as many blocks from the board as possible while maximising the score. See <a href="https://en.wikipedia.org/wiki/SameGame"><a href="https://en.wikipedia.org/wiki/SameGame">https://en.wikipedia.org/wiki/SameGame</a></a> for detailed rules. You can play the game at <a href="http://www.js-games.de/eng/games/samegame/lx/play">js-games.de</a> or <a href="https://samegame.surge.sh"><a href="https://samegame.surge.sh">https://samegame.surge.sh</a></a>.</p>
+    <p>SameGame is a game with perfect information that is very difficult to solve. Given an initial starting position, we can construct a complete game-tree for SameGame as follows:</p>
+    <ul>
+      <li>The nodes of the tree are board positions</li>
+      <li>The edges are moves</li>
+      <li>Each position (node) contains all possible moves (edges)</li>
+      <li>The root node represents the starting position</li>
+      <li>The leafs are terminal game states</li>
+    </ul>
+    <p>The total number of leafs is the game-tree complexity. The game-tree complexity of Tic-Tac-Toe e.g. is about <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex"> 10^5 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span>. Tic-Tac-Toe is easy to solve by doing an exhaustive search. Whereas SameGame has a complexity of approximately <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mn>82</mn></msup></mrow><annotation encoding="application/x-tex"> 10^{82} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">82</span></span></span></span></span></span></span></span></span></span></span></span>. This makes it impossible to solve with a brute-force approach or other traditional algorithms in a reasonable amount of time. Smaller SameGame boards are relatively easy to solve. As the size of the board increases we observe a <em>combinatorial explosion</em>. The time required to find the best solution increases so rapidly that we hit a solvability limit.</p>
+    
+    <h2 id="monte-carlo-tree-search" class="section"><a class="anchor-link" href="#monte-carlo-tree-search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Monte Carlo tree search</h2>
+    <p>When we encounter a combinatorial explosion, <em>stochastic optimization algorithms</em> come to the rescue. Instead of exploring the complete search tree these algorithms sample the search space and can find very good solutions. It is very unlikely, however, that they reach a global maximum and find the best solution in a reasonable amount of time.</p>
+    <p>A stochastic optimization algorithm that has successfully been employed to game play is known as <em>Monte Carlo tree search</em>. The basic idea of Monte Carlo tree search is to determine the most promising move based on random simulations at each node in the game-tree. In a random simulation the game is played out to the very end by selecting uniformly distributed random moves.</p>
+    <p>Here is a very simple version of a Monte Carlo tree search:</p>
+    <ol class="arabic">
+      <li>Choose the root node as the current node <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex"> n </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> of the game-tree</li>
+      <li>
+        For the current node <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex"> n </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>, determine all legal moves <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>s</mi></mrow><annotation encoding="application/x-tex"> ms </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">s</span></span></span></span>
+        <ul>
+          <li>If no legal moves exist, the algorithm terminates</li>
+        </ul>
+      </li>
+      <li>Determine all child nodes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>s</mi></mrow><annotation encoding="application/x-tex"> cs </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">cs</span></span></span></span> of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex"> n </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> by applying each of the moves <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>s</mi></mrow><annotation encoding="application/x-tex"> ms </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span><span class="mord mathnormal">s</span></span></span></span> to the current state <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex"> n </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></li>
+      <li>Perform a random simulation for each of the child nodes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>s</mi></mrow><annotation encoding="application/x-tex"> cs </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">cs</span></span></span></span></li>
+      <li>From the child nodes <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>s</mi></mrow><annotation encoding="application/x-tex"> cs </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">cs</span></span></span></span> choose the node with the best simulation result, and continue with step 2.</li>
+    </ol>
+    <p>A way to improve on this basic algorithm is to add a nested (lower level) search at step 4. such that a random simulation is performed if the current level equals 1, otherwise a <code>level - 1</code> search is performed.</p>
+    <p>That&#39;s all we need to know so let&#39;s implement this in a purely functional way using algebraic API design.</p>
+    
+    <h2 id="game-algebra" class="section"><a class="anchor-link" href="#game-algebra"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Game algebra</h2>
+    <p>First we define a type that represents the game state:</p>
+    <pre><code class="nohighlight"><span class="keyword">final</span><span> </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>](
+    </span><span class="identifier">playedMoves</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Move</span><span>],
+    </span><span class="identifier">score</span><span>: </span><span class="type-name">Score</span><span>,
+    </span><span class="identifier">position</span><span>: </span><span class="type-name">BoardPosition</span><span>,
+)
+</span><span class="comment">// defined class GameState</span></code></pre>
+    <p><code>GameState</code> consists of <code>playedMoves</code> (the list of moves that have been played), <code>score</code> (the current score), and <code>position</code> (the current board position).</p>
+    <p>With <code>GameState</code> we can now express a game algebra like this:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Game</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>] {
+  </span><span class="keyword">type</span><span> </span><span class="type-name">GS</span><span> = </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">applyMove</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GS</span><span>, </span><span class="identifier">move</span><span>: </span><span class="type-name">Move</span><span>): </span><span class="type-name">GS</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GS</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">Move</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">simulation</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GS</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">GS</span><span>]
+}
+</span><span class="comment">// defined trait Game</span></code></pre>
+    <p>The type alias <code>GS</code> only serves better readability.</p>
+    <p>Note that by parameterizing <code>Game</code> with <code>Move</code>, <code>BoardPosition</code>, and <code>Score</code> there are no dependencies. It is completely decoupled from any specific domain models. We can fully focus on the contract of the operations rather than having to deal with the implementation or cumbersome domain models.</p>
+    <p>Furthermore, <code>Game</code> is defined for any type constructor <code>F[_]</code> which we use to model effects. By making this type abstract we can defer the decision of which effects we need to a later point in time, respectively at the entry point of the application. Common effect types that could be used are <code>IO</code>, <code>Task</code>, <code>Option</code>, <code>State</code>, <code>List</code> etc. or combinations of them. Having an abstract effect type additionally serves better reusability in different contexts like in tests.</p>
+    <p>While <code>applyMove</code> and <code>legalMoves</code> have no effects, <code>simulation</code> returns an effect <code>F</code>. Even though one could think of implementations without effects, the implementation of <code>simulation</code> will use a generator for uniformly distributed random numbers. This can be done by describing a side effect or by using the State Monad. With an abstract effect we are able to choose a specific effect later and make <code>simulation</code> referentially transparent.</p>
+    
+    <h2 id="game-properties" class="section"><a class="anchor-link" href="#game-properties"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Game properties</h2>
+    <p>Just as an algebraic structure has certain axioms, we can also define properties for the <code>Game</code> algebra that all interpreters have to satisfy. These properties can be generic or they can be driven by the business rules of the domain.</p>
+    <p>It is often challenging to come up with meaningful properties for an algebra. However, more and better constraints allow significantly fewer possible implementations of the algebra. Which leads to correct programs because there is less room for errors.</p>
+    <p>For the sake of brevity let&#39;s consider only two properties:</p>
+    <ul>
+      <li>For all game states, a simulation will lead to a terminal board position</li>
+      <li>For all game states, given a move <code>m</code>, <code>m</code> is either illegal or when applied leads to a new game state and it increments the number of played moves</li>
+    </ul>
+    <p>These rules are expressed as predicates inside the companion object of <code>Game</code> like this:</p>
+    <pre><code class="nohighlight"><span class="keyword">object</span><span> </span><span class="type-name">Game</span><span> {
+  </span><span class="comment">// let&#39;s follow the naming convention used by Cats and call this &#39;laws&#39;
+</span><span>  </span><span class="keyword">object</span><span> </span><span class="identifier">laws</span><span> {
+    </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Functor</span><span>
+    </span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">_</span><span>
+
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">simulationIsTerminal</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Functor</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>](
+        </span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>])(
+        </span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">Game</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">Boolean</span><span>] =
+      </span><span class="identifier">ev</span><span>.</span><span class="identifier">simulation</span><span>(</span><span class="identifier">gameState</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">ev</span><span>.</span><span class="identifier">legalMoves</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">isEmpty</span><span>)
+
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">legalMoveModifiesGameState</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>](
+        </span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>],
+        </span><span class="identifier">move</span><span>: </span><span class="type-name">Move</span><span>)(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">Game</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">BoardPosition</span><span>, </span><span class="type-name">Score</span><span>]): </span><span class="type-name">Boolean</span><span> = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">legalMoves</span><span>    = </span><span class="identifier">ev</span><span>.</span><span class="identifier">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>)
+      </span><span class="keyword">val</span><span> </span><span class="identifier">nextGameState</span><span> = </span><span class="identifier">ev</span><span>.</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">gameState</span><span>, </span><span class="identifier">move</span><span>)
+      !</span><span class="identifier">legalMoves</span><span>.</span><span class="identifier">contains</span><span>(</span><span class="identifier">move</span><span>) ||
+        (</span><span class="identifier">nextGameState</span><span>.</span><span class="identifier">position</span><span> != </span><span class="identifier">gameState</span><span>.</span><span class="identifier">position</span><span> &amp;&amp; </span><span class="identifier">nextGameState</span><span>.</span><span class="identifier">playedMoves</span><span>.</span><span class="identifier">length</span><span> == </span><span class="identifier">gameState</span><span>.</span><span class="identifier">playedMoves</span><span>.</span><span class="identifier">length</span><span> + </span><span class="number-literal">1</span><span>)
+    }
+  }
+}</span></code></pre>
+    <p>There is an additional constraint that we discover while implementing the predicates that define the properties of <code>Game</code>. <code>F</code> must have a <code>Functor</code> instance. <code>Functor</code> is the least powerful abstraction that allows us to access the value inside <code>F</code> and express the property related to <code>simulation</code>. In the next section we will see that the program we are going to write will imply additional constraints for <code>F</code>.</p>
+    <p>The properties of <code>Game</code> are tightly coupled to the algebra as any implementation must satisfy them. This is why they are defined inside the companion object of <code>Game</code> as part of the library code.</p>
+    <p>Later we will see how to implement property-based tests to verify the properties.</p>
+    
+    <h2 id="programs-2" class="section"><a class="anchor-link" href="#programs-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Programs</h2>
+    <p>The <code>Game</code> properties are expressed solely in terms of the <code>Game</code> algebra. We have no idea how <code>Game</code> is implemented or what the types <code>Move</code>, <code>BoardPosition</code>, or <code>Score</code> look like. In a similar fashion we will only use the algebra to implement programs such as the search algorithm described above.</p>
+    <p>Before we do this, we will define another algebra that describes logging, simply for convenience. Especially during long running searches it is useful to be able to output intermediate results and search states:</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Show</span><span>
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Logger</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">log</span><span>[</span><span class="type-name">T</span><span>: </span><span class="type-name">Show</span><span>](</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">Unit</span><span>]
+}
+
+</span><span class="keyword">object</span><span> </span><span class="type-name">Logger</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">apply</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]]()(</span><span class="keyword">implicit</span><span> </span><span class="identifier">ev</span><span>: </span><span class="type-name">Logger</span><span>[</span><span class="type-name">F</span><span>]): </span><span class="type-name">Logger</span><span>[</span><span class="type-name">F</span><span>] = </span><span class="identifier">ev</span><span>
+}</span></code></pre>
+    <p>With the two algebras <code>Game</code> and <code>Logger</code> we can now implement the nested Monte Carlo tree search.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="type-name">Monad</span><span>
+</span><span class="comment">// import cats.Monad
+</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">implicits</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// import cats.implicits._
+</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">nestedSearch</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]: </span><span class="type-name">Monad</span><span>: </span><span class="type-name">Logger</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>](
+    </span><span class="identifier">numLevels</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">level</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>])(
+    </span><span class="keyword">implicit</span><span> </span><span class="identifier">g</span><span>: </span><span class="type-name">Game</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>],
+    </span><span class="identifier">ord</span><span>: </span><span class="type-name">Ordering</span><span>[</span><span class="type-name">Score</span><span>],
+    </span><span class="identifier">show</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>]]): </span><span class="type-name">F</span><span>[</span><span class="type-name">GameState</span><span>[</span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>]] = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">legalMoves</span><span> = </span><span class="identifier">g</span><span>.</span><span class="identifier">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>)
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">_</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">level</span><span> == </span><span class="identifier">numLevels</span><span>) </span><span class="type-name">Logger</span><span>[</span><span class="type-name">F</span><span>].</span><span class="identifier">log</span><span>(</span><span class="identifier">gameState</span><span>) </span><span class="keyword">else</span><span> ().</span><span class="identifier">pure</span><span>[</span><span class="type-name">F</span><span>]
+    </span><span class="identifier">result</span><span> &lt;- </span><span class="keyword">if</span><span> (</span><span class="identifier">legalMoves</span><span>.</span><span class="identifier">isEmpty</span><span>)
+      </span><span class="type-name">Monad</span><span>[</span><span class="type-name">F</span><span>].</span><span class="identifier">pure</span><span>(</span><span class="identifier">gameState</span><span>)
+    </span><span class="keyword">else</span><span>
+      </span><span class="identifier">legalMoves</span><span>
+        .</span><span class="identifier">traverse</span><span> { </span><span class="identifier">move</span><span> =&gt;
+          </span><span class="keyword">if</span><span> (</span><span class="identifier">level</span><span> == </span><span class="number-literal">1</span><span>) {
+            </span><span class="keyword">val</span><span> </span><span class="identifier">nextGameState</span><span> = </span><span class="identifier">g</span><span>.</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">gameState</span><span>, </span><span class="identifier">move</span><span>)
+            </span><span class="identifier">g</span><span>.</span><span class="identifier">simulation</span><span>(</span><span class="identifier">nextGameState</span><span>).</span><span class="identifier">map</span><span>((</span><span class="identifier">move</span><span>, </span><span class="identifier">_</span><span>))
+          } </span><span class="keyword">else</span><span> {
+            </span><span class="keyword">val</span><span> </span><span class="identifier">nextState</span><span> = </span><span class="identifier">g</span><span>.</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">gameState</span><span>, </span><span class="identifier">move</span><span>)
+            </span><span class="identifier">nestedSearch</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>](</span><span class="identifier">numLevels</span><span>, </span><span class="identifier">level</span><span> - </span><span class="number-literal">1</span><span>, </span><span class="identifier">nextState</span><span>).</span><span class="identifier">map</span><span>((</span><span class="identifier">move</span><span>, </span><span class="identifier">_</span><span>))
+          }
+        }
+        .</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">maxBy</span><span>(</span><span class="identifier">_</span><span class="number-literal">._2</span><span>.</span><span class="identifier">score</span><span>))
+        .</span><span class="identifier">flatMap</span><span> {
+          </span><span class="keyword">case</span><span> (</span><span class="identifier">move</span><span>, </span><span class="identifier">_</span><span>) =&gt;
+            </span><span class="identifier">nestedSearch</span><span>[</span><span class="type-name">F</span><span>, </span><span class="type-name">Move</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">Score</span><span>](</span><span class="identifier">numLevels</span><span>, </span><span class="identifier">level</span><span>, </span><span class="identifier">g</span><span>.</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">gameState</span><span>, </span><span class="identifier">move</span><span>))
+        }
+  } </span><span class="keyword">yield</span><span> </span><span class="identifier">result</span><span>
+}
+</span><span class="comment">// nestedSearch: [F[_], Move, Position, Score](numLevels: Int, level: Int, gameState: GameState[Move,Position,Score])(implicit evidence$1: cats.Monad[F], implicit evidence$2: Logger[F], implicit g: Game[F,Move,Position,Score], implicit ord: Ordering[Score], implicit show: cats.Show[GameState[Move,Position,Score]])F[GameState[Move,Position,Score]]</span></code></pre>
+    <p>This program describes the nested Monte Carlo tree search algorithm from above. The biggest difference is that this description is statically type checked by the Scala compiler. The effect of mutating the game state is modelled in a purely functional way with recursion. In fact, the state modifications could be modelled with the State Monad as well, but this makes things a bit more complicated especially when we try to parallelize the search.</p>
+    <p>Note that to implement the algorithm we need a <code>Monad</code> instance for <code>F</code>. Other than that we don&#39;t care what <code>F</code> exactly is.</p>
+    <p>Moreover, the <code>nestedSearch</code> function implies additional constraints for <code>Score</code> and <code>GameState</code>. We need to pass instances of <code>Ordering[Score]</code> (because we want to compare scores) and <code>Show[GameState]</code> (which we need for logging) as implicit parameters.</p>
+    
+    <h2 id="the-game-interpreter" class="section"><a class="anchor-link" href="#the-game-interpreter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>The Game interpreter</h2>
+    <p>The game logic itself is defined in the object <code>SameGame</code> which is not shown here for the sake of brevity. You can find the implementation in <a href="https://gist.github.com/battermann/24d3318ec0cc3de84bfc7e696284aa60">this Gist</a>.</p>
+    <p>With <code>SameGame</code> we are able write to an interpreter for <code>Game</code> that implements the SameGame rules. For the type constructor <code>F[_]</code> we will choose <code>IO</code>, so that we can model the side effect of a random number generator in a referentially transparent way. There are other options, like <code>State</code> e.g. that we will not discuss here. The point is that we are free to use whatever effect type serves our needs, as long as the implementation is pure and the properties of the <code>Game</code> algebra hold.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="type-name">IO</span><span>
+</span><span class="comment">// import cats.effect.IO
+</span><span>
+</span><span class="keyword">import</span><span> </span><span class="type-name">SameGame</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// import SameGame._
+</span><span>
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">game</span><span>: </span><span class="type-name">Game</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Game</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">applyMove</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>],
+                  </span><span class="identifier">move</span><span>: </span><span class="type-name">Position</span><span>): </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>] = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">gs</span><span> = </span><span class="type-name">SameGame</span><span>.</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">move</span><span>, </span><span class="identifier">gameState</span><span>.</span><span class="identifier">position</span><span>)
+      </span><span class="type-name">GameState</span><span>(</span><span class="identifier">move</span><span> :: </span><span class="identifier">gameState</span><span>.</span><span class="identifier">playedMoves</span><span>, </span><span class="type-name">SameGame</span><span>.</span><span class="identifier">score</span><span>(</span><span class="identifier">gs</span><span>), </span><span class="identifier">gs</span><span>)
+    }
+
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>]): </span><span class="type-name">List</span><span>[</span><span class="type-name">Position</span><span>] =
+      </span><span class="type-name">SameGame</span><span>.</span><span class="identifier">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>.</span><span class="identifier">position</span><span>)
+
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">simulation</span><span>(</span><span class="identifier">gameState</span><span>: </span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>])
+      : </span><span class="type-name">IO</span><span>[</span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>]] = {
+      </span><span class="keyword">val</span><span> </span><span class="identifier">moves</span><span> = </span><span class="identifier">legalMoves</span><span>(</span><span class="identifier">gameState</span><span>)
+      </span><span class="keyword">if</span><span> (</span><span class="identifier">moves</span><span>.</span><span class="identifier">isEmpty</span><span>)
+        </span><span class="type-name">IO</span><span>.</span><span class="identifier">pure</span><span>(</span><span class="identifier">gameState</span><span>)
+      </span><span class="keyword">else</span><span>
+        </span><span class="type-name">IO</span><span>(</span><span class="identifier">scala</span><span>.</span><span class="identifier">util</span><span>.</span><span class="type-name">Random</span><span>.</span><span class="identifier">nextInt</span><span>(</span><span class="identifier">moves</span><span>.</span><span class="identifier">length</span><span>))
+          .</span><span class="identifier">map</span><span>(</span><span class="identifier">moves</span><span>)
+          .</span><span class="identifier">map</span><span>(</span><span class="identifier">applyMove</span><span>(</span><span class="identifier">gameState</span><span>, </span><span class="identifier">_</span><span>))
+          .</span><span class="identifier">flatMap</span><span>(</span><span class="identifier">simulation</span><span>)
+    }
+  }
+</span><span class="comment">// game: Game[cats.effect.IO,SameGame.Position,SameGame.SameGameState,Int] = $anon$1@2fd961b3</span></code></pre>
+    <p>We must not forget to also implement an interpreter for <code>Logger</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">logger</span><span>: </span><span class="type-name">Logger</span><span>[</span><span class="type-name">IO</span><span>] = </span><span class="keyword">new</span><span> </span><span class="type-name">Logger</span><span>[</span><span class="type-name">IO</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">log</span><span>[</span><span class="type-name">T</span><span>: </span><span class="type-name">Show</span><span>](</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>): </span><span class="type-name">IO</span><span>[</span><span class="type-name">Unit</span><span>] = </span><span class="type-name">IO</span><span>(</span><span class="identifier">println</span><span>(</span><span class="identifier">t</span><span>.</span><span class="identifier">show</span><span>))
+}
+</span><span class="comment">// logger: Logger[cats.effect.IO] = $anon$1@32e5f76d</span></code></pre>
+    <p>And some <code>Show</code> instances to create nicely formatted outputs in a type-safe way:</p>
+    <pre><code class="nohighlight"><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showCell</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">CellState</span><span>] = </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Empty</span><span>         =&gt; </span><span class="string-literal">&quot;-&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Green</span><span>) =&gt; </span><span class="string-literal">&quot;0&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Blue</span><span>)  =&gt; </span><span class="string-literal">&quot;1&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Red</span><span>)   =&gt; </span><span class="string-literal">&quot;2&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Brown</span><span>) =&gt; </span><span class="string-literal">&quot;3&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Gray</span><span>)  =&gt; </span><span class="string-literal">&quot;4&quot;</span><span>
+}
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showMove</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">Position</span><span>] =
+  </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span>(</span><span class="identifier">p</span><span> =&gt; </span><span class="string-literal">show&quot;(</span><span class="substitution">${p.col}</span><span class="string-literal">,  </span><span class="substitution">${p.row}</span><span class="string-literal">)&quot;</span><span>)
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showList</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">Position</span><span>]] =
+  </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">show</span><span>).</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot;[&quot;</span><span>, </span><span class="string-literal">&quot;, &quot;</span><span>, </span><span class="string-literal">&quot;]&quot;</span><span>))
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showBoard</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">Board</span><span>] =
+  </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span>(
+    </span><span class="identifier">_</span><span>.</span><span class="identifier">columns</span><span>
+      .</span><span class="identifier">map</span><span>(</span><span class="identifier">col</span><span> =&gt; </span><span class="identifier">col</span><span>.</span><span class="identifier">cells</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">show</span><span>).</span><span class="identifier">reverse</span><span>)
+      .</span><span class="identifier">transpose</span><span>
+      .</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot;[&quot;</span><span>, </span><span class="string-literal">&quot;,&quot;</span><span>, </span><span class="string-literal">&quot;]&quot;</span><span>))
+      .</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot;</span><span class="escape-sequence">\n</span><span class="string-literal">&quot;</span><span>))
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showGame</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">SameGameState</span><span>] = </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span> {
+  </span><span class="keyword">case</span><span> </span><span class="type-name">InProgress</span><span>(</span><span class="identifier">board</span><span>, </span><span class="identifier">score</span><span>) =&gt; </span><span class="string-literal">show&quot;</span><span class="substitution">$board</span><span class="escape-sequence">\n\n</span><span class="string-literal">Score:  </span><span class="substitution">$score</span><span class="string-literal"> (game in progress)&quot;</span><span>
+  </span><span class="keyword">case</span><span> </span><span class="type-name">Finished</span><span>(</span><span class="identifier">board</span><span>, </span><span class="identifier">score</span><span>)   =&gt; </span><span class="string-literal">show&quot;</span><span class="substitution">$board</span><span class="escape-sequence">\n\n</span><span class="string-literal">Score:  </span><span class="substitution">$score</span><span class="string-literal"> (game finished)&quot;</span><span>
+}
+
+</span><span class="keyword">implicit</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">showGameState</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>]] =
+  </span><span class="type-name">Show</span><span>.</span><span class="identifier">show</span><span>(</span><span class="identifier">t</span><span> =&gt; </span><span class="string-literal">show&quot;&quot;&quot;
+                        |</span><span class="substitution">${t.position}</span><span class="string-literal">
+                        |Moves: </span><span class="substitution">${t.playedMoves.reverse}</span><span class="string-literal">
+                        |&quot;&quot;&quot;</span><span>.</span><span class="identifier">stripMargin</span><span>)</span></code></pre>
+    
+    <h2 id="verifying-the-game-properties" class="section"><a class="anchor-link" href="#verifying-the-game-properties"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Verifying the Game properties</h2>
+    <p>Now that we have defined the interpreter for <code>Game</code>, it is time to ensure that <code>Game</code> properties are satisfied. We will do this with property-based testing and the library ScalaCheck. ScalaCheck uses a large number of randomly generated test cases to verify that the given properties hold.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalacheck</span><span>.{</span><span class="type-name">Arbitrary</span><span>, </span><span class="type-name">Gen</span><span>}
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalacheck</span><span>.</span><span class="type-name">Gen</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalatest</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalatest</span><span>.</span><span class="identifier">prop</span><span>.</span><span class="type-name">PropertyChecks</span></code></pre>
+    <p>To generate test cases, we have to define how to construct the test inputs. ScalaCheck provides numerous combinators that can be composed to create generators for our domain objects. Here are basic implementations of generators for <code>GameState</code> and <code>Postion</code>:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">colEmpty</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">CellState</span><span>] = </span><span class="type-name">List</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="identifier">size</span><span>)(</span><span class="type-name">Empty</span><span>)
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">colNonEmpty</span><span>(</span><span class="identifier">size</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">List</span><span>[</span><span class="type-name">CellState</span><span>]] =
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">numFilled</span><span> &lt;- </span><span class="identifier">choose</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="identifier">size</span><span>)
+    </span><span class="identifier">filled</span><span>    &lt;- </span><span class="identifier">listOfN</span><span>(</span><span class="identifier">numFilled</span><span>, </span><span class="identifier">choose</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">5</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">c</span><span> =&gt; </span><span class="type-name">Filled</span><span>(</span><span class="type-name">Color</span><span>(</span><span class="identifier">c</span><span>))))
+  } </span><span class="keyword">yield</span><span> </span><span class="identifier">filled</span><span> ++ </span><span class="identifier">colEmpty</span><span>(</span><span class="identifier">size</span><span> - </span><span class="identifier">filled</span><span>.</span><span class="identifier">length</span><span>)
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">gameState</span><span>(</span><span class="identifier">min</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">max</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">GameState</span><span>[</span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>]] =
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">size</span><span>      &lt;- </span><span class="identifier">choose</span><span>(</span><span class="identifier">min</span><span>, </span><span class="identifier">max</span><span>)
+    </span><span class="identifier">numFilled</span><span> &lt;- </span><span class="identifier">choose</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="identifier">size</span><span>)
+    </span><span class="identifier">nonEmpty</span><span>  &lt;- </span><span class="identifier">listOfN</span><span>(</span><span class="identifier">numFilled</span><span>, </span><span class="identifier">colNonEmpty</span><span>(</span><span class="identifier">size</span><span>)).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">map</span><span>(</span><span class="type-name">Column</span><span>(</span><span class="identifier">_</span><span>)))
+    </span><span class="identifier">empty</span><span>     &lt;- </span><span class="identifier">listOfN</span><span>(</span><span class="identifier">size</span><span> - </span><span class="identifier">numFilled</span><span>, </span><span class="identifier">const</span><span>(</span><span class="identifier">colEmpty</span><span>(</span><span class="identifier">size</span><span>))).</span><span class="identifier">map</span><span>(</span><span class="identifier">_</span><span>.</span><span class="identifier">map</span><span>(</span><span class="type-name">Column</span><span>(</span><span class="identifier">_</span><span>)))
+    </span><span class="identifier">score</span><span>     &lt;- </span><span class="type-name">Arbitrary</span><span>.</span><span class="identifier">arbitrary</span><span>[</span><span class="type-name">Int</span><span>]
+  } </span><span class="keyword">yield</span><span>
+    </span><span class="type-name">GameState</span><span>(
+      </span><span class="identifier">playedMoves</span><span> = </span><span class="type-name">List</span><span>.</span><span class="identifier">empty</span><span>[</span><span class="type-name">Position</span><span>],
+      </span><span class="identifier">position</span><span> = </span><span class="type-name">SameGame</span><span>.</span><span class="identifier">evaluateGameState</span><span>(</span><span class="type-name">Board</span><span>(</span><span class="identifier">nonEmpty</span><span> ++ </span><span class="identifier">empty</span><span>), </span><span class="identifier">score</span><span>),
+      </span><span class="identifier">score</span><span> = </span><span class="identifier">score</span><span>
+    )
+
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">move</span><span>(</span><span class="identifier">boardSize</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">Gen</span><span>[</span><span class="type-name">Position</span><span>] =
+  </span><span class="keyword">for</span><span> {
+    </span><span class="identifier">col</span><span> &lt;- </span><span class="identifier">choose</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="identifier">boardSize</span><span>)
+    </span><span class="identifier">row</span><span> &lt;- </span><span class="identifier">choose</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="identifier">boardSize</span><span>)
+  } </span><span class="keyword">yield</span><span> </span><span class="type-name">Position</span><span>(</span><span class="identifier">col</span><span>, </span><span class="identifier">row</span><span>)</span></code></pre>
+    <p>Implementing the property checks is now straight forward:</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">GameTests</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">PropSpec</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">PropertyChecks</span><span> </span><span class="keyword">with</span><span> </span><span class="type-name">Matchers</span><span> {
+  </span><span class="identifier">property</span><span>(</span><span class="string-literal">&quot;simulation is terminal&quot;</span><span>) {
+    </span><span class="identifier">forAll</span><span>(</span><span class="identifier">gameState</span><span>(</span><span class="number-literal">4</span><span>, </span><span class="number-literal">8</span><span>)) { </span><span class="identifier">gs</span><span> =&gt;
+      </span><span class="type-name">Game</span><span>.</span><span class="identifier">laws</span><span>
+        .</span><span class="identifier">simulationIsTerminal</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>](</span><span class="identifier">gs</span><span>)
+        .</span><span class="identifier">unsafeRunSync</span><span>()
+    }
+  }
+
+  </span><span class="identifier">property</span><span>(</span><span class="string-literal">&quot;legal move modifies game state&quot;</span><span>) {
+    </span><span class="identifier">forAll</span><span>(</span><span class="identifier">gameState</span><span>(</span><span class="number-literal">4</span><span>, </span><span class="number-literal">8</span><span>), </span><span class="identifier">move</span><span>(</span><span class="number-literal">8</span><span>)) {
+      </span><span class="keyword">case</span><span> (</span><span class="identifier">gs</span><span>, </span><span class="identifier">m</span><span>) =&gt;
+        </span><span class="type-name">Game</span><span>.</span><span class="identifier">laws</span><span>
+          .</span><span class="identifier">legalMoveModifiesGameState</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>](</span><span class="identifier">gs</span><span>, </span><span class="identifier">m</span><span>)
+    }
+  }
+}
+</span><span class="comment">// defined class GameTests</span></code></pre>
+    <p>Finally we run our tests. In the Scala REPL this can be done like this:</p>
+    <pre><code class="nohighlight"><span class="identifier">run</span><span>(</span><span class="keyword">new</span><span> </span><span class="type-name">GameTests</span><span>)
+</span><span class="comment">// GameTests:
+// - simulation is terminal
+// - legal move modifies game state</span></code></pre>
+    <p>Of course, there are additional test strategies that can be employed. In particular, it is useful to test not only the interpreters, but to test the program, too. However, this goes beyond the scope of this post. For more information on testing in the world of functional programming please, refer to the links in the resource section below.</p>
+    
+    <h2 id="application" class="section"><a class="anchor-link" href="#application"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Application</h2>
+    <p>With <code>cats.effect.IOApp</code> we describe a purely functional program that performs a Monte Carlo tree search for a given initial board position. For demonstration purposes we use a smaller board of size <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><mo>×</mo><mn>6</mn></mrow><annotation encoding="application/x-tex"> 6 \times 6 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">6</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span> to shorten the search time.</p>
+    <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">cats</span><span>.</span><span class="identifier">effect</span><span>.</span><span class="identifier">_</span><span>
+</span><span class="comment">// import cats.effect._
+</span><span>
+</span><span class="keyword">object</span><span> </span><span class="type-name">Main</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">IOApp</span><span> {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">run</span><span>(</span><span class="identifier">args</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">String</span><span>]): </span><span class="type-name">IO</span><span>[</span><span class="type-name">ExitCode</span><span>] = {
+    </span><span class="keyword">val</span><span> </span><span class="identifier">board6x6</span><span> = </span><span class="type-name">List</span><span>(
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">1</span><span>),
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">3</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="number-literal">2</span><span>),
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">2</span><span>),
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">2</span><span>, </span><span class="number-literal">2</span><span>),
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="number-literal">3</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="number-literal">4</span><span>),
+      </span><span class="type-name">List</span><span>(</span><span class="number-literal">1</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">4</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">0</span><span>, </span><span class="number-literal">3</span><span>)
+    )
+
+    </span><span class="keyword">val</span><span> </span><span class="identifier">initial</span><span> =
+      </span><span class="type-name">GameState</span><span>(</span><span class="identifier">playedMoves</span><span> = </span><span class="type-name">List</span><span>.</span><span class="identifier">empty</span><span>[</span><span class="type-name">Position</span><span>], </span><span class="identifier">score</span><span> = </span><span class="number-literal">0</span><span>, </span><span class="identifier">position</span><span> = </span><span class="type-name">SameGame</span><span>(</span><span class="identifier">board6x6</span><span>))
+
+    </span><span class="keyword">val</span><span> </span><span class="identifier">level</span><span> = </span><span class="number-literal">4</span><span>
+
+    </span><span class="identifier">nestedSearch</span><span>[</span><span class="type-name">IO</span><span>, </span><span class="type-name">Position</span><span>, </span><span class="type-name">SameGameState</span><span>, </span><span class="type-name">Int</span><span>](</span><span class="identifier">level</span><span>, </span><span class="identifier">level</span><span>, </span><span class="identifier">initial</span><span>)
+      .</span><span class="identifier">as</span><span>(</span><span class="type-name">ExitCode</span><span>.</span><span class="type-name">Success</span><span>)
+  }
+}
+</span><span class="comment">// defined object Main</span></code></pre>
+    <p>When we look at the code we cannot explicitly see that the instances of <code>Game</code>, <code>Logger</code>, <code>Ordering</code>, and <code>Show</code> are passed to the <code>nestedSearch</code> function as implicit parameters. They have been defined above and can be successfully resolved by the compiler because of the REPL style code, presented here. In a normal Scala application those instances are imported into the scope in the main method - at the entry point of the application.</p>
+    <p><code>nestedSearch</code> returns a value of type <code>IO[GameState[Position, SameGameState, Int]]</code>. The return value can be ignored in this case because all the interesting information is logged by the program. <code>IOApp</code> takes care of and hides the execution of the <code>IO</code>.</p>
+    <p>The truncated sample output from the application:</p>
+    <pre><code class="text">[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,4,4,-,-,-]
+[1,0,4,-,-,-]
+[0,0,1,-,-,-]
+
+Score: 16 (game in progress)
+Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), (0, 1)]
+
+
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[1,0,-,-,-,-]
+[0,0,1,-,-,-]
+
+Score: 17 (game in progress)
+Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), (0, 1), (1, 2)]
+
+
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[1,1,-,-,-,-]
+
+Score: 18 (game in progress)
+Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), (0, 1), (1, 2), (0, 0)]
+
+
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+[-,-,-,-,-,-]
+
+Score: 1018 (game finished)
+Moves: [(1, 1), (3, 2), (2, 0), (0, 2), (1, 0), (1, 0), (2, 3), (1, 3), (0, 2), (0, 1), (1, 2), (0, 0), (0, 0)]</code></pre>
+    
+    <h2 id="improving-on-the-results" class="section"><a class="anchor-link" href="#improving-on-the-results"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Improving on the results</h2>
+    <p><span class="bulma-columns bulma-is-centered"> <img class="bulma-column bulma-is-half" src="../img/media/highscore.png"> </span></p>
+    <p>The Monte Carlo tree search algorithm presented in this post has been intentionally kept simple. There are numerous different strategies of how to guide the tree search based on heuristics to influence the choice of moves which require multiple parameters that have to be fine tuned to maximize the outcomes.</p>
+    <p>A way to greatly improve on results of the algorithm presented here is to store best paths that were found in lower level searches which might otherwise be lost. We can apply domain-specific knowledge as well, as opposed to completely relying on random sampling. For SameGame e.g. there is a strategy called Tabu-Color which determines the most frequent color occurring at the start of each simulation. This predominat color is not allowed to be played because it is known to be advantageous to create large groups of blocks. Furthermore, parallelization can significantly shorten the search time.</p>
+    <p>Please refer to <a href="https://github.com/battermann/mcs">this GitHub repository</a> where the techniques mentioned above are applied. While still simple this implementation leads to very promising results. The algorithm was able to discover a solution with a top ten score at <a href="http://www.js-games.de/eng/highscores/samegame/lx">js-games.de</a>.</p>
+    <p>Another very promising strategy that can be combined with a Monte Carlo tree search is <a href="https://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a>.</p>
+    
+    <h2 id="conclusion" class="section"><a class="anchor-link" href="#conclusion"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Conclusion</h2>
+    <p>We have covered a lot of things. Some of the details might have been challenging depending on your prior knowledge of the topics introduced in this post. The reason for presenting such extensive examples is to provide complete and compiling code and to make a point that we do not only get great benefits from functional programming techniques, but that they are also feasible for real world problems.</p>
+    <p>These are the key takeaways:</p>
+    <ul>
+      <li>An algebra is defined in terms of sets, operators and axioms</li>
+      <li>In functional programming algebras are expressed with types, functions and properties</li>
+      <li>This relates nicely to types of entities and value objects, business behavior and business rules in the context of domain driven design</li>
+      <li>Algebras are abstract and decoupled from any actual implementation which makes them more flexible and constrained at the same time</li>
+      <li>Property-based tests and parametric polymorphism constrain the possible implementations and lead to correct programs</li>
+      <li>Functional programming techniques are feasible and beneficial for real world programming</li>
+    </ul>
+    <p><em>The code has been interpreted with tut, using Scala 2.12.7, scalatest 3.0.5, scalacheck 1.14.0, and cats-effect 1.1.0.</em></p>
+    
+    <h2 id="resources" class="section"><a class="anchor-link" href="#resources"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Resources</h2>
+    <ul>
+      <li><a href="https://www.manning.com/books/functional-and-reactive-domain-modeling">Functional and Reactive Domain Modeling</a> by Debasish Ghosh</li>
+      <li><a href="https://www.lamsade.dauphine.fr/~cazenave/papers/nested.pdf">Nested Monte-Carlo Search</a> by Tristan Cazenave</li>
+      <li><a href="https://www.youtube.com/watch?v=cW5RY_x0Pbs">Testing in the world of Functional Programming</a> by Luka Jacobowitz</li>
+      <li><a href="https://github.com/battermann/mcs">Sample code on GitHub</a></li>
+    </ul>
+    <p><em>Thanks to <a href="https://twitter.com/DgtlNmd">Jarrod Urban</a> who did a very thorough review of this post.</em></p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/battermann.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Leif Battermann</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/battermann">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

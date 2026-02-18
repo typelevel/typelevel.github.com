@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Of variance and functors</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Of variance and functors</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Adelbert Chang<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on February 4, 2016
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="of-variance-and-functors" class="title">Of variance and functors</h1>
+    <p>Scala&#39;s type system allows us to annotate type parameters with their variance: covariant, contravariant, invariant.
+    Variance allows us to define the subtyping relationships between type constructors – that is, under which
+    conditions <code>F[A]</code> is a subtype of <code>F[B]</code>.</p>
+    <p>Similarly in functional programming, there are covariant functors, contravariant functors, and invariant functors. The
+    similarity in names is not coincidental.</p>
+    
+    <h1 id="covariance" class="section"><a class="anchor-link" href="#covariance"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Covariance</h1>
+    <p>The common example is <code>List[+A]</code> which is covariant in its type parameter, denoted by the <code>+</code> next to the <code>A</code>.
+    A type constructor with a covariant type parameter means that if there is a subtyping relationship between the
+    type parameter, there is a subtyping relationship between the two instances of the type constructor.
+    For example if we have a <code>List[Circle]</code>, we can substitute it anywhere we have a <code>List[Shape]</code>.</p>
+    
+    <h2 id="read" class="section"><a class="anchor-link" href="#read"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Read</h2>
+    <p>Another example of covariance is in parsing, for example in the following <code>Read</code> type class.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Read</span><span>[+</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">s</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Option</span><span>[</span><span class="type-name">A</span><span>]
+}</span></code></pre>
+    <p>It makes sense to make <code>Read</code> covariant because if we can read a subtype, then we can read the supertype by
+    reading the subtype and throwing away the subtype-specific information. For instance, if we can read a
+    <code>Circle</code>, we can read a valid <code>Shape</code> by reading the <code>Circle</code> and ignoring any <code>Circle</code>-specific information.</p>
+    
+    <h2 id="array" class="section"><a class="anchor-link" href="#array"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Array</h2>
+    <p>A type that cannot safely be made covariant is <code>Array</code>. If <code>Array</code> were covariant, we could substitute
+    an <code>Array[Circle]</code> for an <code>Array[Shape]</code>. This can get us in a nasty situation.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circles</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Circle</span><span>] = </span><span class="type-name">Array</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="number-literal">10</span><span>)(</span><span class="type-name">Circle</span><span>(..))
+</span><span class="keyword">val</span><span> </span><span class="identifier">shapes</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Shape</span><span>] = </span><span class="identifier">circles</span><span> </span><span class="comment">// works only if Array is covariant
+</span><span class="identifier">shapes</span><span>(</span><span class="number-literal">0</span><span>) = </span><span class="type-name">Square</span><span>(..) </span><span class="comment">// Square is a subtype of Shape</span></code></pre>
+    <p>If <code>Array</code> was covariant this would compile fine, but fail at runtime. In fact, Java arrays are
+    covariant and so the analogous Java code would compile, throwing an <code>ArrayStoreException</code> when
+    run. The compiler accepts this because it is valid to upcast an <code>Array[Circle]</code> into an <code>Array[Shape]</code>,
+    and it is valid to insert a <code>Shape</code> into an <code>Array[Shape]</code>. However the runtime representation of
+    <code>shapes</code> is still an <code>Array[Circle]</code> and inserting a <code>Square</code> into that isn&#39;t allowed.</p>
+    
+    <h2 id="read-only-and-covariance" class="section"><a class="anchor-link" href="#read-only-and-covariance"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Read-only and covariance</h2>
+    <p>In general, a type can be made safely covariant if it is read-only. If we know how to read a specific type, we know
+    how to read a more general type by throwing away any extra information. <code>List</code> is safe to to make
+    covariant because it is immutable and we can only ever read information off of it. With <code>Array</code>, we
+    cannot make it covariant because we are able to write to it.</p>
+    
+    <h2 id="functor" class="section"><a class="anchor-link" href="#functor"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Functor</h2>
+    <p>As we&#39;ve just seen, covariance states that when <code>A</code> subtypes <code>B</code>, then <code>F[A]</code> subtypes <code>F[B]</code>. Put differently,
+    if <code>A</code> can be turned into a <code>B</code>, then <code>F[A]</code> can be turned into an <code>F[B]</code>. We can encode this behavior
+    literally in the notion of a <code>Functor</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] =&gt; </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+}</span></code></pre>
+    <p>This is often encoded slightly differently by changing the order of the arguments:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+}</span></code></pre>
+    <p>We can implement <code>Functor</code> for <code>List</code> and <code>Read</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">listFunctor</span><span>: </span><span class="type-name">Functor</span><span>[</span><span class="type-name">List</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">List</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">List</span><span>[</span><span class="type-name">B</span><span>] = </span><span class="identifier">fa</span><span> </span><span class="keyword">match</span><span> {
+      </span><span class="keyword">case</span><span> </span><span class="type-name">Nil</span><span> =&gt; </span><span class="type-name">Nil</span><span>
+      </span><span class="keyword">case</span><span> </span><span class="identifier">a</span><span> :: </span><span class="identifier">as</span><span> =&gt; </span><span class="identifier">f</span><span>(</span><span class="identifier">a</span><span>) :: </span><span class="identifier">map</span><span>(</span><span class="identifier">as</span><span>)(</span><span class="identifier">f</span><span>)
+    }
+  }
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">readFunctor</span><span>: </span><span class="type-name">Functor</span><span>[</span><span class="type-name">Read</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">Read</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">Read</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">Read</span><span>[</span><span class="type-name">B</span><span>] =
+      </span><span class="keyword">new</span><span> </span><span class="type-name">Read</span><span>[</span><span class="type-name">B</span><span>] {
+        </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">s</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Option</span><span>[</span><span class="type-name">B</span><span>] =
+          </span><span class="identifier">fa</span><span>.</span><span class="identifier">read</span><span>(</span><span class="identifier">s</span><span>) </span><span class="keyword">match</span><span> {
+            </span><span class="keyword">case</span><span> </span><span class="type-name">None</span><span> =&gt; </span><span class="type-name">None</span><span>
+            </span><span class="keyword">case</span><span> </span><span class="type-name">Some</span><span>(</span><span class="identifier">a</span><span>) =&gt; </span><span class="type-name">Some</span><span>(</span><span class="identifier">f</span><span>(</span><span class="identifier">a</span><span>))
+          }
+      }
+  }</span></code></pre>
+    <p>With that we can do useful things like</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">circles</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Circle</span><span>] = </span><span class="type-name">List</span><span>(</span><span class="type-name">Circle</span><span>(..), </span><span class="type-name">Circle</span><span>(..))
+</span><span class="keyword">val</span><span> </span><span class="identifier">shapes</span><span>: </span><span class="type-name">List</span><span>[</span><span class="type-name">Shape</span><span>] = </span><span class="identifier">listFunctor</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">circles</span><span>)(</span><span class="identifier">circle</span><span> =&gt; </span><span class="identifier">circle</span><span>: </span><span class="type-name">Shape</span><span>) </span><span class="comment">// upcast
+</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">parseCircle</span><span>: </span><span class="type-name">Read</span><span>[</span><span class="type-name">Circle</span><span>] = ...
+</span><span class="keyword">val</span><span> </span><span class="identifier">parseShape</span><span>: </span><span class="type-name">Read</span><span>[</span><span class="type-name">Shape</span><span>] = </span><span class="identifier">readFunctor</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">parseCircle</span><span>)(</span><span class="identifier">circle</span><span> =&gt; </span><span class="identifier">circle</span><span>: </span><span class="type-name">Shape</span><span>) </span><span class="comment">// upcast</span></code></pre>
+    <p>or more generally:</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">upcast</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span> &lt;: </span><span class="type-name">A</span><span>](</span><span class="identifier">functor</span><span>: </span><span class="type-name">Functor</span><span>[</span><span class="type-name">F</span><span>], </span><span class="identifier">fb</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] =
+  </span><span class="identifier">functor</span><span>.</span><span class="identifier">map</span><span>(</span><span class="identifier">fb</span><span>)(</span><span class="identifier">b</span><span> =&gt; </span><span class="identifier">b</span><span>: </span><span class="type-name">A</span><span>)</span></code></pre>
+    <p><code>upcast</code>&#39;s behavior does exactly what covariance does – given some supertype <code>A</code> (<code>Shape</code>) and a subtype <code>B</code> (<code>Circle</code>),
+    we can mechanically (and safely) turn an <code>F[B]</code> into an <code>F[A]</code>. Put differently, anywhere we expect an <code>F[A]</code> we can provide
+    an <code>F[B]</code>, i.e. covariance. For this reason, <code>Functor</code> is sometimes referred to in full as covariant functor.</p>
+    
+    <h1 id="contravariance" class="section"><a class="anchor-link" href="#contravariance"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Contravariance</h1>
+    <p>Contravariance flips the direction of the relationship in covariance – an <code>F[Shape]</code> is considered a
+    subtype of <code>F[Circle]</code>. This seems strange – when I was first learning about variance I couldn&#39;t
+    come up with a situation where this would make sense.</p>
+    <p>If we have a <code>List[Shape]</code> we cannot safely treat it as a <code>List[Circle]</code> – doing so comes with all the usual
+    warnings about downcasting. Similarly if we have a <code>Read[Shape]</code>, we cannot treat it as a <code>Read[Circle]</code> –
+    we know how to parse a <code>Shape</code>, but we don&#39;t know how to parse any additional information <code>Circle</code> may need.</p>
+    
+    <h2 id="show" class="section"><a class="anchor-link" href="#show"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Show</h2>
+    <p>It appears fundamentally read-only types cannot be treated as contravariant. However, given that contravariance
+    is covariance with the direction reversed, can we also reverse the idea of a read-only type? Instead of reading
+    a value <em>from</em> a <code>String</code>, we can write a value <em>to</em> a <code>String</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Show</span><span>[-</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">show</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">String</span><span>
+}</span></code></pre>
+    <p><code>Show</code> is the other side of <code>Read</code> – instead of going from a <code>String</code> to an <code>A</code>, we go from an <code>A</code> into
+    a <code>String</code>. This reversal allows us to define contravariant behavior – if we are asked to provide a way
+    to show a <code>Circle</code> (<code>Show[Circle]</code>), we can give instead a way to show just a <code>Shape</code>. This is a valid
+    substitution because we can show a <code>Circle</code> by throwing away <code>Circle</code>-specific information and showing just
+    the <code>Shape</code> bits. This means that <code>Show[Shape]</code> is a subtype of <code>Show[Circle]</code>, despite <code>Circle</code> being a
+    subtype of <code>Shape</code>.</p>
+    <p>In general, we can show (or write) a subtype if we know how to show a supertype by tossing away subtype-specific
+    information (an upcast) and showing the remainder. Again, this means <code>Show[Supertype]</code> is substitutable, or a
+    subtype of, <code>Show[Subtype]</code>.</p>
+    <p>For similar reasons that read-only types can be made covariant, write-only types can be made contravariant.</p>
+    
+    <h2 id="array-again" class="section"><a class="anchor-link" href="#array-again"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Array, again</h2>
+    <p><code>Array</code>s cannot be made contravariant either. If they were, we could do unsafe reads:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">shapes</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Shape</span><span>] = </span><span class="type-name">Array</span><span>.</span><span class="identifier">fill</span><span>(</span><span class="number-literal">10</span><span>)(</span><span class="type-name">Shape</span><span>(..), </span><span class="type-name">Shape</span><span>(..))
+</span><span class="keyword">val</span><span> </span><span class="identifier">circles</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">Circle</span><span>] = </span><span class="identifier">shapes</span><span> </span><span class="comment">// Works only if Array is contravariant
+</span><span class="keyword">val</span><span> </span><span class="identifier">circle</span><span>: </span><span class="type-name">Circle</span><span> = </span><span class="identifier">circles</span><span>(</span><span class="number-literal">0</span><span>)</span></code></pre>
+    <p><code>circle</code>, having been read from an <code>Array[Circle]</code> has type <code>Circle</code>. To the compiler this would be fine, but
+    at runtime, the underlying <code>Array[Shape]</code> may give us a <code>Shape</code> that is not a <code>Circle</code> and crash the program.</p>
+    
+    <h2 id="contravariant" class="section"><a class="anchor-link" href="#contravariant"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Contravariant</h2>
+    <p>Our <code>Functor</code> interface made explicit the behavior of covariance - we can define a similar interface that
+    captures contravariant behavior. If <code>B</code> can be used where <code>A</code> is expected, then <code>F[A]</code> can be used where an
+    <code>F[B]</code> is expected. To encode this explicitly:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="comment">// Alternative encoding:
+</span><span>  </span><span class="comment">// def contramap[A, B](f: B =&gt; A): F[A] =&gt; F[B]
+</span><span>
+  </span><span class="comment">// More typical encoding
+</span><span>  </span><span class="keyword">def</span><span> </span><span class="declaration-name">contramap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+}</span></code></pre>
+    <p>We can implement an instance for <code>Show</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">showContravariant</span><span>: </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">Show</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">Show</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">contramap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">Show</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">Show</span><span>[</span><span class="type-name">B</span><span>] =
+      </span><span class="keyword">new</span><span> </span><span class="type-name">Show</span><span>[</span><span class="type-name">B</span><span>] {
+        </span><span class="keyword">def</span><span> </span><span class="declaration-name">show</span><span>(</span><span class="identifier">b</span><span>: </span><span class="type-name">B</span><span>): </span><span class="type-name">String</span><span> = {
+          </span><span class="keyword">val</span><span> </span><span class="identifier">a</span><span> = </span><span class="identifier">f</span><span>(</span><span class="identifier">b</span><span>)
+          </span><span class="identifier">fa</span><span>.</span><span class="identifier">show</span><span>(</span><span class="identifier">a</span><span>)
+        }
+      }
+  }</span></code></pre>
+    <p>Here we are saying if we can show an <code>A</code>, we can show a <code>B</code> by turning a <code>B</code> into an <code>A</code> before showing it.
+    Upcasting is a specific case of this, when <code>B</code> is a subtype of <code>A</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">contraUpcast</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>], </span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>](</span><span class="identifier">contra</span><span>: </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">F</span><span>], </span><span class="identifier">fb</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] =
+  </span><span class="identifier">contra</span><span>.</span><span class="identifier">contramap</span><span>(</span><span class="identifier">fb</span><span>)((</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>) =&gt; </span><span class="identifier">a</span><span>: </span><span class="type-name">B</span><span>)</span></code></pre>
+    <p>Going back to <code>Shape</code>s and <code>Circle</code>s, we can show a <code>Circle</code> by upcasting it into a <code>Shape</code> and showing that.</p>
+    
+    <h1 id="function-variance" class="section"><a class="anchor-link" href="#function-variance"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Function variance</h1>
+    <p>We observed that read-only types are covariant and write-only types are contravariant. This can be
+    seen in the context of functions and what function types are subtypes of others.</p>
+    
+    <h2 id="parameters" class="section"><a class="anchor-link" href="#parameters"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Parameters</h2>
+    <p>An example function:</p>
+    <pre><code class="nohighlight"><span class="comment">// Right now we only care about the input
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">squiggle</span><span>(</span><span class="identifier">circle</span><span>: </span><span class="type-name">Circle</span><span>): </span><span class="type-name">Unit</span><span> = ???
+
+</span><span class="comment">// or
+</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">squiggle</span><span>: </span><span class="type-name">Circle</span><span> =&gt; </span><span class="type-name">Unit</span><span> = ???</span></code></pre>
+    <p>What type is a valid subtype of <code>Circle =&gt; Unit</code>? An important note is we&#39;re not
+    looking for what subtypes we can <em>pass in</em> to the function, we are looking for a value with a type
+    that satisfies the entirety of the function type <code>Circle =&gt; Unit</code>.</p>
+    <p>A first guess may involve some subtype of <code>Circle</code> like <code>Dot</code> (a circle with a radius of 0), such
+    as <code>Dot =&gt; Unit</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">squiggle</span><span>: </span><span class="type-name">Circle</span><span> =&gt; </span><span class="type-name">Unit</span><span> =
+  (</span><span class="identifier">d</span><span>: </span><span class="type-name">Dot</span><span>) =&gt; </span><span class="identifier">d</span><span>.</span><span class="identifier">someDotSpecificMethod</span><span>()</span></code></pre>
+    <p>This doesn&#39;t work – we are asserting with the moral equivalent of a downcast that any
+    <code>Circle</code> input to the function is a <code>Dot</code>, which is not safe to assume.</p>
+    <p>What if we used a supertype of <code>Circle</code>?</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">squiggle</span><span>: </span><span class="type-name">Circle</span><span> =&gt; </span><span class="type-name">Unit</span><span> =
+  (</span><span class="identifier">s</span><span>: </span><span class="type-name">Shape</span><span>) =&gt; </span><span class="identifier">s</span><span>.</span><span class="identifier">shapeshift</span><span>()</span></code></pre>
+    <p>This is valid – from the outside looking in we have a function that takes a <code>Circle</code> and
+    returns <code>Unit</code>. Internally, we can take any <code>Circle</code>, upcast it into a <code>Shape</code>, and go from there.
+    Showing things a bit differently reveals better the relationship:</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">Input</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">Unit</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">inputSubtype</span><span>: </span><span class="type-name">Input</span><span>[</span><span class="type-name">Shape</span><span>] = (</span><span class="identifier">s</span><span>: </span><span class="type-name">Shape</span><span>) =&gt; </span><span class="identifier">s</span><span>.</span><span class="identifier">shapeshift</span><span>()
+</span><span class="keyword">val</span><span> </span><span class="identifier">input</span><span>: </span><span class="type-name">Input</span><span>[</span><span class="type-name">Circle</span><span>] = </span><span class="identifier">inputSubtype</span></code></pre>
+    <p>We have <code>Input[Shape] &lt;: Input[Circle]</code>, with <code>Circle &lt;: Shape</code>, so function parameters are contravariant.</p>
+    <p>The type checker enforces this when we try to use covariant type parameters in contravariant positions.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">trait</span><span> </span><span class="type-name">Foo</span><span>[+</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">foo</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">Int</span><span> = </span><span class="number-literal">42</span><span> }
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">15</span><span>: </span><span class="identifier">error</span><span>: </span><span class="identifier">covariant</span><span> </span><span class="keyword">type</span><span> </span><span class="type-name">A</span><span> </span><span class="identifier">occurs</span><span> </span><span class="identifier">in</span><span> </span><span class="identifier">contravariant</span><span> </span><span class="identifier">position</span><span> </span><span class="identifier">in</span><span> </span><span class="keyword">type</span><span> </span><span class="type-name">A</span><span> </span><span class="identifier">of</span><span> </span><span class="identifier">value</span><span> </span><span class="identifier">a</span><span>
+       </span><span class="keyword">trait</span><span> </span><span class="type-name">Foo</span><span>[+</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">foo</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">Int</span><span> = </span><span class="number-literal">42</span><span> }
+                               ^</span></code></pre>
+    <p>Since type parameters are contravariant, a type in that position cannot also be covariant. To solve this
+    we &quot;reverse&quot; the constraint imposed by the covariant annotation by parameterizing with a supertype <code>B</code>.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">trait</span><span> </span><span class="type-name">Foo</span><span>[+</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">foo</span><span>[</span><span class="type-name">B</span><span> &gt;: </span><span class="type-name">A</span><span>](</span><span class="identifier">a</span><span>: </span><span class="type-name">B</span><span>): </span><span class="type-name">Int</span><span> = </span><span class="number-literal">42</span><span> }
+</span><span class="identifier">defined</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">Foo</span></code></pre>
+    
+    <h2 id="return" class="section"><a class="anchor-link" href="#return"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Return</h2>
+    <p>Let&#39;s do the same exercise with function return types.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">squaggle</span><span>: </span><span class="type-name">Unit</span><span> =&gt; </span><span class="type-name">Shape</span><span> = ???</span></code></pre>
+    <p>Since using the supertype seemed to work with parameters, let&#39;s pick a supertype here, <code>Object</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">squaggle</span><span>: </span><span class="type-name">Unit</span><span> =&gt; </span><span class="type-name">Shape</span><span> =
+  (</span><span class="identifier">_</span><span>: </span><span class="type-name">Unit</span><span>) =&gt; </span><span class="identifier">somethingThatReturnsObject</span><span>()</span></code></pre>
+    <p>For similar issues with using a subtype for the input parameter, we cannot use
+    a supertype for the output. The function type states the return type is <code>Shape</code>, but we&#39;re
+    returning an <code>Object</code> which may or may not be a valid <code>Shape</code>. As far as the type checker is concerned,
+    this is invalid and the checker rejects the program.</p>
+    <p>Trying instead with a subtype:</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">squaggle</span><span>: </span><span class="type-name">Unit</span><span> =&gt; </span><span class="type-name">Shape</span><span> =
+  (</span><span class="identifier">_</span><span>: </span><span class="type-name">Unit</span><span>) =&gt; </span><span class="type-name">Circle</span><span>(..)</span></code></pre>
+    <p>This makes sense – the function type says it returns a <code>Shape</code> and inside we return a <code>Circle</code> which is
+    a perfectly valid <code>Shape</code>.</p>
+    <p>As before, rephrasing the type signatures leads to some insights.</p>
+    <pre><code class="nohighlight"><span class="keyword">type</span><span> </span><span class="type-name">Output</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">Unit</span><span> =&gt; </span><span class="type-name">A</span><span>
+</span><span class="keyword">val</span><span> </span><span class="identifier">outputSubtype</span><span>: </span><span class="type-name">Output</span><span>[</span><span class="type-name">Circle</span><span>] = (</span><span class="identifier">_</span><span>: </span><span class="type-name">Unit</span><span>) =&gt; </span><span class="type-name">Circle</span><span>(..)
+</span><span class="keyword">val</span><span> </span><span class="identifier">output</span><span>: </span><span class="type-name">Output</span><span>[</span><span class="type-name">Shape</span><span>] = </span><span class="identifier">outputSubtype</span></code></pre>
+    <p>That is <code>Output[Circle] &lt;: Output[Shape]</code> with <code>Circle &lt;: Shape</code> – function return types are covariant.</p>
+    <p>Again the type checker will enforce this:</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">trait</span><span> </span><span class="type-name">Bar</span><span>[-</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">bar</span><span>(): </span><span class="type-name">A</span><span> = ??? }
+&lt;</span><span class="identifier">console</span><span>&gt;:</span><span class="number-literal">15</span><span>: </span><span class="identifier">error</span><span>: </span><span class="identifier">contravariant</span><span> </span><span class="keyword">type</span><span> </span><span class="type-name">A</span><span> </span><span class="identifier">occurs</span><span> </span><span class="identifier">in</span><span> </span><span class="identifier">covariant</span><span> </span><span class="identifier">position</span><span> </span><span class="identifier">in</span><span> </span><span class="keyword">type</span><span> ()</span><span class="type-name">A</span><span> </span><span class="identifier">of</span><span> </span><span class="identifier">method</span><span> </span><span class="identifier">bar</span><span>
+       </span><span class="keyword">trait</span><span> </span><span class="type-name">Bar</span><span>[-</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">bar</span><span>(): </span><span class="type-name">A</span><span> = ??? }
+                           ^</span></code></pre>
+    <p>As before, we solve this by &quot;reversing&quot; the contraint imposed by the variance annotation.</p>
+    <pre><code class="nohighlight"><span class="identifier">scala</span><span>&gt; </span><span class="keyword">trait</span><span> </span><span class="type-name">Bar</span><span>[-</span><span class="type-name">A</span><span>] { </span><span class="keyword">def</span><span> </span><span class="declaration-name">bar</span><span>[</span><span class="type-name">B</span><span> &lt;: </span><span class="type-name">A</span><span>](): </span><span class="type-name">B</span><span> = ??? }
+</span><span class="identifier">defined</span><span> </span><span class="keyword">trait</span><span> </span><span class="type-name">Bar</span></code></pre>
+    
+    <h2 id="all-together-now" class="section"><a class="anchor-link" href="#all-together-now"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>All together now</h2>
+    <p>Function inputs are contravariant and function outputs are covariant. Taking the previous examples together,
+    a function type <code>Shape =&gt; Circle</code> can be put in a place expecting a function type <code>Circle =&gt; Shape</code>.</p>
+    <p>We arrived at this conclusion by observing the behavior of subtype variance and the corresponding functors. Taken
+    in the context of functional programming where the only primitive is a function, we can draw a conclusion in
+    the other direction. Where function inputs are contravariant, types in positions where computations are
+    done (e.g. input or read-only positions) are also contravariant (similarly for covariance).</p>
+    
+    <h1 id="invariance" class="section"><a class="anchor-link" href="#invariance"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Invariance</h1>
+    <p>Unannotated type parameters are considered invariant – the only relationship that holds is if a type <code>A</code>
+    is equal to a type <code>B</code>, then <code>F[A]</code> is equal to <code>F[B]</code>. Otherwise different instantiations of a
+    type constructor have no relationship with one another. Given invariant
+    <code>F[_]</code>, an <code>F[Circle]</code> is not a subtype of <code>F[Shape]</code> – you need to explicitly provide the conversion.</p>
+    
+    <h2 id="array-once-more" class="section"><a class="anchor-link" href="#array-once-more"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Array once more</h2>
+    <p><code>Array</code>s are invariant in Scala because they can be neither covariant nor contravariant. If we make it
+    covariant, we can get unsafe writes. If we make it contravariant, we can get unsafe reads. Since
+    read-only types can only be covariant and write-only types contravariant, our compromise is to make
+    types that support both invariant.</p>
+    <p>In order to treat an <code>Array</code> of one type as an <code>Array</code> of another, we need to have conversions
+    in both directions. This must be provided manually as the type checker has no way of knowing what the
+    conversion would be.</p>
+    
+    <h2 id="invariant" class="section"><a class="anchor-link" href="#invariant"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Invariant</h2>
+    <p>Similar to (covariant) <code>Functor</code> and <code>Contravariant</code>, we can write <code>Invariant</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">imap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>)(</span><span class="identifier">g</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+}</span></code></pre>
+    <p>For demonstration purposes we write our own <code>Array</code> type</p>
+    <pre><code class="nohighlight"><span class="keyword">class</span><span> </span><span class="type-name">Array</span><span>[</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">private</span><span> </span><span class="keyword">var</span><span> </span><span class="identifier">repr</span><span> = </span><span class="type-name">ListBuffer</span><span>.</span><span class="identifier">empty</span><span>[</span><span class="type-name">A</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">i</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">A</span><span> =
+    </span><span class="identifier">repr</span><span>(</span><span class="identifier">i</span><span>)
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">write</span><span>(</span><span class="identifier">i</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">Unit</span><span> =
+    </span><span class="identifier">repr</span><span>(</span><span class="identifier">i</span><span>) = </span><span class="identifier">a</span><span>
+}</span></code></pre>
+    <p>and define <code>Invariant[Array]</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">arrayInvariant</span><span>: </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">Array</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">Array</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">imap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">Array</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>)(</span><span class="identifier">g</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">Array</span><span>[</span><span class="type-name">B</span><span>] =
+      </span><span class="keyword">new</span><span> </span><span class="type-name">Array</span><span>[</span><span class="type-name">B</span><span>] {
+        </span><span class="comment">// Convert read A to B before returning – covariance
+</span><span>        </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">i</span><span>: </span><span class="type-name">Int</span><span>): </span><span class="type-name">B</span><span> =
+          </span><span class="identifier">f</span><span>(</span><span class="identifier">fa</span><span>.</span><span class="identifier">read</span><span>(</span><span class="identifier">i</span><span>))
+
+        </span><span class="comment">// Convert B to A before writing – contravariance
+</span><span>        </span><span class="keyword">override</span><span> </span><span class="keyword">def</span><span> </span><span class="declaration-name">write</span><span>(</span><span class="identifier">i</span><span>: </span><span class="type-name">Int</span><span>, </span><span class="identifier">b</span><span>: </span><span class="type-name">B</span><span>): </span><span class="type-name">Unit</span><span> =
+          </span><span class="identifier">fa</span><span>.</span><span class="identifier">write</span><span>(</span><span class="identifier">i</span><span>, </span><span class="identifier">g</span><span>(</span><span class="identifier">a</span><span>))
+      }
+  }</span></code></pre>
+    
+    <h2 id="serialization" class="section"><a class="anchor-link" href="#serialization"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Serialization</h2>
+    <p>Another example of a read-write type that doesn&#39;t involve <code>Array</code>s (or mutation) can be
+    found by just combining the <code>Read</code> and <code>Show</code> interfaces:</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Serializer</span><span>[</span><span class="type-name">A</span><span>] </span><span class="keyword">extends</span><span> </span><span class="type-name">Read</span><span>[</span><span class="type-name">A</span><span>] </span><span class="keyword">with</span><span> </span><span class="type-name">Show</span><span>[</span><span class="type-name">A</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">s</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Option</span><span>[</span><span class="type-name">A</span><span>]
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">show</span><span>(</span><span class="identifier">a</span><span>: </span><span class="type-name">A</span><span>): </span><span class="type-name">String</span><span>
+}</span></code></pre>
+    <p><code>Serializer</code> both reads (from a <code>String</code>) and writes (to a <code>String</code>). We can&#39;t make it
+    covariant because that would cause issues with <code>show</code>, and we can&#39;t make it contravariant
+    because that would cause issues with <code>read</code>. Therefore our only choice is to keep it
+    invariant.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">serializerInvariant</span><span>: </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">Serializer</span><span>] =
+  </span><span class="keyword">new</span><span> </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">Serializer</span><span>] {
+    </span><span class="keyword">def</span><span> </span><span class="declaration-name">imap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">Serializer</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>)(</span><span class="identifier">g</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">Serializer</span><span>[</span><span class="type-name">B</span><span>] =
+      </span><span class="keyword">new</span><span> </span><span class="type-name">Serializer</span><span>[</span><span class="type-name">B</span><span>] {
+        </span><span class="keyword">def</span><span> </span><span class="declaration-name">read</span><span>(</span><span class="identifier">s</span><span>: </span><span class="type-name">String</span><span>): </span><span class="type-name">Option</span><span>[</span><span class="type-name">B</span><span>] = </span><span class="identifier">fa</span><span>.</span><span class="identifier">read</span><span>(</span><span class="identifier">s</span><span>).</span><span class="identifier">map</span><span>(</span><span class="identifier">f</span><span>)
+        </span><span class="keyword">def</span><span> </span><span class="declaration-name">show</span><span>(</span><span class="identifier">b</span><span>: </span><span class="type-name">B</span><span>): </span><span class="type-name">String</span><span> = </span><span class="identifier">fa</span><span>.</span><span class="identifier">show</span><span>(</span><span class="identifier">g</span><span>(</span><span class="identifier">b</span><span>))
+      }
+  }</span></code></pre>
+    
+    <h1 id="bringing-everything-together" class="section"><a class="anchor-link" href="#bringing-everything-together"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Bringing everything together</h1>
+    <p>We can see the <code>Invariant</code> interface is more general than both <code>Functor</code> and <code>Contravariant</code> –
+    where <code>Invariant</code> requires functions going in both directions, <code>Functor</code> and <code>Contravariant</code> only
+    require one. We can make <code>Functor</code> and <code>Contravariant</code> subtypes of <code>Invariant</code> by ignoring
+    the direction we don&#39;t care about.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] </span><span class="keyword">extends</span><span> </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">imap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>)(</span><span class="identifier">g</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>] =
+    </span><span class="identifier">map</span><span>(</span><span class="identifier">fa</span><span>)(</span><span class="identifier">f</span><span>)
+}
+
+</span><span class="keyword">trait</span><span> </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] </span><span class="keyword">extends</span><span> </span><span class="type-name">Invariant</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">contramap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">imap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>)(</span><span class="identifier">g</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>] =
+    </span><span class="identifier">contramap</span><span>(</span><span class="identifier">fa</span><span>)(</span><span class="identifier">g</span><span>)
+}</span></code></pre>
+    <p>Going back to treating <code>Array</code> and <code>Serializer</code> as a read/write store, if we make it read-only (like a read-only
+    handle on a resource) we can safely treat it as if it were covariant. If we are asked to read
+    <code>Shape</code>s and we know how to read <code>Circle</code>s, we can read a <code>Circle</code> and upcast it into a <code>Shape</code>
+    before handing it over.</p>
+    <p>Similarly if we make it write-only (like a write-only handle on a resource) we can safely treat
+    it as contravariant. If we are asked to store <code>Circle</code>s and we know how to store <code>Shape</code>s,
+    we can upcast each <code>Circle</code> into a <code>Shape</code> before storing it.</p>
+    <p>Variance manifests in two levels: one at the type level where subtyping relationships are defined, and
+    the other at the value level where it is encoded as an interface which certain types can conform to.</p>
+    
+    <h2 id="one-more-thing" class="section"><a class="anchor-link" href="#one-more-thing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>One more thing</h2>
+    <p>Thus far we have seen the three kinds of variances Scala supports:</p>
+    <pre><code class="nohighlight"><span class="number-literal">1.</span><span> </span><span class="identifier">invariance</span><span>: </span><span class="type-name">A</span><span> = </span><span class="type-name">B</span><span> → </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] = </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+</span><span class="number-literal">2.</span><span> </span><span class="identifier">covariance</span><span>: </span><span class="type-name">A</span><span> &lt;: </span><span class="type-name">B</span><span> → </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] &lt;: </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+</span><span class="number-literal">3.</span><span> </span><span class="identifier">contravariance</span><span>: </span><span class="type-name">A</span><span> &gt;: </span><span class="type-name">B</span><span> → </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>] &lt;: </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]</span></code></pre>
+    <p>This gives us the following graph:</p>
+    <pre><code>   invariance
+     ↑   ↑
+    /      \
+   -        +</code></pre>
+    <p>Completing the diamond implies a fourth kind of variance, one that takes contravariance and
+    covariance together. This is known as phantom variance or anyvariance, a variance with no constraints on the
+    type parameters: <code>F[A] = F[B]</code> regardless of what <code>A</code> and <code>B</code> are. Unfortunately Scala&#39;s type system is
+    missing this kind of variance which leaves us just short of a nice diamond, but we can still encode it
+    in an interface.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Phantom</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">pmap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+}</span></code></pre>
+    <p>Given any <code>F[A]</code>, we can turn that into an <code>F[B]</code>, for all choices of <code>A</code> and <code>B</code>. With this power we can
+    implement covariant and contravariant functors.</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Phantom</span><span>[</span><span class="type-name">F</span><span>[</span><span class="identifier">_</span><span>]] </span><span class="keyword">extends</span><span> </span><span class="type-name">Functor</span><span>[</span><span class="type-name">F</span><span>] </span><span class="keyword">with</span><span> </span><span class="type-name">Contravariant</span><span>[</span><span class="type-name">F</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">pmap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>]): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>]
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">map</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">A</span><span> =&gt; </span><span class="type-name">B</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>] = </span><span class="identifier">pmap</span><span>(</span><span class="identifier">fa</span><span>)
+
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">contramap</span><span>[</span><span class="type-name">A</span><span>, </span><span class="type-name">B</span><span>](</span><span class="identifier">fa</span><span>: </span><span class="type-name">F</span><span>[</span><span class="type-name">A</span><span>])(</span><span class="identifier">f</span><span>: </span><span class="type-name">B</span><span> =&gt; </span><span class="type-name">A</span><span>): </span><span class="type-name">F</span><span>[</span><span class="type-name">B</span><span>] = </span><span class="identifier">pmap</span><span>(</span><span class="identifier">fa</span><span>)
+}</span></code></pre>
+    <p>This completes our diamond of variance.</p>
+    <pre><code>   invariance
+     ↑   ↑
+    /      \
+   -        +
+   ↑        ↑
+    \      /
+    phantom</code></pre>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/adelbertc.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Adelbert Chang</strong> 
+        
+        
+        <br />
+        Adelbert is an engineer at Box where he attempts to reliably copy bytes from one machine to another. He enjoys writing pure functional programs, teaching functional programming, and learning more about computing.
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/adelbertc">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

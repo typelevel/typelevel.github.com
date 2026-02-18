@@ -1,0 +1,62 @@
+pre {
+  display: block;
+  background-color: var(--syntax-base1);
+  border-radius: 5px;
+  padding: 12px 9px 9px 15px;
+  margin: 0 0 var(--block-spacing);
+  line-height: 1.4;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+code {
+  font-family: var(--code-font);
+  color: var(--primary-color);
+  font-size: var(--code-font-size);
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 0.1em;
+}
+a code {
+  color: inherit;
+}
+pre code {
+  color: var(--syntax-base5);
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  white-space: pre-wrap;
+}
+
+code .identifier {
+  color: var(--syntax-base4);
+}
+code .tag-punctuation {
+  color: var(--syntax-base3);
+}
+code .comment, code .xml-cdata, code .markup-quote {
+  color: var(--syntax-base2);
+}
+
+code .substitution, code .xml-processing-instruction, code .markup-emphasized, code .annotation {
+  color: var(--syntax-wheel1);
+}
+code .keyword, code .escape-sequence, code .markup-headline {
+  color: var(--syntax-wheel2);
+}
+code .attribute-name, .markup-link-target, code .declaration-name {
+  color: var(--syntax-wheel3);
+}
+code .number-literal, .string-literal, .literal-value, .boolean-literal, .char-literal, .symbol-literal, .regex-literal, .markup-link-text {
+  color: var(--syntax-wheel4);
+}
+code .type-name, code .tag-name, code .xml-dtd-tag-name, code .markup-fence {
+  color: var(--syntax-wheel5);
+}
+
+code .diff-added {
+  background-color: rgb(0 175 0 / 40%);
+}
+code .diff-removed {
+  background-color: rgb(250 0 0 / 40%);
+}

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" data-bulma-theme="light">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" href="../img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha384-Wsr4Nh3yrvMf2KCebJchRJoVo1gTU6kcP05uRSh5NV3sj9+a8IomuJoQzf3sMq4T" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <script src="../main.js"></script>
+
+  <title>Values never change types</title>
+</head>
+
+<body class="bulma-is-flex bulma-is-flex-direction-column">
+  <nav class="bulma-navbar" role="navigation" aria-label="main navigation">
+  <div class="bulma-navbar-brand">
+    <a class="bulma-navbar-item" href="../">
+      <img src="../img/logo.svg" />
+    </a>
+
+    <a role="button" class="bulma-navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu"
+      onClick="handleBurgerClick(this)">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="bulma-navbar-menu" id="navMenu">
+    <div class="bulma-navbar-start">
+
+    </div>
+    <div class="bulma-navbar-end">
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-rounded bulma-is-primary bulma-has-text-light">Get Started</a></div> -->
+      <!-- <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text">Learn</a></div> -->
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../projects/">Projects</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../community/">Community</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="../foundation/">Foundation</a></div>
+      <div class="bulma-navbar-item"><a class="bulma-button bulma-is-text" href="index.html">Blog</a></div>
+      <div class="bulma-navbar-item">
+        <a id="search-top-bar" class="bulma-button bulma-is-text" aria-label="Search" onclick="showSearchModal()">
+          <span class="bulma-icon bulma-is-small bulma-is-size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Modal -->
+<div id="search-modal" class="bulma-modal bulma-is-justify-content-flex-start bulma-pt-6 bulma-pb-6">
+  <div class="bulma-modal-background bulma-is-align-items-flex-start" onclick="hideSearchModal()"></div>
+  <div class="bulma-modal-card">
+    <header class="bulma-modal-card-head">
+      <p class="bulma-control bulma-has-icons-left bulma-is-flex-grow-1">
+        <input id="search-input" class="bulma-input bulma-is-medium bulma-is-primary" type="search" autocomplete="off" oninput="onSearchInput(event)">
+        <span class="bulma-icon bulma-is-left bulma-has-text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        </span>
+      </p>
+    </header>
+    <section id="search-results" class="bulma-modal-card-body">
+    </section>
+    <footer class="bulma-modal-card-foot bulma-is-justify-content-space-between">
+      <span class="bulma-has-text-grey bulma-is-size-7">
+        <kbd class="bulma-tag">/</kbd> to open search &nbsp;
+        <kbd class="bulma-tag">Esc</kbd> to close
+      </span>
+    </footer>
+  </div>
+</div>
+
+  <main class="bulma-is-flex-grow-1">
+    
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">Values never change types</p>
+    <p class="blog-post-byline bulma-has-text-light bulma-subtitle">
+      by
+      
+        Stephen Compall<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+      
+      on July 30, 2015
+    </p>
+     
+      <span class="bulma-tag">technical</span>
+     
+  </div>
+</section>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="blog-post bulma-content">
+    <h1 id="values-never-change-types" class="title">Values never change types</h1>
+    <p><em>This is the sixth of a series of articles on “Type Parameters and
+    Type Members”.  If you haven’t yet, you should
+    <a href="type-members-parameters.html">start at the beginning</a>,
+    which introduces code we refer to throughout this article without
+    further ado.</em></p>
+    <p>In a subtyping language such as Java or Scala, first-class
+    existentials are a helpful ally for modeling values and methods that
+    abstract over subtypes in different ways.  In a language with
+    mutation, such as Java or Scala, existentials help deal with certain
+    kinds of state changes without violating type safety.</p>
+    <p>But values, <em>themselves</em>, never change types.  When you first practice
+    with existentials, the Java and Scala compilers seem to become
+    veritable minefields of type errors—do something slightly different in
+    your code, and everything falls apart.  But this is just about
+    <a href="http://blog.higher-order.com/blog/2014/12/21/maximally-powerful/">nothing being a free lunch</a>:
+    <strong>the wide variety of values meeting any given existential type,
+    combined with the possibility for mutation, means a sound typechecker
+    must be very conservative about what it permits when using those
+    values</strong>.</p>
+    <p>So, in this article, we’ll explore some of these type error pitfalls,
+    see why it’s perfectly reasonable for the compilers to complain about
+    these pieces of code, and fix the errors using the equivalence rules
+    we’ve learned about in previous articles.  This is a big topic, so in
+    the next article, we’ll talk about taking advantage of the freedoms
+    that the compilers are concerned about in this one.</p>
+    
+    <h2 id="aliasing-prevents-replacement" class="section"><a class="anchor-link" href="#aliasing-prevents-replacement"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Aliasing prevents replacement</h2>
+    <p>Let’s say you have a list of strings, <code>strs:&nbsp;List[String]</code>.  But you
+    want that value to change: you want it to be a <code>List[Int]</code> instead.
+    Maybe every value in the list parses to an integer and you want to
+    “map in place”; maybe you want to use <code>-1</code> for every string that can’t
+    be parsed.</p>
+    <p>Generic systems like those of Java, Scala, and the ML family don’t let
+    you do this for a few reasons.</p>
+    <p>First, with regard to structures like <code>List</code>, let’s suppose we are
+    adding this feature to the type system, and that the list has type
+    <code>List[String]</code> before replacement, and <code>List[Int]</code> after.  What type
+    does it have when we’re halfway done?  The type system requires us to
+    <em>guarantee</em> that there are no strings, only ints, left once we’re
+    done; how do we track our progress?  Remember that vague promises of
+    “I tested the code” are meaningless to the type system; you have to
+    <em>prove</em> it mathematically.  This is a solvable problem, but the known
+    solutions far complicate the type system beyond the design goals of
+    these languages: the cost is far too high for the benefit.</p>
+    <p>Second, let us suppose that we’ve solved the first problem.  Or, let
+    us suppose that we introduce a structure for which this isn’t a
+    problem.</p>
+    <pre><code class="nohighlight"><span class="keyword">final</span><span> </span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">OneThing</span><span>[</span><span class="type-name">T</span><span>](</span><span class="keyword">var</span><span> </span><span class="identifier">value</span><span>: </span><span class="type-name">T</span><span>)</span></code></pre>
+    <p>There, no chance of “halfway done” there!  But something else happens.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">strs</span><span>: </span><span class="type-name">OneThing</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">OneThing</span><span>(</span><span class="string-literal">&quot;hi&quot;</span><span>)
+</span><span class="identifier">strs</span><span>.</span><span class="identifier">value</span><span> = </span><span class="number-literal">42</span><span>
+</span><span class="comment">// won&#39;t compile, just a thought experiment</span></code></pre>
+    <p>Now, presumably, completely aside from the value, the variable <code>strs</code>
+    has <em>changed types</em> to <code>OneThing[Int]</code>.  Not just the value in it, the
+    variable itself.  OK, so what if that variable came from someplace
+    else?</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">replaceWithInt</span><span>(</span><span class="identifier">ote</span><span>: </span><span class="type-name">OneThing</span><span>[</span><span class="identifier">_</span><span>]): </span><span class="type-name">Unit</span><span> =
+  </span><span class="identifier">t</span><span>.</span><span class="identifier">value</span><span> = </span><span class="number-literal">42</span><span>
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">strs</span><span>: </span><span class="type-name">OneThing</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">OneThing</span><span>(</span><span class="string-literal">&quot;hi&quot;</span><span>)
+</span><span class="identifier">replaceWithInt</span><span>(</span><span class="identifier">strs</span><span>)
+</span><span class="comment">// also won&#39;t compile, thought experiment</span></code></pre>
+    <p>Now, the type of <code>replaceWithInt</code> must contain a note that “by the
+    way, the type of <code>ote</code>, and any variables that refer to it, and any
+    variables that refer to <em>those</em> variables, and so on until it stops,
+    will change as a result of this call”.</p>
+    <p>This is a problem of <em>aliases</em>, all the locations that may refer to a
+    value.  If you change the type of the value, you also have to update
+    every reference to it, at compile time!  This is <em>the&nbsp;type&nbsp;system</em>;
+    your promise that you have no other references is not good enough.
+    You have to <em>prove</em> it.</p>
+    <p>As with the previous problem, the known solutions to this problem
+    would complicate the type systems of Java and Scala beyond their
+    design goals.  In a sense, <strong>this aspect of their type systems can be
+    considered to encourage functional programming</strong>.  A type-changing map
+    that builds a new list of the new type, or what have you, instead of
+    mutating the old one, is <em>trivial</em> in the Java/Scala generics systems.
+    There are no chances of aliasing problems, because no one could
+    possibly have an unknown reference to the value you just constructed.
+    This is a even more obvious design choice in the ML family languages,
+    which make no secret of favoring functional programming.</p>
+    
+    <h2 id="assignment-rewrites-existentials" class="section"><a class="anchor-link" href="#assignment-rewrites-existentials"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Assignment rewrites existentials</h2>
+    <p><a href="method-equiv.html">We saw earlier</a> that a simple get from a
+    <code>List&lt;?&gt;</code>, followed by adding that value right back to the same list,
+    didn’t work, but if we took that <code>xs</code> and passed it to a
+    type-parameterized version, everything worked fine.  Why is that?</p>
+    <p>If you have a <em>mutable</em> variable of an existential type, the
+    existentialized part of the type may have different (type) values at
+    different parts of the program.  Let’s use
+    <a href="type-projection.html#a-good-reason-to-use-type-members">the <code>StSource</code> from the projection post</a>.
+    Note that the <code>S</code> member is existential, because we did not bind it.</p>
+    <pre><code class="nohighlight"><span class="keyword">var</span><span> </span><span class="identifier">mxs</span><span>: </span><span class="type-name">StSource</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">StSource</span><span>(</span><span class="number-literal">0</span><span>)(</span><span class="identifier">x</span><span> =&gt; (</span><span class="identifier">x</span><span>.</span><span class="identifier">toString</span><span>, </span><span class="identifier">x</span><span> + </span><span class="number-literal">1</span><span>))
+</span><span class="comment">// at this point in the program, the S is Int
+</span><span class="keyword">val</span><span> </span><span class="identifier">s1</span><span> = </span><span class="identifier">mxs</span><span>.</span><span class="identifier">init</span><span>
+</span><span class="comment">// now I&#39;m going to change mxs
+</span><span class="identifier">mxs</span><span> = </span><span class="type-name">StSource</span><span>(</span><span class="string-literal">&quot;ab&quot;</span><span>)(</span><span class="identifier">x</span><span> =&gt; (</span><span class="identifier">x</span><span>, </span><span class="identifier">x</span><span>.</span><span class="identifier">reverse</span><span>))
+</span><span class="comment">// at this point in the program, the S is String
+</span><span class="identifier">mxs</span><span>.</span><span class="identifier">emit</span><span>(</span><span class="identifier">s1</span><span>)
+
+</span><span class="type-name">TmTp6</span><span>.</span><span class="identifier">scala</span><span>:</span><span class="number-literal">14</span><span>: </span><span class="keyword">type</span><span> </span><span class="identifier">mismatch</span><span>;
+ </span><span class="identifier">found</span><span>   : </span><span class="identifier">tmtp6</span><span>.</span><span class="type-name">Tmtp4Funs</span><span>.</span><span class="identifier">s1</span><span>.</span><span class="keyword">type</span><span> (</span><span class="keyword">with</span><span> </span><span class="identifier">underlying</span><span> </span><span class="keyword">type</span><span> </span><span class="identifier">tmtp4</span><span>.</span><span class="type-name">StSource</span><span>[</span><span class="type-name">String</span><span>]#</span><span class="type-name">S</span><span>)
+ </span><span class="identifier">required</span><span>: </span><span class="identifier">_2</span><span>.</span><span class="type-name">S</span><span> </span><span class="identifier">where</span><span> </span><span class="keyword">val</span><span> </span><span class="identifier">_2</span><span>: </span><span class="identifier">tmtp4</span><span>.</span><span class="type-name">StSource</span><span>[</span><span class="type-name">String</span><span>]
+</span><span class="identifier">mxs</span><span>.</span><span class="identifier">emit</span><span>(</span><span class="identifier">s1</span><span>)
+         ^</span></code></pre>
+    <p>And it’s good that this happens, because the value we got from <code>init</code>
+    is definitely incompatible with the argument type to <code>emit</code>.</p>
+    <p>If we don’t want to track when this happens—and we certainly can’t
+    decide, in all cases, when a mutable variable such as this has been
+    overwritten so as to change its existentials, given the freedoms
+    afforded by Java—how can we treat a mutable variable with existentials
+    as safe?  The type system makes a simplifying assumption: <em>every
+    reference to the variable gets fresh values to fill in the
+    existentials</em>.</p>
+    <p>If it helps, you can think of a mutable variable as an <em>immutable</em>
+    variable that wraps its type with an extra layer.  In fact, that&#39;s
+    <a href="https://github.com/scala/scala/blob/v2.11.7/src/library/scala/runtime/ObjectRef.java#L14-L17">what scalac does when you capture a <code>var</code></a>.
+    So <code>mxs</code> is, in a sense, of type <code>Ref[StSource[String]]</code>, where</p>
+    <pre><code class="nohighlight"><span class="keyword">trait</span><span> </span><span class="type-name">Ref</span><span>[</span><span class="type-name">T</span><span>] {
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">value</span><span>: </span><span class="type-name">T</span><span>
+  </span><span class="keyword">def</span><span> </span><span class="declaration-name">update</span><span>(</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>): </span><span class="type-name">Unit</span><span>
+}</span></code></pre>
+    <p>So, by substitution, the variable <code>mxs</code> is really a pair of functions,
+    <code>()&nbsp;=&gt;&nbsp;StSource[String]</code> and <code>StSource[String]&nbsp;=&gt;&nbsp;Unit</code>.  The “getter”
+    returns <code>StSource[String]</code>; each time you invoke that getter, you
+    might get an <code>StSource[String]</code> with a different <code>S</code> member, because
+    the <code>forSome</code> effectively occurs inside the body, as described in
+    <a href="nested-existentials.html#what-if-we-list-different-existentials">the substitutions of “Nested existentials”</a>.</p>
+    <p>Of course, this means you can take advantage of this in your own
+    designs, to get <em>some</em> of the behavior of a type-changing value
+    mutation.  The use of variable references to delineate existentials
+    means that, even when we replace <code>mxs</code> above, the behavior of the
+    variable in the context of an instance hasn’t really changed, so
+    nothing about the containing value’s type has changed.  We thus
+    preserve our property, that values never change types.</p>
+    <p>When you make a single reference, it has to be consistent; subsequent
+    mutations have no effect on the value we got from that reference.  So
+    we can pass that reference somewhere that asserts that this doesn’t
+    happen in its own context, such as a type-parameterized
+    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>≡</mo><mi>m</mi></msub></mrow><annotation encoding="application/x-tex"> \equiv_{m} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6138em;vertical-align:-0.15em;"></span><span class="mrel"><span class="mrel">≡</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> method.  If you have a mutable variable
+    of type <code>List&lt;T&gt;</code>, even if you don’t know what <code>T</code> is, you know that
+    any updates to that variable will keep the same <code>T</code>.</p>
+    
+    <h2 id="making-variables-read-only-matters" class="section"><a class="anchor-link" href="#making-variables-read-only-matters"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Making variables read-only matters</h2>
+    <p>If I change the variable to <code>final</code> in Java, and remove mutation, I
+    shouldn’t have this problem anymore.  Surprisingly, I do; this is what
+    happened in
+    <a href="method-equiv.html">the original <code>copyToZero</code> example</a>,
+    where the argument was declared <code>final</code>.  I assume that this is just a
+    simplifying assumption in <code>javac</code>, that the extra guarantee of
+    unchanging existentials offered by <code>final</code> isn’t understood by the
+    compiler.</p>
+    <p>In the case of Scala, though, <strong>when you are using existential type
+    members, Scala can understand the implications of an immutable
+    variable, declared with <code>val</code></strong>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">imxs</span><span>: </span><span class="type-name">StSource</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">StSource</span><span>(</span><span class="number-literal">0</span><span>)(</span><span class="identifier">x</span><span> =&gt; (</span><span class="identifier">x</span><span>.</span><span class="identifier">toString</span><span>, </span><span class="identifier">x</span><span> + </span><span class="number-literal">1</span><span>))
+</span><span class="keyword">val</span><span> </span><span class="identifier">s1</span><span> = </span><span class="identifier">imxs</span><span>.</span><span class="identifier">init</span><span>
+</span><span class="comment">// you can do whatever you want here; the compiler will stop you from
+// changing imxs
+</span><span class="identifier">imxs</span><span>.</span><span class="identifier">emit</span><span>(</span><span class="identifier">s1</span><span>)</span></code></pre>
+    <p>It can’t pull off this trick for type parameters, having just as much
+    trouble as Java there.  So this is another reason for
+    <a href="type-members-parameters.html">our original rule of thumb</a>.</p>
+    
+    <h2 id="naming-the-existential" class="section"><a class="anchor-link" href="#naming-the-existential"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>Naming the existential</h2>
+    <p>The benefit we get from
+    <a href="method-equiv.html">passing <code>copyToZeroP</code>’s argument to <code>copyToZeroT</code></a>
+    is that we <em>name</em> the existential for the single reference to the
+    argument that we make.  We name it <code>T</code> there, for the scope of its
+    invocation.</p>
+    <p>Likewise, in Scala, each <code>val</code> introduces, while it is in scope, each
+    existential member it has, as a type name.  There are
+    <a href="http://www.scala-lang.org/files/archive/spec/2.11/03-types.html#paths">a lot of rules in Scala</a>
+    for exactly when this happens, but you may want to simply experiment.
+    We got a hint of what that name is
+    <a href="type-projection.html#type-parameters-see-existentially">when we used <code>StSource</code> existentially in the REPL</a>.
+    Here’s the previous example again, with a type annotation for <code>s1</code>.</p>
+    <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">imxs</span><span>: </span><span class="type-name">StSource</span><span>[</span><span class="type-name">String</span><span>] = </span><span class="type-name">StSource</span><span>(</span><span class="number-literal">0</span><span>)(</span><span class="identifier">x</span><span> =&gt; (</span><span class="identifier">x</span><span>.</span><span class="identifier">toString</span><span>, </span><span class="identifier">x</span><span> + </span><span class="number-literal">1</span><span>))
+</span><span class="keyword">val</span><span> </span><span class="identifier">s1</span><span>: </span><span class="identifier">imxs</span><span>.</span><span class="type-name">S</span><span> = </span><span class="identifier">imxs</span><span>.</span><span class="identifier">init</span><span>
+</span><span class="identifier">imxs</span><span>.</span><span class="identifier">emit</span><span>(</span><span class="identifier">s1</span><span>)</span></code></pre>
+    <p>We have gained convenience, not power, with this <em>path-dependent
+    types</em> feature; we can always pass into a type-parameterized local
+    method, with only the inconvenience of having to write out the whole
+    polymorphic method and call dance.  Moreover, this is nowhere near
+    <a href="type-projection.html#a-failed-attempt-at-simplified-emitting">a solution to the type projection problem</a>;
+    there are too many things that a type parameter can do that we can’t
+    with this feature.  But we’ll dive into that in a later post.</p>
+    
+    <h2 id="by-name-existential-arguments-aren-t-equivalent" class="section"><a class="anchor-link" href="#by-name-existential-arguments-aren-t-equivalent"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"/></svg></a>By-name existential arguments aren’t equivalent!</h2>
+    <p>There is another little corner case in method equivalence to consider.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">copyToZeroNP</span><span>(</span><span class="identifier">xs</span><span>: =&gt; </span><span class="type-name">PList</span><span>[</span><span class="identifier">_</span><span>]): </span><span class="type-name">Unit</span><span>
+</span><span class="keyword">def</span><span> </span><span class="declaration-name">copyToZeroNT</span><span>[</span><span class="type-name">T</span><span>](</span><span class="identifier">xs</span><span>: =&gt; </span><span class="type-name">PList</span><span>[</span><span class="type-name">T</span><span>]): </span><span class="type-name">Unit</span></code></pre>
+    <p>These method types are not equivalent!  That’s because <code>copyToZeroNP</code>
+    can be called with a by-name <em>that evaluates to a list with a
+    different element type each time</em>; <code>copyToZeroNT</code> doesn’t allow this.</p>
+    <pre><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">time</span><span>: </span><span class="type-name">PList</span><span>[</span><span class="identifier">_</span><span>] = {
+  </span><span class="keyword">val</span><span> </span><span class="identifier">t</span><span> = </span><span class="type-name">System</span><span>.</span><span class="identifier">currentTimeMillis</span><span>
+  </span><span class="keyword">if</span><span> (</span><span class="identifier">t</span><span> % </span><span class="number-literal">2</span><span> == </span><span class="number-literal">0</span><span>) </span><span class="type-name">PCons</span><span>(</span><span class="string-literal">&quot;even&quot;</span><span>, </span><span class="type-name">PNil</span><span>())
+  </span><span class="keyword">else</span><span> </span><span class="type-name">PCons</span><span>(</span><span class="number-literal">66</span><span>, </span><span class="type-name">PNil</span><span>())
+}
+
+</span><span class="identifier">copyToZeroNP</span><span>(</span><span class="identifier">time</span><span>)  </span><span class="comment">// ok
+</span><span class="identifier">copyToZeroNT</span><span>(</span><span class="identifier">time</span><span>)  </span><span class="comment">// not ok</span></code></pre>
+    <p>In effect, <code>=&gt;</code> is like a type constructor; we can think of these
+    arguments as <code>byname[PList[_]]</code> and <code>byname[PList[T]]</code>.  So we have
+    exactly the same problem as we had with
+    <a href="nested-existentials.html#method-equivalence-broken"><code>plenLength</code> and <code>plenLengthTP</code></a>.</p>
+    <p>Unfortunately,
+    <a href="https://issues.scala-lang.org/browse/SI-9419">Scala currently accepts this, where it shouldn’t</a>.</p>
+    <p>The difference between these two methods gives us a hint about working
+    with existentials: if we can shift the scope for a given existential
+    outside the function that keeps giving us different types on every
+    reference, we might have an easier time working with it, even if we
+    can’t change it to a <code>val</code>; maybe it needs to be lazy and not saved,
+    for example.  So, despite the occasional convenience of path-dependent
+    types, <strong>type parameterized methods are still your best friends when
+    working with existential types</strong>.</p>
+    <p>In
+    <a href="change-values.html">the next article, “To change types, change values”</a>,
+    we’ll look at some programs that make use of the two kinds of “type
+    changing” discussed above.  After that, we’ll finally talk about
+    methods that <em>return</em> values of existential type, rather than merely
+    taking them as arguments.</p>
+    <p><em>This article was tested with Scala 2.11.7.</em></p>
+  </div>
+</div>
+<div class="bulma-section bulma-container bulma-is-max-desktop">
+  <div class="bulma-columns">
+    
+    <div class="bulma-column">
+      <article class="bulma-media">
+  
+  <figure class="bulma-media-left">
+    <p class="bulma-image bulma-is-64x64">
+      <img class="bulma-is-rounded" src="https://github.com/S11001001.png" />
+    </p>
+  </figure>
+  
+  <div class="bulma-media-content">
+    <div class="bulma-content">
+      <p>
+        <strong>Stephen Compall</strong> 
+        
+        
+        
+        
+      </p>
+    </div>
+    <nav class="bulma-level bulma-is-align-items-start">
+      <div class="bulma-level-left bulma-is-flex-direction-row">
+        
+        
+        
+        <a class="bulma-level-item" href="http://github.com/S11001001">
+          <span class="bulma-icon bulma-is-small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+        </a>
+        
+        
+        
+        
+      </div>
+    </nav>
+  </div>
+</article>
+
+    </div>
+    
+  </div>
+</div>
+
+
+  </main>
+  <footer class="bulma-footer">
+  <div class="bulma-columns">
+    <div class="bulma-column bulma-is-half">
+      Copyright 2026 Typelevel Foundation and <a href="https://github.com/typelevel/typelevel.github.com/graphs/contributors">contributors</a>.
+      Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless <a href="../colophon.html#license">noted otherwise</a>.
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../projects/">Project Index</a></li>
+        <li><a href="../community/meetups.html">Meetup Calendar</a></li>
+        <li><a href="../foundation/people.html">Leadership</a></li>
+      </ul>
+    </div>
+    <div class="bulma-column">
+      <ul>
+        <li><a href="../code-of-conduct/">Code of Conduct</a></li>
+        <li><a href="../security.html">Security Policy</a></li>
+        <li><a href="../colophon.html">Colophon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bulma-has-text-centered">
+    <div>Find us on ...</div>
+    <div class="bulma-is-size-3">
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://github.com/typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://discord.gg/typelevel-632277896739946517">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://bsky.app/profile/typelevel.org">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3 61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3 .5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9 120.3 124.6 164.8-26.7 187.7-103.4 22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4 .4 6.7 .9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7 5.9-19.9 15-138.9 15-155.5s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8-66.1 46.6-137.1 141.1-163.2 191.8z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://fosstodon.org/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M433 179.1c0-97.2-63.7-125.7-63.7-125.7-62.5-28.7-228.6-28.4-290.5 0 0 0-63.7 28.5-63.7 125.7 0 115.7-6.6 259.4 105.6 289.1 40.5 10.7 75.3 13 103.3 11.4 50.8-2.8 79.3-18.1 79.3-18.1l-1.7-36.9s-36.3 11.4-77.1 10.1c-40.4-1.4-83-4.4-89.6-54-.6-4.6-.9-9.3-.9-13.9 85.6 20.9 158.7 9.1 178.7 6.7 56.1-6.7 105-41.3 111.2-72.9 9.8-49.8 9-121.5 9-121.5zM357.9 304.3l-46.6 0 0-114.2c0-49.7-64-51.6-64 6.9l0 62.5-46.3 0 0-62.5c0-58.5-64-56.6-64-6.9l0 114.2-46.7 0c0-122.1-5.2-147.9 18.4-175 25.9-28.9 79.8-30.8 103.8 6.1l11.6 19.5 11.6-19.5c24.1-37.1 78.1-34.8 103.8-6.1 23.7 27.3 18.4 53 18.4 175l0 0z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current" href="https://www.youtube.com/@typelevel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M549.7 124.1C543.5 100.4 524.9 81.8 501.4 75.5 458.9 64 288.1 64 288.1 64S117.3 64 74.7 75.5C51.2 81.8 32.7 100.4 26.4 124.1 15 167 15 256.4 15 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8 42.6 11.5 213.4 11.5 213.4 11.5s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6l0-162.4 142.7 81.2-142.7 81.2z"/></svg>
+      </a>
+      <a class="bulma-icon bulma-is-large bulma-has-text-current"
+        href="https://linkedin.com/company/typelevel-foundation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M416 32L31.9 32C14.3 32 0 46.5 0 64.3L0 447.7C0 465.5 14.3 480 31.9 480L416 480c17.6 0 32-14.5 32-32.3l0-383.4C448 46.5 433.6 32 416 32zM135.4 416l-66.4 0 0-213.8 66.5 0 0 213.8-.1 0zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77zM384.3 416l-66.4 0 0-104c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9l0 105.8-66.4 0 0-213.8 63.7 0 0 29.2 .9 0c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9l0 117.2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
+

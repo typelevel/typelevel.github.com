@@ -1,0 +1,52 @@
+/* Protosearch - Docs Result Styles */
+
+/* Individual result */
+.ps-result {
+  padding: 1rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 4px;
+  background: var(--ps-bg);
+}
+
+/* Result title text */
+.ps-result header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.ps-result header a {
+  color: var(--ps-link);
+  text-decoration: none;
+}
+
+.ps-result header a:hover {
+  text-decoration: underline;
+}
+
+.ps-result header mark {
+  background: var(--ps-highlight);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Result snippet / preview text */
+.ps-preview {
+  margin: 0 0 0.5rem;
+  line-height: 1.5;
+}
+
+.ps-preview mark {
+  background: var(--ps-highlight);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Result metadata (score, path) */
+.ps-meta {
+  font-size: 0.85rem;
+  color: var(--ps-text-muted);
+  display: flex;
+  gap: 1rem;
+}
+
