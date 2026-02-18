@@ -323,6 +323,12 @@ object LaikaCustomizations {
           val options = Styles(style.getOrElse("default-image-block"))
           Figure(SpanSequence(img), Seq.empty, body, options)
         }
+      },
+      BlockDirectives.create("html") {
+        import BlockDirectives.dsl.*
+        rawBody.map { body =>
+          RawContent(NonEmptySet.of("html", "rss"), body)
+        }
       }
     )
   }
