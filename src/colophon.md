@@ -33,3 +33,10 @@ The Typelevel logo is adapted from the ["Progress" Pride Flag][progress] by [Dan
 [progress]: https://progress.gay/
 [Daniel Quasar]: https://quasar.digital/
 [CC BY-NC-SA 4.0]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+## In memoriam
+
+[Laika] was created and lovingly maintained by [Jens Halm]. This website is possible thanks to his [vision] for a documentation tool that is native to our ecosystem. Jens raised the bar for open source stewardship: beyond the technical excellence of his work on Laika, he consistently published feature roadmaps, detailed issue and PR descriptions, and thorough documentation. Indeed, by creating a documentation tool that integrated so well with our tech stack, he has empowered *all* of us to become exemplary maintainers. Moreover, Jens' enthusiasm to support our community (including entertaining our numerous feature requests with in-depth responses full of context and design insights!) was his most generous gift to us.
+
+[Jens Halm]: https://github.com/jenshalm
+[vision]: https://typelevel.org/Laika/latest/01-about-laika/02-design-goals.html
