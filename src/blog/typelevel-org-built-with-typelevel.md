@@ -6,20 +6,20 @@
 
 # typelevel.org built with Typelevel
 
-We are proud to share that our website is now built with [Laika], a Typelevel Organization project for generating static sites! As cool as it is that we are self-hosting, the intention of this revamp was to **make it easier for our community to develop and contribute to the website**. We [chose technologies](/colophon.md) that we hope balance familiarity and ease-of-use with functionality and stability. Notably, this new website can be generated in its entirety by running a Scala build script: `scala build.scala`. Stay tuned for a future blog post that dives into the details, but for now you may peruse the [PR].
+We are proud to share that our website is now built with [Laika], a Typelevel Organization project for generating static sites! As cool as it is that we are self-hosting, the intention of this revamp was to **make it easier for our community to develop and contribute to the website**. We [chose technologies](/colophon.md) that we hope balance familiarity and ease-of-use with functionality and stability. Notably, this new website can be generated in its entirety by running a Scala script: `scala build.scala`. Stay tuned for a future blog post that dives into the details, but for now you may peruse the [PR].
 
 Finally, we would like to express gratitude to our friends at 47 Degrees who generously built the [previous version](new-website-layout.md) of the website for us.
 
 ## What’s next and how you can help
 
-Truthfully, so far this is a "minimally viable website" and we invite you to help us iterate on it. Broadly, our goals are to explain:
+Truthfully, so far this is a "minimally viable website" and we invite you to [help us iterate on it](https://github.com/typelevel/typelevel.github.com#get-started). Broadly, our goals are to explain:
 
 1. Who we are, and how you can join our community.
 2. What we build, and how you can use it.
 
 The next phase of development will largely focus on creating new content to support these goals (and the infrastructure to support that content). Here are a few ideas we have:
 
-* Educational and tutorial content, to facilitate onboarding.
+* Educational and tutorial content to facilitate onboarding.
     * How to **Get Started** with Typelevel using our [Toolkit].
     * Curated pathways to **Learn** how to use Typelevel in different scenarios: web services, serverless, CLIs, UIs, etc.
     * How to **Get Started Contributing** both to existing projects and also by publishing new libraries with [sbt-typelevel].
@@ -41,6 +41,7 @@ This project would not have been possible without [Jens Halm] and his [vision] f
 [Jens Halm]: https://github.com/jenshalm
 [Laika]: https://typelevel.org/Laika
 [mdoc]: https://scalameta.org/mdoc/
+[repository]: https://github.com/typelevel/typelevel.github.com#get-started
 [PR]: https://github.com/typelevel/typelevel.github.com/pull/576
 [sbt-typelevel]: https://typelevel.org/sbt-typelevel/
 [Scaladex]: https://index.scala-lang.org/
