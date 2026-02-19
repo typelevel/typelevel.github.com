@@ -452,6 +452,7 @@ object KaTeX {
       output: String = "htmlAndMathml"
   ): String =
     synchronized {
+      // https://katex.org/docs/options
       val options = Map(
         "throwOnError" -> true,
         "strict" -> true,
