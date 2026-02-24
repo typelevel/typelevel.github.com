@@ -87,6 +87,8 @@ object LaikaBuild {
 
     InputTree[IO]
       .addDirectory("src")
+      // Laika skips .dotfiles by default
+      .addDirectory("src/.well-known", Path.Root / ".well-known")
       .addInputStream(
         IO.blocking(securityPolicy.openStream()),
         Path.Root / "security.md"
