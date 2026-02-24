@@ -9,7 +9,7 @@
   <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 
-  <meta property="og:title" content="Google Summer of Code" />
+  <meta property="og:title" content="GSoC Ideas" />
   <meta property="og:image" content="../img/logo.png" />
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="../css/code.css">
   <script src="../main.js"></script>
 
-  <title>Google Summer of Code</title>
+  <title>GSoC Ideas</title>
 </head>
 
 <body class="bulma-is-flex bulma-is-flex-direction-column">
@@ -90,8 +90,9 @@
 
 <div class="bulma-tabs">
   <ul>
-    <li ><a href="index.html">Guidance</a></li>
+    <li ><a href="index.html">Welcome</a></li>
     <li class="bulma-is-active"><a href="#">Ideas</a></li>
+    <li ><a href="events.html">Events</a></li>
   </ul>
 </div>
 
@@ -106,6 +107,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Serverless integrations for Feral</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">cloud</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Feral is a Typelevel library for building serverless functions that currently supports AWS Lambda and Google Cloud Run Functions. We want to add support for more types of serverless events and more cloud providers.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala, ideally experience with serverless</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -125,6 +133,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Native I/O backend for FS2 JVM</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">operating systems</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>FS2 on the JVM currently implements its networking API using JDK NIO. Unfortunately this indirection incurs a non-trivial performance penalty. We want to replace the use of JDK NIO with direct calls to system I/O APIs such as epoll and kqueue.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala, ability to read C</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -145,6 +160,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">FS2 Connection API</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">operating systems</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>TCP-based protocols are common (e.g. HTTP, Postgres, Redis) and are implemented by clients to interface with these services (e.g. Ember, Skunk, Rediculous). The goal of this project is to create a connection API that supports pooling, error conditions, and metrics and can be shared by all of our client libraries.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala, ideally some knowledge of networking</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Hard.</p>
@@ -163,6 +185,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Web Components for Calico</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">web</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Calico is a reactive UI library built with Cats Effect and FS2. Web Components are a standard for creating framework-agnostic, reusable UI elements. The goal of this project is to enable Calico users to access the vast array of web components available by improving its DSL and code-generation.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala, ideally experience with Web APIs</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -180,6 +209,11 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Upgrade sbt-typelevel to sbt 2</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">development tools</span>
+              
+            </div>
             <p>sbt-typelevel is a plugin for sbt, the Scala build tool, used by hundreds of open source and enterprise projects. sbt 2 is in the final stages of development. We want to upgrade sbt-typelevel to sbt 2 and adopt its new features, such as project matrix for cross-building.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -198,6 +232,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Refresh Davenverse projects</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">development tools</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>The Davenverse is a collection of several popular Typelevel libraries, including Mules and cats-scalacheck. Unfortunately, we have fallen behind on their maintenance. We want to move these libraries under the Typelevel org, refresh their build tooling, and bring them up-to-date to ensure their longevity.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -216,6 +257,17 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Cats Effect & FS2 on Wasm/WASI</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">web</span>
+              
+              <span class="bulma-tag bulma-is-light">cloud</span>
+              
+              <span class="bulma-tag bulma-is-light">operating systems</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Web Assembly and its System Interface are emerging technologies for deploying secure, modular applications. The goal of this project is to prototype porting the Cats Effect runtime and FS2 streaming I/O to the Wasm/WASI platform, also possibly generating feedback for the Scala WASM and WASI teams.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala, ideally some experience with Wasm/WASI</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Hard. Wasm/WASI support in Scala is experimental.</p>
@@ -235,6 +287,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Laika enhancements for typelevel.org</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">web</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Laika is a purely functional site and e-book generator and customizable text markup transformer. We recently migrated the Typelevel website from Jekyll to Laika. The goal of this project is improve and streamline Laika's support for generating non-documentation websites, such as blogs.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Scala</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium.</p>
@@ -253,6 +312,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">A faster immutable list datatype</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">web</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Immutable linked lists are a core datatype in functional programming languages. The goal of this project is to explore implementing a list-like datatype with enhanced performance. Along the way, you will learn about algebraic datatypes, Cats typeclasses, and mechanical sympathy.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Interest in functional programming</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium. This is a good project for beginners!</p>
@@ -271,6 +337,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Doodle Immediate Mode Algebra</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">media</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Design and implement an API for Doodle that allows low-level bitmap based operations.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Proficient with Scala and some understanding of computer graphics.</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium</p>
@@ -288,6 +361,13 @@
         <div class="bulma-card-content">
           <div class="bulma-content">
             <p class="bulma-title bulma-is-5">Doodle Skia Backend</p>
+            <div class="bulma-tags">
+              
+              <span class="bulma-tag bulma-is-light">media</span>
+              
+              <span class="bulma-tag bulma-is-light">programming languages</span>
+              
+            </div>
             <p>Add a Skia backend to Doodle, greatly improving the performance and expressivity available on the JVM.</p>
             <p class="bulma-mb-0"><strong>Prerequisites</strong><br />Proficient with Scala and some understanding of computer graphics. This involves working with a library (Skija) that is not well documented and itself wraps a C++ library with patchy documentation. Hence a willingness to dive into foreign code bases is necessary.</p>
             <p class="bulma-mb-0"><strong>Expected Difficulty</strong><br />Medium</p>
