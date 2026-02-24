@@ -1,0 +1,18 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Contact: mailto:security@typelevel.org
+Expires: 2026-02-24T17:55:33Z
+Encryption: openpgp4fpr:904c153733dbb0106915c0bd975be5bc29d92ca5
+Encryption: openpgp4fpr:1cae49948ee0a2d7154a2b62a335b107e9282548
+Preferred-Languages: en
+Canonical: https://typelevel.org/.well-known/security.txt
+Policy: https://github.com/typelevel/.github/blob/main/SECURITY.md
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQTY2Ob6IordWLkPvQodLvmkIR+xCwUCaZ3mSwAKCRAdLvmkIR+x
+CwtdAQCg9pJAT+YcW16FLIDwydO1SGq7OjlQKzO6GzAEbpCf3gEAqT4Gu7lfmBJU
+Lh5Z2yYhozpFekj9Ylikd7ISK+R5Hgg=
+=UJKY
+-----END PGP SIGNATURE-----
