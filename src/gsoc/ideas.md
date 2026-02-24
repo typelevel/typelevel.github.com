@@ -1,5 +1,5 @@
 {%
-  laika.title: Google Summer of Code
+  laika.title: GSoC Ideas
   ideas-tab.class: bulma-is-active
   laika.html.template: ideas.template.html
 %}

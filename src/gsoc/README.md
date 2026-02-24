@@ -1,6 +1,6 @@
 {%
   laika.title: Google Summer of Code
-  guidance-tab.class: bulma-is-active
+  welcome-tab.class: bulma-is-active
 %}
 
 ## Welcome!
@@ -10,14 +10,16 @@ We work together to develop projects that apply functional programming to challe
 Our community culture embraces curiosity and mentoring and we don’t shy away from experimenting with new and exciting ideas.
 Most of all, we love to make programming joyful and social.
 
-We have applied to participate as a Mentoring Organization in [Google Summer of Code 2026][GSoC]! Stay tuned for updates.
+We are excited to be a Mentoring Organization in [Google Summer of Code 2026][GSoC]! If you are interested to join Typelevel as a GSoC Contributor, here are some ways to get started:
 
-Please [join our Discord server][invite] and introduce yourself in the [#summer-of-code][invite] channel.
+* Join our [Discord server][invite] and introduce yourself in the [#summer-of-code][invite] channel.
+* Subscribe to the [Google Group][group] for announcements.
+* Check the [calendar] for upcoming onboarding events.
+
 We cannot wait to meet you!
-You can also reach us at [gsoc@typelevel.org].
+You can also reach us at gsoc@typelevel.org with any questions.
 
+[group]: https://groups.google.com/a/typelevel.org/g/gsoc-applicants
 [GSoC]: https://summerofcode.withgoogle.com/
 [invite]: https://discord.gg/382Z3w8QTj
-[gsoc@typelevel.org]: mailto:gsoc@typelevel.org
-[discussion]: https://github.com/orgs/typelevel/discussions/156
-
+[events]: events.md#calendar
