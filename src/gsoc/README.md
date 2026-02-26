@@ -12,14 +12,17 @@ Most of all, we love to make programming joyful and social.
 
 We are excited to be a Mentoring Organization in [Google Summer of Code 2026][GSoC]! If you are interested to join Typelevel as a GSoC Contributor, here are some ways to get started:
 
+* Make your first contribution to our [onboarding repository].
 * Join our [Discord server][invite] and introduce yourself in the [#summer-of-code][invite] channel.
 * Subscribe to the [Google Group][group] for announcements.
-* Check the [calendar] for upcoming onboarding events.
+* Check the [calendar] for upcoming events and [videos of past events][videos].
 
 We cannot wait to meet you!
 You can also reach us at gsoc@typelevel.org with any questions.
 
+[onboarding repository]: https://github.com/typelevel/gsoc-onboarding
 [group]: https://groups.google.com/a/typelevel.org/g/gsoc-applicants
 [GSoC]: https://summerofcode.withgoogle.com/
 [invite]: https://discord.gg/382Z3w8QTj
 [events]: events.md#calendar
+[videos]: https://youtube.com/playlist?list=PL_5uJkfWNxdmHk2CtFxDVGiJxpU_UaD2s
