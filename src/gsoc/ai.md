@@ -11,7 +11,7 @@ Our AI policy is based on the following ideas.
 
 * **GSoC is about learning first, delivering second.** We prefer that you take your time and ask for help when contributing to our projects, rather than using AI to quickly write code that may work, but you do not understand. Our midterm and final evaluations of your work will consider how you grew as an open source contributor, in addition to what you created.
 
-* **AI has become a part of the contemporary developers's toolkit.** We do not want to blanket ban the use of AI. We recognize its value when used thoughtfully and want to support you in learning when and how to use AI effectively.
+* **AI has become a part of the contemporary developer's toolkit.** We do not want to blanket ban the use of AI. We recognize its value when used thoughtfully and want to support you in learning when and how to use AI effectively.
 
 With these principles in mind, to contribute to Typelevel as part of GSoC we ask you to follow these rules.
 
