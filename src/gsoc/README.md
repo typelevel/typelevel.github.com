@@ -3,7 +3,7 @@
   welcome-tab.class: bulma-is-active
 %}
 
-## Welcome!
+# Welcome!
 
 Typelevel is an ecosystem of projects and a community of people united to foster an inclusive, welcoming, and safe environment around functional programming in Scala.
 We work together to develop projects that apply functional programming to challenging problems relevant in industry.
@@ -26,3 +26,14 @@ You can also reach us at gsoc@typelevel.org with any questions.
 [invite]: https://discord.gg/382Z3w8QTj
 [events]: events.md#calendar
 [videos]: https://youtube.com/playlist?list=PL_5uJkfWNxdmHk2CtFxDVGiJxpU_UaD2s
+
+## Learning Resources
+
+To learn Scala and functional programming, we recommend these books.
+* [*The Scala 3 Book*][scala book]
+* [*Creative Scala: Form and Function*][creative]
+* [*Functional Programming in Scala*][fpis], aka "The Red Book"
+
+[scala book]: https://docs.scala-lang.org/scala3/book/introduction.html
+[creative]: https://www.creativescala.org/creative-scala/
+[fpis]: https://www.manning.com/books/functional-programming-in-scala-second-edition
