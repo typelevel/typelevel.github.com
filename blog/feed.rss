@@ -275,28 +275,5 @@ opportunities to become involved.</p>]]></description>
 <h1 id="migrating-to-the-0-9-0-release" class="section">Migrating to the <code>0.9.0</code> release</h1>
 <p>If you use <a href="https://github.com/scala-steward-org/scala-steward">Scala Steward</a>, you will migrate automatically. If not, read the <a href="https://github.com/typelevel/weaver-test/releases/tag/v0.9.0"><code>0.9.0</code> migration guide</a>.</p>]]></description>
 </item>
-<item>
-  <title>Typelevel Summer of Code 2025</title>
-  <pubDate>Thu, 27 Feb 2025 00:00:00 GMT</pubDate>
-  
-    <dc:creator>Arman Bilge</dc:creator>
-  
-  <link>https://typelevel.org/blog/gsoc-2025.html</link>
-  <guid isPermaLink="true">https://typelevel.org/blog/gsoc-2025.html</guid>
-  <description><![CDATA[
-<p>We are proud to announce that Typelevel is a Mentoring Organization for <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2025</a>! If you are a student, this is a wonderful opportunity to spend your summer working on Scala open source projects with mentorship from Typelevel maintainers, while earning a stipend. You can learn more about what the experience is like in <a href="https://typelevel.org/blog/gsoc24-going-feral-on-the-cloud.html">this blog post</a> by our 2024 contributor Ching Hian Chew.</p>
-<p>Please check out <a href="https://typelevel.org/gsoc/ideas.html">our project ideas and mentors</a> spanning AI/ML, serverless, build tooling, frontend/UIs, systems programming, web assembly, and more. Furthermore, if you have an idea of your own, we would love to hear it: Typelevel members have a wide range of interests and a special fondness for building “at the cutting edge of some incredibly bizarre stuff.”</p>
-<p>We look forward to welcoming you to the Typelevel community and we hope that this program will be only the beginning of your open source journey. <a href="https://summerofcode.withgoogle.com/get-started">Applications open on March 24!</a> Until then, please join us on <a href="https://discord.gg/hAKabfGjUw">Discord</a> or email us at <a href="mailto:gsoc@typelevel.org"><a href="mailto:gsoc@typelevel.org">gsoc@typelevel.org</a></a>; we are excited to get to know you :)</p>
-
-<h2 id="_2024-recap" class="section">2024 recap</h2>
-<p>Congratulations to our GSoC contributors last year:</p>
-<ul>
-  <li><a href="https://github.com/Chingles2404">Ching</a> expanded Feral’s serverless integrations, in particular adding support for Google Cloud Run HTTP Functions. Her work landed in the <a href="https://github.com/typelevel/feral/releases/tag/v0.3.1">v0.3.1</a> release. <a href="https://typelevel.org/blog/gsoc24-going-feral-on-the-cloud.html">Read her blog post!</a></li>
-  <li><a href="https://github.com/Hombre-x">Gaby</a> designed and implemented <a href="https://github.com/typelevel/governance/issues/149">Catscript</a>, a new library for beginner-friendly scripting with Cats Effect, complete with tutorials and documentation. It will become an essential part of the <a href="https://typelevel.org/toolkit/">Typelevel Toolkit</a>.</li>
-  <li><a href="https://github.com/golden-skipper03">Abhi</a> integrated <a href="https://github.com/cozydev-pink/protosearch/pull/241">Protosearch with Scaladoc</a>, enabling a unified search experience across written and API documentation. It will roll out to all Typelevel libraries in a forthcoming sbt-typelevel release.</li>
-</ul>
-<p>Our program culminated in a <a href="https://github.com/orgs/typelevel/discussions/151">virtual meetup</a> where each of them gave a lighting talk about their project. Thank you to everyone in our community who showed up for our contributors, especially our mentors Tonio Gela, Thanh Le, Michael Pilquist, Rishad Sewnarain, and Andrew Valencik!</p>
-<p>Finally, we are making a broad call for any and all new contributors. Even if you are not eligible to participate in GSoC, you are <em>always</em> welcome to join the Typelevel community and contribute to our projects!</p>]]></description>
-</item>
 </channel>
 </rss>
