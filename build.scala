@@ -285,9 +285,9 @@ object LaikaCustomizations {
       SpanDirectives.create("math") {
         import SpanDirectives.dsl.*
         rawBody.map { body =>
-          RawContent(
-            NonEmptySet.of("html", "rss"),
-            KaTeX(body, false)
+          SpanSequence(
+            RawContent(NonEmptySet.of("html"), KaTeX(body, false)),
+            RawContent(NonEmptySet.of("rss"), KaTeX(body, false, "mathml"))
           )
         }
       }
@@ -296,10 +296,13 @@ object LaikaCustomizations {
       BlockDirectives.create("math") {
         import BlockDirectives.dsl.*
         rawBody.map { body =>
-          RawContent(
-            NonEmptySet.of("html", "rss"),
-            KaTeX(body, true),
-            Styles("bulma-has-text-centered")
+          BlockSequence(
+            RawContent(
+              NonEmptySet.of("html"),
+              KaTeX(body, true),
+              Styles("bulma-has-text-centered")
+            ),
+            RawContent(NonEmptySet.of("rss"), KaTeX(body, true, "mathml"))
           )
         }
       },
@@ -344,6 +347,13 @@ object LaikaCustomizations {
       val defaultRenderer = {
         case (fmt, Title(_, _)) =>
           "" // don't render title b/c it is in the RSS metadata
+        case (fmt, RawContent(formats, content, options)) =>
+          if (formats.contains("rss")) // only render content designated for RSS
+            HTML.defaultRenderer(
+              fmt,
+              RawContent(NonEmptySet.of("html"), content, options)
+            )
+          else ""
         case (fmt, elem) => HTML.defaultRenderer(fmt, elem)
       }
 
@@ -438,12 +448,18 @@ object KaTeX {
     ctx.getBindings("js").getMember("katex")
   }
 
-  def apply(latex: String, displayMode: Boolean = false): String =
+  def apply(
+      latex: String,
+      displayMode: Boolean = false,
+      output: String = "htmlAndMathml"
+  ): String =
     synchronized {
+      // https://katex.org/docs/options
       val options = Map(
         "throwOnError" -> true,
         "strict" -> true,
-        "displayMode" -> displayMode
+        "displayMode" -> displayMode,
+        "output" -> output
       )
       katex.invokeMember("renderToString", latex, options.asJava).asString
     }
