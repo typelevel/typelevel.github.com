@@ -20,9 +20,9 @@
   </div>
 </div>
 <div class="bulma-section bulma-container bulma-is-max-desktop">
-  <div class="bulma-columns">
+  <div class="bulma-grid bulma-is-col-min-12 bulma-is-column-gap-2 bulma-is-row-gap-2">
     @:for(author)
-    <div class="bulma-column">
+    <div class="bulma-cell">
       @:include(/templates/bio.template.html) { render-bio = true }
     </div>
     @:@
