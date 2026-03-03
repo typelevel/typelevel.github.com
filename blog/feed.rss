@@ -5,6 +5,36 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>Typelevel Summer of Code 2026</title>
+  <pubDate>Mon, 2 Mar 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Arman Bilge</dc:creator>
+  
+    <dc:creator>Antonio Jimenez</dc:creator>
+  
+    <dc:creator>Andrew Valencik</dc:creator>
+  
+  <link>https://typelevel.org/blog/gsoc-2026.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/gsoc-2026.html</guid>
+  <description><![CDATA[
+<p>We are pleased to announce that Typelevel is a Mentoring Organization for <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2026</a>! If you are a student, this is a wonderful opportunity to spend your summer working on Scala open source projects with mentorship from Typelevel maintainers, while earning a stipend. You can learn more about what the experience is like in <a href="https://typelevel.org/blog/gsoc24-going-feral-on-the-cloud.html">this blog post</a> by our 2024 contributor Ching Hian Chew.</p>
+<p>Please check out <a href="https://typelevel.org/gsoc/ideas.html">our project ideas and mentors</a> spanning serverless, build tooling, frontend/UIs, systems programming, web assembly, and more. Furthermore, if you have an idea of your own, we would love to hear it: Typelevel members have a wide range of interests and a special fondness for building “at the cutting edge of some incredibly bizarre stuff.”</p>
+<p>We look forward to welcoming you to the Typelevel community and we hope that participating in this program will be the beginning of your open source journey. <a href="https://summerofcode.withgoogle.com/get-started">Applications open on March 16!</a> Until then, <a href="https://typelevel.org/gsoc/README.html#getting-started">get started</a> by <a href="https://www.youtube.com/watch?v=oOk9-HQZhRk">watching our intro presentation</a> and <a href="https://github.com/typelevel/gsoc-onboarding">making your first contribution</a>.</p>
+
+<h2 id="_2025-recap" class="section">2025 recap</h2>
+<p>Congratulations to our GSoC contributors last year:</p>
+<ul>
+  <li><a href="https://gist.github.com/rahulrangers/afd8f99c365305843c6c40a0f8b15e92">Rahul</a> upgraded several FS2 APIs to use non-blocking, polling-based I/O, including datagram sockets and native processes on both the JVM and native platforms. This improves their performance and semantics.</li>
+  <li><a href="https://gist.github.com/pantShrey/70e289b9025e49d65289b1195bad5083">Shrey</a> worked on an ambitious project to implement a machine learning inference runtime with Cats Effect on Scala Native. This makes it possible to serve ML models alongside web services without compromising latency.</li>
+</ul>
+<p>They were joined by a contributor outside of the official GSoC program:</p>
+<ul>
+  <li><a href="https://github.com/typelevel/log4cats/pull/920">Jay</a> developed a new API for log4cats based on <a href="https://github.com/typelevel/log4cats/discussions/815">a proposal by Olivier Mélois</a>. It encodes the interface as a single abstract method to enhance usability and extensibility while maintaining compatibility with the original API.</li>
+</ul>
+<p>Our summer culminated in a virtual meetup where each of them gave a lighting talk about their project. Thank you to everyone in our community who showed up for our contributors, especially our mentors Arman Bilge, Antonio Jimenez, Morgen Peschke, Michael Pilquist, and Andrew Valencik.</p>
+<p>Finally, we are making a broad call for any and all new contributors. Even if you are not eligible to participate in GSoC, you are <em>always</em> welcome to join the Typelevel community and contribute to our projects!</p>]]></description>
+</item>
+<item>
   <title>typelevel.org built with Typelevel</title>
   <pubDate>Wed, 18 Feb 2026 00:00:00 GMT</pubDate>
   
