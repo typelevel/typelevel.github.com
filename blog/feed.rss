@@ -31,7 +31,7 @@
 <ul>
   <li><a href="https://github.com/typelevel/log4cats/pull/920">Jay</a> developed a new API for log4cats based on <a href="https://github.com/typelevel/log4cats/discussions/815">a proposal by Olivier Mélois</a>. It encodes the interface as a single abstract method to enhance usability and extensibility while maintaining compatibility with the original API.</li>
 </ul>
-<p>Our summer culminated in a virtual meetup where each of them gave a lighting talk about their project. Thank you to everyone in our community who showed up for our contributors, especially our mentors Arman Bilge, Antonio Jimenez, Morgen Peschke, Michael Pilquist, and Andrew Valencik.</p>
+<p>Our summer culminated in a virtual meetup where each of them gave a lightning talk about their project. Thank you to everyone in our community who showed up for our contributors, especially our mentors Arman Bilge, Antonio Jimenez, Morgen Peschke, Michael Pilquist, and Andrew Valencik.</p>
 <p>Finally, we are making a broad call for any and all new contributors. Even if you are not eligible to participate in GSoC, you are <em>always</em> welcome to join the Typelevel community and contribute to our projects!</p>]]></description>
 </item>
 <item>
