@@ -6,7 +6,7 @@
 
 # Typelevel Foundation is a 501(c)(3) public charity
 
-Last August, [we announced the Typelevel Foundation][incorporation], a nonprofit organization incorporated in California. Today, we are proud to share that the IRS has determined that the [Typelevel Foundation] is a 501(c)(3) tax-exempt public charity.
+Last August, [we announced the Typelevel Foundation][incorporation], a nonprofit organization incorporated in California. Today, we are proud to share that the Internal Revenue Service has determined that the [Typelevel Foundation] is a 501(c)(3) tax-exempt public charity.
 
 The process of applying for charitable status is challenging, and especially so for open source organizations, which [frequently receive denials][denials]. Working together with [our attorneys][oatfield], we prepared an application that explained what Typelevel does and why this work is charitable, citing the unique innovations of our projects, our participation in conferences and mentoring programs, and our commitment to open collaboration. We want to recognize and thank our community for their impressive record of impact that we showcased in our application.
 
