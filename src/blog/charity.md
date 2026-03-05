@@ -16,7 +16,7 @@ The process of applying for charitable status is challenging, and especially so 
 
 Our charitable status expands fundraising opportunities while also reducing our operating costs.
 
-* Most importantly, **we are exempt from paying tax** on the money that we raise. Furthermore, individuals and companies that pay taxes in the US may deduct donations to the Foundation on their annual returns.
+* We are **exempt from paying tax** on the money that we raise. Furthermore, individuals and companies that pay tax in the US may deduct donations to the Foundation on their annual returns.
 
 * We are **eligible for free and discounted services** from several companies. For example, GitHub now provides us a Team account without seat limits at no cost, saving us thousands of dollars.
 
