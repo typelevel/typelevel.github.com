@@ -5,6 +5,41 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>Typelevel Foundation is a 501(c)(3) public charity</title>
+  <pubDate>Thu, 5 Mar 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Typelevel Foundation</dc:creator>
+  
+  <link>https://typelevel.org/blog/charity.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/charity.html</guid>
+  <description><![CDATA[
+<p>Last August, <a href="https://typelevel.org/blog/evolving-typelevel.html">we announced the Typelevel Foundation</a>, a nonprofit organization incorporated in California. Today, we are proud to share that the Internal Revenue Service has determined that the <a href="https://typelevel.org/foundation/README.html">Typelevel Foundation</a> is a 501(c)(3) tax-exempt public charity.</p>
+<p>The process of applying for charitable status is challenging, and especially so for open source organizations, which <a href="https://www.stradley.com/business-vantage-point-blog/irs-continues-to-close-open-source-software-out-of-tax-exempt-universe">frequently receive denials</a>. Working together with <a href="https://www.christinaoatfield.com/">our attorneys</a>, we prepared an application that explained what Typelevel does and why this work is charitable, citing the unique innovations of our projects, our participation in conferences and mentoring programs, and our commitment to open collaboration. We want to recognize and thank our community for their impressive record of impact that we showcased in our application.</p>
+<blockquote>The determination that the Typelevel Foundation is a public charity is a testament to the <strong>intellectual merit and educational value of the Typelevel community&#39;s contributions</strong> to functional programming and open source for over a decade.</blockquote>
+
+<h2 id="benefits-and-responsibilities" class="section">Benefits and responsibilities</h2>
+<p>Our charitable status expands fundraising opportunities while also reducing our operating costs.</p>
+<ul>
+  <li>
+    <p>We are <strong>exempt from paying tax</strong> on the money that we raise. Furthermore, individuals and companies that pay tax in the US may deduct donations to the Foundation on their annual returns.</p>
+  </li>
+  <li>
+    <p>We are <strong>eligible for free and discounted services</strong> from several companies. For example, GitHub now provides us a Team account without seat limits at no cost, saving us thousands of dollars.</p>
+  </li>
+  <li>
+    <p>We have <strong>internationally recognized institutional credibility</strong>. By partnering with the <a href="https://www.swissphilanthropy.ch/en/">Swiss Philanthropy Foundation</a> and the <a href="https://www.maecenata.eu/en/">Maecenata Foundation</a>, we can now receive tax-efficient charitable donations from across Europe. We are also eligible for grants from other 501(c)(3) organizations, including private foundations such as the <a href="https://sloan.org/">Alfred P. Sloan Foundation</a>.</p>
+  </li>
+</ul>
+<p>As a charity, we have legal and fiduciary responsibilities that reinforce our own commitments to transparency and community-driven open source development. Above all, <strong>we are accountable to our mission of advancing research and education in functional programming</strong>, prioritizing public benefit over private interests. To remain compliant, we must file <a href="https://en.wikipedia.org/wiki/Form_990">Form 990</a> annually with the IRS which details our finances and describes how funds were spent towards our charitable purpose. These documents are made available for public inspection.</p>
+
+<h2 id="migrating-our-financial-infrastructure" class="section">Migrating our financial infrastructure</h2>
+<p>For several years, <a href="https://oscollective.org/">Open Source Collective</a> served as the fiscal host for our funds (not to be confused with <a href="https://opencollective.com/">Open Collective</a>, which is the web platform). Earlier this week, they transferred our balance to the Foundation&#39;s bank account and closed our account with them. If you had setup a recurring donation on our <a href="https://opencollective.com/typelevel">old Open Collective page</a>, it has been canceled.</p>
+<p><strong>We now <a href="https://typelevel.org/foundation/README.html#supporting-the-foundation">accept donations</a> via several platforms</strong>, including <a href="https://github.com/sponsors/typelevel">GitHub Sponsors</a> and <a href="https://www.every.org/typelevel">Every.org</a>  (which can handle stock and crypto donations). We have also set up <a href="https://opencollective.com/typelevel-foundation">a new Open Collective page for the Foundation</a>, connected to our own bank account, which we will use to provide transparency into our finances and spending.</p>
+
+<h2 id="what-s-next" class="section">What&#39;s next</h2>
+<p>The first phase of our work focused on the legal restructuring of Typelevel as a nonprofit Foundation. In this next phase, <strong>we will focus on resourcing the Foundation to support its mission</strong>, by fundraising, grant writing, and recruiting new members to our <a href="https://typelevel.org/foundation/people.html">committees</a>.</p>]]></description>
+</item>
+<item>
   <title>Typelevel Summer of Code 2026</title>
   <pubDate>Mon, 2 Mar 2026 00:00:00 GMT</pubDate>
   
