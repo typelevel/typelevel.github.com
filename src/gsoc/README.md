@@ -10,6 +10,12 @@ We work together to develop projects that apply functional programming to challe
 Our community culture embraces curiosity and mentoring and we don’t shy away from experimenting with new and exciting ideas.
 Most of all, we love to make programming joyful and social.
 
+@:style(bulma-notification)
+  Due to overwhelming participation we have decided only to consider applicants who have completed our [onboarding](https://github.com/typelevel/gsoc-onboarding) before [Friday March 13th anywhere on earth](https://time.is/Anywhere_on_Earth).
+  If you can't make this deadline, we encourage you to participate next year.
+@:@
+
+
 ## Getting Started
 
 We are excited to be a Mentoring Organization in [Google Summer of Code 2026][GSoC]! If you are interested to join Typelevel as a GSoC Contributor, here are some ways to get started:
