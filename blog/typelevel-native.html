@@ -132,7 +132,7 @@
     <p>Fortunately Daniel Spiewak had the fantastic insight that the “dummy runtime” which I created to initially cross-build Cats Effect for Native could be reformulated into a legitimate event loop implementation by extending it with the capability to “poll” for I/O events: a <code>PollingExecutorScheduler</code>.</p>
     <p>The <a href="https://github.com/typelevel/cats-effect/blob/7ca03db50342773a79a01ecf137d953408ac6b1d/core/native/src/main/scala/cats/effect/unsafe/PollingExecutorScheduler.scala"><code>PollingExecutorScheduler</code></a> implements both <a href="https://www.scala-lang.org/api/2.13.8/scala/concurrent/ExecutionContext.html"><code>ExecutionContext</code></a> and <a href="https://github.com/typelevel/cats-effect/blob/236a0db0e95be829de34d7a8e3c06914738b7b06/core/shared/src/main/scala/cats/effect/unsafe/Scheduler.scala"><code>Scheduler</code></a> and maintains two queues:</p>
     <ul>
-      <li>a queue of tasks (read: fibers) to execute </li>
+      <li>a queue of tasks (read: fibers) to execute</li>
       <li>a priority queue of timers (read: <code>IO.sleep(...)</code>), sorted by expiration</li>
     </ul>
     <p>It also defines an abstract method:</p>
@@ -174,7 +174,7 @@ int epoll_wait(int epfd, struct epoll_event *events,
     <p>After creating an epoll instance (identified by a file descriptor) we can register sockets (also identified by file descriptors) with <code>epoll_ctl</code>. Typically we will register to be notified of the “read-ready” (<code>EPOLLIN</code>) and “write-ready” (<code>EPOLLOUT</code>) events on that socket. Finally, the actual polling is implemented with <code>epoll_wait</code>, which sleeps until the next I/O event is ready or the <code>timeout</code> expires. Thus we can use it to implement a  <code>PollingExecutorScheduler</code>.</p>
     <p>As previously mentioned, these sorts of polling APIs are ubiquitous and not just for working directly with sockets. For example, <a href="https://curl.se/libcurl/">libcurl</a> (the C library behind the well-known CLI) exposes a function for polling for I/O on all ongoing HTTP requests.</p>
     <pre><code class="c">#include &lt;curl/curl.h&gt;
- 
+
 CURLMcode curl_multi_poll(CURLM *multi_handle,
                           struct curl_waitfd extra_fds[],
                           unsigned int extra_nfds,
@@ -209,76 +209,46 @@ CURLMcode curl_multi_poll(CURLM *multi_handle,
     <p>Please try the Typelevel Native stack! And even better deploy it, and do so loudly!</p>
     <p>Besides that, here is a brain-dump of project ideas and existing projects that would love contributors. I am happy to help folks get started on any of these, or ideas of your own!</p>
     <ul>
-      <li>Creating example applications, templates, and tutorials:</li>
-    </ul>
-    <ul>
-      <li>If you are short on inspiration, try cross-building existing examples such as <a href="https://github.com/typelevel/fs2-chat/">fs2-chat</a>, <a href="https://github.com/djspiewak/kitteh-redis">kitteh-redis</a>, <a href="https://github.com/keynmol/jobby/">Jobby</a>.</li>
-    </ul>
-    <ul>
       <li>
-        <p>Spread the word: <a href="https://youforgotapercentagesignoracolon.com/">you-forgot-a-percentage-sign-or-a-colon</a>.</p>
+        <p>Creating example applications, templates, and tutorials:</p>
+        <ul>
+          <li>If you are short on inspiration, try cross-building existing examples such as <a href="https://github.com/typelevel/fs2-chat/">fs2-chat</a>, <a href="https://github.com/djspiewak/kitteh-redis">kitteh-redis</a>, <a href="https://github.com/keynmol/jobby/">Jobby</a>.</li>
+          <li>Spread the word: <a href="https://youforgotapercentagesignoracolon.com/">you-forgot-a-percentage-sign-or-a-colon</a>.</li>
+        </ul>
       </li>
       <li>
         <p>Cross-building existing libraries and developing new, Typelevel-stack ones:</p>
-      </li>
-    </ul>
-    <ul>
-      <li>Go <a href="https://github.com/typelevel/feral">feral</a> and implement a pure Scala <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html">custom AWS Lambda runtime</a> that cross-builds for Native.</li>
-    </ul>
-    <ul>
-      <li>A pure Scala <a href="https://grpc.io/">gRPC</a> implementation built on http4s would be fantastic, even for the JVM. Christopher Davenport has published a <a href="https://github.com/ChristopherDavenport/grpc-playground">proof-of-concept</a>.</li>
-    </ul>
-    <ul>
-      <li><a href="https://github.com/satabin/fs2-data/">fs2-data</a> has pure Scala support for a plethora of data formats. The <a href="https://github.com/http4s/http4s-fs2-data">http4s-fs2-data</a> integration needs your help to get off the ground!</li>
-    </ul>
-    <ul>
-      <li>
-        <p>Lack of cross-platform cryptography is one of the remaining sore points in cross-building. I started the <a href="https://github.com/typelevel/bobcats">bobcats</a> project to fill the gap but I am afraid it needs love from a more dedicated maintainer.</p>
+        <ul>
+          <li>Go <a href="https://github.com/typelevel/feral">feral</a> and implement a pure Scala <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html">custom AWS Lambda runtime</a> that cross-builds for Native.</li>
+          <li>A pure Scala <a href="https://grpc.io/">gRPC</a> implementation built on http4s would be fantastic, even for the JVM. Christopher Davenport has published a <a href="https://github.com/ChristopherDavenport/grpc-playground">proof-of-concept</a>.</li>
+          <li><a href="https://github.com/satabin/fs2-data/">fs2-data</a> has pure Scala support for a plethora of data formats. The <a href="https://github.com/http4s/http4s-fs2-data">http4s-fs2-data</a> integration needs your help to get off the ground!</li>
+          <li>Lack of cross-platform cryptography is one of the remaining sore points in cross-building. I started the <a href="https://github.com/typelevel/bobcats">bobcats</a> project to fill the gap but I am afraid it needs love from a more dedicated maintainer.</li>
+        </ul>
       </li>
       <li>
         <p>Integrations with native libraries:</p>
-      </li>
-    </ul>
-    <ul>
-      <li>I kick-started <a href="https://github.com/http4s/http4s-curl/">http4s-curl</a> and would love to see someone take the reigns!</li>
-    </ul>
-    <ul>
-      <li>An <a href="https://unit.nginx.org/">NGINX Unit</a> server backend for http4s promises exceptional performance. <a href="https://github.com/lolgab/snunit">snunit</a> pioneered this approach.</li>
-    </ul>
-    <ul>
-      <li>Using <a href="https://github.com/cloudflare/quiche">quiche</a> for HTTP/3 looks yummy!</li>
-    </ul>
-    <ul>
-      <li>
-        <p>An idiomatic wrapper for <a href="https://www.sqlite.org/index.html">SQLite</a>. See also <a href="https://github.com/davenverse/sqlite-sjs/pull/1">davenverse/sqlite-sjs#1</a> which proposes cross-platform API backed by Doobie on the JVM.</p>
+        <ul>
+          <li>I kick-started <a href="https://github.com/http4s/http4s-curl/">http4s-curl</a> and would love to see someone take the reigns!</li>
+          <li>An <a href="https://unit.nginx.org/">NGINX Unit</a> server backend for http4s promises exceptional performance. <a href="https://github.com/lolgab/snunit">snunit</a> pioneered this approach.</li>
+          <li>Using <a href="https://github.com/cloudflare/quiche">quiche</a> for HTTP/3 looks yummy!</li>
+          <li>An idiomatic wrapper for <a href="https://www.sqlite.org/index.html">SQLite</a>. See also <a href="https://github.com/davenverse/sqlite-sjs/pull/1">davenverse/sqlite-sjs#1</a> which proposes cross-platform API backed by Doobie on the JVM.</li>
+        </ul>
       </li>
       <li>
         <p>Developing I/O-integrated runtimes:</p>
-      </li>
-    </ul>
-    <ul>
-      <li><a href="https://github.com/armanbilge/epollcat">epollcat</a> supports Linux and macOS and has plenty of opportunity for optimization and development.</li>
-    </ul>
-    <ul>
-      <li>A <a href="https://github.com/libuv/libuv/">libuv</a>-based runtime would have solid cross-OS support, including Windows. Prior art in <a href="https://github.com/scala-native/scala-native-loop/">scala-native-loop</a>.</li>
-    </ul>
-    <ul>
-      <li>
-        <p>Personally I am excited to work on an <a href="https://en.wikipedia.org/wiki/Io_uring">io_uring</a> runtime.</p>
+        <ul>
+          <li><a href="https://github.com/armanbilge/epollcat">epollcat</a> supports Linux and macOS and has plenty of opportunity for optimization and development.</li>
+          <li>A <a href="https://github.com/libuv/libuv/">libuv</a>-based runtime would have solid cross-OS support, including Windows. Prior art in <a href="https://github.com/scala-native/scala-native-loop/">scala-native-loop</a>.</li>
+          <li>Personally I am excited to work on an <a href="https://en.wikipedia.org/wiki/Io_uring">io_uring</a> runtime.</li>
+        </ul>
       </li>
       <li>
         <p>Tooling. Anton Sviridov has spear-headed two major projects in this area:</p>
-      </li>
-    </ul>
-    <ul>
-      <li><a href="https://github.com/indoorvivants/sbt-vcpkg/">sbt-vcpkg</a> is working hard to solve the native dependency problem.</li>
-    </ul>
-    <ul>
-      <li><a href="https://github.com/indoorvivants/sn-bindgen">sn-bindgen</a> generates Scala Native bindings to native libraries directly from <code>*.h</code> header files. I found it immensely useful while working on http4s-curl, epollcat, and the s2n-tls integration in FS2.</li>
-    </ul>
-    <ul>
-      <li>
-        <p>Also: we are <em>badly</em> in need of a pure Scala port of the <a href="https://github.com/openjdk/jmh">Java Microbenchmark Harness</a>. Not the whole thing obviously, but just enough to run the existing Cats Effect benchmarks for example.</p>
+        <ul>
+          <li><a href="https://github.com/indoorvivants/sbt-vcpkg/">sbt-vcpkg</a> is working hard to solve the native dependency problem.</li>
+          <li><a href="https://github.com/indoorvivants/sn-bindgen">sn-bindgen</a> generates Scala Native bindings to native libraries directly from <code>*.h</code> header files. I found it immensely useful while working on http4s-curl, epollcat, and the s2n-tls integration in FS2.</li>
+          <li>Also: we are <em>badly</em> in need of a pure Scala port of the <a href="https://github.com/openjdk/jmh">Java Microbenchmark Harness</a>. Not the whole thing obviously, but just enough to run the existing Cats Effect benchmarks for example.</li>
+        </ul>
       </li>
       <li>
         <p>Scala Native itself. Lots to do there!</p>
