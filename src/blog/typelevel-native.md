@@ -45,7 +45,7 @@ Meanwhile, Scala Native core does not implement an event loop nor offer such API
 Fortunately Daniel Spiewak had the fantastic insight that the “dummy runtime” which I created to initially cross-build Cats Effect for Native could be reformulated into a legitimate event loop implementation by extending it with the capability to “poll” for I/O events: a `PollingExecutorScheduler`.
 
 The [`PollingExecutorScheduler`] implements both [`ExecutionContext`] and [`Scheduler`] and maintains two queues:
-- a queue of tasks (read: fibers) to execute 
+- a queue of tasks (read: fibers) to execute
 - a priority queue of timers (read: `IO.sleep(...)`), sorted by expiration
 
 It also defines an abstract method:
@@ -97,7 +97,7 @@ As previously mentioned, these sorts of polling APIs are ubiquitous and not just
 
 ```c
 #include <curl/curl.h>
- 
+
 CURLMcode curl_multi_poll(CURLM *multi_handle,
                           struct curl_waitfd extra_fds[],
                           unsigned int extra_nfds,
@@ -148,30 +148,30 @@ Please try the Typelevel Native stack! And even better deploy it, and do so loud
 Besides that, here is a brain-dump of project ideas and existing projects that would love contributors. I am happy to help folks get started on any of these, or ideas of your own!
 
 * Creating example applications, templates, and tutorials:
-  - If you are short on inspiration, try cross-building existing examples such as [fs2-chat], [kitteh-redis], [Jobby].
-  - Spread the word: [you-forgot-a-percentage-sign-or-a-colon].
+    - If you are short on inspiration, try cross-building existing examples such as [fs2-chat], [kitteh-redis], [Jobby].
+    - Spread the word: [you-forgot-a-percentage-sign-or-a-colon].
 
 * Cross-building existing libraries and developing new, Typelevel-stack ones:
-  - Go [feral] and implement a pure Scala [custom AWS Lambda runtime] that cross-builds for Native.
-  - A pure Scala [gRPC] implementation built on http4s would be fantastic, even for the JVM. Christopher Davenport has published a [proof-of-concept][grpc-playground].
-  - [fs2-data] has pure Scala support for a plethora of data formats. The [http4s-fs2-data] integration needs your help to get off the ground!
-  - Lack of cross-platform cryptography is one of the remaining sore points in cross-building. I started the [bobcats] project to fill the gap but I am afraid it needs love from a more dedicated maintainer.
+    - Go [feral] and implement a pure Scala [custom AWS Lambda runtime] that cross-builds for Native.
+    - A pure Scala [gRPC] implementation built on http4s would be fantastic, even for the JVM. Christopher Davenport has published a [proof-of-concept][grpc-playground].
+    - [fs2-data] has pure Scala support for a plethora of data formats. The [http4s-fs2-data] integration needs your help to get off the ground!
+    - Lack of cross-platform cryptography is one of the remaining sore points in cross-building. I started the [bobcats] project to fill the gap but I am afraid it needs love from a more dedicated maintainer.
 
 * Integrations with native libraries:
-  - I kick-started [http4s-curl] and would love to see someone take the reigns!
-  - An [NGINX Unit] server backend for http4s promises exceptional performance. [snunit] pioneered this approach.
-  - Using [quiche] for HTTP/3 looks yummy!
-  - An idiomatic wrapper for [SQLite]. See also [davenverse/sqlite-sjs#1] which proposes cross-platform API backed by Doobie on the JVM.
+    - I kick-started [http4s-curl] and would love to see someone take the reigns!
+    - An [NGINX Unit] server backend for http4s promises exceptional performance. [snunit] pioneered this approach.
+    - Using [quiche] for HTTP/3 looks yummy!
+    - An idiomatic wrapper for [SQLite]. See also [davenverse/sqlite-sjs#1] which proposes cross-platform API backed by Doobie on the JVM.
 
 * Developing I/O-integrated runtimes:
-  - [epollcat] supports Linux and macOS and has plenty of opportunity for optimization and development.
-  - A [libuv]-based runtime would have solid cross-OS support, including Windows. Prior art in [scala-native-loop].
-  - Personally I am excited to work on an [io_uring] runtime.
+    - [epollcat] supports Linux and macOS and has plenty of opportunity for optimization and development.
+    - A [libuv]-based runtime would have solid cross-OS support, including Windows. Prior art in [scala-native-loop].
+    - Personally I am excited to work on an [io_uring] runtime.
 
 * Tooling. Anton Sviridov has spear-headed two major projects in this area:
-  - [sbt-vcpkg] is working hard to solve the native dependency problem.
-  - [sn-bindgen] generates Scala Native bindings to native libraries directly from `*.h` header files. I found it immensely useful while working on http4s-curl, epollcat, and the s2n-tls integration in FS2.
-  - Also: we are _badly_ in need of a pure Scala port of the [Java Microbenchmark Harness]. Not the whole thing obviously, but just enough to run the existing Cats Effect benchmarks for example.
+    - [sbt-vcpkg] is working hard to solve the native dependency problem.
+    - [sn-bindgen] generates Scala Native bindings to native libraries directly from `*.h` header files. I found it immensely useful while working on http4s-curl, epollcat, and the s2n-tls integration in FS2.
+    - Also: we are _badly_ in need of a pure Scala port of the [Java Microbenchmark Harness]. Not the whole thing obviously, but just enough to run the existing Cats Effect benchmarks for example.
 
 * Scala Native itself. Lots to do there!
 
