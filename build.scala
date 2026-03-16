@@ -1,6 +1,6 @@
 //> using dep org.http4s::http4s-ember-server::0.23.33
 //> using dep org.typelevel::laika-preview::1.3.2
-//> using dep com.monovore::decline-effect::2.6.0
+//> using dep com.monovore::decline-effect::2.6.1
 //> using dep org.graalvm.js:js:25.0.2
 //> using dep org.webjars.npm:katex:0.16.28
 //> using dep org.webjars.npm:fortawesome__fontawesome-free:7.1.0
