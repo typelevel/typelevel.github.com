@@ -284,10 +284,9 @@ object LaikaCustomizations {
     val spanDirectives = Seq(
       SpanDirectives.create("math") {
         import SpanDirectives.dsl.*
-        rawBody.map { body =>
-          RawContent(
-            NonEmptySet.of("html", "rss"),
-            KaTeX(body, false)
+        rawBody.evalMap { body =>
+          KaTeX(body, false).map(katexStr =>
+            RawContent(NonEmptySet.of("html", "rss"), katexStr)
           )
         }
       }
@@ -295,11 +294,9 @@ object LaikaCustomizations {
     val blockDirectives = Seq(
       BlockDirectives.create("math") {
         import BlockDirectives.dsl.*
-        rawBody.map { body =>
-          RawContent(
-            NonEmptySet.of("html", "rss"),
-            KaTeX(body, true),
-            Styles("bulma-has-text-centered")
+        rawBody.evalMap { body =>
+          KaTeX(body, true).map(katexStr =>
+            RawContent(NonEmptySet.of("html", "rss"), katexStr, Styles("bulma-has-text-centered"))
           )
         }
       },
@@ -438,14 +435,18 @@ object KaTeX {
     ctx.getBindings("js").getMember("katex")
   }
 
-  def apply(latex: String, displayMode: Boolean = false): String =
+  def apply(latex: String, displayMode: Boolean = false): Either[String, String] =
     synchronized {
       val options = Map(
         "throwOnError" -> true,
         "strict" -> true,
         "displayMode" -> displayMode
-      )
-      katex.invokeMember("renderToString", latex, options.asJava).asString
+      ).asJava
+      try {
+        Right(katex.invokeMember("renderToString", latex, options).asString)
+      } catch {
+        case ex: Exception => Left(ex.getMessage)
+      }
     }
 
 }
