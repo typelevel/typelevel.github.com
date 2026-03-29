@@ -285,7 +285,7 @@ object LaikaCustomizations {
       SpanDirectives.create("math") {
         import SpanDirectives.dsl.*
         rawBody.evalMap { body =>
-          (KaTeX(body, false), KaTeX(body, false, "mathml")).mapN(
+          (KaTeX.render(body, false), KaTeX.render(body, false, "mathml")).mapN(
             (katexStr, mathmlStr) =>
               SpanSequence(
                 RawContent(NonEmptySet.of("html"), katexStr),
@@ -299,7 +299,7 @@ object LaikaCustomizations {
       BlockDirectives.create("math") {
         import BlockDirectives.dsl.*
         rawBody.evalMap { body =>
-          (KaTeX(body, true), KaTeX(body, true, "mathml")).mapN(
+          (KaTeX.render(body, true), KaTeX.render(body, true, "mathml")).mapN(
             (katexStr, mathmlStr) =>
               BlockSequence(
                 RawContent(
@@ -454,7 +454,7 @@ object KaTeX {
     ctx.getBindings("js").getMember("katex")
   }
 
-  def apply(
+  def render(
       latex: String,
       displayMode: Boolean = false,
       output: String = "htmlAndMathml"
