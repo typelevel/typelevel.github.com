@@ -272,10 +272,10 @@ object LaikaCustomizations {
       },
       TemplateDirectives.create("svg") {
         import TemplateDirectives.dsl.*
-        attribute(0).as[String].map { icon =>
-          TemplateElement(
-            RawContent(NonEmptySet.of("html", "rss"), Icons(icon))
-          )
+        attribute(0).as[String].evalMap { icon =>
+          Icons.get(icon).toRight(s"Unknown SVG icon '$icon'").map { svg =>
+            TemplateElement(RawContent(NonEmptySet.of("html", "rss"), svg))
+          }
         }
       }
     )
