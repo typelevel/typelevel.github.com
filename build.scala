@@ -272,10 +272,10 @@ object LaikaCustomizations {
       },
       TemplateDirectives.create("svg") {
         import TemplateDirectives.dsl.*
-        attribute(0).as[String].map { icon =>
-          TemplateElement(
-            RawContent(NonEmptySet.of("html", "rss"), Icons(icon))
-          )
+        attribute(0).as[String].evalMap { icon =>
+          Icons.get(icon).toRight(s"Unknown SVG icon '$icon'").map { svg =>
+            TemplateElement(RawContent(NonEmptySet.of("html", "rss"), svg))
+          }
         }
       }
     )
@@ -284,10 +284,13 @@ object LaikaCustomizations {
     val spanDirectives = Seq(
       SpanDirectives.create("math") {
         import SpanDirectives.dsl.*
-        rawBody.map { body =>
-          SpanSequence(
-            RawContent(NonEmptySet.of("html"), KaTeX(body, false)),
-            RawContent(NonEmptySet.of("rss"), KaTeX(body, false, "mathml"))
+        rawBody.evalMap { body =>
+          (KaTeX.render(body, false), KaTeX.render(body, false, "mathml")).mapN(
+            (katexStr, mathmlStr) =>
+              SpanSequence(
+                RawContent(NonEmptySet.of("html"), katexStr),
+                RawContent(NonEmptySet.of("rss"), mathmlStr)
+              )
           )
         }
       }
@@ -295,14 +298,17 @@ object LaikaCustomizations {
     val blockDirectives = Seq(
       BlockDirectives.create("math") {
         import BlockDirectives.dsl.*
-        rawBody.map { body =>
-          BlockSequence(
-            RawContent(
-              NonEmptySet.of("html"),
-              KaTeX(body, true),
-              Styles("bulma-has-text-centered")
-            ),
-            RawContent(NonEmptySet.of("rss"), KaTeX(body, true, "mathml"))
+        rawBody.evalMap { body =>
+          (KaTeX.render(body, true), KaTeX.render(body, true, "mathml")).mapN(
+            (katexStr, mathmlStr) =>
+              BlockSequence(
+                RawContent(
+                  NonEmptySet.of("html", "rss"),
+                  katexStr,
+                  Styles("bulma-has-text-centered")
+                ),
+                RawContent(NonEmptySet.of("rss"), mathmlStr)
+              )
           )
         }
       },
@@ -448,11 +454,11 @@ object KaTeX {
     ctx.getBindings("js").getMember("katex")
   }
 
-  def apply(
+  def render(
       latex: String,
       displayMode: Boolean = false,
       output: String = "htmlAndMathml"
-  ): String =
+  ): Either[String, String] =
     synchronized {
       // https://katex.org/docs/options
       val options = Map(
@@ -460,8 +466,12 @@ object KaTeX {
         "strict" -> true,
         "displayMode" -> displayMode,
         "output" -> output
-      )
-      katex.invokeMember("renderToString", latex, options.asJava).asString
+      ).asJava
+      try {
+        Right(katex.invokeMember("renderToString", latex, options).asString)
+      } catch {
+        case ex: Exception => Left(ex.getMessage)
+      }
     }
 
 }
