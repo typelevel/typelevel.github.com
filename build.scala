@@ -285,8 +285,12 @@ object LaikaCustomizations {
       SpanDirectives.create("math") {
         import SpanDirectives.dsl.*
         rawBody.evalMap { body =>
-          KaTeX(body, false).map(katexStr =>
-            RawContent(NonEmptySet.of("html", "rss"), katexStr)
+          (KaTeX(body, false), KaTeX(body, false, "mathml")).mapN(
+            (katexStr, mathmlStr) =>
+              SpanSequence(
+                RawContent(NonEmptySet.of("html"), katexStr),
+                RawContent(NonEmptySet.of("rss"), mathmlStr)
+              )
           )
         }
       }
@@ -295,12 +299,16 @@ object LaikaCustomizations {
       BlockDirectives.create("math") {
         import BlockDirectives.dsl.*
         rawBody.evalMap { body =>
-          KaTeX(body, true).map(katexStr =>
-            RawContent(
-              NonEmptySet.of("html", "rss"),
-              katexStr,
-              Styles("bulma-has-text-centered")
-            )
+          (KaTeX(body, true), KaTeX(body, true, "mathml")).mapN(
+            (katexStr, mathmlStr) =>
+              BlockSequence(
+                RawContent(
+                  NonEmptySet.of("html", "rss"),
+                  katexStr,
+                  Styles("bulma-has-text-centered")
+                ),
+                RawContent(NonEmptySet.of("rss"), mathmlStr)
+              )
           )
         }
       },
@@ -345,6 +353,13 @@ object LaikaCustomizations {
       val defaultRenderer = {
         case (fmt, Title(_, _)) =>
           "" // don't render title b/c it is in the RSS metadata
+        case (fmt, RawContent(formats, content, options)) =>
+          if (formats.contains("rss")) // only render content designated for RSS
+            HTML.defaultRenderer(
+              fmt,
+              RawContent(NonEmptySet.of("html"), content, options)
+            )
+          else ""
         case (fmt, elem) => HTML.defaultRenderer(fmt, elem)
       }
 
@@ -441,13 +456,16 @@ object KaTeX {
 
   def apply(
       latex: String,
-      displayMode: Boolean = false
+      displayMode: Boolean = false,
+      output: String = "htmlAndMathml"
   ): Either[String, String] =
     synchronized {
+      // https://katex.org/docs/options
       val options = Map(
         "throwOnError" -> true,
         "strict" -> true,
-        "displayMode" -> displayMode
+        "displayMode" -> displayMode,
+        "output" -> output
       ).asJava
       try {
         Right(katex.invokeMember("renderToString", latex, options).asString)
