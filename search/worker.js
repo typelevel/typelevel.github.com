@@ -24,9 +24,35 @@ async function searchIt(query) {
   return querier.search(query)
 }
 
-onmessage = async function(e) {
-  const query = e.data || '' // empty strings become undefined somehow ...
-  this.postMessage(await searchIt(query))
+const waitMs = 100
+let timeoutId = null
+let lastValue = ""
+
+function post(value) {
+  lastValue = value
+  if (timeoutId) clearTimeout(timeoutId)
+  timeoutId = setTimeout(async () => {
+    timeoutId = null
+    postMessage(await searchIt(lastValue))
+  }, waitMs)
+}
+
+async function flush(value) {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+    timeoutId = null
+  }
+  postMessage(await searchIt(value))
+}
+
+onmessage = function(e) {
+  const msg = e.data
+  const query = msg.query || ''
+  if (msg.flush) {
+    flush(query)
+  } else {
+    post(query)
+  }
 }
 
 if (maybeQuery == undefined) {

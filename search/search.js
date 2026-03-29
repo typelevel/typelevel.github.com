@@ -93,7 +93,10 @@ function setupModal(config, renderFn) {
   // Send input to worker
   const worker = createSearchWorker(config, modalBody, renderFn)
   modalInput.addEventListener("input", function() {
-    worker.postMessage(this.value)
+    worker.postMessage({query: this.value})
+  })
+  modalInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") worker.postMessage({query: this.value, flush: true})
   })
 
   return true
@@ -108,13 +111,16 @@ function setupPage(config, renderFn) {
   // Send input to worker
   const worker = createSearchWorker(config, resultsContainer, renderFn)
   searchBar.addEventListener("input", function() {
-    worker.postMessage(this.value)
+    worker.postMessage({query: this.value})
+  })
+  searchBar.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") worker.postMessage({query: this.value, flush: true})
   })
 
   // If query param `q` is set, use it as initial query
   if (config.query) {
     searchBar.value = config.query
-    worker.postMessage(config.query)
+    worker.postMessage({query: config.query, flush: true})
   }
 
   return true
