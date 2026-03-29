@@ -296,7 +296,11 @@ object LaikaCustomizations {
         import BlockDirectives.dsl.*
         rawBody.evalMap { body =>
           KaTeX(body, true).map(katexStr =>
-            RawContent(NonEmptySet.of("html", "rss"), katexStr, Styles("bulma-has-text-centered"))
+            RawContent(
+              NonEmptySet.of("html", "rss"),
+              katexStr,
+              Styles("bulma-has-text-centered")
+            )
           )
         }
       },
@@ -435,7 +439,10 @@ object KaTeX {
     ctx.getBindings("js").getMember("katex")
   }
 
-  def apply(latex: String, displayMode: Boolean = false): Either[String, String] =
+  def apply(
+      latex: String,
+      displayMode: Boolean = false
+  ): Either[String, String] =
     synchronized {
       val options = Map(
         "throwOnError" -> true,
