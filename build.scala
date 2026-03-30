@@ -48,7 +48,8 @@ object Main extends CommandIOApp("build", "builds the site") {
 
   def main = opts.map {
     case Subcommand.Build(destination) =>
-      Files[IO].deleteRecursively(destination).voidError *>
+      IO.println(s"Building to: $destination") *>
+        Files[IO].deleteRecursively(destination).voidError *>
         LaikaBuild.build(FilePath.fromFS2Path(destination)).as(ExitCode.Success)
 
     case Subcommand.Serve(port) =>
@@ -85,12 +86,23 @@ object LaikaBuild {
       "https://raw.githubusercontent.com/typelevel/.github/refs/heads/main/SECURITY.md"
     ).toURL()
 
+    val metadataContent = scala.util
+      .Try(
+        java.nio.file.Files.readString(
+          java.nio.file.Paths.get("target/search/metadata.json")
+        )
+      )
+      .getOrElse("{}")
     InputTree[IO]
       .addDirectory("src")
       // Laika skips .dotfiles by default
       .addDirectory("src/.well-known", Path.Root / ".well-known")
+      .addString(metadataContent, Path.Root / "search" / "metadata.json")
       .addInputStream(
-        IO.blocking(securityPolicy.openStream()),
+        IO.blocking(securityPolicy.openStream()).handleErrorWith { _ =>
+          IO.println("fetching security.md failed, skipping.") *>
+            IO.pure(new java.io.ByteArrayInputStream(Array.emptyByteArray))
+        },
         Path.Root / "security.md"
       )
       .addClassResource[this.type](
@@ -163,9 +175,71 @@ object LaikaBuild {
           index
             .from(tree)
             .toFile(destination / "search" / "searchIndex.idx")
-            .render
+            .render *>
+          writeMetadata(tree.root, destination)
       }
     }
+  }
+
+  private def writeMetadata(
+      tree: DocumentTreeRoot,
+      destination: FilePath
+  ): IO[Unit] = {
+    import java.time.OffsetDateTime
+
+    case class PostMetadata(
+        path: String,
+        authors: Seq[String],
+        tags: Seq[String],
+        date: String
+    )
+
+    // walk all documents, keep only ones with a date field (blog posts + events)
+    val posts: Seq[PostMetadata] = tree.allDocuments.flatMap { doc =>
+      doc.config.get[OffsetDateTime]("date").toOption.map { date =>
+        val path = "/" + doc.path.toString
+          .stripPrefix("/")
+          .stripSuffix(".md") + ".html"
+        val authors = doc.config.get[Seq[String]]("author.github") match {
+          case Right(list) => list
+          case _           =>
+            doc.config.get[String]("author.github") match {
+              case Right(single) => Seq(single)
+              case _             => Nil
+            }
+        }
+        val tags = doc.config
+          .get[Seq[String]]("tags")
+          .getOrElse(Nil)
+        PostMetadata(path, authors, tags, date.toLocalDate.toString)
+      }
+    }
+
+    // build JSON manually — no extra dependency needed
+    def jsonStr(s: String) = s""""$s""""
+    def jsonArr(items: Seq[String]) =
+      items.map(jsonStr).mkString("[", ", ", "]")
+
+    val entries = posts.map { p =>
+      s"""  ${jsonStr(p.path)}: {""" +
+        s""""authors": ${jsonArr(p.authors)}, """ +
+        s""""tags": ${jsonArr(p.tags)}, """ +
+        s""""date": ${jsonStr(p.date)}}"""
+    }
+
+    val json = entries.mkString("{\n", ",\n", "\n}")
+
+    // write to target/search/metadata.json
+    val outPath = java.nio.file.Paths.get(
+      destination.toString,
+      "search",
+      "metadata.json"
+    )
+
+    IO.blocking {
+      java.nio.file.Files.createDirectories(outPath.getParent)
+      java.nio.file.Files.writeString(outPath, json)
+    }.void
   }
 }
 
@@ -180,6 +254,7 @@ object LaikaCustomizations {
   import laika.ast.*
   import laika.format.*
   import laika.theme.*
+  // import ciris.{Config, ConfigValue, ObjectValue, ArrayValue, Field}
 
   def addAnchorLinks(fmt: TagFormatter, h: Header) = {
     val link = h.options.id.map { id =>
