@@ -5,6 +5,35 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>Join the Technical Steering Committee</title>
+  <pubDate>Thu, 2 Apr 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Typelevel Foundation</dc:creator>
+  
+  <link>https://typelevel.org/blog/join-tsc-2026.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/join-tsc-2026.html</guid>
+  <description><![CDATA[
+<p>Last December, we <a href="https://github.com/typelevel/foundation/pull/4">established the Technical Steering Committee</a> (TSC) as an advisory committee to the <a href="https://typelevel.org/foundation/README.html">Typelevel Foundation</a>. We are passionate about making programming joyful and social, and our aspiration for this new committee is to bring together a diverse group of contributors, users, and enthusiasts to build camaraderie and collaborate to develop a collective vision for Typelevel and our technology.</p>
+<p>The TSC will meet monthly and is broadly tasked with helping to steward Typelevel&#39;s projects. This may look like many things, such as:</p>
+<ul>
+  <li>sharing your experiences, to grow our organizational knowledge</li>
+  <li>providing early feedback on new developments</li>
+  <li>maintaining and documenting our libraries and infrastructure</li>
+  <li>curating our portfolio of Organization and Affiliate projects</li>
+  <li>developing an AI policy for contributions to our repositories</li>
+  <li>advising the Typelevel Foundation on its technical roadmap</li>
+  <li>getting nerd-sniped with friends and brainstorming new ideas!</li>
+  <li>being a cheerleader for our community :)</li>
+</ul>
+<p>As a member of the TSC, you certainly do not have to do all of these, but you are excited and eager to play to your strengths and help where you can. Moreover, as part of Typelevel&#39;s leadership, you will exemplify the values in our <a href="https://typelevel.org/code-of-conduct/README.html">Code of Conduct</a>.</p>
+<p>We invited the former Steering Committee to serve as the founding members of the TSC. <strong>Today, we are welcoming additional members to join the team.</strong> This is a special opportunity to help grow an organization that is important to you and so many people in a collaborative and social setting. If you are active on GitHub or Discord, use Typelevel projects for business or pleasure, teach functional programming, and/or build community, please consider applying. And this is by no means an exhaustive list of what a great candidate may look like!</p>
+
+<h2 id="applying" class="section">Applying</h2>
+<p>To apply, please <a href="https://docs.google.com/forms/d/e/1FAIpQLSdE-d0YQuQWhh-QAmAXZSkvWhCfaXyAX4gG4lF8tNJ2v2vOJg/viewform">submit your name</a>, optionally with a brief statement about why you wish to serve on the TSC, by Monday, April 20. Terms are two years long, with the opportunity to renew.</p>
+<p>Applications are visible only to the <a href="https://typelevel.org/foundation/people.html">current committee membership</a>. We will thoughtfully consider all serious applications, deliberate in private, and not disclose the identities of applicants.</p>
+<p>We look forward to reading applications from familiar names and also hope to hear from new faces with fresh perspectives whom we have not yet had the pleasure of meeting. We are not looking for third-party nominations, but if there is someone you would like to see, encourage them to apply!</p>]]></description>
+</item>
+<item>
   <title>Typelevel Foundation is a 501(c)(3) public charity</title>
   <pubDate>Thu, 5 Mar 2026 00:00:00 GMT</pubDate>
   
