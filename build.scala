@@ -2,7 +2,7 @@
 //> using dep org.typelevel::laika-preview::1.3.2
 //> using dep com.monovore::decline-effect::2.6.1
 //> using dep org.graalvm.js:js:25.0.2
-//> using dep org.webjars.npm:katex:0.16.28
+//> using dep org.webjars.npm:katex:0.16.44
 //> using dep org.webjars.npm:fortawesome__fontawesome-free:7.1.0
 //> using dep pink.cozydev::protosearch-laika:0.0-7f79720-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
@@ -440,7 +440,7 @@ object KaTeX {
   import scala.jdk.CollectionConverters.*
 
   private def loadKaTeX(): String = {
-    val resourcePath = "/META-INF/resources/webjars/katex/0.16.28/dist/katex.js"
+    val resourcePath = "/META-INF/resources/webjars/katex/0.16.44/dist/katex.js"
     val inputStream = getClass.getResourceAsStream(resourcePath)
     String(inputStream.readAllBytes())
   }
