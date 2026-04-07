@@ -1,5 +1,5 @@
 {%
-sponsors: [${spotify}, ${aruna}, ${shopify}, ${famly}]
+sponsors: [${spotify}, ${aruna}, ${shopify}, ${wide-angle}, ${famly}]
 %}
 
 @:embed(/templates/main.template.html)
@@ -25,17 +25,21 @@ sponsors: [${spotify}, ${aruna}, ${shopify}, ${famly}]
     </p>
   </div>
 </section>
-<div class="bulma-section bulma-container bulma-is-max-desktop">
+<div class="bulma-section">
   <div class="bulma-columns bulma-is-vcentered">
+    <div class="bulma-column"></div>
     @:for(sponsors)
-    <div class="bulma-column bulma-has-text-centered">
+    <div class="bulma-column bulma-is-narrow bulma-has-text-centered">
       <a href="${_.url}"><img class="sponsor" src="@:target(_.logo)" /></a>
     </div>
     @:@
+    <div class="bulma-column"></div>
   </div>
-  <h4 class="bulma-subtitle bulma-is-4 bulma-has-text-centered">
-    Typelevel is built by a vibrant global community and backed by a nonprofit Foundation with the support of our
-    industry sponsors.
-  </h4>
+  <div class="bulma-container bulma-is-max-desktop">
+    <h4 class="bulma-subtitle bulma-is-4 bulma-has-text-centered">
+      Typelevel is built by a vibrant global community and backed by a nonprofit Foundation with the support of our
+      industry sponsors.
+    </h4>
+  </div>
 </div>
 @:@
