@@ -59,7 +59,10 @@ h6:hover > a.anchor-link {
 }
 
 img.sponsor {
+  width: 100%;
+  height: auto;
   max-height: 48px;
+  object-fit: contain;
 }
 
 /* Hack to prevent double-rendering the title in blog posts */

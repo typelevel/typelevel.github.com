@@ -1,7 +1,7 @@
 {%
   laika.html.template: about.template.html
   laika.title: Typelevel Foundation
-  sponsors: [${spotify}, ${aruna}, ${shopify}, ${famly}]
+  sponsors: [${spotify}, ${aruna}, ${shopify}, ${wide-angle}, ${famly}]
 %}
 
 # About the Typelevel Foundation
