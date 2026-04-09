@@ -3,7 +3,7 @@
 //> using dep com.monovore::decline-effect::2.6.2
 //> using dep org.graalvm.js:js:25.0.2
 //> using dep org.webjars.npm:katex:0.16.28
-//> using dep org.webjars.npm:fortawesome__fontawesome-free:7.1.0
+//> using dep org.webjars.npm:fortawesome__fontawesome-free:7.2.0
 //> using dep pink.cozydev::protosearch-laika:0.0-7f79720-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
@@ -407,7 +407,7 @@ object LaikaCustomizations {
   val Icons = {
     def loadFaIcon(prefix: String, name: String) = {
       val resourcePath =
-        "/META-INF/resources/webjars/fortawesome__fontawesome-free/7.1.0"
+        "/META-INF/resources/webjars/fortawesome__fontawesome-free/7.2.0"
       val inputStream =
         getClass.getResourceAsStream(s"$resourcePath/svgs/$prefix/$name.svg")
       String(inputStream.readAllBytes())
