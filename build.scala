@@ -405,13 +405,9 @@ object LaikaCustomizations {
   }
 
   val Icons = {
-    def loadFaIcon(prefix: String, name: String) = {
-      val resourcePath =
-        "/META-INF/resources/webjars/fortawesome__fontawesome-free/7.2.0"
-      val inputStream =
-        getClass.getResourceAsStream(s"$resourcePath/svgs/$prefix/$name.svg")
-      String(inputStream.readAllBytes())
-    }
+    val fa = WebJar("fortawesome__fontawesome-free")
+    def loadFaIcon(prefix: String, name: String) =
+      fa.load(s"svgs/$prefix/$name.svg")
 
     Map(
       // brands
@@ -439,11 +435,9 @@ object KaTeX {
   import org.graalvm.polyglot.*
   import scala.jdk.CollectionConverters.*
 
-  private def loadKaTeX(): String = {
-    val resourcePath = "/META-INF/resources/webjars/katex/0.16.44/dist/katex.js"
-    val inputStream = getClass.getResourceAsStream(resourcePath)
-    String(inputStream.readAllBytes())
-  }
+  private val katexJar = WebJar("katex")
+
+  private def loadKaTeX(): String = katexJar.load("dist/katex.js")
 
   private lazy val katex = {
     val ctx = Context
@@ -474,6 +468,36 @@ object KaTeX {
       }
     }
 
+}
+
+// Provides access to resources of a bundled WebJar.
+class WebJar(artifactId: String) {
+  private val version: String =
+    val propsPath = s"META-INF/maven/org.webjars.npm/$artifactId/pom.properties"
+    val stream = Thread
+      .currentThread()
+      .getContextClassLoader
+      .getResourceAsStream(propsPath)
+    if stream == null then
+      throw IllegalStateException(
+        s"Could not find pom.properties for webjar '$artifactId' on the classpath."
+      )
+    val props = java.util.Properties()
+    props.load(stream)
+    props.getProperty("version")
+
+  // Load a resource from this WebJar as a String, uses relative paths.
+  def load(path: String): String =
+    val resourcePath = s"META-INF/resources/webjars/$artifactId/$version/$path"
+    val stream = Thread
+      .currentThread()
+      .getContextClassLoader
+      .getResourceAsStream(resourcePath)
+    if stream == null then
+      throw IllegalStateException(
+        s"Could not find resource '$path' in webjar '$artifactId' ($version)."
+      )
+    String(stream.readAllBytes())
 }
 
 object Redirects {
