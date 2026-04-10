@@ -472,12 +472,11 @@ object KaTeX {
 
 // Provides access to resources of a bundled WebJar.
 class WebJar(artifactId: String) {
+  private val classLoader = classOf[WebJar].getClassLoader
+
   private val version: String =
     val propsPath = s"META-INF/maven/org.webjars.npm/$artifactId/pom.properties"
-    val stream = Thread
-      .currentThread()
-      .getContextClassLoader
-      .getResourceAsStream(propsPath)
+    val stream = classLoader.getResourceAsStream(propsPath)
     if stream == null then
       throw IllegalStateException(
         s"Could not find pom.properties for webjar '$artifactId' on the classpath."
@@ -489,10 +488,7 @@ class WebJar(artifactId: String) {
   // Load a resource from this WebJar as a String, uses relative paths.
   def load(path: String): String =
     val resourcePath = s"META-INF/resources/webjars/$artifactId/$version/$path"
-    val stream = Thread
-      .currentThread()
-      .getContextClassLoader
-      .getResourceAsStream(resourcePath)
+    val stream = classLoader.getResourceAsStream(resourcePath)
     if stream == null then
       throw IllegalStateException(
         s"Could not find resource '$path' in webjar '$artifactId' ($version)."
