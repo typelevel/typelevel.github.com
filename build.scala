@@ -86,8 +86,9 @@ object LaikaBuild {
     ).toURL()
 
     InputTree[IO]
+      // Exclude `.well-known` from the main `src` scan to avoid duplicates; it is added explicitly below for consistent cross-platform behavior.
+      .withFileFilter(FileFilter.lift(_.name == ".well-known"))
       .addDirectory("src")
-      // Laika skips .dotfiles by default
       .addDirectory("src/.well-known", Path.Root / ".well-known")
       .addInputStream(
         IO.blocking(securityPolicy.openStream()),
