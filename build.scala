@@ -1,4 +1,4 @@
-//> using dep org.http4s::http4s-ember-server::0.23.33
+//> using dep org.http4s::http4s-ember-server::0.23.34
 //> using dep org.typelevel::laika-preview::1.3.2
 //> using dep com.monovore::decline-effect::2.6.2
 //> using dep org.graalvm.js:js:25.0.2
