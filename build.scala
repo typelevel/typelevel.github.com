@@ -80,8 +80,9 @@ object LaikaBuild {
   import pink.cozydev.protosearch.laika.IndexConfig
   import pink.cozydev.protosearch.ui.SearchUI
 
+  val indexExclusions = Path.Root / "404.md" +: Redirects.paths
   val indexConfig =
-    IndexConfig.withExcludedPaths(Path.Root / "404.md")
+    IndexConfig.withExcludedPaths(indexExclusions*)
 
   def input = {
     val securityPolicy = new URI(
@@ -490,6 +491,8 @@ object Redirects {
   def inputTree = map.foldLeft(InputTree[IO]) { case (tree, (from, to)) =>
     tree.addString(mkRedirect(to), Root / (from.stripSuffix(".html") + ".md"))
   }
+
+  def paths = map.keys.map(p => Root / p.stripSuffix(".html")).toList
 
   private def mkRedirect(to: String) =
     s"""{% laika.html.template = "/templates/redirect.template.html", laika.targetFormats: [html], target = "$to" %}"""
