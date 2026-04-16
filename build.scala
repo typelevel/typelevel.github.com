@@ -157,7 +157,11 @@ object LaikaBuild {
       .parallel[IO]
       .build
     val index =
-      Renderer.of(indexConfig.format).withConfig(parser.config).parallel[IO].build
+      Renderer
+        .of(indexConfig.format)
+        .withConfig(parser.config)
+        .parallel[IO]
+        .build
 
     (html, rss, index).tupled.use { (html, rss, index) =>
       parser.fromInput(input).parse.flatMap { tree =>
