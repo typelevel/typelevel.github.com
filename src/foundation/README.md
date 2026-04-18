@@ -15,7 +15,7 @@ We are committed to transparency and publish our [governing documents], [meeting
 
 [governing documents]: https://github.com/typelevel/foundation
 [meeting minutes]: https://github.com/typelevel/foundation/tree/main/minutes
-[financial records]: https://opencollective.com/typelevel-foundation/transactions
+[financial records]: https://drive.google.com/drive/folders/1-_SQ7Ps1QhLdRYf9lpoSVEPSQvFerVy6
 
 ### Supporting the Foundation
 
