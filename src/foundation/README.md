@@ -30,7 +30,7 @@ If your organization relies on Typelevel projects, please consider financially s
 </div>
 @:@
 
-We also accept donations on [GitHub Sponsors] and [Open Collective].
+We also accept donations on [GitHub Sponsors] and [Open Collective] and are listed in employee giving platforms such as Benevity, CyberGrants, and YourCause.
 
 **German donors**: we have partnered with the [Maecenata Foundation] to accept tax-deductible donations from Germany. Please use their [donation form][maecenata] and be sure to designate **TG26017 Typelevel Foundation** as the recipient organization.
 
