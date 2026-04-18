@@ -4,7 +4,7 @@
 //> using dep org.graalvm.js:js:25.0.2
 //> using dep org.webjars.npm:katex:0.16.44
 //> using dep org.webjars.npm:fortawesome__fontawesome-free:7.2.0
-//> using dep pink.cozydev::protosearch-laika:0.0-7f79720-SNAPSHOT
+//> using dep pink.cozydev::protosearch-laika:0.0-bbb1740-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
 
@@ -77,8 +77,12 @@ object LaikaBuild {
   import laika.io.syntax.*
   import laika.parse.code.languages.ScalaSyntax
   import laika.theme.*
-  import pink.cozydev.protosearch.analysis.{IndexFormat, IndexRendererConfig}
+  import pink.cozydev.protosearch.laika.IndexConfig
   import pink.cozydev.protosearch.ui.SearchUI
+
+  val indexExclusions = Path.Root / "404.md" +: Redirects.paths
+  val indexConfig =
+    IndexConfig.withExcludedPaths(indexExclusions*)
 
   def input = {
     val securityPolicy = new URI(
@@ -128,7 +132,7 @@ object LaikaBuild {
     .build
 
   val binaryRenderers = List(
-    IndexRendererConfig(true),
+    indexConfig.config,
     BinaryRendererConfig(
       "rss",
       LaikaCustomizations.Rss,
@@ -154,7 +158,11 @@ object LaikaBuild {
       .parallel[IO]
       .build
     val index =
-      Renderer.of(IndexFormat).withConfig(parser.config).parallel[IO].build
+      Renderer
+        .of(indexConfig.format)
+        .withConfig(parser.config)
+        .parallel[IO]
+        .build
 
     (html, rss, index).tupled.use { (html, rss, index) =>
       parser.fromInput(input).parse.flatMap { tree =>
@@ -504,6 +512,8 @@ object Redirects {
   def inputTree = map.foldLeft(InputTree[IO]) { case (tree, (from, to)) =>
     tree.addString(mkRedirect(to), Root / (from.stripSuffix(".html") + ".md"))
   }
+
+  def paths = map.keys.map(p => Root / p.stripSuffix(".html")).toList
 
   private def mkRedirect(to: String) =
     s"""{% laika.html.template = "/templates/redirect.template.html", laika.targetFormats: [html], target = "$to" %}"""
