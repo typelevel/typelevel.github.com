@@ -7,9 +7,14 @@ function handleBurgerClick(el) {
 
 // search
 
-function showSearchModal() {
+function isSearchModalActive() {
   const modal = document.getElementById("search-modal");
-  if (!modal.classList.contains("bulma-is-active")) {
+  return modal.classList.contains("bulma-is-active");
+}
+
+function showSearchModal() {
+  if (!isSearchModalActive()) {
+    const modal = document.getElementById("search-modal");
     modal.classList.add("bulma-is-active");
     const input = document.getElementById("search-input");
     input.value = "";
@@ -20,9 +25,10 @@ function showSearchModal() {
 }
 
 function hideSearchModal() {
-  const modal = document.getElementById("search-modal");
-  if (modal.classList.contains("bulma-is-active"))
+  if (isSearchModalActive()) {
+    const modal = document.getElementById("search-modal");
     modal.classList.remove("bulma-is-active");
+  }
 }
 
 function renderHit(hit) {
@@ -62,11 +68,11 @@ function onSearchInput(event) {
 // Keyboard shortcuts: `/` to open, `Escape` to close
 window.addEventListener("keydown", (event) => {
   if (event.defaultPrevented) return;
-  if (event.code == "Slash") {
+  if (event.code == "Slash" && !isSearchModalActive()) {
     event.preventDefault();
     showSearchModal();
   }
-  if (event.code == "Escape") {
+  if (event.code == "Escape" && isSearchModalActive()) {
     event.preventDefault();
     hideSearchModal();
   }
