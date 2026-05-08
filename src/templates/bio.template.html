@@ -31,6 +31,11 @@
           <span class="bulma-icon bulma-is-small">@:svg(fa-envelope)</span>
         </a>
         @:@
+        @:for(_.signal)
+        <a class="bulma-level-item" href=":${_.signal}">
+          <span class="bulma-icon bulma-is-small">@:svg(fa-signal-messenger)</span>
+        </a>
+        @:@
         @:for(_.url)
         <a class="bulma-level-item" href="${_.url}">
           <span class="bulma-icon bulma-is-small">@:svg(fa-globe)</span>

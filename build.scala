@@ -416,6 +416,7 @@ object LaikaCustomizations {
       "fa-github" -> loadFaIcon("brands", "github"),
       "fa-linkedin" -> loadFaIcon("brands", "linkedin"),
       "fa-mastodon" -> loadFaIcon("brands", "mastodon"),
+      "fa-signal-messenger" -> loadFaIcon("brands", "signal-messenger"),
       "fa-youtube" -> loadFaIcon("brands", "youtube"),
       // solids
       "fa-book" -> loadFaIcon("solid", "book"),
