@@ -2,7 +2,7 @@
 
 Every month, we host a friendly virtual meetup for the Typelevel Community! Each meetup begins with an icebreaker activity to get to know each other, followed by a presentation on a technical topic.
 
-Our meetups are open to everyone! All participants must follow the [Typelevel Code of Conduct]. We do not record virtual meetups to respect the privacy of attendees and provide a relaxed, safe space to participate.
+Our meetups are open to everyone! All participants must follow the [Typelevel Code of Conduct]. We do not record virtual meetups to respect the privacy of attendees while providing a relaxed, safe space to participate.
 
 To receive notifications of future meetups subscribe to the calendar below or ask to join the [Google Group].
 
