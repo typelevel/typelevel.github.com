@@ -341,35 +341,5 @@ opportunities to become involved.</p>]]></description>
 </ul>
 <p>More details and registration are available on the <a href="https://lu.ma/g7qow6h3">event page</a>. All participants and organizers must abide by the <a href="https://typelevel.org/code-of-conduct/README.html">Typelevel Code of Conduct</a>.</p>]]></description>
 </item>
-<item>
-  <title>Typelevel Weaver released</title>
-  <pubDate>Tue, 10 Jun 2025 00:00:00 GMT</pubDate>
-  
-    <dc:creator>Zainab Ali</dc:creator>
-  
-  <link>https://typelevel.org/blog/weaver-test-release.html</link>
-  <guid isPermaLink="true">https://typelevel.org/blog/weaver-test-release.html</guid>
-  <description><![CDATA[
-<p>We are delighted to announce the release of <a href="https://typelevel.org/weaver-test/">weaver-test</a> under Typelevel.</p>
-
-<h1 id="what-is-weaver" class="section">What is weaver?</h1>
-<p>Weaver is a test framework for integration and end-to-end testing. It makes tests faster and easier to debug by using <code>cats</code>, <code>cats-effect</code> and <code>fs2</code>.</p>
-<p>Weaver provides a high quality experience when writing and running tests:</p>
-<ul>
-  <li>Tests within a suite are run in parallel for the quickest results possible. This is especially suited to IO heavy tests, such as those making API calls or reading files.</li>
-  <li>Expectations (ie assertions) are composable values. This enables
-  developers to separate the scenario of the test from the checks they perform,
-  generally keeping tests cleaner and clearer.</li>
-  <li>Failures are aggregated and reported at the end of the run. This prevents the developer from having to &quot;scroll up&quot; forever when trying to understand what failed.</li>
-  <li>A lazy logger is provided for each test, and log statements are only displayed in case of a test failure. This lets the developer enrich their tests with clues and works perfectly well with parallel runs. Even though all tests are run in parallel, the developer can browse a sequential log of the test failure.</li>
-  <li>“beforeAll” and “afterAll” logic is represented using a <code>cats.effect.Resource</code>. This ensures that shared resources, such as HTTP clients, connection pools and file handles, are cleaned up correctly and predictably.</li>
-</ul>
-
-<h1 id="why-is-weaver-moving-under-the-typelevel-umbrella" class="section">Why is weaver moving under the Typelevel umbrella?</h1>
-<p>Weaver makes heavy use of the <code>cats-effect</code> and <code>fs2</code> Typelevel projects. These enable weaver to run tests concurrently, provide safe resource handling, composable assertions and much more. By becoming part of the Typelevel umbrella, weaver can be maintained more easily alongside its core dependencies.</p>
-
-<h1 id="migrating-to-the-0-9-0-release" class="section">Migrating to the <code>0.9.0</code> release</h1>
-<p>If you use <a href="https://github.com/scala-steward-org/scala-steward">Scala Steward</a>, you will migrate automatically. If not, read the <a href="https://github.com/typelevel/weaver-test/releases/tag/v0.9.0"><code>0.9.0</code> migration guide</a>.</p>]]></description>
-</item>
 </channel>
 </rss>
