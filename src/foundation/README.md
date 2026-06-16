@@ -36,6 +36,8 @@ We also accept donations on [GitHub Sponsors] and [Open Collective] and are list
 
 **Swiss donors**: we have partnered with the [Swiss Philanthropy Foundation] to accept tax-deductible donations from Switzerland. Please contact them at international@swissphilanthropy.ch to facilitate a donation to us.
 
+**UK donors**: we have partnered with [Global Giving UK] to claim [Gift Aid] on donations from the United Kingdom. Please donate via [our project page][globalgiving] on their website and make sure to tick the box to add Gift Aid to your donation.
+
 **European donors**: if your country participates in the [Giving Europe] network, we can accept tax-efficient donations from you. Please contact us to arrange this.
 
 Have questions or specific needs? Please email us at donate@typelevel.org.
@@ -45,4 +47,7 @@ Have questions or specific needs? Please email us at donate@typelevel.org.
 [Maecenata Foundation]: https://www.maecenata.eu/
 [maecenata]: https://www.maecenata.eu/internationales-spenden?fb_item_id_fix=93115
 [Swiss Philanthropy Foundation]: https://www.swissphilanthropy.ch/
+[Global Giving UK]: http://www.globalgiving.org/
+[Gift Aid]: https://www.gov.uk/donating-to-charity/gift-aid
+[globalgiving]: https://www.globalgiving.org/projects/typelevel/
 [Giving Europe]: https://giving.eu/
