@@ -420,6 +420,7 @@ object LaikaCustomizations {
       "fa-youtube" -> loadFaIcon("brands", "youtube"),
       // solids
       "fa-book" -> loadFaIcon("solid", "book"),
+      "fa-chess-knight" -> loadFaIcon("solid", "chess-knight"),
       "fa-envelope" -> loadFaIcon("solid", "envelope"),
       "fa-globe" -> loadFaIcon("solid", "globe"),
       "fa-hand-holding-heart" -> loadFaIcon("solid", "hand-holding-heart"),
