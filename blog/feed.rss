@@ -5,6 +5,61 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>Typelevel Traverses Europe</title>
+  <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Arman Bilge</dc:creator>
+  
+  <link>https://typelevel.org/blog/traverses-europe-2026.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/traverses-europe-2026.html</guid>
+  <description><![CDATA[
+<p>I am excited to announce <strong>three upcoming, in-person meetups</strong> across Europe this October! These events are a wonderful opportunity to <strong>connect with other functional programming enthusiasts in a safe, supportive space</strong>. We welcome current and aspiring Typelevel users, contributors, and anyone curious to learn more about functional programming, no matter your prior experience. We will follow the <a href="https://typelevel.org/code-of-conduct/README.html">Typelevel Code of Conduct</a>.</p>
+<p><strong>Participating is free for everyone</strong> and space is limited, so please register early! Our mission to do functional programming together is possible thanks to our <a href="https://typelevel.org/foundation/README.html">sponsors</a>. Please consider supporting the Typelevel Foundation with a <a href="https://typelevel.org/foundation/README.html#supporting-the-foundation">recurring donation</a> to help keep our community thriving.</p>
+
+<h2 id="berlin-on-wednesday-14-october" class="section">Berlin on Wednesday 14 October</h2>
+<p>Our first stop will be Berlin, after <a href="https://scaladays.org/">Scala Days</a>. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Maciej Dragun for co-organizing, <a href="https://zalando.com">Zalando</a> for hosting us, and <a href="https://inputobjects.com">Input Objects</a> for their generous sponsorship!</p>
+<div class="bulma-is-flex bulma-is-justify-content-center">
+  <a
+    href="https://luma.com/event/evt-KIBGxKofTu7K4mx"
+    class="bulma-button bulma-is-link"
+    data-luma-action="checkout"
+    data-luma-event-id="evt-KIBGxKofTu7K4mx"
+  >
+    Register for Berlin
+  </a>
+</div>
+
+<h2 id="london-on-saturday-24-october" class="section">London on Saturday 24 October</h2>
+<p>Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the <a href="https://www.meetup.com/london-scala/">London Scala User Group</a> for co-organizing and <a href="https://siriusxm.com">SiriusXM</a> for hosting us!</p>
+<div class="bulma-is-flex bulma-is-justify-content-center">
+  <a
+    href="https://luma.com/event/evt-f3Ig5YuT6eUN0K8"
+    class="bulma-button bulma-is-link"
+    data-luma-action="checkout"
+    data-luma-event-id="evt-f3Ig5YuT6eUN0K8"
+  >
+    Register for London
+  </a>
+</div>
+
+<h2 id="málaga-on-wednesday-28-october" class="section">Málaga on Wednesday 28 October</h2>
+<p>Finally, we will meet in Málaga the day before <a href="https://lambda.world/">Lambda World</a>. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Daniel Hinojosa for co-organizing and <a href="https://intellias.com">Intellias</a> for hosting us!</p>
+<div class="bulma-is-flex bulma-is-justify-content-center">
+  <a
+    href="https://luma.com/event/evt-zXekr7hZ4cCECfM"
+    class="bulma-button bulma-is-link"
+    data-luma-action="checkout"
+    data-luma-event-id="evt-zXekr7hZ4cCECfM"
+  >
+    Register for Málaga
+  </a>
+</div>
+
+<h2 id="call-for-proposals" class="section">Call for Proposals</h2>
+<p>If you are interested in presenting at the Berlin or Málaga meetup, please respond to our <a href="https://forms.gle/fEBJfTGVuxWRJU4S8">Call for Proposals</a>.</p>
+<script id="luma-checkout" src="https://embed.lu.ma/checkout-button.js"></script>]]></description>
+</item>
+<item>
   <title>Join the Technical Steering Committee</title>
   <pubDate>Thu, 2 Apr 2026 00:00:00 GMT</pubDate>
   
