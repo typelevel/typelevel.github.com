@@ -6,13 +6,13 @@
 
 # Typelevel Traverses Europe
 
-I am excited to announce **three upcoming, in-person meetups** this October, across Europe! These events are a wonderful opportunity to **connect with other functional programming enthusiasts in a safe, supportive space**. We welcome current and aspiring Typelevel users, contributors, and anyone curious to learn more about functional programming, no matter your prior experience. We will follow the [Typelevel Code of Conduct][coc].
+I am excited to announce **three upcoming, in-person meetups** across Europe this October! These events are a wonderful opportunity to **connect with other functional programming enthusiasts in a safe, supportive space**. We welcome current and aspiring Typelevel users, contributors, and anyone curious to learn more about functional programming, no matter your prior experience. We will follow the [Typelevel Code of Conduct][coc].
 
-**Participating is free for everyone** and space is limited, so please register ahead! Our mission to do functional programming together is possible thanks to our [sponsors]. Please consider supporting the Typelevel Foundation with a [recurring donation][donate] to help keep our community thriving.
+**Participating is free for everyone** and space is limited, so please register early! Our mission to do functional programming together is possible thanks to our [sponsors]. Please consider supporting the Typelevel Foundation with a [recurring donation][donate] to help keep our community thriving.
 
 ## Berlin on Wednesday 14 October
 
-Our first stop will be Berlin, after [Scala Days]. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Maciej Dragun for co-organizing, [Zalando] for hosting us, and [Input Objects] for your generous sponsorship!
+Our first stop will be Berlin, after [Scala Days]. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Maciej Dragun for co-organizing, [Zalando] for hosting us, and [Input Objects] for their generous sponsorship!
 
 @:html
 <div class="bulma-is-flex bulma-is-justify-content-center">
@@ -29,7 +29,7 @@ Our first stop will be Berlin, after [Scala Days]. This all-day meetup will incl
 
 ## London on Saturday 24 October
 
-Next, we will have an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing and [SiriusXM] for hosting us!
+Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing and [SiriusXM] for hosting us!
 
 @:html
 <div class="bulma-is-flex bulma-is-justify-content-center">
@@ -63,7 +63,7 @@ Finally, we will meet in Málaga the day before [Lambda World]. This all-day mee
 
 ## Call for Proposals
 
-If you are interested to present at the Berlin or Málaga meetup, please respond to our [Call for Proposals][cfp].
+If you are interested in presenting at the Berlin or Málaga meetup, please respond to our [Call for Proposals][cfp].
 
 @:html
 <script id="luma-checkout" src="https://embed.lu.ma/checkout-button.js"></script>
