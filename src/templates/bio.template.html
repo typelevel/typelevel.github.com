@@ -1,11 +1,11 @@
 <article class="bulma-media">
-  @:for(_.avatar)
   <figure class="bulma-media-left">
     <p class="bulma-image bulma-is-64x64">
+      @:for(_.avatar)
       <img class="bulma-is-rounded" src="${_.avatar}" />
+      @:@
     </p>
   </figure>
-  @:@
   <div class="bulma-media-content">
     <div class="bulma-content">
       <p>
@@ -59,6 +59,11 @@
         @:for(_.linkedin)
         <a class="bulma-level-item" href="${_.linkedin}">
           <span class="bulma-icon bulma-is-small">@:svg(fa-linkedin)</span>
+        </a>
+        @:@
+        @:for(_.lichess)
+        <a class="bulma-level-item" href="https://lichess.org/@/${_.lichess}">
+          <span class="bulma-icon bulma-is-small">@:svg(fa-chess-knight)</span>
         </a>
         @:@
       </div>
