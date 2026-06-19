@@ -72,9 +72,6 @@ If you are interested in presenting at the Berlin or Málaga meetup, please resp
 [coc]: /code-of-conduct/README.md
 [sponsors]: /foundation/README.md
 [donate]: /foundation/README.md#supporting-the-foundation
-[berlin]: https://luma.com/iyv37emv
-[london]: https://luma.com/vzp35rp7
-[malaga]: https://luma.com/4s6qxb9p
 [cfp]: https://forms.gle/fEBJfTGVuxWRJU4S8
 
 [Scala Days]: https://scaladays.org/
