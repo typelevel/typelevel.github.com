@@ -1,32 +1,57 @@
 @:embed(/templates/main.template.html)
 
 <div class="bulma-section bulma-container bulma-is-max-desktop">
-  <h1 class="bulma-title bulma-is-1 bulma-has-text-centered">Project Index</h1>
-  <div class="bulma-grid bulma-is-col-min-10">
+  <h1 id="top" class="bulma-title">Typelevel Projects</h1>
+  <section class="bulma-content">
+    <p>All Typelevel projects are open source software and maintained by communities following the <a
+        href="/code-of-conduct/">Typelevel code of conduct</a>.</p>
+    <p>Typelevel <a href="#organization">organization projects</a> have their own maintainers, but receive additional
+      support from the Typelevel Foundation to ensure the project remains up to date and secure. These projects include
+      core components of the 'Typelevel Stack', built around the core organization projects and broadly useful
+      libraries.</p>
+    <p><a href="#affiliate">Affiliate projects</a> are built on top of the core Typelevel libraries and follow Typelevel
+      community guidelines. While not directly supported by the Foundation, these projects are designed to be compatible
+      with the overall Typelevel ecosystem.</p>
+  </section>
+  <h2 class="bulma-title bulma-is-4" id="organization">Organization Projects</h2>
+  <ul class="bulma-content">
     @:for(projects)
+    @:for(_.anchor)
+    @:empty
+    <li><a href="#${_.title}">${_.title}</a></li>
+    @:@
+    @:@
+  </ul>
+
+  @:for(projects)
+  @:for(_.anchor)
+  <h2 id="${_.anchor}" class="bulma-title bulma-is-4">${_.title}</h2>
+  @:empty
+  <h3 id="${_.title}" class="bulma-title bulma-is-5">${_.title}</h2>
+  @:@
+  @:for(_.description)
+  <p class="bulma-content">${_.description}</p>
+  @:@
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(_.projects)
     <div class="bulma-cell">
-      <div class="bulma-card">
+      <div class="bulma-card bulma-is-flex bulma-is-flex-direction-column">
         <header class="bulma-card-header">
           <p class="bulma-card-header-title">
             ${_.title}
           </p>
+          @:for(_.permalink)
+          <a href="${_.permalink}" class="bulma-card-header-icon">
+            <span class="bulma-icon ">@:svg(fa-book)</span>
+          </a>
+          @:@
           <a href="${_.github}" class="bulma-card-header-icon">
             <span class="bulma-icon">@:svg(fa-github)</span>
           </a>
-          @:for(_.permalink)
-          <a href="${_.permalink}" class="bulma-card-header-icon">
-            <span class="bulma-icon">@:svg(fa-book)</span>
-          </a>
-          @:@
         </header>
-        <div class="bulma-card-content">
-          <p class="bulma-content">${_.description}</p>
+        <div class="bulma-card-content bulma-is-flex bulma-is-flex-direction-column bulma-is-flex-grow-1">
+          <p class="bulma-content bulma-is-flex-grow-1">${_.description}</p>
           <div class="bulma-tags">
-            @:if(_.affiliate)
-            <span class="bulma-tag bulma-is-primary bulma-is-light">Affiliate Project</span>
-            @:else
-            <span class="bulma-tag bulma-is-info bulma-is-light">Organization Project</span>
-            @:@
             @:for(_.platforms)
             <span class="bulma-tag">${_}</span>
             @:@
@@ -36,6 +61,10 @@
     </div>
     @:@
   </div>
+  <a href="#" class="bulma-is-pulled-right">
+    <span class="bulma-icon ">@:svg(fa-arrow-up)</span>Top
+  </a>
+  @:@
 </div>
 
 @:@
