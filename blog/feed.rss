@@ -5,6 +5,36 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>New members of the Technical Steering Committee</title>
+  <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Typelevel Foundation</dc:creator>
+  
+  <link>https://typelevel.org/blog/tsc-2026.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/tsc-2026.html</guid>
+  <description><![CDATA[
+<p>In April, we <a href="https://typelevel.org/blog/join-tsc-2026.html">invited applications</a> for the new Typelevel Technical Steering Committee (TSC). We were delighted by the overwhelming response! Thank you to everyone who applied—it is inspiring to see so much passion and dedication in our community for growing Typelevel together.</p>
+<p>Starting in May, we began onboarding fourteen new members to the TSC, who will each <a href="https://github.com/typelevel/foundation/blob/3dc9f7365f27775e08867acc8cf186bc098a5e4d/minutes/2026-06-08.md">serve two-year terms</a>.</p>
+<ul>
+  <li>Zainab Ali (<a href="https://github.com/zainab-ali">@zainab-ali</a>)</li>
+  <li>Ching Hian Chew (<a href="https://github.com/Chingles2404">@Chingles2404</a>)</li>
+  <li>Daniel Esik (<a href="https://github.com/danicheg">@danicheg</a>)</li>
+  <li>Daniel Hinojosa (<a href="https://github.com/dhinojosa">@dhinojosa</a>)</li>
+  <li>Philipp Jenni (<a href="https://github.com/jepfp">@jepfp</a>)</li>
+  <li>Antonio Jimenez (<a href="https://github.com/antoniojimeneznieto">@antoniojimeneznieto</a>)</li>
+  <li>Sabrina Konrad-lee (<a href="https://github.com/SabrinaXKL">@SabrinaXKL</a>)</li>
+  <li>Thanh Le (<a href="https://github.com/lenguyenthanh">@lenguyenthanh</a>)</li>
+  <li>Maksym Ochenashko (<a href="https://github.com/iRevive">@iRevive</a>)</li>
+  <li>Igor Ramazanov (<a href="https://github.com/igor-ramazanov">@igor-ramazanov</a>)</li>
+  <li>Justin Reardon (<a href="https://github.com/reardonj">@reardonj</a>)</li>
+  <li>Gabriel Santana Paredes (<a href="https://github.com/Hombre-x">@Hombre-x</a>)</li>
+  <li>Sergey Torgashov (<a href="https://github.com/satorg">@satorg</a>)</li>
+  <li>Victor Viale (<a href="https://github.com/Koroeskohr">@Koroeskohr</a>)</li>
+</ul>
+<p>Over the last month, <a href="https://typelevel.org/foundation/people.html">members of the TSC</a> have been working together to brainstorm and outline organizational priorities. Key themes include improving our website and documentation, positioning Typelevel for AI-driven development, and growing and promoting our ecosystem, especially to support industry adoption.</p>
+<p>The Foundation has empowered the TSC to take the leading role in driving Typelevel forward, with support and oversight from the Board of Directors as needed. We are excited to enter this next chapter with an expanded team and new capacity to take on the ambitious projects ahead.</p>]]></description>
+</item>
+<item>
   <title>Typelevel Traverses Europe</title>
   <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
   
