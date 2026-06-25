@@ -81,6 +81,12 @@ object LaikaBuild {
   import pink.cozydev.protosearch.ui.SearchUI
 
   def input = {
+
+    if (sys.props("os.name").toLowerCase.startsWith("windows")) {
+      val wellKnownPath = java.nio.file.Paths.get("src/.well-known")
+      if (java.nio.file.Files.exists(wellKnownPath))
+        java.nio.file.Files.setAttribute(wellKnownPath, "dos:hidden", true)
+    }
     val securityPolicy = new URI(
       "https://raw.githubusercontent.com/typelevel/.github/refs/heads/main/SECURITY.md"
     ).toURL()
