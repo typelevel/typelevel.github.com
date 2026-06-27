@@ -15,34 +15,122 @@
   </section>
   <h2 class="bulma-title bulma-is-4" id="organization">Organization Projects</h2>
   <ul class="bulma-content">
-    @:for(projects)
-    @:for(_.anchor)
-    @:empty
-    <li><a href="#${_.title}">${_.title}</a></li>
-    @:@
-    @:@
+    <li><a href="#org_core">Core</a></li>
+    <li><a href="#org_observability">Observability</a></li>
+    <li><a href="#org_testing">Testing</a></li>
+    <li><a href="#org_integration">Integrations</a></li>
+    <li><a href="#org_tool">Tools</a></li>
+    <li><a href="#org_other">Other Projects</a></li>
   </ul>
 
-  @:for(projects)
-  @:for(_.anchor)
-  <h2 id="${_.anchor}" class="bulma-title bulma-is-4">${_.title}</h2>
-  @:empty
-  <h3 id="${_.title}" class="bulma-title bulma-is-5">${_.title}</h2>
-  @:@
-  @:for(_.description)
-  <p class="bulma-content">${_.description}</p>
-  @:@
+  <h3 id="org_core" class="bulma-title bulma-is-5">Core</h3>
+  <p class="bulma-content">
+    The Typelevel ecosystem is built on a small core foundation of organization
+    maintained libraries. These libraries provide the basic building blocks for
+    writing purely functional programs in Scala. They are available for all
+    Scala platforms: JVM, JS and Native.
+  </p>
   <div class="bulma-grid bulma-is-col-min-10">
-    @:for(_.projects)
+    @:for(projects)
+    @:if(_.core)
     <div class="bulma-cell">
       @:include(/templates/project.template.html)
     </div>
     @:@
+    @:@
   </div>
-  <a href="#" class="bulma-is-pulled-right">
-    <span class="bulma-icon ">@:svg(fa-arrow-up)</span>Top
-  </a>
-  @:@
+  @:include(top.template.html)
+
+  <h3 id="org_observability" class="bulma-title bulma-is-5">Observability</h3>
+  <p class="bulma-content">
+    On top of the core projects, the foundation maintains standard libraries for
+    logging and observability of Cats Effect applications:
+  </p>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.observability)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
+  <h3 id="org_testing" class="bulma-title bulma-is-5">Testing</h3>
+  <p class="bulma-content">
+    Testing libraries that go beyond unit tests:
+  </p>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.testing)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
+  <h3 id="org_integration" class="bulma-title bulma-is-5">Integrations</h3>
+  <p class="bulma-content">
+    Support for various protocols, formats and databases, built on top of FS2
+    and Cats Effect.
+  </p>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.integration)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
+  <h3 id="org_tool" class="bulma-title bulma-is-5">Tools</h3>
+  <p class="bulma-content">
+    The Typelevel Foundation uses several tools to help build and manage its
+    libraries, which are also available for use by others.
+  </p>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.tool)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
+  <h3 id="org_other" class="bulma-title bulma-is-5">Other Projects</h3>
+  <p class="bulma-content">
+    Various utilities and helper libraries for the Typelevel ecosystem.
+  </p>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.other)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
+  <h2 id="affiliate" class="bulma-title bulma-is-4">Affiliate Projects</h2>
+  <div class="bulma-grid bulma-is-col-min-10">
+    @:for(projects)
+    @:if(_.affiliate)
+    <div class="bulma-cell">
+      @:include(/templates/project.template.html)
+    </div>
+    @:@
+    @:@
+  </div>
+  @:include(top.template.html)
+
 </div>
 
 @:@
