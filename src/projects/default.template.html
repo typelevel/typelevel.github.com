@@ -35,29 +35,7 @@
   <div class="bulma-grid bulma-is-col-min-10">
     @:for(_.projects)
     <div class="bulma-cell">
-      <div class="bulma-card bulma-is-flex bulma-is-flex-direction-column">
-        <header class="bulma-card-header">
-          <p class="bulma-card-header-title">
-            ${_.title}
-          </p>
-          @:for(_.permalink)
-          <a href="${_.permalink}" class="bulma-card-header-icon">
-            <span class="bulma-icon ">@:svg(fa-book)</span>
-          </a>
-          @:@
-          <a href="${_.github}" class="bulma-card-header-icon">
-            <span class="bulma-icon">@:svg(fa-github)</span>
-          </a>
-        </header>
-        <div class="bulma-card-content bulma-is-flex bulma-is-flex-direction-column bulma-is-flex-grow-1">
-          <p class="bulma-content bulma-is-flex-grow-1">${_.description}</p>
-          <div class="bulma-tags">
-            @:for(_.platforms)
-            <span class="bulma-tag">${_}</span>
-            @:@
-          </div>
-        </div>
-      </div>
+      @:include(/templates/project.template.html)
     </div>
     @:@
   </div>
