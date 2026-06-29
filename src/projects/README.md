@@ -1,3 +1,3 @@
 {%
-  laika.title: Project Index
+  laika.title: Typelevel Projects
 %}

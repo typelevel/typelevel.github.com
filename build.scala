@@ -419,6 +419,7 @@ object LaikaCustomizations {
       "fa-signal-messenger" -> loadFaIcon("brands", "signal-messenger"),
       "fa-youtube" -> loadFaIcon("brands", "youtube"),
       // solids
+      "fa-arrow-up" -> loadFaIcon("solid", "arrow-up"),
       "fa-book" -> loadFaIcon("solid", "book"),
       "fa-chess-knight" -> loadFaIcon("solid", "chess-knight"),
       "fa-envelope" -> loadFaIcon("solid", "envelope"),
