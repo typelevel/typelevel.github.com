@@ -26,14 +26,12 @@ sponsors: [${spotify}, ${aruna}, ${shopify}, ${input-objects}, ${famly}]
   </div>
 </section>
 <div class="bulma-section">
-  <div class="bulma-columns bulma-is-vcentered">
-    <div class="bulma-column"></div>
+  <div class="bulma-columns bulma-is-vcentered bulma-is-flex-wrap-wrap bulma-is-justify-content-space-evenly">
     @:for(sponsors)
     <div class="bulma-column bulma-is-narrow bulma-has-text-centered">
       <a href="${_.url}"><img class="sponsor" src="@:target(_.logo)" /></a>
     </div>
     @:@
-    <div class="bulma-column"></div>
   </div>
   <div class="bulma-container bulma-is-max-desktop">
     <h4 class="bulma-subtitle bulma-is-4 bulma-has-text-centered">
