@@ -27,8 +27,33 @@
 </head>
 
 <body class="bulma-is-flex bulma-is-flex-direction-column">
+<div class="bulma-hero"
+     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 2px solid purple; border-radius: 0; overflow: hidden;">
+    <div class="bulma-container bulma-is-max-desktop">
+        <div class="bulma-columns bulma-is-vcentered">
+            <div class="bulma-column bulma-is-one-third">
+                <div class="bulma-buttons bulma-is-flex bulma-is-flex-direction-row bulma-is-flex-wrap-nowrap">
+                    <a href="https://luma.com/iyv37emv" class="bulma-button"
+                       style="background-color: #4a148c; color: white; border: 2px solid white;">Berlin</a>
+                    <a href="https://luma.com/vzp35rp7" class="bulma-button"
+                       style="background-color: #4a148c; color: white; border: 2px solid white;">London</a>
+                    <a href="https://luma.com/4s6qxb9p" class="bulma-button"
+                       style="background-color: #4a148c; color: white; border: 2px solid white;">Málaga</a>
+                </div>
+            </div>
+            <div class="bulma-column bulma-is-two-thirds"
+                 style="background-image: url('@:target(/img/typelevel-angle.png)'); background-position: right center; background-repeat: no-repeat; background-size: 150%; margin-right: 20px;">
+                <h2 class="bulma-subtitle bulma-is-3 bulma-is-size-4-mobile">
+                    <span style="color: #d3d3d3; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Join us at one of our upcoming events to connect with the Typelevel community!</span>
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
   @:include(/templates/nav.template.html)
+
   <main class="bulma-is-flex-grow-1">
+
     ${_.embeddedBody}
   </main>
   @:include(/templates/footer.template.html)
