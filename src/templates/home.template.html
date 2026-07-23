@@ -20,9 +20,38 @@ sponsors: [${spotify}, ${aruna}, ${shopify}, ${input-objects}, ${famly}]
 <section class="bulma-hero bulma-is-primary bulma-has-text-light">
   <div class="bulma-hero-body">
     <p class="bulma-is-size-4 bulma-has-text-weight-medium">
-      Typelevel is an ecosystem of Scala-based projects and a community of people united to foster an inclusive, welcoming, and safe
+      Typelevel is an ecosystem of Scala-based projects and a community of people united to foster an inclusive,
+      welcoming, and safe
       environment around functional programming.
     </p>
+  </div>
+</section>
+<section class="bulma-section bulma-has-background-light bulma-has-text-light">
+  <h2 class="bulma-title bulma-is-4 bulma-icon-text">
+    Latest Blog Posts <a class="bulma-icon bulma-has-text-current" href="@:target(/blog/feed.rss)">
+      @:svg(fa-square-rss)
+    </a></h2>
+  <div class="bulma-columns bulma-is-align-content-stretch bulma-is-flex-wrap-wrap">
+    @:forBlogPosts(3)
+    <a href="@:target(_.cursor.currentDocument.sourcePath)"
+      class="bulma-column bulma-is-one-third bulma-is-flex bulma-is-flex-direction-column">
+      <p class="bulma-is-6 bulma-has-text-grey">@:date(_.date, "MMMM d, yyyy")</p>
+      <h3 class="bulma-title bulma-is-5">${_.cursor.currentDocument.title}</h3>
+        <p class="blog-post-byline bulma-subtitle bulma-is-6 bulma-has-text-grey bulma-is-flex-grow-1">
+          @:for(_.author)
+          ${_.name}<span class="delimiter">,</span><span class="last-delimiter"> &</span>
+          @:@
+          @:for(_.event-date)
+          ${_.event-date} at ${_.event-location}
+          @:@
+        </p>
+        <p>
+          @:for(_.tags)
+          <span class="bulma-tag bulma-is-dark">${_}</span>
+          @:@
+        </p>
+    </a>
+    @:@
   </div>
 </section>
 <div class="bulma-section">
