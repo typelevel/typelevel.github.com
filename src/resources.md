@@ -2,7 +2,7 @@
 
 ## Shields for Typelevel Projects
 
-These standard shiels can be used by affiliate and organization projects for their README and/orsite to advertise their Typelevel association:
+These standard shields can be used by affiliate and organization projects for their README and/or website to advertise their Typelevel association:
 
 ### Organization projects
 
