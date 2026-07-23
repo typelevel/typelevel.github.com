@@ -253,9 +253,8 @@ object LaikaCustomizations {
       TemplateDirectives.eval("forBlogPosts") {
         import TemplateDirectives.dsl.*
 
-          val count = attribute(0).as[Int].optional
-
-          (count, cursor, parsedBody, source).mapN { (count, c, b, s) =>
+        (attribute(0).as[Int].optional, cursor, parsedBody, source)
+          .mapN { (count, c, b, s) =>
             def contentScope(value: ConfigValue) =
               TemplateScope(TemplateSpanSequence(b), value, s)
 
