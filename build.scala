@@ -253,22 +253,25 @@ object LaikaCustomizations {
       TemplateDirectives.eval("forBlogPosts") {
         import TemplateDirectives.dsl.*
 
-        (cursor, parsedBody, source).mapN { (c, b, s) =>
-          def contentScope(value: ConfigValue) =
-            TemplateScope(TemplateSpanSequence(b), value, s)
+          val count = attribute(0).as[Int].optional
 
-          val posts = c.parent.allDocuments.flatMap { d =>
-            d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
-          }
+          (count, cursor, parsedBody, source).mapN { (count, c, b, s) =>
+            def contentScope(value: ConfigValue) =
+              TemplateScope(TemplateSpanSequence(b), value, s)
 
-          posts
-            .sortBy(_._2)(using summon[Ordering[OffsetDateTime]].reverse)
-            .traverse { (d, _) =>
-              d.config.get[ConfigValue]("").map(contentScope(_))
+            val posts = c.parent.allDocuments.flatMap { d =>
+              d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
             }
-            .leftMap(_.message)
-            .map(TemplateSpanSequence(_))
-        }
+
+            posts
+              .sortBy(_._2)(using summon[Ordering[OffsetDateTime]].reverse)
+              .take(count.getOrElse(Int.MaxValue))
+              .traverse { (d, _) =>
+                d.config.get[ConfigValue]("").map(contentScope(_))
+              }
+              .leftMap(_.message)
+              .map(TemplateSpanSequence(_))
+          }
       },
       TemplateDirectives.create("svg") {
         import TemplateDirectives.dsl.*
