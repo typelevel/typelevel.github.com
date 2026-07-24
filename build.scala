@@ -4,7 +4,7 @@
 //> using dep org.graalvm.js:js:25.1.3
 //> using dep org.webjars.npm:katex:0.17.0
 //> using dep org.webjars.npm:fortawesome__fontawesome-free:7.2.0
-//> using dep pink.cozydev::protosearch-laika:0.0-7f79720-SNAPSHOT
+//> using dep pink.cozydev::protosearch-laika:0.0-f6fbb35-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
 
@@ -77,8 +77,10 @@ object LaikaBuild {
   import laika.io.syntax.*
   import laika.parse.code.languages.ScalaSyntax
   import laika.theme.*
-  import pink.cozydev.protosearch.analysis.{IndexFormat, IndexRendererConfig}
+  import pink.cozydev.protosearch.laika.IndexConfig
   import pink.cozydev.protosearch.ui.SearchUI
+
+  val indexConfig = IndexConfig.default
 
   def input = {
     val securityPolicy = new URI(
@@ -128,7 +130,7 @@ object LaikaBuild {
     .build
 
   val binaryRenderers = List(
-    IndexRendererConfig(true),
+    indexConfig.config,
     BinaryRendererConfig(
       "rss",
       LaikaCustomizations.Rss,
@@ -154,7 +156,11 @@ object LaikaBuild {
       .parallel[IO]
       .build
     val index =
-      Renderer.of(IndexFormat).withConfig(parser.config).parallel[IO].build
+      Renderer
+        .of(indexConfig.format)
+        .withConfig(parser.config)
+        .parallel[IO]
+        .build
 
     (html, rss, index).tupled.use { (html, rss, index) =>
       parser.fromInput(input).parse.flatMap { tree =>
