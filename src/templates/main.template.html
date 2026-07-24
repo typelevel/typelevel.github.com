@@ -20,13 +20,22 @@
   @:@
 
   <link rel="stylesheet" href="@:target(/main.css)">
+  @:if(homepage-announcement.enabled)
+  <link rel="stylesheet" href="@:target(/announcements/announcement.css)">
+  @:@
   <link rel="stylesheet" href="@:target(/css/code.css)">
   <script src="@:target(/main.js)"></script>
+  @:if(homepage-announcement.enabled)
+  <script defer src="@:target(/announcements/announcement.js)"></script>
+  @:@
 
   <title>${cursor.currentDocument.title}</title>
 </head>
 
 <body class="bulma-is-flex bulma-is-flex-direction-column">
+  @:if(homepage-announcement.enabled)
+  @:include(homepage-announcement.template)
+  @:@
   @:include(/templates/nav.template.html)
   <main class="bulma-is-flex-grow-1">
     ${_.embeddedBody}

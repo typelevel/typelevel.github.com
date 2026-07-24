@@ -1,0 +1,86 @@
+<section
+  class="homepage-announcement"
+  role="region"
+  aria-labelledby="homepage-announcement-title"
+>
+  <div class="homepage-announcement__inner bulma-container bulma-is-max-desktop">
+    <div class="homepage-announcement__copy">
+      <p class="homepage-announcement__eyebrow">Three meetups · October 2026</p>
+      <p id="homepage-announcement-title" class="homepage-announcement__title">
+        Typelevel Traverses Europe
+      </p>
+      <ul
+        class="homepage-announcement__events"
+        aria-label="Event dates and locations"
+        role="list"
+      >
+        <li>
+          <a href="https://luma.com/iyv37emv">
+            <span class="bulma-is-sr-only">Register for </span>
+            <span>Berlin</span>
+            <time
+              datetime="2026-10-14T09:00:00+02:00"
+              data-announcement-event
+              data-event-location="Berlin"
+            >14 Oct<span class="bulma-is-sr-only"> 2026</span></time>
+          </a>
+        </li>
+        <li>
+          <a href="https://luma.com/vzp35rp7">
+            <span class="bulma-is-sr-only">Register for </span>
+            <span>London</span>
+            <time
+              datetime="2026-10-24T10:00:00+01:00"
+              data-announcement-event
+              data-event-location="London"
+            >24 Oct<span class="bulma-is-sr-only"> 2026</span></time>
+          </a>
+        </li>
+        <li>
+          <a href="https://luma.com/4s6qxb9p">
+            <span class="bulma-is-sr-only">Register for </span>
+            <span>Málaga</span>
+            <time
+              datetime="2026-10-28T09:00:00+01:00"
+              data-announcement-event
+              data-event-location="Málaga"
+            >28 Oct<span class="bulma-is-sr-only"> 2026</span></time>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="homepage-announcement__countdown" data-announcement-countdown hidden>
+      <p class="homepage-announcement__countdown-label" aria-hidden="true">
+        Until <span data-announcement-countdown-location>next event</span>
+      </p>
+      <div class="homepage-announcement__countdown-units" aria-hidden="true">
+        <span>
+          <strong data-announcement-countdown-days>--</strong>
+          <small>Days</small>
+        </span>
+        <span>
+          <strong data-announcement-countdown-hours>--</strong>
+          <small>Hours</small>
+        </span>
+        <span>
+          <strong data-announcement-countdown-minutes>--</strong>
+          <small>Minutes</small>
+        </span>
+      </div>
+      <p
+        class="bulma-is-sr-only"
+        role="timer"
+        data-announcement-countdown-description
+      ></p>
+    </div>
+
+    <a
+      class="homepage-announcement__action"
+      href="@:target(/blog/traverses-europe-2026.md)"
+      aria-labelledby="homepage-announcement-action homepage-announcement-title"
+    >
+      <span id="homepage-announcement-action">Explore events</span>
+    </a>
+  </div>
+</section>
