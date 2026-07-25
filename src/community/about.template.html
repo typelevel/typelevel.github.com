@@ -1,12 +1,12 @@
 @:embed(/templates/main.template.html)
-<div class="bulma-section bulma-content bulma-container bulma-is-max-desktop">
+<div class="bulma-section bulma-content bulma-container bulma-is-max-fullhd">
 
   ${cursor.currentDocument.content}
 
   <div class="bulma-columns bulma-is-multiline">
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
       <div class="bulma-card bulma-has-background-primary-light">
-        <div class="bulma-card-content bulma-has-text-centered">
+        <div class="bulma-card-content bulma-has-text-centered ">
           <span class="bulma-icon bulma-large bulma-has-text-primary bulma-is-large bulma-is-size-3">
             @:svg(fa-discord)
           </span>
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
       <div class="bulma-card bulma-has-background-warning-95">
         <div class="bulma-card-content bulma-has-text-centered">
           <span class="bulma-icon bulma-large bulma-has-text-warning bulma-is-large bulma-is-size-3">
@@ -36,13 +36,13 @@
         </div>
       </div>
     </div>
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
       <div class="bulma-card bulma-has-background-success-95">
         <div class="bulma-card-content bulma-has-text-centered">
           <span class="bulma-icon bulma-large bulma-has-text-success bulma-is-large bulma-is-size-3">
             @:svg(fa-puzzle-piece)
           </span>
-          <h4 class="bulma-is-4 bulma-has-text-success-20">Affiliate Projects</h4>
+          <h4 class="bulma-is-4 bulma-has-text-success-20">Explore Projects</h4>
           <div class="bulma-content bulma-has-text-left hyphenate">
             ${cursor.currentDocument.fragments.projects}
           </div>
@@ -52,23 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
-      <div class="bulma-card bulma-has-background-danger-95">
-        <div class="bulma-card-content bulma-has-text-centered">
-          <span class="bulma-icon bulma-large bulma-has-text-danger bulma-is-large bulma-is-size-3">
-            @:svg(fa-hand-holding-heart)
-          </span>
-          <h4 class="bulma-is-4 bulma-has-text-danger-20">Code of Conduct</h4>
-          <div class="bulma-content bulma-has-text-left hyphenate">
-            ${cursor.currentDocument.fragments.coc}
-          </div>
-          <a class="bulma-button bulma-is-danger bulma-has-text-light" href="@:target(/code-of-conduct/README.md)">
-            Read the Code of Conduct
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
       <div class="bulma-card bulma-has-background-info-95">
         <div class="bulma-card-content bulma-has-text-centered">
           <span class="bulma-icon bulma-large bulma-has-text-info bulma-is-large bulma-is-size-3">
@@ -84,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="bulma-column bulma-is-6-tablet bulma-is-12-mobile">
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
       <div class="bulma-card bulma-has-background-link-95">
         <div class="bulma-card-content bulma-has-text-centered">
           <span class="bulma-icon bulma-large bulma-has-text-link bulma-is-large bulma-is-size-3">
@@ -96,6 +80,22 @@
           </div>
           <a class="bulma-button bulma-is-link" href="@:target(learning-resources.md)">
             View Resources
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bulma-column bulma-is-6 bulma-is-12-mobile bulma-is-4-fullhd">
+      <div class="bulma-card bulma-has-background-danger-95">
+        <div class="bulma-card-content bulma-has-text-centered">
+          <span class="bulma-icon bulma-large bulma-has-text-danger bulma-is-large bulma-is-size-3">
+            @:svg(fa-hand-holding-heart)
+          </span>
+          <h4 class="bulma-is-4 bulma-has-text-danger-20">Code of Conduct</h4>
+          <div class="bulma-content bulma-has-text-left hyphenate">
+            ${cursor.currentDocument.fragments.coc}
+          </div>
+          <a class="bulma-button bulma-is-danger bulma-has-text-light" href="@:target(/code-of-conduct/README.md)">
+            Read the Code of Conduct
           </a>
         </div>
       </div>
