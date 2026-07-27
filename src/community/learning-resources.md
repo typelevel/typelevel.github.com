@@ -7,13 +7,14 @@ This is a collection of community recommended resources for functional programmi
 
 ## Foundational books & guides
 
-- **[Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala-second-edition)**: A classic introduction to FP ideas in Scala; strong on the thinking behind libraries like Cats.  
+- **[Creative Scala](https://www.creativescala.org/creative-scala/)**: Hands-on exercises and  usage for practising Scala.
+
+- **[Essential Scala](https://underscore.io/books/essential-scala/)**: A functionally-friendly introduction to Scala language features.
 
 - **[Scala with Cats](https://scalawithcats.com)**:  Practical introduction to Cats
 
-- **[Essential Scala](https://underscore.io/books/essential-scala/)**: A functionally-friendly introduction to Scala language features. 
+- **[Functional Programming in Scala](https://www.manning.com/books/functional-programming-in-scala-second-edition)**: A classic introduction to FP ideas in Scala; strong on the thinking behind libraries like Cats. 
 
-- **[Creative Scala](https://www.creativescala.org/creative-scala/)**: Hands-on exercises and  usage for practising Scala.  
 
 ## Documentation for Key Libraries
 
