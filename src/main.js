@@ -62,7 +62,10 @@ searchWorker.onmessage = function (e) {
 }
 
 function onSearchInput(event) {
-  searchWorker.postMessage({"query": event.target.value || ""});
+  searchWorker.postMessage({
+    "query": event.target.value || "",
+    "size": 50
+  });
 }
 
 // Keyboard shortcuts: `/` to open, `Escape` to close
