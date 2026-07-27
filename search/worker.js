@@ -19,44 +19,48 @@ const maybeQuery = urlParams.get("q")
 
 const querierPromise = getQuerier(index)
 
-async function searchIt(query) {
+const searchOptions = ["size", "skip", "highlightFields", "resultFields"]
+
+async function searchIt(request) {
   const querier = await querierPromise
-  return querier.search(query)
+  return querier.search(
+    request.query,
+    ...searchOptions.map(option => request[option])
+  )
 }
 
 const waitMs = 100
 let timeoutId = null
-let lastValue = ""
+let lastRequest = {query: ""}
 
-function post(value) {
-  lastValue = value
+function post(request) {
+  lastRequest = request
   if (timeoutId) clearTimeout(timeoutId)
   timeoutId = setTimeout(async () => {
     timeoutId = null
-    postMessage(await searchIt(lastValue))
+    postMessage(await searchIt(lastRequest))
   }, waitMs)
 }
 
-async function flush(value) {
+async function flush(request) {
   if (timeoutId) {
     clearTimeout(timeoutId)
     timeoutId = null
   }
-  postMessage(await searchIt(value))
+  postMessage(await searchIt(request))
 }
 
 onmessage = function(e) {
-  const msg = e.data
-  const query = msg.query || ''
-  if (msg.flush) {
-    flush(query)
+  const request = {...e.data, query: e.data.query || ''}
+  if (request.flush) {
+    flush(request)
   } else {
-    post(query)
+    post(request)
   }
 }
 
 if (maybeQuery == undefined) {
-  searchIt("warmup")
+  searchIt({query: "warmup", size: 1})
 }
 // If it is defined, search.js is going to call us as soon as we return
 // So we skip the warmup
