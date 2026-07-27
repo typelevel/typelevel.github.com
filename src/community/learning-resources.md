@@ -31,7 +31,6 @@ This is a collection of community recommended resources for functional programmi
 ## Tutorials & Courses
 
 - Coursera courses [Functional Programming in Scala](https://www.coursera.org/learn/scala-functional-programming) (useful if you prefer lecture-style learning and a systematic introduction).  
-- Community [blog posts](https://typelevel.org/blog/)
 
 ## Scala ecosystem docs
 
