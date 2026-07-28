@@ -3,7 +3,7 @@
 
 Typelevel projects power a large part of the functional Scala ecosystem. They are also complex, long-lived codebases with active communities. Contributing can feel intimidating at first, but the path in is actually quite simple! 
 
-Build something small with Cats Effect. Try streaming something with FS2. Use http4s for a simple service. Build with [Typelevel Toolkit](https://typelevel.org/blog/). Build a static site with Laika.
+Build something small with Cats Effect. Try streaming something with FS2. Use http4s for a simple service. Build with [Typelevel Toolkit](https://typelevel.org/toolkit/). Build a static site with Laika.
 
 > Become a user of the ecosystem you want to contribute to.
 
