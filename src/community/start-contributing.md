@@ -27,7 +27,7 @@ Also some tips that works well across most Typelevel repositories:
 
 #### Open a PR and iterate
 - Fork the repo, create a branch, and implement the change. Add or update tests where appropriate.
-- Open a PR with a clear description of the problem and your solution. Read the [Typelevel AI policy](https://typelevel.org/gsoc/ai.html).
+- Open a PR with a clear description of the problem and your solution.
 - Expect review feedback, ask questions, adjust your changes, and iterate.
 
 #### Where to Ask for Help
