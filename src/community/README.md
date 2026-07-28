@@ -24,3 +24,11 @@ Typelevel boasts an impressive ecosystem of affiliate projects, built by our com
 @:fragment(coc)
 The Typelevel community is dedicated to providing a positive experience for everyone. Whether you are new or familiar with our community, we care about making it a welcoming and safe place for you and we are here to support you.
 @:@
+
+@:fragment(contributing)
+Learn how to get involved in Typelevel projects. Find good first issues, understand the workflow, and collaborate with maintainers.
+@:@
+
+@:fragment(resources)
+Explore recommended books, courses, and documentation for learning functional programming in Scala and the Typelevel ecosystem.
+@:@
