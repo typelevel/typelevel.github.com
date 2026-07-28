@@ -21,7 +21,6 @@ Behaviors that reinforce these values contribute to a positive environment, and 
 - **Gracefully accepting constructive criticism.** When we disagree, we are courteous in raising our issues.
 - **Using welcoming and inclusive language.** We're accepting of all who wish to take part in our activities, fostering an environment where anyone can participate and everyone can make a difference.
 
-
 ## Our Standards
 
 Every member of our community has the right to have their identity respected.

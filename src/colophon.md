@@ -25,6 +25,8 @@ In general, the content on this website is licensed under the [Creative Commons 
 
 Blog posts written before 2026 are licensed under the [Creative Commons Attribution 3.0 Unported License][CC BY 3.0].
 
+The Contributing to Typelevel Projects guide is adapted from the [Godot Pull request rules and guidelines](https://github.com/godotengine/godot-contributing-docs/blob/f46474c855c36883b61d0438414365c771ea78dd/pull_requests/pull_request_guidelines.rst) by the Godot Engine Contributors and licensed under the [Creative Commons Attribution 3.0 Unported License][CC BY 3.0].
+
 The Typelevel logo is adapted from the ["Progress" Pride Flag][progress] by [Daniel Quasar] and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][CC BY-NC-SA 4.0].
 
 [contributors]: https://github.com/typelevel/typelevel.github.com/graphs/contributors
