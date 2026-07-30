@@ -26,9 +26,9 @@ The Typelevel community is dedicated to providing a positive experience for ever
 @:@
 
 @:fragment(contributing)
-Learn how to get involved in Typelevel projects. Find good first issues, understand the workflow, and collaborate with maintainers.
+The projects in the Typelevel ecosystem are all open-source. Learn how to contribute to Typelevel and help maintain your favorite projects. Find good first issues, understand the workflow, and collaborate with maintainers.
 @:@
 
 @:fragment(resources)
-Explore recommended books, courses, and documentation for learning functional programming in Scala and the Typelevel ecosystem.
+Learn functional programming fundamentals and the theory behind the design of Typelevel libraries. Explore recommended books, courses, and documentation for learning functional programming in Scala and the Typelevel ecosystem.
 @:@
