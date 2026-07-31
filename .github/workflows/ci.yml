@@ -2,14 +2,20 @@ name: Continuous Integration
 
 on:
   pull_request:
-    branches: ['**']
+    branches: ["**"]
+    types: [opened, synchronize, reopened, closed]
   push:
-    branches: ['main']
+    branches: ["main"]
+
+env:
+  BRANCH_NAME: pr-${{ github.event.pull_request.number }}
+  CLOUDFLARE_PAGES_PROJECT_NAME: typelevel-website
 
 jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
@@ -22,9 +28,55 @@ jobs:
           scala-cli-version: 1.12.2
       - run: scala-cli fmt --check .
       - run: scala-cli --server=false build.scala
+      - name: Publish to Cloudflare Pages
+        if: github.event_name == 'pull_request' && github.event.pull_request.merged != true
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./target --project-name=${{ env.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch=${{ env.BRANCH_NAME }}
       - if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target
           cname: typelevel.org
+
+  cleanup-preview:
+    name: Delete Cloudflare Pages preview deployments
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    steps:
+      - name: Delete deployments for this PR's branch
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+
+          API="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PAGES_PROJECT_NAME/deployments"
+          AUTH_HEADER="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          page=1
+          ids=()
+          while :; do
+            response=$(curl -sf -H "$AUTH_HEADER" "$API?page=$page&per_page=25")
+            count=$(echo "$response" | jq '.result | length')
+            [ "$count" -eq 0 ] && break
+            while IFS= read -r id; do
+              ids+=("$id")
+            done < <(echo "$response" | jq -r --arg branch "$BRANCH_NAME" \
+              '.result[] | select(.deployment_trigger.metadata.branch == $branch) | .id')
+            page=$((page + 1))
+          done
+
+          if [ ${#ids[@]} -eq 0 ]; then
+            echo "No preview deployments found for branch $BRANCH_NAME"
+            exit 0
+          fi
+
+          for id in "${ids[@]}"; do
+            echo "Deleting deployment $id"
+            curl -sf -X DELETE -H "$AUTH_HEADER" "$API/$id?force=true"
+          done
