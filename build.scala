@@ -82,7 +82,8 @@ object LaikaBuild {
 
   // The interactive tutorials are an unlisted prototype; keep them out of
   // search until they are ready to be announced.
-  val indexConfig = IndexConfig.default.withExcludedPaths(Path.Root / "tutorials")
+  val indexConfig =
+    IndexConfig.default.withExcludedPaths(Path.Root / "tutorials")
 
   def input = {
     val securityPolicy = new URI(
