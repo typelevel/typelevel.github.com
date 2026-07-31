@@ -4,7 +4,7 @@
 
 # Typelevel Tutorials
 
-Welcome! These tutorials are hands-on: each lesson explains an idea on this side
+Welcome! These tutorials are hands-on: each lesson explains an idea on the left side
 of the page and gives you a live Scala editor on the other. Edit the code, press
 **Run**, and see what happens.
 
