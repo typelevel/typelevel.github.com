@@ -35,3 +35,7 @@ side effects as values, and gives you a runtime to execute them.
     { target = "/tutorials/cats-effect", excludeRoot = true, excludeSections = true }
   ]
 }
+
+These tutorials were inspired by [scalatutorials](https://scalatutorials.com), which teaches
+the Scala language itself. If you're just starting out, we recommend check that out first,
+then come back here to help dive into Typelevel!
