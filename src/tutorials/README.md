@@ -10,7 +10,8 @@ of the page and gives you a live Scala editor on the other. Edit the code, press
 
 @:style(bulma-notification bulma-is-warning bulma-is-light)
   This section is an early prototype. The lessons below exist to show that the
-  machinery works; their content will be replaced.
+  machinery works; their content is simply a few vibe-coded example pages. They
+  should be replaced by human-curated tracks that say what we want to say.
 @:@
 
 ## Cats
