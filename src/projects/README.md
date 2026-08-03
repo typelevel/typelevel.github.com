@@ -1,4 +1,4 @@
 {%
   laika.title: Typelevel Projects
-  laika.template = projects.template.html
+  laika.html.template = projects.template.html
 %}
