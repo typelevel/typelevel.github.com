@@ -20,6 +20,7 @@ Behaviors that reinforce these values contribute to a positive environment, and 
 - **Being respectful.** We're respectful of others, their positions, their skills, their commitments, and their efforts.
 - **Gracefully accepting constructive criticism.** When we disagree, we are courteous in raising our issues.
 - **Using welcoming and inclusive language.** We're accepting of all who wish to take part in our activities, fostering an environment where anyone can participate and everyone can make a difference.
+- **Using your own words.** We take the time to communicate with our own thoughts and writing.
 
 ## Our Standards
 
@@ -75,6 +76,11 @@ For questions related to our code of conduct, or to report possible violations, 
 * [Kateu Herbert](mailto:hkateu@gmail.com)
 * [Arman Bilge](mailto:arman@typelevel.org)
 * [Lucas Satabin](mailto:lucas.satabin@gnieh.org)
+
+## Changelog
+
+* March 8, 2024: Initial version.
+* August 3, 2026: "Using your own words" behavior added.
 
 ## Attribution
 

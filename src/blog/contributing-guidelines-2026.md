@@ -4,13 +4,21 @@
   tags: [governance]
 %}
 
-# Typelevel Contributions and AI Tools
+# AI Tools, Contributing and Code of Conduct Updates
 
 ## New Contributing Guide
 
 We have published a new [contributing guide](../projects/contributing-guide.md) for Typelevel organization projects and a [start contributing guide](../community/start-contributing.md) for new contributors!
 
 These guidelines cover similar ground to [the ones](../gsoc/ai.md) we have provided to Google Summer of Code applicants in the past. The new guide is an evergreen document to point any new contributor to for guidance. It covers where to start on an issue, copyright, and how to structure pull requests.
+
+## Code of Conduct Update
+
+We have also made a small addition to the [code of conduct](../code-of-conduct/README.md), adding a new behavior to the "Our Community" section:
+
+> - **Using your own words.** We take the time to communicate with our own thoughts and writing.
+
+This is Typelevel's current restriction on AI-generated content: Community members should not be using these tools to generate content for others to read.
 
 ## AI Related Policies
 
