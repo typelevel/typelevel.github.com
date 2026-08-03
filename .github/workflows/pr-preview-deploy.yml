@@ -1,0 +1,46 @@
+name: Deploy PR Preview
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  CLOUDFLARE_PAGES_PROJECT_NAME: typelevel-website
+
+jobs:
+  deploy:
+    name: Publish to Cloudflare Pages
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: site
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download PR number artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-number
+          path: .
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read PR number
+        id: pr
+        run: echo "branch=pr-$(cat pr_number.txt)" >> "$GITHUB_OUTPUT"
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./site --project-name=${{ env.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch=${{ steps.pr.outputs.branch }}
