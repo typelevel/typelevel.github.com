@@ -33,6 +33,6 @@ Maintainers have very, very limited time that they are able to devote to their p
 
 ### Use of Translation Tools
 
-We do understand that LLMs are excellent tools for bridging language barriers, and as always, we strive for the most inclusive environment possible on our projects and in our community spaces. To that end, we do make an exception for the use of AI tooling as a linguistic aid when English is not your primary language. Specifically, when you are authoring your own words in your own language and then leveraging a model to translate those words to English prior to posting in a Typelevel forum, this is considered acceptable and even encouraged behavior.
+We do understand that LLMs are excellent tools for bridging language barriers, and as always, we strive for the most inclusive environment possible on our projects and in our community spaces. To that end, we allow the use of AI tooling as a linguistic aid when English is not your primary language. Specifically, when you are authoring your own words in your own language and then leveraging a model to translate those words to English prior to posting in a Typelevel forum, this is considered acceptable and even encouraged behavior.
 
 This is very different from fully autonomous authorship of long-form prose.

@@ -29,7 +29,7 @@ While Typelevel communications are primarily conducted in English, our contribut
 
 To contribute to a Typelevel project, start a conversation before creating a pull request. This can be in a new issue, continuing the conversation in an existing issue, or any other communication channel being used by the project. This gives maintainers and other contributors a chance to work with you on your idea at an earlier stage to make sure it is an acceptable contribution.
 
-When you are reporting a bug, your issue should clearly state the expected versus actual behavior you are observing. An ideal bug report includes a minimal reproducer that can easily be run (e.g. a scala-cli script, or small repository) to demonstrate the issue. When you are unable to do so, please provide what other information you can, for example: specific steps that caused the issue, stack traces, or error messages.
+When you are reporting a bug, your issue should clearly state the expected versus actual behavior you are observing. An ideal bug report includes a minimal reproducer that can easily be run (e.g. a scala-cli script, a small repository, or a saved Scastie) to demonstrate the issue. When you are unable to do so, please provide what other information you can, for example: specific steps that caused the issue, stack traces, or error messages.
 
 When you are reporting a security issue, *do not* open a Github issue. See the project security policy or the [Typelevel security policy](https://typelevel.org/security.html).
 
