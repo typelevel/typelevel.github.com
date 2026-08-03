@@ -8,9 +8,9 @@
 
 ## New Contributing Guide
 
-We have published a new [contributing guide](../projects/contributing-guide.md) for Typelevel organization projects and a [start contributing guide](../community/start-contributing.md) for new contributors!
+We have published a new [contributing guide](/projects/contributing-guide.md) for Typelevel organization projects and a [start contributing guide](/community/start-contributing.md) for new contributors!
 
-These guidelines cover similar ground to [the ones](../gsoc/ai.md) we have provided to Google Summer of Code applicants in the past. The new guide is an evergreen document to point any new contributor to for guidance. It covers where to start on an issue, copyright, and how to structure pull requests.
+These guidelines cover similar ground to [the ones](/gsoc/ai.md) we have provided to Google Summer of Code applicants in the past. The new guide is an evergreen document to point any new contributor to for guidance. It covers where to start on an issue, copyright, and how to structure pull requests.
 
 ## Code of Conduct Update
 
@@ -20,12 +20,12 @@ We have also made a small addition to the [code of conduct](../code-of-conduct/R
 
 This is Typelevel's current restriction on AI-generated content: Community members should not be using these tools to generate content for others to read.
 
-## AI Related Policies
+## AI-related Policies
 
 With agentic coding tools coming into wide use, it has become very easy for potential contributors to write code without thinking, resulting in contributions that are not actually helpful. To mitigate this, the contributing guide has two guidelines regarding AI-assisted contributions specifically. Individual projects may have additional restrictions in their own contribution policies, but the below is our default expectation:
 
 * We **are** allowing AI-assisted coding contributions. We expect contributors to disclose when they have used such tools and be responsible for their contributions regardless of how they are coded.
-* We are **not** allowing AI generated pull requests, issues descriptions, or other prose. We expect that contributors understand their work well enough to explain it themselves.
+* We are **not** allowing AI-generated pull requests, issues descriptions, or other prose. We expect that contributors understand their work well enough to explain it themselves.
 
 Pull request descriptions, pull request comments, discussions, Markdown documents, Discord messages, and such are all examples of something very important: human beings communicating with other human beings. Generating a long and wordy description of something which can be more concisely and organically expressed serves no one's best interests. Rubber stamping something done even more autonomously by an AI in your name is even less useful.
 
