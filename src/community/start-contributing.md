@@ -3,6 +3,7 @@
 
 Typelevel projects power a large part of the functional Scala ecosystem. They are also complex, long-lived codebases with active communities. Contributing can feel intimidating at first, but even bug reports, small fixes, and documentation updates help move our projects forward!
 
+See also the [Contributing to Typelevel Projects](../projects/contributing-guide.md) for a detailed explanation of our contribution policies.
 
 **Become a user of the ecosystem you want to contribute to.**
 
@@ -30,7 +31,7 @@ Typelevel projects power a large part of the functional Scala ecosystem. They ar
 
 **Open a PR and iterate**
 - Fork the repo, create a branch, and implement the change. Add or update tests where appropriate.
-- Open a PR with a clear description of the problem and your solution.
+- Open a PR with a clear description of the problem and your solution. Read the [Contributing to Typelevel Projects](../projects/contributing-guide.md) guide.
 - Expect review feedback, ask questions, adjust your changes, and iterate.
 
 ## Where to Ask for Help
