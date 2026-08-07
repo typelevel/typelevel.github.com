@@ -8,6 +8,8 @@ on:
 permissions:
   actions: read
   contents: read
+  # Write sticky comment
+  pull-requests: write
 
 env:
   CLOUDFLARE_PAGES_PROJECT_NAME: typelevel-website
@@ -36,11 +38,28 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Read PR number
         id: pr
-        run: echo "branch=pr-$(cat pr_number.txt)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "pr=$(cat pr_number.txt)" >> "$GITHUB_OUTPUT"
+          echo "branch=pr-$(cat pr_number.txt)" >> "$GITHUB_OUTPUT"
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v4
+        id: deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy ./site --project-name=${{ env.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch=${{ steps.pr.outputs.branch }}
+      - name: Add branch preview info to PR
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          number: ${{ steps.pr.outputs.pr }}
+          header: preview
+          message: |
+            # Branch preview
+
+            A preview of the website has been generated with the content of this pull request.
+            
+            | Name                    | Result |
+            | ----------------------- | ------ |
+            | **Branch Preview URL**: | ${{ steps.deploy.outputs.pages-deployment-alias-url }} |
