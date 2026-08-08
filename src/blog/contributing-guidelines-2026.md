@@ -1,5 +1,5 @@
 {%
-  author: ${foundation}
+  author: [${tsc}, ${foundation}]
   date: "2026-07-25"
   tags: [governance]
 %}
