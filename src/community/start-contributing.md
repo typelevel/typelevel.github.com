@@ -40,4 +40,6 @@ See also the [Contributing to Typelevel Projects](../projects/contributing-guide
 - Use library-specific channels like `#cats`, `#cats-effect`, `#fs2`, or `#http4s` for more focused questions.
 - You can also ask directly on a GitHub issue if your question is specific to that issue.
 
-> **Note:** This guide emphasises learning and understanding. While most Typelevel projects accept AI written contributions, simply using such tools to fix a bug does not help you learn the codebase and gain the understanding needed to make more significant contributions.
+> **Note:** This guide emphasises learning and understanding. While most Typelevel projects accept AI written contributions, simply using such tools to fix a bug does not help you learn the codebase and gain the understanding needed to make more significant contributions. 
+> 
+> We recommend writing code yourself as you start contributing to a project.

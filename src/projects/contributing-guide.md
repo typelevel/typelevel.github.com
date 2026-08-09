@@ -19,12 +19,6 @@ The following sections provide guidance on how to make contributions that fall i
 
 When you contribute to Typelevel, we expect that you respect our [Code of Conduct](/code-of-conduct/README.md).
 
-## Use Your Own Words
-
-Write prose, including issue and pull request descriptions, documentation and code comments in your own words. Do not use automated tools to generate these for you. These artifacts are created to be read by humans, so we believe they should also be written by humans.
-
-While Typelevel communications are primarily conducted in English, our contributors and users are worldwide and may not be proficient in written English. Using machine translation tools (including LLM translation tools) to translate your writing to English is always acceptable. You may also include the original text in your message.
-
 ## Start With an Issue
 
 To contribute to a Typelevel project, start a conversation before creating a pull request. This can be in a new issue, continuing the conversation in an existing issue, or any other communication channel being used by the project. This gives maintainers and other contributors a chance to work with you on your idea at an earlier stage to make sure it is an acceptable contribution.
@@ -83,9 +77,16 @@ Here are the components of a thorough pull request description:
 
 ### Contribute Only What You Stand Behind
 
-Only submit code that you understand, are prepared to explain to a maintainer, and be responsible for.
+Only submit code that you understand, are prepared to explain to a maintainer, and be responsible for. This especially applies if you implement the idea of another person, copy code from elsewhere, or if you use AI tools to assist you with your contribution. In all of these cases, you must disclose which part of your submission wasn't fully authored by you. Regardless of the code's origin, by opening a pull request, you are putting your reputation as a contributor behind the code.
 
-This especially applies if you implement the idea of another person, copy code from elsewhere, or if you use AI to assist you with your contribution. In all of these cases, you must disclose which part of your submission wasn't fully authored by you. Regardless of the code's origin, by opening a pull request, you are putting your reputation as a contributor behind the code.
+#### Use of AI Tools
+
+You may use AI tools to help write code, but must write issue and pull request descriptions, documentation, code comments and other explanatory text in your own words. You are expected to understand the code you contribute well enough to write about the code yourself, regardless of how it was created.
+
+#### Use of Translation Tools
+
+While Typelevel communications are primarily conducted in English, our contributors and users are worldwide and may not be proficient in written English. Using machine translation tools (including LLM translation tools) to translate your writing to English is always acceptable. You may also include the original text in your message.
+
 
 ---
 
