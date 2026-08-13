@@ -14,7 +14,7 @@ We are proud to announce that Typelevel is a graduate of Session 4 of the [GitHu
 
 Thank you to our maintainers for your cooperation and patience during these changes.
 
-Following his completion of the program, the Board appointed Antonio to the Security Team in May. He will present a talk about our experience ["Securing Typelevel: Lessons from the GitHub SOS Fund"][Securing Typelevel] at Scala Days this October in Berlin. For Antonio and me, the value of participating went beyond the instruction and access to security experts: it created an important opportunity for knowledge transfer as we reviewed together prior security incidents in Typelevel and how they were handled.
+Following his completion of the program, the Board appointed Antonio to the Security Team in May. He will present a talk about our experience ["Securing Typelevel: Lessons from the GitHub SOS Fund"][Securing Typelevel] at Scala Days this October in Berlin. For Antonio and me, the value of participating went beyond the instruction and access to security experts: it created an important opportunity for knowledge transfer as we reviewed prior security incidents in Typelevel and how they were handled.
 
 [Applications are open][application] for the next round of the GitHub Secure Open Source Fund and we strongly encourage you to apply. If you are interested in participating, please [reach out] so that we can support your application.
 
