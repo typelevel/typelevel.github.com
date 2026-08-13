@@ -5,6 +5,27 @@
 <link>https://typelevel.org/blog/</link>
 <description>The Typelevel Blog RSS Feed</description>
 <item>
+  <title>GitHub Secure Open Source Fund</title>
+  <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+  
+    <dc:creator>Arman Bilge</dc:creator>
+  
+    <dc:creator>Typelevel Security Team</dc:creator>
+  
+  <link>https://typelevel.org/blog/github-soss-fund-2026.html</link>
+  <guid isPermaLink="true">https://typelevel.org/blog/github-soss-fund-2026.html</guid>
+  <description><![CDATA[
+<p>We are proud to announce that Typelevel is a graduate of <a href="https://github.blog/open-source/maintainers/what-50-open-source-projects-taught-us-about-security-in-the-ai-era/#h-core-programming-languages-runtimes-and-foundational-libraries">Session 4 of the GitHub Secure Open Source Fund</a>. In addition to a $10,000 grant to the <a href="https://typelevel.org/foundation/README.html">Typelevel Foundation</a>, the program provided three intense weeks of instruction and workshops covering secure development practices and vulnerability handling in open source. Antonio Jimenez and I participated together and, with support from the Typelevel Security Team, began applying what we learned to harden Typelevel&#39;s security posture. Some of the changes we made include:</p>
+<ul>
+  <li>Requiring members of our GitHub org to enable <strong>secure two-factor authentication methods</strong>. We also invited all maintainers of organization projects to become full members of the org (instead of external collaborators).</li>
+  <li>Creating an advanced security configuration that enabled <strong>private vulnerability reporting</strong> and applying it to all of our public repositories. We also updated our <a href="https://typelevel.org/security.html">Security Policy</a> with more detailed reporting instructions.</li>
+  <li>Prototyping some <a href="https://github.com/typelevel/sbt-typelevel/pull/882">enhancements to sbt-typelevel</a> that integrate <strong>vulnerability detection</strong> into the existing dependency submission workflows. We plan to roll these out in an upcoming release.</li>
+</ul>
+<p>Thank you to our maintainers for your cooperation and patience during these changes.</p>
+<p>Following his completion of the program, the Board appointed Antonio to the Security Team in May. He will present a talk about our experience <a href="https://scaladays.org/session/securing-typelevel-lessons-from-the-github-sos-fund/">&quot;Securing Typelevel: Lessons from the GitHub SOS Fund&quot;</a> at Scala Days this October in Berlin. For Antonio and me, the value of participating went beyond the instruction and access to security experts: it created an important opportunity for knowledge transfer as we reviewed prior security incidents in Typelevel and how they were handled.</p>
+<p><a href="https://forms.office.com/r/YN3MWEKQ5m">Applications are open</a> for the next round of the <a href="https://github.com/open-source/github-secure-open-source-fund/">GitHub Secure Open Source Fund</a> and we strongly encourage you to apply! If you are interested in participating, please <a href="mailto:security@typelevel.org">reach out</a> so that we can support your application.</p>]]></description>
+</item>
+<item>
   <title>New members of the Technical Steering Committee</title>
   <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
   
