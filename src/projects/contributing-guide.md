@@ -90,4 +90,4 @@ While Typelevel communications are primarily conducted in English, our contribut
 
 ---
 
-This document is based on the [Godot Pull request rules and guidelines](https://github.com/godotengine/godot-contributing-docs/blob/f46474c855c36883b61d0438414365c771ea78dd/pull_requests/pull_request_guidelines.rst) by the Godot Engine Contributors and is licensed under the [CC BY 3.0 license](https://creativecommons.org/licenses/by/3.0/deed.en).
+This document is based on the [Godot Pull request rules and guidelines](https://github.com/godotengine/godot-contributing-docs/blob/f46474c855c36883b61d0438414365c771ea78dd/pull_requests/pull_request_guidelines.rst) by the Godot Engine Contributors which is licensed under the [CC BY 3.0 license](https://creativecommons.org/licenses/by/3.0/deed.en).
