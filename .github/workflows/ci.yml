@@ -6,6 +6,9 @@ on:
   push:
     branches: ["main"]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build and Test
@@ -27,7 +30,7 @@ jobs:
         run: echo "${{ github.event.pull_request.number }}" > pr_number.txt
       - name: Upload site artifact
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: site
           path: target
@@ -41,10 +44,32 @@ jobs:
           path: pr_number.txt
           if-no-files-found: error
           retention-days: 30
-      - name: Publish to GitHub Pages
+      - name: Add CNAME for custom domain
         if: github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v4.0.0
+        run: echo "typelevel.org" > target/CNAME
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target
-          cname: typelevel.org
+          path: target
+          # we need to include the .well-known directory
+          include-hidden-files: true
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
