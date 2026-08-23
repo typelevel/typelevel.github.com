@@ -10,7 +10,7 @@
 
 We have published a new [contributing guide](/projects/contributing-guide.md) for Typelevel organization projects and a [start contributing guide](/community/start-contributing.md) for new contributors!
 
-These guidelines cover similar ground to [the ones](/gsoc/ai.md) we have provided to Google Summer of Code applicants in the past. The new guide is an evergreen document to point any new contributor to for guidance. It covers where to start on an issue, copyright, and how to structure pull requests, and permitted use of AI tools.
+These guidelines cover similar ground to [the ones](/gsoc/ai.md) we have provided to Google Summer of Code applicants in the past. The new guide is an evergreen document to point any new contributor to for guidance. It covers where to start on an issue, copyright, how to structure pull requests, and permitted use of AI tools.
 
 ### AI-assisted Contributions
 
@@ -25,11 +25,11 @@ Maintainers do not have unlimited time devote to their projects. As a contributo
 
 ## Code of Conduct Update
 
-On the same vein, we have also made a small addition to the [code of conduct](../code-of-conduct/README.md), adding a new behavior to the "Our Community" section:
+In the same vein, we have also made a small addition to the [code of conduct](../code-of-conduct/README.md), adding a new behavior to the "Our Community" section:
 
 > - **Using your own words.** We take the time to communicate with our own thoughts and writing.
 
-Similarly to how AI-generated text isn't permitted outside of code, we expect community members to also respect each other's time. We should put our own effort into their community interactions, not hand them off to an AI tool.
+Similarly to how AI-generated text isn't permitted outside of code, we expect community members to also respect each other's time. We should put our own effort into our community interactions, not hand them off to an AI tool.
 
 ### Use of Translation Tools
 
