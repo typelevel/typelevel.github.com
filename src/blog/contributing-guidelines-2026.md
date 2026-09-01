@@ -1,6 +1,6 @@
 {%
   author: [${tsc}, ${foundation}]
-  date: "2026-07-25"
+  date: "2026-09-04"
   tags: [governance]
 %}
 
@@ -14,7 +14,7 @@ These guidelines cover similar ground to [the ones](/gsoc/ai.md) we have provide
 
 ### AI-assisted Contributions
 
-With AI coding tools coming into wide use, it has become very easy for potential contributors to write code without thinking, resulting in contributions that are not actually helpful. To mitigate this, the contributing guide has two guidelines regarding AI-assisted contributions specifically. Individual projects may have additional restrictions in their own contribution policies, but the below is our default expectation:
+With AI coding tools coming into wide use, it has become very easy for potential contributors to write code far faster than maintainers can review. This doesn't help contributors get involved in projects or let maintainers get any more work done. At worst, maintainers get bogged down addressing pull requests that have never been looked at by a person before. To mitigate this, the contributing guide has two guidelines regarding AI-assisted contributions specifically. Individual projects may have additional restrictions in their own contribution policies, but the below is our default expectation:
 
 * We **are** allowing AI-assisted coding contributions. We expect contributors to disclose when they have used such tools and be responsible for their contributions regardless of how they are coded. 
 * We are **not** allowing AI-generated text for any other purpose, including pull requests descriptions, issues descriptions, replies, documentation or other prose. We expect that contributors understand their work well enough to explain it themselves. 

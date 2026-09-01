@@ -49,7 +49,7 @@ As a rule of thumb, if your pull request could be split into two pull requests w
 
 The exception to this rule is "batching changes", where you make the same kind of change to multiple places in the codebase. In this case, it is preferable to make one larger pull request instead of many small ones.
 
-> **Note:** Imagine yourself in the shoes of the reviewer: how can you make the PR easy to review and approve?
+> Imagine yourself in the shoes of the reviewer: how can you make the PR easy to review and approve?
 >      
 > This is best achieved if your pull request is simple, coherent, and uncontroversial.
 >
@@ -73,7 +73,7 @@ Here are the components of a thorough pull request description:
 - **Discussion:** How you see the pull request in context. For example, list risks and caveats and how they could be mitigated. If existing projects may be negatively affected, you should disclose this here, with particular attention to possible compatibility breakages and regressions.
 - **Additional work:** If applicable, highlight anything you need help with or feedback on, and describe any necessary or potential follow-up work.
 
-> **Note:** You may not need *every* one of these components, and you do not need to copy this exact structure. Always ask yourself what would be most helpful for reviewers, and try to balance brevity and thoroughness appropriately.
+> You may not need *every* one of these components, and you do not need to copy this exact structure. Always ask yourself what would be most helpful for reviewers, and try to balance brevity and thoroughness appropriately.
 
 ### Contribute Only What You Stand Behind
 
