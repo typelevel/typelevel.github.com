@@ -77,20 +77,24 @@ For questions related to our code of conduct, or to report possible violations, 
 * [Arman Bilge](mailto:arman@typelevel.org)
 * [Lucas Satabin](mailto:lucas.satabin@gnieh.org)
 
+## License
+
+This code of conduct is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
+
 ## Attribution
 
 This code of conduct is a modified version of the [Python Software Foundation Code of Conduct](https://www.python.org/psf/conduct), licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](https://creativecommons.org/licenses/by-sa/3.0/).
 
 Additional language was incorporated from the following:
 
-* [Otter Tech](https://otter.technology/code-of-conduct-training/) resources, licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-* [Scala Code of Conduct](https://www.scala-lang.org/conduct/), licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
-* [Affect Conf Code of Conduct](https://affectconf.com/coc/), licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
-* [Citizen Code of Conduct](http://citizencodeofconduct.org/), licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
-* [Contributor Covenant version 1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct), licensed[ Creative Commons Attribution 4.0 License](https://github.com/ContributorCovenant/contributor_covenant/blob/master/LICENSE.md).
-* [Django Project Code of Conduct](https://www.djangoproject.com/conduct/), licensed under a [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/).
-* [LGBTQ in Tech Slack Code of Conduct](https://lgbtq.technology/coc.html), licensed under a [Creative Commons Zero License](https://creativecommons.org/publicdomain/zero/1.0/).
-* [PyCon 2018 Code of Conduct](https://us.pycon.org/2018/about/code-of-conduct/), licensed under a [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/).
-* [Rust Code of Conduct](https://www.rust-lang.org/en-US/conduct.html)
+* [Otter Tech](https://otter.technology/code-of-conduct-training/) resources, licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+* [Scala Code of Conduct](https://www.scala-lang.org/conduct/), licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+* [Affect Conf Code of Conduct](https://affectconf.com/coc/), licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+* [Citizen Code of Conduct](http://citizencodeofconduct.org/), licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+* [Contributor Covenant version 1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct), licensed under the [Creative Commons Attribution 4.0 License](https://creativecommons.org/licenses/by/4.0/).
+* [Django Project Code of Conduct](https://www.djangoproject.com/conduct/), licensed under the [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/).
+* [LGBTQ in Tech Slack Code of Conduct](https://lgbtq.technology/coc.html), licensed under the [Creative Commons Zero License](https://creativecommons.org/publicdomain/zero/1.0/).
+* [PyCon 2018 Code of Conduct](https://us.pycon.org/2018/about/code-of-conduct/), licensed under the [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/).
+* [Rust Code of Conduct](https://rust-lang.org/policies/code-of-conduct/), licensed under the [MIT License](https://github.com/rust-lang/www.rust-lang.org/blob/2ca00346fbe04bbb072c2ef26c2bea15b9f087f1/LICENSE-MIT).
 
 [Enforcement Procedures]: enforcement.md
