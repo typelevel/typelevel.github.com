@@ -451,8 +451,7 @@ scala> counter.increase()
 scala> counter.count
 val res0: Int = 2
 ```
-
-[![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA)
+Try it in Scastie! [![Try it in Scastie](../img/media/welcome/scastie.png){width=20%}](https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA)
 
 
 @:callout(warning)
