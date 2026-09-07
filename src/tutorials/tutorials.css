@@ -1,0 +1,245 @@
+/* Styling for the interactive tutorials (prototype).
+ *
+ * Two panes side by side, filling the viewport below the navbar: the lesson
+ * prose scrolls on the left, the Scastie editor fills the right. Colours come
+ * from Bulma's custom properties so the panes follow the rest of the site.
+ */
+
+/* main.template.html wraps the page body in <main>; make it a flex container
+ * so the layout below can claim the remaining height. */
+main:has(.tutorial-layout) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* --tutorial-navbar-height is measured and set by tutorials.js. */
+.tutorial-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  height: calc(100vh - var(--tutorial-navbar-height, 5.5rem));
+  min-height: 32rem;
+}
+
+/* Left pane: prose, with the lesson navigation pinned to the bottom. */
+
+.tutorial-prose {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--bulma-border);
+}
+
+.tutorial-prose-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+}
+
+.tutorial-prose-body > h1 {
+  margin-bottom: 1.5rem;
+}
+
+.tutorial-nav {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 2.5rem;
+  border-top: 1px solid var(--bulma-border);
+  background-color: var(--bulma-scheme-main-bis);
+}
+
+.tutorial-nav-slot {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.tutorial-nav-centered {
+  text-align: center;
+}
+
+.tutorial-nav-end {
+  text-align: right;
+}
+
+.tutorial-nav .bulma-button {
+  max-width: 100%;
+  white-space: normal;
+  height: auto;
+  text-align: left;
+}
+
+/* Right pane: the editor and its toolbar. */
+
+.tutorial-editor {
+  position: relative; /* anchors the toast */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tutorial-editor-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--bulma-border);
+  background-color: var(--bulma-scheme-main-bis);
+}
+
+.tutorial-editor-label {
+  color: var(--bulma-text-weak);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tutorial-editor-pane {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background-color: var(--bulma-scheme-main-bis);
+}
+
+/* Shown until Scastie takes over the element (and left in place if the embed
+ * fails to load, so the code is still readable). */
+.tutorial-code {
+  margin: 0;
+  padding: 1rem;
+  font-family: var(--code-font);
+  font-size: 0.9rem;
+  white-space: pre;
+  overflow: auto;
+  background-color: transparent;
+  color: var(--bulma-text);
+}
+
+.tutorial-toast {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  background-color: var(--bulma-text);
+  color: var(--bulma-scheme-main);
+  font-size: 0.85rem;
+}
+
+/* Scastie's own stylesheet gives the embed a fixed 800px width and a capped
+ * height; stretch it to fill the pane instead. */
+.tutorial-editor-pane .scastie.embedded {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.tutorial-editor-pane .scastie.embedded .content {
+  height: 100%;
+}
+
+/* Scastie's default editor type is large for a half-width pane. */
+.tutorial-editor-pane .scastie .cm-scroller {
+  font-size: 14px;
+}
+
+/* Scastie overlays its own "open in Scastie" icon on the editor; keep it, but
+ * tone it down so it doesn't sit on top of the first line of code. Our labelled
+ * button in the toolbar clicks this same control. */
+.tutorial-editor-pane .scastie .embedded-overlay li.logo {
+  opacity: 0.45;
+}
+
+.tutorial-editor-pane .scastie .embedded-overlay li.logo:hover {
+  opacity: 1;
+}
+
+/* The site's Laika code styling paints every <pre> with the dark syntax
+ * background; Scastie's console output must not inherit that. */
+.tutorial-editor-pane .scastie pre {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+/* Scastie paints its chrome for its own dark theme; blend it into the site.
+ * !important because Scastie injects its stylesheet after ours. */
+.tutorial-editor-pane .scastie .main-panel,
+.tutorial-editor-pane .scastie .editor-wrapper,
+.tutorial-editor-pane .scastie .cm-gutters,
+.tutorial-editor-pane .scastie nav.editor-mobile,
+.tutorial-editor-pane .scastie .switcher-hide,
+.tutorial-editor-pane .scastie .switcher-show,
+.tutorial-editor-pane .scastie .handler,
+.tutorial-editor-pane .scastie li.logo {
+  background: var(--bulma-scheme-main-bis) !important;
+}
+
+.tutorial-editor-pane .scastie .cm-gutters {
+  border-right: 1px solid var(--bulma-border) !important;
+}
+
+.tutorial-editor-pane .scastie .console {
+  background: var(--bulma-scheme-main-ter) !important;
+}
+
+/* Console output and the console switcher are white text on Scastie's dark
+ * bar, which is unreadable on our light one. */
+.tutorial-editor-pane .scastie .console,
+.tutorial-editor-pane .scastie .console pre,
+.tutorial-editor-pane .scastie .output-console,
+.tutorial-editor-pane .scastie .console-label,
+.tutorial-editor-pane .scastie .switcher-hide,
+.tutorial-editor-pane .scastie .switcher-show {
+  color: var(--bulma-text) !important;
+}
+
+/* Scastie's Run pill is powder blue with white text: fine on its own dark
+ * chrome, low contrast on ours. Use the site's primary colour. */
+.tutorial-editor-pane .scastie li.run-button {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.75rem !important;
+  padding: 0.35rem 0.85rem !important;
+  border-radius: 0.5rem !important;
+  background: var(--bulma-primary) !important;
+  color: var(--bulma-primary-invert) !important;
+  font-size: 0.9rem;
+}
+
+.tutorial-editor-pane .scastie li.run-button:hover {
+  background: var(--bulma-primary-dark) !important;
+}
+
+/* Stack the panes on narrow screens. */
+@media screen and (max-width: 1023px) {
+  .tutorial-layout {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 0;
+  }
+
+  .tutorial-prose {
+    border-right: none;
+  }
+
+  .tutorial-prose-body {
+    overflow-y: visible;
+    padding: 1.5rem;
+  }
+
+  .tutorial-nav {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .tutorial-editor-pane {
+    height: 70vh;
+  }
+}
