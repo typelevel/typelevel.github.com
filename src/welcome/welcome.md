@@ -164,10 +164,10 @@ println(describeNumber("42"))
 **Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/XB9rOtCBTqyN2aLDczceKA)
 
 
-`andThen` reads from left to right: measure the string, test the number, and explain the result. `compose` combines functions in the opposite direction, following the mathematical shape @:math(f(g(x)):
+`andThen` reads from left to right: measure the string, test the number, and explain the result. `compose` combines functions in the opposite direction, following the mathematical shape @:math f(g(x)) @:@.
 
 @:math
-f(g(x)) = y  
+f(g(x)) = y
 @:@
 
 ```scala
@@ -633,7 +633,7 @@ But we are moving over to dice. Dice are random, or they should be, and chaos ne
 val random = scala.util.Random
 NotYet(() => random.nextInt())
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/fXKMsPtDSTKxv3K2wn4
+**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/fXKMsPtDSTKxv3K2wn4)
 
 The issue now, though, is how I take that number and use it in another part of a chain, and on and on and on? Remember, the `println` were just individual calls, and we threw away the result of `Hello` because it returned Unit and really didn’t need to. Now, I need that number, and `andThen` will not cut it. Take your time with it.
 
