@@ -452,7 +452,7 @@ scala> counter.count
 val res0: Int = 2
 ```
 
-<small>Try it in <a href="https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA"><img src="../img/media/welcome/scastie.png" alt="try it in scastie"  width="10%" height="10%" style="vertical-align: middle;"></a></small>
+[![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA)
 
 
 @:callout(warning)
