@@ -139,9 +139,8 @@ val newImprovedBjarne = originalBjarne.copy(favoriteLanguageId = scalaLanguage.i
 
 <small>Try it in <a href="https://scastie.scala-lang.org/CKL6DnTRQyuXbKNS3kwsjQ"><img src="../img/media/welcome/scastie.png" alt="try it in scastie"  width="10%" height="10%" style="vertical-align: middle;"></a></small>
 
-@:warning
+**WARNING:**
 `case class` doesn’t guarantee deep immutability. Its fields are `val` by default, but those fields can still refer to mutable objects.
-@:@
 
 The important point is that operations on immutable values produce new values instead of changing existing ones. After calling `copy`, both `originalBjarne` and `newImprovedBjarne` remain available, and each retains its own value.
 
@@ -528,9 +527,8 @@ final case class NotYet(thunk: () => Unit) {
 }
 ```
 
-@:note
+**NOTE:**
 If you are familiar with void in other languages, Scala’s `Unit` serves a similar purpose: it indicates that a computation does not produce a meaningful result. Unlike `void`, `Unit` is a real type with exactly one value, `()`.
-@:@
 
 When you create it, nothing runs; you have contained the side effect. 
 
@@ -949,9 +947,8 @@ object NotYet {
 }
 ```
 
-@:note
+NOTE:
 The `=>` marks value as a by-name parameter. It lets us give delay some code to run later without wrapping that code in `() =>`. The `delay` method takes care of wrapping it in a `thunk` for us.
-@:@
 
 Now that we have some helpers with constructors, `flatMap`, `map`, and a `println`, we can simplify how we do everything. Here is `rollDice`
 
@@ -1169,9 +1166,9 @@ val result: (Int, Int) = (3, 4)
 
 Cheers all around! We just loosely reinvented the basic shape of `IO`, a foundational type from Cats Effect. `IO` lets us build and combine work such as printing and generating random numbers without doing that work immediately. *We decide* when the complete program is finally run.
 
-@:note
+**NOTE:** 
 This `IO` is a teaching model. Cats Effect’s `IO` provides stack-safe composition, cancellation, concurrency, resource-safety tools, and many other capabilities. Our version is intended only to demonstrate how effectful programs can be represented as data and interpreted later.
-@:@
+
 
 You now know everything. Go forth, and program! But wait! A few more things.
 
