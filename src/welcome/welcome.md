@@ -455,8 +455,9 @@ val res0: Int = 2
 <small>Try it in <a href="https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA"><img src="../img/media/welcome/scastie.png" alt="try it in scastie"  width="10%" height="10%" style="vertical-align: middle;"></a></small>
 
 
-**WARNING:**
+@:callout(warning)
 Seeing a `var` can be a sign that something is not referentially transparent, but it is not proof by itself. Mutation can remain safely hidden inside a function. The real concern begins when a mutable state is shared or becomes visible to callers.
+@:@
 
 A good question, of course, is "Why does it matter?" 
 
