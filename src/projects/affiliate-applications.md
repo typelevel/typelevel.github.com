@@ -2,7 +2,7 @@
 
 This page outlines the guidelines and application process for projects that want to become Typelevel affiliate projects.
 
-Typelevel is an ecosystem of Scala-based projects and a community of people working to foster an inclusive, welcoming, and safe environment around functional programming. Affiliate projects are independently-owned projects that are part of the wider Typelevel ecosystem, without necessarily being hosted in the Typelevel GitHub organization.
+Affiliate projects are independently-owned projects that are part of the wider Typelevel ecosystem, without being hosted in the Typelevel GitHub organization.
 
 ## Who Should Apply
 
