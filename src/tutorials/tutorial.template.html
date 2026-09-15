@@ -1,0 +1,61 @@
+@:embed(/templates/main.template.html)
+<!--
+  Two-pane tutorial lesson: prose on the left, a live Scastie editor on the
+  right. The page shares the site-wide main.template.html unchanged, which is
+  also why the stylesheet is linked here in the body rather than in <head>.
+
+  The sample code is not inlined: `scastie.code` names a .sc file sitting next
+  to the lesson's markdown, and tutorials.js fetches it. That keeps the code
+  free of HTML escaping and lets it be edited (and run) as real Scala.
+-->
+<link rel="stylesheet" href="@:target(/tutorials/tutorials.css)">
+
+<div class="tutorial-layout">
+
+  <section class="tutorial-prose">
+    <div class="tutorial-prose-body bulma-content">
+      <h1 class="bulma-title">${cursor.currentDocument.title}</h1>
+      ${cursor.currentDocument.content}
+    </div>
+
+    <nav class="tutorial-nav" aria-label="lesson navigation">
+      <div class="tutorial-nav-slot">
+        @:for(cursor.previousDocument)
+        <a class="bulma-button bulma-is-light" href="${_.path}" rel="prev">
+          <span aria-hidden="true">&larr;&nbsp;</span>${_.title}
+        </a>
+        @:@
+      </div>
+      <div class="tutorial-nav-slot tutorial-nav-centered">
+        <a class="bulma-button bulma-is-light" href="@:target(/tutorials/README.md)" rel="up">All tutorials</a>
+      </div>
+      <div class="tutorial-nav-slot tutorial-nav-end">
+        @:for(cursor.nextDocument)
+        <a class="bulma-button bulma-is-primary" href="${_.path}" rel="next">
+          ${_.title}<span aria-hidden="true">&nbsp;&rarr;</span>
+        </a>
+        @:@
+      </div>
+    </nav>
+  </section>
+
+  <section class="tutorial-editor">
+    <div class="tutorial-editor-bar">
+      <span class="tutorial-editor-label">Try it yourself</span>
+      <button type="button" id="open-in-scastie" class="bulma-button bulma-is-small bulma-is-light">
+        Open in Scastie
+      </button>
+    </div>
+    <div class="tutorial-editor-pane">
+      <pre id="tutorial-code" class="tutorial-code" data-code-src="${?scastie.code}"
+        data-target-type="${?scastie.target-type}" data-scala-version="${?scastie.scala-version}"
+        data-worksheet="${?scastie.worksheet}">Loading the editor&hellip;</pre>
+    </div>
+    <div id="tutorial-toast" class="tutorial-toast" role="status" hidden></div>
+  </section>
+
+</div>
+
+<script defer src="https://scastie.scala-lang.org/embedded.js"></script>
+<script defer src="@:target(/tutorials/tutorials.js)"></script>
+@:@
