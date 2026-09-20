@@ -2,16 +2,19 @@
 
 ## What is Typelevel?
 
-Typelevel is a non-profit organization dedicated to providing principled, type-safe, functional programming tools for the Scala ecosystem. We are hyper-focused on functional programming and building a welcoming, inclusive community around pure functional programming in Scala.
+Typelevel is a non-profit organization dedicated to providing principled, type-safe, functional programming tools for the Scala ecosystem. We are focused on functional programming and building a welcoming, inclusive community around pure functional programming in Scala.
 
 Our mission is to enable the creation of robust, maintainable software through functional programming. We develop and maintain a suite of libraries that help you write safer, more composable, and more testable code.
 
-This introduction starts with ordinary Scala values and functions. From there, we will learn how `map`, `flatMap`, and
-for-comprehensions let us combine values without discarding the information carried by their types. 
-
-Finally, we will use those ideas to build a small version of `IO`, the foundational data type from Cats Effect.
-
 You do not need prior experience with functional programming. Every new idea builds on the previous one.
+
+## What to Expect
+
+The main body of this introduction is a orientation in typed functional programming as Typelevel practices it in Scala. We will start with types: how they give meaning to values, prevent invalid states, and let the compiler help us check our work. From there, we will look at immutability, small functions, and the basic tools Scala gives us for transforming and composing values, including `map`, `flatMap`, and for-comprehensions.
+
+Those ideas will lead us into side effects, referential transparency, and the question every useful program eventually faces: how do we read from the world, write to the world, or generate random values without giving up the benefits of pure functional programming? To answer that, we will build a small teaching version of `IO`, showing how effectful programs can be described as data and interpreted later.
+
+Near the end, we will connect those ideas to common Typelevel terms such as programs, algebras, and interpreters. Finally, we will introduce the libraries that make up the Typelevel ecosystem, including Cats, Cats Effect, FS2, http4s, Circe, Doobie, and Skunk, so you can see where each piece fits and decide what to explore next.
 
 ## A Welcoming Community
 
@@ -28,7 +31,11 @@ here.
 
 Types are an essential part of Scala and central to the philosophy of Typelevel. If you think back to your professor or teacher in mathematics and physics, they would tell you to “label your work”. A value of `10` could represent 10 meters, 10 seconds, 10 kilograms, or 10 meters per second. The labels provide context and help verify that your calculations are correct. If you expected a result in meters per second but instead got kilometers per second, the labels immediately indicated that something had gone wrong.
 
-Programming follows the same principle. Rather than relying on comments or variable names to describe what a value represents, we use types. A type gives meaning to a value, defines which values are valid, and determines which operations make sense. This philosophy is at the heart of the Typelevel ecosystem.
+Programming follows the same principle, but types do more than label values. A type describes the set of values that are allowed in a particular place. If a parameter has type `String`, we cannot pass it an `Int`. If a value has type `Power`, we cannot accidentally use a duration, distance, or amount of energy in its place.
+
+That second part is just as important as the first: a type also describes what values are **not** allowed. This is one reason a compiler is so helpful. It does not merely translate our program into something the machine can run; it also checks whether the pieces we connected are allowed to fit together. When the types do not line up, the compiler stops us before the mistake reaches production.
+
+Rather than relying only on comments or variable names to describe what a value represents, we use types. A type gives meaning to a value, defines which values are valid, and determines which operations make sense. This philosophy is at the heart of the Typelevel ecosystem.
 
 The Scala Language already has its own types, such as `List`, `Int`, and `String`. Typelevel’s libraries can take it even further.
 We start with a simple example, power:
@@ -78,7 +85,7 @@ def average(xs: NonEmptyList[Int]): Double =
   xs.reduceLeft(_ + _) / xs.length.toDouble
 ```
 
-The type tells callers that `average` always has at least one value to work with. Its methods preserve that guarantee when
+The type tells callers that `average` required at least one value to work with. Its methods preserve that guarantee when
 they can:
 
 ```scala
@@ -120,8 +127,8 @@ Immutability is also a core design principle in functional programming and is st
 A `case class` is one typical way that we make an immutable class. 
 
 ```scala
-final case class User(id: Long, name: String, favoriteLanguageId: Long)
-final case class Language(id: Long, name: String)
+case class User(id: Long, name: String, favoriteLanguageId: Long)
+case class Language(id: Long, name: String)
 ```
 
 ```scala
