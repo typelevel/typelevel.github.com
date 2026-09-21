@@ -69,7 +69,14 @@ res0: Boolean = true
 scala> sum == Megawatts(0.035) // comparisons automatically convert scale
 res1: Boolean = true
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/5SNhXYrTRxWFp8lR10da7A)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/5SNhXYrTRxWFp8lR10da7A" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Now, our `load1` and `load2` can be added even though one is a `Kilowatt` and the other is a `Megawatt`; the addition operator `+`, which belongs to `Power`, can add them together correctly. We can even assert that the values are equal. This provides you, the programmer, with an extra layer of verification. Making sure the types match can go a long way toward helping you determine whether the program is correct. The example that we just showed is one of Typelevel’s projects called [Typelevel Squants](https://github.com/typelevel/squants)
 
@@ -114,7 +121,14 @@ object HumanAge {
 val yodasAge: Option[HumanAge] =
   HumanAge.from(800)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/FXe91F5RRquCVnBP444ohA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/FXe91F5RRquCVnBP444ohA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 The result is `None`, so no invalid `HumanAge` is created. Notice how `Option` records a real possibility in the return type: construction may succeed, or it may not. 
 
@@ -142,7 +156,14 @@ If we want to create a version of the great Bjarne Stroustrup who prefers Scala,
 ```scala
 val newImprovedBjarne = originalBjarne.copy(favoriteLanguageId = scalaLanguage.id)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/CKL6DnTRQyuXbKNS3kwsjQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/CKL6DnTRQyuXbKNS3kwsjQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 **WARNING:**
 `case class` doesn’t guarantee deep immutability. Its fields are `val` by default, but those fields can still refer to mutable objects.
@@ -168,8 +189,14 @@ val describeNumber: String => String =
   
 println(describeNumber("42"))
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/XB9rOtCBTqyN2aLDczceKA)
-
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/XB9rOtCBTqyN2aLDczceKA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 `andThen` reads from left to right: measure the string, test the number, and explain the result. `compose` combines functions in the opposite direction, following the mathematical shape @:math f(g(x)) @:@.
 
@@ -192,7 +219,15 @@ val describeNumber: String => String =
   
 println(describeNumber("42"))
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/yf3MjF4WQGSLHsjHOG6ZLw)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/yf3MjF4WQGSLHsjHOG6ZLw" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 To apply a function, we call the method `apply`. For example, in the above example, we could've called `describeNumber.apply("42")`. `apply` is a magical method, in that Scala lets us omit the word `apply`. 
 
@@ -208,7 +243,15 @@ We have many containers in Scala and in Typelevel; for each of those containers,
 scala> val result = List(1,2,3,4).map(x => x * 3) 
 val result: List[Int] = List(3, 6, 9, 12)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/uKdwS69mTpavxhLjvOZM6Q)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/uKdwS69mTpavxhLjvOZM6Q" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Another container is `Option`; if we apply a `map` to it, we can change its value, although we aren't changing anything. `map` creates a container and returns it to us.
 
@@ -216,7 +259,15 @@ Another container is `Option`; if we apply a `map` to it, we can change its valu
 scala> val result = Option(2).map(x => x * 3)
 val result: Option[Int] = Some(6)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/GfpvK3u4Rze8LwiimPR9FA)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/GfpvK3u4Rze8LwiimPR9FA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Here we see an `Option` with `6`, but wait, what is `Some`? Some is one of the children of `Option`, along with its sibling `None`. There are many types in Scala and in the Typelevel stack that are structured this way, where the parent and its children are defined as a closed set, and no classes extend the family. They are called `sealed` types or, if we get nerdy for a bit, an _algebraic data type_.
 
@@ -234,7 +285,15 @@ The `filter` method retains values that satisfy a predicate and removes those th
 scala> val result = List(1,2,3,4,5).filter(x => x % 2 == 0)
 val result: List[Int] = List(2, 4)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/b9QkCT1OQCmr7451xZztXA)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/b9QkCT1OQCmr7451xZztXA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 It becomes interesting when we apply it to an `Option`. If the predicate resolves to `true`, then the value is maintained.
 
@@ -242,7 +301,15 @@ It becomes interesting when we apply it to an `Option`. If the predicate resolve
 scala> val result = Option(4).filter(x => x % 2 == 0)
 val result: Option[Int] = Some(4)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/BBriODIMTF6jO40TbLTRwQ)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/BBriODIMTF6jO40TbLTRwQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 If it is false, the `Option` becomes `None`.
 
@@ -250,7 +317,15 @@ If it is false, the `Option` becomes `None`.
 scala> val result = Option(3).filter(x => x % 2 == 0)
 val result: Option[Int] = None
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/dNkngQ4kSPWWwHvmjZIwFQ)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/dNkngQ4kSPWWwHvmjZIwFQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 ### `flatMap`
 
@@ -269,7 +344,15 @@ Typically, we wouldn't want a `List` of a `List`, although there may be instance
 val result = mapped.flatten
 val result: List[Int] = List(-1, 1, 2, -2, 2, 3, -3, 3, 4)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/LWiCSOG2QBWMTxBtmiNCHg)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/LWiCSOG2QBWMTxBtmiNCHg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Combining the `map` and `flatten` gives us `flatMap`, so we don't have to do two separate steps, `map` and `flatten`
 
@@ -277,7 +360,15 @@ Combining the `map` and `flatten` gives us `flatMap`, so we don't have to do two
 val result = List(1,2,3).flatMap(x => List(-x, x, x+1))
 val result: List[Int] = List(-1, 1, 2, -2, 2, 3, -3, 3, 4)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/Bg5FX7SGT4S8YB4TBEHf0A)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/Bg5FX7SGT4S8YB4TBEHf0A" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 With `Option`, `flatMap` lets one lookup determine the next without discarding the possibility that either lookup may fail. Suppose a small program finds a user and then looks up that user’s favorite programming language:
 
@@ -295,7 +386,15 @@ val favoriteLanguage: Option[String] =
     }
   }
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/yDTVqjBDSuOnuVSKL8Er3A)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/yDTVqjBDSuOnuVSKL8Er3A" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 We never call `get` or pretend that either lookup must succeed. If the user is missing, the second lookup does not run. If the language is missing, the final result is also `None`. Absence stays _in the channel_: it remains visible in the `Option` type throughout the computation.
 
@@ -320,7 +419,15 @@ val favoriteLanguage: Option[String] =
 
 println(favoriteLanguage)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/trPquxXcR1iCxlPiBo22aQ)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/trPquxXcR1iCxlPiBo22aQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 This has the same behavior as the previous example. It returns `Some(name)` only when both lookups succeed.
 
@@ -334,7 +441,15 @@ val greeting: Option[String] =
     message = s"${user.name} likes ${language.name}"
   } yield message
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/RXTWEtgcSsCmHcB6pQ00Nw)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/RXTWEtgcSsCmHcB6pQ00Nw" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 An `if` guard filters the current value. The type used in the for-comprehension must support `withFilter` in addition to `flatMap` and `map`. For `Option`, a `false` predicate causes the result to become `None`.
 
@@ -346,7 +461,15 @@ val scalaFan: Option[User] =
     if language.name == "Scala"
   } yield user
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/OC7Fy7NGSzCE54invHUDyA)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/OC7Fy7NGSzCE54invHUDyA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 This pattern is applicable beyond `Option`. Types with `flatMap` and `map` can be used in basic for-comprehensions. A comprehension containing an `if` guard also requires `withFilter`.
 
@@ -371,8 +494,15 @@ For example, the following `greet` method is one that is pure.
 ```scala
 def greet(name:String) = s"Hello, $name"
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/Wn0kxGJnTeaO1jtn2g4wQw)
 
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/Wn0kxGJnTeaO1jtn2g4wQw" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 But the following method is not
 
 ```scala
@@ -381,7 +511,15 @@ def greetWithSideEffect(name:String) = {
    s"Hello, $name"
 }
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/o2mie9jNTaW7KyZId66RMg)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/o2mie9jNTaW7KyZId66RMg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Having a side effect is not referentially transparent, which we will see next.
 
@@ -395,7 +533,15 @@ def addOne(x: Int): Int = x + 1
 val result1 = addOne(41) + addOne(42)
 val result2 = 42 + 43
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/yYLBy9USRWODO6bsyCsWhg)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/yYLBy9USRWODO6bsyCsWhg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 A term we regularly use to express this is _pure_. For an evaluation to be pure means that it:
 
@@ -416,7 +562,14 @@ r1: java.lang.String = Hello, World
 scala> val r2 = x.append(", World").toString
 r2: java.lang.String = Hello, World, World
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/tVrWmNOGRKuOps0McWiroA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/tVrWmNOGRKuOps0McWiroA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 What is sneaky in the above example is that the value `x` is holding onto some mutable state. The calls to `append` mutate state held by `x`, so evaluating the same expression repeatedly produces different observable results.
 
@@ -441,7 +594,14 @@ scala> counter.increase()
 scala> counter.count
 val res0: Int = 2
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/vaQQFlPSTsGJcjbIIGnUNA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 
 @:callout(warning)
@@ -488,7 +648,14 @@ val numbers = ListBuffer(1, 2, 3)
 numbers.addAll(List(4, 5))
 numbers.addAll(List(4, 5))
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/ir9ge1TJS5uy7yLAPzNC5Q)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/ir9ge1TJS5uy7yLAPzNC5Q" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Alas, most Scala developers will steer clear of doing it this way and instead prefer the standard way, which is referentially transparent. 
 
@@ -533,7 +700,14 @@ Only when you run it with `run()` does the side effect get evaluated, not before
 scala> hello.run()
 "Hello"
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/46IgHq72Q9iONrikOAjDhA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/46IgHq72Q9iONrikOAjDhA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Would this be referentially transparent? We can certainly exercise that idea by adding an `andThen` method on `NotYet` and seeing what happens when we compose the two.
 
@@ -566,7 +740,14 @@ scala> NotYet(() => println("Hello"))
 val res6: NotYet = NotYet(rs$line$15$NotYet$$Lambda/0x000001c0016fe690@4e9492b6)
 ```
 
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/3zpwC3D0QYuyDQzWrzsbAQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/3zpwC3D0QYuyDQzWrzsbAQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Let’s stop here because this is important. Each `NotYet` holds some printing for later. Calling `andThen` joins one `NotYet` to another, but it still does not print anything. The result is another `NotYet`, a larger object built from smaller ones. Only `run()` makes it print.
 
@@ -602,7 +783,15 @@ Hello
 World
 Let's Typelevel
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/4JLxSEMiSgWeUtZ4qqMmKg)
+
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/4JLxSEMiSgWeUtZ4qqMmKg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 The problem with `andThen` is that it is good when I want to discard the first part and continue to the second, or a third, like in our `"Hello"`, `"World"`, `"Let's Typelevel"`. We did not need `Hello` to build `World`, and I didn’t need `World` for Let's `Typelevel`. But what if we did? In the following example, let’s throw two dice with `NotYet`.
 
@@ -628,9 +817,14 @@ val res8: NotYet[Unit] = NotYet(
   rs$line$20$NotYet$$Lambda/0x000001c001723678@2c0fd54c
 )
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/eUINIivJRfyTPEwWH7hchg)
-
-
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/eUINIivJRfyTPEwWH7hchg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 ![Show independent composition of three Not Yet elements printing](../img/media/welcome/NotYetUnit.png)
 
@@ -640,7 +834,14 @@ But we are moving over to dice. Dice are random, or they should be, and chaos ne
 val random = scala.util.Random
 NotYet(() => random.nextInt())
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/fXKMsPtDSTKxv3K2wn4)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/fXKMsPtDSTKxv3K2wn4" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 The issue now, though, is how I take that number and use it in another part of a chain, and on and on and on? Remember, the `println` were just individual calls, and we threw away the result of `Hello` because it returned Unit and really didn’t need to. Now, I need that number, and `andThen` will not cut it. Take your time with it.
 
@@ -690,7 +891,14 @@ We run it by calling `unsafeRunSync()`. Up to this point, `rollDie` was just a v
 scala> rollDie.unsafeRunSync()
 val res1: Int = 3
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/ijbbKkPQQSWLBSyPSm43rA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/ijbbKkPQQSWLBSyPSm43rA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 We brought `flatMap` and `map` into all this for a reason: _to compose_. Take a value from one die roll and compose it to another die roll. This is where `flatMap` is always our tool of choice.
 
@@ -711,7 +919,14 @@ Here we see a lambda; once again, no dice have been rolled. We have only built `
 scala> rollDice.unsafeRunSync()
 val res7: (Int, Int) = (3, 6)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/O7MTWjDURteRYWh6mappTg)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/O7MTWjDURteRYWh6mappTg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Remember that with a `flatMap`, we can make it a little more elegant using a for-comprehension, given that we are using the many `flatMap`s and one `map` pattern.
 
@@ -736,10 +951,16 @@ Rolling the die should still work as before since for-comprehension is used for 
 scala> rollDice.unsafeRunSync()
 val res7: (Int, Int) = (3, 6)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/D90w2pcpRRK81yJnou1erA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/D90w2pcpRRK81yJnou1erA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 ![Flat Map image of one roll, then composing into another not yet then applying the map](../img/media/welcome/NotYetFlatMap.png)
-
 
 Let’s do something electrifying! Let’s keep rolling a pair of dice until we get a lucky number 7. How do we make a loop for this? Let’s try to create a recursive method until we hit the desired base case. One thing to keep in mind is that we want to do this without running anything. We want to set up a lambda.
 
@@ -782,7 +1003,14 @@ def rollUntil(notYet: NotYet[(Int, Int)]): NotYet[(Int, Int)] = {
     }
 }
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/nilAKdieQiexXFrKHBHdUQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/nilAKdieQiexXFrKHBHdUQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Next, we can use a for-comprehension to break out the first and second rolls and clarify them. Each expression to the right of `<-` must produce a `NotYet`, although the value inside the `NotYet` may have a different type.
 
@@ -820,7 +1048,14 @@ def rollUntil(target: Int): NotYet[(Int, Int)] = {
   loop(rollDice)
 }
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/MYEDgM4LRsuTBIjI9ynhXw)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/MYEDgM4LRsuTBIjI9ynhXw" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 ### We still don't like it. 
 
@@ -856,7 +1091,14 @@ How does this look for our dice? Well, for rolling one die, this becomes the fol
 ```scala
 Delay(() => Random.between(1, 7))
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/1Jd5rEwZSiu0R4cgDIWfRg)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/1Jd5rEwZSiu0R4cgDIWfRg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 For rolling two dice, this becomes this magnificent object graph; note, once again, that nothing is running.
 
@@ -874,21 +1116,29 @@ val rollDice: NotYet[(Int, Int)] =
       )
   )
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/nRR2mWn3QdCAcdpVTULdxg)
-
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/nRR2mWn3QdCAcdpVTULdxg" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Let’s stop for an important point. Many of the libraries that we have in Typelevel do exactly this. We construct object graphs, a lot of object graphs. Once constructed, we will then interpret what we do with that object graph. This is called the **__interpreter pattern__**. Everything up to this point is data. That’s it, and once you see it, then the complexity will fade. It is intimidating at first because the code can look overwhelming, but there is nothing now that should stand in your way.
 
 An analogy that is worth throwing in here is punch cards. In the older days of computing, these were programs. Programmers had to prepare these cards to load them onto a machine – a machine to interpret what those cards wanted.  We are doing the same thing: we are describing what we want our program to do, and we will send it to be interpreted by an interpreter like `unsafeRunSync()`
 
 
+@:html
 <div style="text-align: center;">
-  <img src="../img/media/welcome/punchcard-blue.png" alt="IBM Punch Card" width="20%" height="20%">
-  <img src="../img/media/welcome/punchcard-machine.png" alt="An IBM Punch Card Machine" width="20%" height="20%">
+  <img src="../img/media/welcome/punchcard-blue.png" alt="IBM Punch Card" style="width: 20%; height: auto;">
+  <img src="../img/media/welcome/punchcard-machine.png" alt="An IBM Punch Card Machine" style="width: 20%; height: auto;">
   <p style="font-size: 0.75em; margin-top: 0.5em;">
-    Images from <a href="https://en.wikipedia.org/wiki/Punched_card_input/output">Wikipedia: Punched card input/output</a>
+    Images from <a href="https://en.wikipedia.org/wiki/Punched_card_input/output" target="_blank">Wikipedia: Punched card input/output</a>
   </p>
 </div>
+@:@
 
 Our brains can appreciate the graph for viewing but not for typing it out by hand, so we can use some help here. We will throw in some methods to make life easier, and we can go back to using for comprehensions.
 
@@ -970,7 +1220,14 @@ val res1: NotYet[(Int, Int)] = FlatMap(
   continue = rs$line$4$$$Lambda/0x000001fe0188ed60@c3a55ce
 )
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/sAy37DuiTA2DOa9QUpLAwQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/sAy37DuiTA2DOa9QUpLAwQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 We need to run it, or correctly say _interpret it_. Remember the punch-card analogy? We just described what we wanted; now we interpret it. I am going to rewrite `unsafeRunSync()`, but it is not inside `NotYet`; it is outside. We do not want interpretation inside data.
 
@@ -997,7 +1254,14 @@ Get the popcorn ready. Here we go.
 scala> Runner.unsafeRunSync(rollUntil(7))
 val res2: (Int, Int) = (2, 5)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/t8d2F1e6SiGjDvhCQRRHfQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/t8d2F1e6SiGjDvhCQRRHfQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 C'mon bring it in. We did it. *Hugs* 
 
@@ -1022,7 +1286,14 @@ scala> Runner.unsafeRunSync(program)
 About to roll some dice until I get a 7...
 Got a 7 with rolls: (1,6)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/IJo1i4bNSLuScs4iYWeFAQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/IJo1i4bNSLuScs4iYWeFAQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 And, now, the ultimate refactoring. I am going to rename `NotYet` to `IO`, and while I am at it, I am going to move the `unsafeRunSync` to `IO` and get rid of runner. I just put it on the outside, previously, for demonstration.
 
@@ -1133,7 +1404,14 @@ Got a 7 with rolls: (3,4)
 
 val result: (Int, Int) = (3, 4)
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/Axwm1RXeSBO4wTIMPhJezQ)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/Axwm1RXeSBO4wTIMPhJezQ" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 Cheers all around! We just loosely reinvented the basic shape of `IO`, a foundational type from Cats Effect. `IO` lets us build and combine work such as printing and generating random numbers without doing that work immediately. *We decide* when the complete program is finally run.
 
@@ -1175,12 +1453,15 @@ val program: IO[(Int, Int)] = FlatMap(
 )
 ```
 
+@:html
 <div style="text-align: center;">
 <img src="../img/media/welcome/pipe1.png" alt="u-pipe"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe2.png" alt="u-pipe left"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe3.png" alt="u-pipe right"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe4.png" alt="t-pipe middle"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe5.png" alt="s-pipe middle"  width="10%" height="10%" style="vertical-align: middle;">
 </div>
+@:@
 
+@:html
 <small>Pipe Images from Noun Project. Artist Made x Made</small>
-
+@:@
 
 #### Algebras
 
@@ -1311,7 +1592,14 @@ Or we can run in an InMemoryDatabase
 ```scala
 def interpretInMemory(sql: SQL): Option[List[TodoRow]] = ???
 ```
-**Try it in Scastie!** [![Try it in Scastie](../img/media/welcome/scastie.png)](https://scastie.scala-lang.org/qkVE9IVNQLOnW7a5TK4lZA)
+@:html
+<p>
+  <strong>Try it in Scastie!</strong>
+  <a href="https://scastie.scala-lang.org/qkVE9IVNQLOnW7a5TK4lZA" target="_blank" rel="noopener noreferrer">
+    <img src="../img/media/welcome/scastie.png" alt="Try it in Scastie">
+  </a>
+</p>
+@:@
 
 ![Showing a complete application with the composition of types and functions](../img/media/welcome/CompleteGraph.png)
 
