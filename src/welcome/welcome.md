@@ -1,3 +1,7 @@
+{%
+katex: true
+%}
+
 # Introduction to Typelevel
 
 ## What is Typelevel?
@@ -1455,12 +1459,14 @@ val program: IO[(Int, Int)] = FlatMap(
 
 @:html
 <div style="text-align: center;">
-<img src="../img/media/welcome/pipe1.png" alt="u-pipe"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe2.png" alt="u-pipe left"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe3.png" alt="u-pipe right"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe4.png" alt="t-pipe middle"  width="10%" height="10%" style="vertical-align: middle;"><img src="../img/media/welcome/pipe5.png" alt="s-pipe middle"  width="10%" height="10%" style="vertical-align: middle;">
+  <img src="../img/media/welcome/pipe1.png" alt="u-pipe" width="10%" height="10%" style="vertical-align: middle;">
+  <img src="../img/media/welcome/pipe2.png" alt="u-pipe left" width="10%" height="10%" style="vertical-align: middle;">
+  <img src="../img/media/welcome/pipe3.png" alt="u-pipe right" width="10%" height="10%" style="vertical-align: middle;">
+  <img src="../img/media/welcome/pipe4.png" alt="t-pipe middle" width="10%" height="10%" style="vertical-align: middle;">
+  <p style="font-size: 0.75em; margin-top: 0.5em;">
+    Pipe Images from Noun Project. Artist Made x Made 
+  </p>
 </div>
-@:@
-
-@:html
-<small>Pipe Images from Noun Project. Artist Made x Made</small>
 @:@
 
 #### Algebras
