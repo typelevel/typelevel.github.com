@@ -13,7 +13,7 @@
         <path fill="#ffed00" d="M -2721,-1649.6 H 3278.97 V 255.365 H -2721 Z" style="stroke-width:1" id="path4" />
         <path fill="#ff8c00" d="M -2721,-1649.6 H 3278.97 V -379.63 H -2721 Z" style="stroke-width:1" id="path5" />
         <path fill="#e40303" d="m -2721,-1649.6 h 5999.97 v 635 H -2721 Z" style="stroke-width:1" id="path6" />
-        <path d="M -2721,-2610.1 142.97,255.365 -2721,3120.86 Z" style="stroke-width:1" id="path7" />
+        <path fill="#000000" d="M -2721,-2610.1 142.97,255.365 -2721,3120.86 Z" style="stroke-width:1" id="path7" />
         <path fill="#613915" d="M -2721,-2129.6 -337.03,255.365 -2721,2640.36 Z" style="stroke-width:1" id="path8" />
         <path fill="#74d7ee" d="M -2721,2160.36 V -1649.6 L -809.03,255.365 Z" style="stroke-width:1" id="path9" />
         <path fill="#ffafc8" d="M -2721,1680.37 V -1169.6 l 1420,1424.965 z" style="stroke-width:1" id="path10" />
