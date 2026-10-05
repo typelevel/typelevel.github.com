@@ -13,7 +13,7 @@ These projects have always been an important part of Typelevel, and we are alway
 The process has changed slightly since last time, but it should be much easier. Now, all you need to do is:
 
 1. Use our link to submit your project application.
-2. Fill in all the required information and clauses.
+2. Fill in all the required information and accept the terms.
 3. Wait for your project to be reviewed and approved.
 4. If everything looks good, you will be added to the list of Typelevel affiliates and your project will appear on our index page!
 
