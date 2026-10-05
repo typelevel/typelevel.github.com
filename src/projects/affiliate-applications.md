@@ -12,7 +12,7 @@ Open an application if your project:
 - Is based on functional programming principles.
 - Is distributed under an [OSI-approved open source license](https://opensource.org/licenses).
 - Is publicly accessible on GitHub or another code forge (we recommend [Codeberg](https://codeberg.org/)).
-- Is actively maintained and has a security policy (see [Typelevel security policy](/security.md) or [example policy](https://github.com/typelevel/.github/blob/main/SECURITY.md)).
+- Is actively maintained and has a security policy (see [Typelevel security policy](/security.md) or [example policy](https://github.com/nodemailer/nodemailer/blob/master/SECURITY.md)).
 - Has adopted the [Typelevel Code of Conduct](/code-of-conduct/README.md) in all spaces associated with the project.
 
 ## Application Process
