@@ -8,7 +8,7 @@
 
 **Applications are back!** We are excited to announce that we are now accepting applications for new affiliate projects.
 
-The process has changed slightly since last time, but it should be much easier. Why would you want this? Well: 
+The process has changed slightly since last time, but is much easier. Why would you want this? Well: 
 
 - Your project will be listed on the Typelevel website and index
 - It demonstrates alignment with our community values
