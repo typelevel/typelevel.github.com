@@ -1,7 +1,7 @@
 {%
   author: ${Hombre-x}
   date: "2026-10-01"
-  tags: [announcements, governance]
+  tags: [announcements]
 %}
 
 # Affiliate Applications Opens Again!
