@@ -6,13 +6,10 @@
 
 # Affiliate Applications Opens Again!
 
-**Applications are back!** We are excited to announce that we are now accepting applications for new affiliate projects.
+**Applications are back!** 
 
-The process has changed slightly since last time, but is much easier. Why would you want this? Well: 
+We are excited to announce that the affiliation process has been updated, simplified, and is open for new affiliate project applications!
 
-- Your project will be listed on the Typelevel website and index
-- It demonstrates alignment with our community values
-- The use of "typelevel affiliate" badge/shield (our quality mark 😉) on your project page and README
-- An indicator that the Typelevel TSC has recognized your project is active/maintained/quality
+By becoming affiliated, your project is highlighted for being designed to fit into the broader Typelevel ecosystem and aligning with our community values. Affiliate projects get listed on the [project index](/projects/) and may use the "Typelevel affiliate" badge/shield (our quality mark 😉) on project pages and READMEs.
 
-If you think your project meets our guidelines and it is a good fit or addition to Typelevel, perhaps because it complements it, uses some of its libraries, extends some functionality, or maybe you just think it would look good with a cat logo on it, we encourage you to apply. You can find more information on the [Typelevel affiliates page](/projects/affiliate-applications.md). See you there!
+If you think your project meets our guidelines and it is a good fit or addition to Typelevel, perhaps because it complements it, uses some of its libraries, extends some functionality, or provides a new integration, we encourage you to apply. You can find more information on the [Typelevel affiliates page](/projects/affiliate-applications.md). See you there!
