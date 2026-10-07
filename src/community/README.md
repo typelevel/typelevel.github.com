@@ -18,7 +18,7 @@ Join our monthly virtual meetup! Learn about Typelevel projects and functional p
 @:@
 
 @:fragment(projects)
-Typelevel boasts an impressive ecosystem of affiliate projects, built by our community. These projects represent our broad interests across network protocols, streaming data, UX, AI/ML, and tooling. Publish your own project and apply to become an affiliate.
+Typelevel boasts an impressive ecosystem of affiliate projects, built by our community. These projects represent our broad interests across network protocols, streaming data, UX, AI/ML, and tooling. Interested to bring your own project? [Apply to become an affiliate](/projects/affiliate-applications.md).
 @:@
 
 @:fragment(coc)
