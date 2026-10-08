@@ -80,7 +80,10 @@ object LaikaBuild {
   import pink.cozydev.protosearch.laika.IndexConfig
   import pink.cozydev.protosearch.ui.SearchUI
 
-  val indexConfig = IndexConfig.default
+  // The interactive tutorials are an unlisted prototype; keep them out of
+  // search until they are ready to be announced.
+  val indexConfig =
+    IndexConfig.default.withExcludedPaths(Path.Root / "tutorials")
 
   def input = {
     val securityPolicy = new URI(
