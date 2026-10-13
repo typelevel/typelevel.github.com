@@ -29,6 +29,6 @@ The application process is managed by the Typelevel [Technical Steering Committe
 If you have any questions, please don't hesitate to reach out to our community:
 
 - Join the discussion on [Discord](https://discord.gg/typelevel-632277896739946517)
-- Contact us via email at <hello@typelevel.org>
+- Contact us via email at hello@typelevel.org
 
 We look forward to welcoming you to our community soon!
