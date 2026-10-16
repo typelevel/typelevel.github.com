@@ -46,7 +46,7 @@ One week later we will be in Copenhagen for an afternoon workshop followed by tw
 
 ## London on Saturday 24 October
 
-Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing and [SiriusXM] for hosting us!
+Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing, [SiriusXM] for hosting us, and [VirtusLab] for sponsoring!
 
 @:html
 <div class="bulma-is-flex bulma-is-justify-content-center">
@@ -88,6 +88,9 @@ If you are interested in presenting at the Berlin or Málaga meetup, please resp
 
 *Updated on September 15 to include the Copenhagen event.*
 
+*Updated on October 16 to mention the VirtusLab sponsorship.*
+
+
 [coc]: /code-of-conduct/README.md
 [sponsors]: /foundation/README.md
 [donate]: /foundation/README.md#supporting-the-foundation
@@ -99,6 +102,7 @@ If you are interested in presenting at the Berlin or Málaga meetup, please resp
 [Zalando]: https://zalando.com
 [lsug]: https://www.meetup.com/london-scala/
 [SiriusXM]: https://siriusxm.com
+[VirtusLab]: https://virtuslab.com
 [Intellias]: https://intellias.com
 [Input Objects]: https://inputobjects.com
 [Aruna]: https://aruna.de/
