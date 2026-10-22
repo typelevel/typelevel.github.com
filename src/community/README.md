@@ -18,9 +18,17 @@ Join our monthly virtual meetup! Learn about Typelevel projects and functional p
 @:@
 
 @:fragment(projects)
-Typelevel boasts an impressive ecosystem of affiliate projects, built by our community. These projects represent our broad interests across network protocols, streaming data, UX, AI/ML, and tooling. Publish your own project and apply to become an affiliate.
+Typelevel boasts an impressive ecosystem of affiliate projects, built by our community. These projects represent our broad interests across network protocols, streaming data, UX, AI/ML, and tooling. Interested to bring your own project? [Apply to become an affiliate](/projects/affiliate-applications.md).
 @:@
 
 @:fragment(coc)
 The Typelevel community is dedicated to providing a positive experience for everyone. Whether you are new or familiar with our community, we care about making it a welcoming and safe place for you and we are here to support you.
+@:@
+
+@:fragment(contributing)
+The projects in the Typelevel ecosystem are all open-source. Learn how to contribute to Typelevel and help maintain your favorite projects. Find good first issues, understand the workflow, and collaborate with maintainers.
+@:@
+
+@:fragment(resources)
+Learn functional programming fundamentals and the theory behind the design of Typelevel libraries. Explore recommended books, courses, and documentation for learning functional programming in Scala and the Typelevel ecosystem.
 @:@

@@ -6,13 +6,13 @@
 
 # Typelevel Traverses Europe
 
-I am excited to announce **three upcoming, in-person meetups** across Europe this October! These events are a wonderful opportunity to **connect with other functional programming enthusiasts in a safe, supportive space**. We welcome current and aspiring Typelevel users, contributors, and anyone curious to learn more about functional programming, no matter your prior experience. We will follow the [Typelevel Code of Conduct][coc].
+I am excited to announce **four upcoming, in-person meetups** across Europe this October! These events are a wonderful opportunity to **connect with other functional programming enthusiasts in a safe, supportive space**. We welcome current and aspiring Typelevel users, contributors, and anyone curious to learn more about functional programming, no matter your prior experience. We will follow the [Typelevel Code of Conduct][coc].
 
 **Participating is free for everyone** and space is limited, so please register early! Our mission to do functional programming together is possible thanks to our [sponsors]. Please consider supporting the Typelevel Foundation with a [recurring donation][donate] to help keep our community thriving.
 
 ## Berlin on Wednesday 14 October
 
-Our first stop will be Berlin, after [Scala Days]. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Maciej Dragun for co-organizing, [Zalando] for hosting us, and [Input Objects] for their generous sponsorship!
+Our first stop will be Berlin, after [Scala Days]. This all-day meetup will include talks, a workshop, and an unconference. Thanks to Maciej Dragun for co-organizing, [Zalando] for hosting us, and [Input Objects] and [Aruna] for their generous sponsorship!
 
 @:html
 <div class="bulma-is-flex bulma-is-justify-content-center">
@@ -27,9 +27,26 @@ Our first stop will be Berlin, after [Scala Days]. This all-day meetup will incl
 </div>
 @:@
 
+## Copenhagen on Thursday 22 October
+
+One week later we will be in Copenhagen for an afternoon workshop followed by two talks in the evening. Thanks to our Foundation sponsor [Famly] for hosting us!
+
+@:html
+<div class="bulma-is-flex bulma-is-justify-content-center">
+  <a
+    href="https://luma.com/event/evt-GG0FHdvyVFhXKko"
+    class="bulma-button bulma-is-link"
+    data-luma-action="checkout"
+    data-luma-event-id="evt-GG0FHdvyVFhXKko"
+  >
+    Register for Copenhagen
+  </a>
+</div>
+@:@
+
 ## London on Saturday 24 October
 
-Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing and [SiriusXM] for hosting us!
+Our next stop is an Open Source Hack in London, where we will spend the day working together on open source projects. Thanks to Zainab Ali, Sabrina Konrad-lee, and the [London Scala User Group][lsug] for co-organizing, [SiriusXM] for hosting us, and [VirtusLab] for sponsoring!
 
 @:html
 <div class="bulma-is-flex bulma-is-justify-content-center">
@@ -69,6 +86,11 @@ If you are interested in presenting at the Berlin or Málaga meetup, please resp
 <script id="luma-checkout" src="https://embed.lu.ma/checkout-button.js"></script>
 @:@
 
+*Updated on September 15 to include the Copenhagen event.*
+
+*Updated on October 16 to mention the VirtusLab sponsorship.*
+
+
 [coc]: /code-of-conduct/README.md
 [sponsors]: /foundation/README.md
 [donate]: /foundation/README.md#supporting-the-foundation
@@ -80,5 +102,8 @@ If you are interested in presenting at the Berlin or Málaga meetup, please resp
 [Zalando]: https://zalando.com
 [lsug]: https://www.meetup.com/london-scala/
 [SiriusXM]: https://siriusxm.com
+[VirtusLab]: https://virtuslab.com
 [Intellias]: https://intellias.com
 [Input Objects]: https://inputobjects.com
+[Aruna]: https://aruna.de/
+[Famly]: https://www.famly.co/

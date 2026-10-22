@@ -32,7 +32,7 @@ function hideSearchModal() {
 }
 
 function renderHit(hit) {
-  const link = `${hit.fields.path}.html`
+  const link = `/${hit.fields.path}.html`
   const title = hit.highlights["title"] || hit.fields["title"]
   const preview = hit.highlights["body"]
   const tags = []
@@ -62,7 +62,10 @@ searchWorker.onmessage = function (e) {
 }
 
 function onSearchInput(event) {
-  searchWorker.postMessage({"query": event.target.value || ""});
+  searchWorker.postMessage({
+    "query": event.target.value || "",
+    "size": 50
+  });
 }
 
 // Keyboard shortcuts: `/` to open, `Escape` to close
