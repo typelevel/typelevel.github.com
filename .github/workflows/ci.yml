@@ -2,9 +2,12 @@ name: Continuous Integration
 
 on:
   pull_request:
-    branches: ['**']
+    branches: ["**"]
   push:
-    branches: ['main']
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -22,9 +25,51 @@ jobs:
           scala-cli-version: 1.12.2
       - run: scala-cli fmt --check .
       - run: scala-cli --server=false build.scala
-      - if: github.event_name != 'pull_request'
-        uses: peaceiris/actions-gh-pages@v4.0.0
+      - name: Save PR number
+        if: github.event_name == 'pull_request'
+        run: echo "${{ github.event.pull_request.number }}" > pr_number.txt
+      - name: Upload site artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target
-          cname: typelevel.org
+          name: site
+          path: target
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload PR number artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-number
+          path: pr_number.txt
+          if-no-files-found: error
+          retention-days: 30
+      - name: Add CNAME for custom domain
+        if: github.event_name == 'push'
+        run: echo "typelevel.org" > target/CNAME
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: target
+          # we need to include the .well-known directory
+          include-hidden-files: true
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

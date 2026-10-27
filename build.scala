@@ -1,10 +1,10 @@
-//> using dep org.http4s::http4s-ember-server::0.23.34
+//> using dep org.http4s::http4s-ember-server::0.23.37
 //> using dep org.typelevel::laika-preview::1.3.2
 //> using dep com.monovore::decline-effect::2.6.2
-//> using dep org.graalvm.js:js:25.0.3
-//> using dep org.webjars.npm:katex:0.16.47
-//> using dep org.webjars.npm:fortawesome__fontawesome-free:7.2.0
-//> using dep pink.cozydev::protosearch-laika:0.0-7f79720-SNAPSHOT
+//> using dep org.graalvm.js:js:25.3.4.1
+//> using dep org.webjars.npm:katex:0.17.0
+//> using dep org.webjars.npm:fortawesome__fontawesome-free:7.3.1
+//> using dep pink.cozydev::protosearch-laika:0.0-0aa7335-SNAPSHOT
 //> using repository https://central.sonatype.com/repository/maven-snapshots
 //> using option -deprecation
 
@@ -77,8 +77,10 @@ object LaikaBuild {
   import laika.io.syntax.*
   import laika.parse.code.languages.ScalaSyntax
   import laika.theme.*
-  import pink.cozydev.protosearch.analysis.{IndexFormat, IndexRendererConfig}
+  import pink.cozydev.protosearch.laika.IndexConfig
   import pink.cozydev.protosearch.ui.SearchUI
+
+  val indexConfig = IndexConfig.default
 
   def input = {
     val securityPolicy = new URI(
@@ -128,7 +130,7 @@ object LaikaBuild {
     .build
 
   val binaryRenderers = List(
-    IndexRendererConfig(true),
+    indexConfig.config,
     BinaryRendererConfig(
       "rss",
       LaikaCustomizations.Rss,
@@ -154,7 +156,11 @@ object LaikaBuild {
       .parallel[IO]
       .build
     val index =
-      Renderer.of(IndexFormat).withConfig(parser.config).parallel[IO].build
+      Renderer
+        .of(indexConfig.format)
+        .withConfig(parser.config)
+        .parallel[IO]
+        .build
 
     (html, rss, index).tupled.use { (html, rss, index) =>
       parser.fromInput(input).parse.flatMap { tree =>
@@ -253,22 +259,24 @@ object LaikaCustomizations {
       TemplateDirectives.eval("forBlogPosts") {
         import TemplateDirectives.dsl.*
 
-        (cursor, parsedBody, source).mapN { (c, b, s) =>
-          def contentScope(value: ConfigValue) =
-            TemplateScope(TemplateSpanSequence(b), value, s)
+        (attribute(0).as[Int].optional, cursor, parsedBody, source)
+          .mapN { (count, c, b, s) =>
+            def contentScope(value: ConfigValue) =
+              TemplateScope(TemplateSpanSequence(b), value, s)
 
-          val posts = c.parent.allDocuments.flatMap { d =>
-            d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
-          }
-
-          posts
-            .sortBy(_._2)(using summon[Ordering[OffsetDateTime]].reverse)
-            .traverse { (d, _) =>
-              d.config.get[ConfigValue]("").map(contentScope(_))
+            val posts = c.parent.allDocuments.flatMap { d =>
+              d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
             }
-            .leftMap(_.message)
-            .map(TemplateSpanSequence(_))
-        }
+
+            posts
+              .sortBy(_._2)(using summon[Ordering[OffsetDateTime]].reverse)
+              .take(count.getOrElse(Int.MaxValue))
+              .traverse { (d, _) =>
+                d.config.get[ConfigValue]("").map(contentScope(_))
+              }
+              .leftMap(_.message)
+              .map(TemplateSpanSequence(_))
+          }
       },
       TemplateDirectives.create("svg") {
         import TemplateDirectives.dsl.*
