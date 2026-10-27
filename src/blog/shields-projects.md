@@ -1,6 +1,6 @@
 {%
   author: ${reardonj}
-  date: "2026-07-27"
+  date: "2026-10-28"
   tags: [governance]
 %}
 
