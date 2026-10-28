@@ -12,6 +12,7 @@ import cats.effect.*
 import cats.syntax.all.*
 import com.monovore.decline.Opts
 import com.monovore.decline.effect.CommandIOApp
+import scala.collection.immutable.SortedMap
 
 // Welcome to the typelevel.org build script!
 // This script builds the site and can serve it locally for previewing.
@@ -52,13 +53,15 @@ object Main extends CommandIOApp("build", "builds the site") {
         LaikaBuild.build(FilePath.fromFS2Path(destination)).as(ExitCode.Success)
 
     case Subcommand.Serve(port) =>
-      val serverConfig = ServerConfig.defaults
-        .withPort(port)
-        .withBinaryRenderers(LaikaBuild.binaryRenderers)
-      val server = ServerBuilder[IO](LaikaBuild.parser, LaikaBuild.input)
-        .withConfig(serverConfig)
-        .build
-      server.evalTap(logServer(_)).useForever
+      LaikaBuild.inputWithTagPages.flatMap { input =>
+        val serverConfig = ServerConfig.defaults
+          .withPort(port)
+          .withBinaryRenderers(LaikaBuild.binaryRenderers)
+        val server = ServerBuilder[IO](LaikaBuild.parser, input)
+          .withConfig(serverConfig)
+          .build
+        server.evalTap(logServer(_)).useForever
+      }
   }
 
   def logServer(server: Server) =
@@ -82,7 +85,7 @@ object LaikaBuild {
 
   val indexConfig = IndexConfig.default
 
-  def input = {
+  private def input = {
     val securityPolicy = new URI(
       "https://raw.githubusercontent.com/typelevel/.github/refs/heads/main/SECURITY.md"
     ).toURL()
@@ -100,6 +103,55 @@ object LaikaBuild {
         Path.Root / "css" / "code.css"
       )
       .merge(Redirects.inputTree)
+  }
+
+  def inputWithTagPages: IO[InputTreeBuilder[IO]] = parser.use { parser =>
+    val sourceInput = input
+    parser.fromInput(sourceInput).parse.map { tree =>
+      val posts = tree.root.allDocuments.filter(
+        _.config.get[java.time.OffsetDateTime]("date").isRight
+      )
+      val tagCounts = posts
+        .flatMap(
+          _.config.get[Seq[String]]("tags").toOption.toSeq.flatten.distinct
+        )
+        .foldMap(str => SortedMap(str -> 1))
+
+      val tagProperties = tagCounts
+        .map { case (tag, count) =>
+          s"""{ slug: "$tag", title: "${tag.capitalize}", count: $count }"""
+        }
+        .mkString(",\n    ")
+
+      val indexPage =
+        s"""{%
+           |  laika.title: Blog Tags
+           |  laika.html.template: /blog/tags/index.template.html
+           |  laika.targetFormats: [html]
+           |  blogTags: [
+           |    $tagProperties
+           |  ]
+           |%}
+           |""".stripMargin
+
+      tagCounts.keys.toSeq
+        .foldLeft(sourceInput) { (inputTree, tag) =>
+          val page =
+            s"""{%
+             |  laika.html.template: /blog/tags/tag.template.html
+             |  laika.targetFormats: [html]
+             |  blogTag: "$tag"
+             |%}
+             |
+             |# ${tag.capitalize}
+             |""".stripMargin
+          inputTree.addString(page, Path.Root / "blog" / "tags" / s"$tag.md")
+        }
+        .addString(
+          indexPage,
+          Path.Root / "blog" / "tags" / "README.md"
+        )
+    }
   }
 
   def theme = {
@@ -163,13 +215,15 @@ object LaikaBuild {
         .build
 
     (html, rss, index).tupled.use { (html, rss, index) =>
-      parser.fromInput(input).parse.flatMap { tree =>
-        html.from(tree).toDirectory(destination).render *>
-          rss.from(tree).toFile(destination / "blog" / "feed.rss").render *>
-          index
-            .from(tree)
-            .toFile(destination / "search" / "searchIndex.idx")
-            .render
+      inputWithTagPages.flatMap { input =>
+        parser.fromInput(input).parse.flatMap { tree =>
+          html.from(tree).toDirectory(destination).render *>
+            rss.from(tree).toFile(destination / "blog" / "feed.rss").render *>
+            index
+              .from(tree)
+              .toFile(destination / "search" / "searchIndex.idx")
+              .render
+        }
       }
     }
   }
@@ -264,11 +318,22 @@ object LaikaCustomizations {
             def contentScope(value: ConfigValue) =
               TemplateScope(TemplateSpanSequence(b), value, s)
 
-            val posts = c.parent.allDocuments.flatMap { d =>
-              d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
-            }
+            val tag = c.config.get[String]("blogTag").toOption
 
-            posts
+            c.root.allDocuments
+              .filter(_.path.toString.startsWith("/blog/"))
+              .flatMap { d =>
+                val dated =
+                  d.config.get[OffsetDateTime]("date").toList.tupleLeft(d)
+                tag.fold(dated) { value =>
+                  dated.filter { case (post, _) =>
+                    post.config
+                      .get[Seq[String]]("tags")
+                      .toOption
+                      .exists(_.contains(value))
+                  }
+                }
+              }
               .sortBy(_._2)(using summon[Ordering[OffsetDateTime]].reverse)
               .take(count.getOrElse(Int.MaxValue))
               .traverse { (d, _) =>

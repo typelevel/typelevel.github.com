@@ -1,0 +1,18 @@
+@:embed(/templates/main.template.html)
+
+<section class="bulma-hero bulma-is-primary bulma-is-bold">
+  <div class="bulma-hero-body bulma-container bulma-is-max-desktop">
+    <p class="bulma-title bulma-has-text-light">${cursor.currentDocument.title}</p>
+    <p class="bulma-subtitle bulma-has-text-light">Browse blog posts by tag.</p>
+  </div>
+</section>
+
+<div class="bulma-section bulma-container bulma-is-max-desktop bulma-content">
+  <div class="bulma-tags">
+    @:for(blogTags)
+    <a class="bulma-tag bulma-is-medium" href="/blog/tags/${_.slug}.html">${_.title} (${_.count})</a>
+    @:@
+  </div>
+</div>
+
+@:@
