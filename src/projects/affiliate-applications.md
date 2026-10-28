@@ -24,6 +24,9 @@ Open an application if your project:
 
 The application process is managed by the Typelevel [Technical Steering Committee](/foundation/people.md). Reviewers aim to provide an answer within two weeks of receiving a complete application.
 
+## Project Shields
+Typelevel affiliate projects are encouraged to add the [affiliate project shield](/resources.md) to their README and/or website to advertise their Typelevel association.
+
 ## Questions & Getting Help
 
 If you have any questions, please don't hesitate to reach out to our community:
