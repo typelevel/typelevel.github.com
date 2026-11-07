@@ -2,7 +2,7 @@
   laika.title = Typelevel
   laika.html.template = templates/home.template.html
   homepage-announcement {
-    enabled = true
+    enabled = false
     template = "/announcements/traverses-europe-2026.template.html"
   }
 %}
