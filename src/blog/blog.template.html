@@ -13,16 +13,18 @@
     <p class="bulma-subtitle bulma-has-text-light">
       Follow our blog for announcements, events, and community-contributed posts.
     </p>
+    <p>
+      <a class="bulma-is-underlined bulma-has-text-light" href="@:target(/blog/tags/README.md)">Browse all tags</a>
+    </p>
   </div>
 </section>
 
 <div class="bulma-section bulma-container bulma-is-max-desktop bulma-columns bulma-is-multiline">
-  <!-- custom Laika template directive for listing blog posts -->
   @:forBlogPosts
   <div class="bulma-column bulma-is-6">
     <div class="bulma-card">
-      <a href="@:target(_.cursor.currentDocument.sourcePath)">
-        <div class="bulma-card-content">
+      <div class="bulma-card-content">
+        <a href="@:target(_.cursor.currentDocument.sourcePath)">
           <p class="bulma-is-6 bulma-has-text-right bulma-has-text-grey">@:date(_.date, "MMMM d, yyyy")</p>
           <h4 class="bulma-title bulma-is-5">${_.cursor.currentDocument.title}</h4>
           <p class="blog-post-byline bulma-subtitle bulma-is-6 bulma-has-text-grey">
@@ -33,11 +35,11 @@
             ${_.event-date} at ${_.event-location}
             @:@
           </p>
-          @:for(_.tags)
-          <span class="bulma-tag">${_}</span>
-          @:@
-        </div>
-      </a>
+        </a>
+        @:for(_.tags)
+        <a class="bulma-tag" href="/blog/tags/${_}.html">${_}</a>
+        @:@
+      </div>
     </div>
   </div>
   @:@
