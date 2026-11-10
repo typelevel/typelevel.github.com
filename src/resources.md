@@ -20,4 +20,4 @@ These standard shields can be used by affiliate and organization projects for th
 [![Typelevel Affiliate Project](https://typelevel.org/img/badge-affiliate.svg)](https://typelevel.org/shield-landing-affiliate.html)
 ```
 
-These shields point to landing pages which currently just redirect to our home page. Eventually, we plan to add more targetted landing pages to explain project associations to Typelevel.
+These shields point to landing pages which currently just redirect to our home page. Eventually, we plan to add more targeted landing pages to explain project associations to Typelevel.
