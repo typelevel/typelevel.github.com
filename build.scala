@@ -520,6 +520,8 @@ object Redirects {
     s"""{% laika.html.template = "/templates/redirect.template.html", laika.targetFormats: [html], target = "$to" %}"""
 
   private val map = Map(
+    "/shield-landing-org.html" -> "/README.md",
+    "/shield-landing-affiliate.html" -> "/README.md",
     "/about/index.html" -> "/foundation/README.md",
     "/about/contributing/index.html" -> "/foundation/README.md",
     "/blog/2013/04/04/inauguration.html" -> "/blog/inauguration.md",
