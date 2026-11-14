@@ -6,7 +6,7 @@
 
 # Jots: Functional JWTs for Scala
 
-We are delighted to welcome [Jots](https://vlovgr.github.io/jots) as a new Typelevel affiliate project.
+I am happy to announce that my library [Jots](https://vlovgr.github.io/jots) has been accepted as a Typelevel affiliate project.
 
 ![Jots: Functional JWTs for Scala](/img/media/jots.png)
 
