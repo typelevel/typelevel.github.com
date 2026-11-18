@@ -4,6 +4,10 @@ This page outlines the guidelines and application process for projects that want
 
 Affiliate projects are independently-owned projects that are part of the wider Typelevel ecosystem, without being hosted in the Typelevel GitHub organization.
 
+@:style(bulma-has-text-centered)
+@:style(bulma-button bulma-is-primary bulma-has-text-light)[Apply](https://forms.gle/FhWBY8mvAgf64pD4A)@:@
+@:@
+
 ## Who Should Apply
 
 Open an application if your project:
